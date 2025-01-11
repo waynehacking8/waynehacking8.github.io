@@ -17,4 +17,13 @@
         "excerpt": "駭客入門？深入了解滲透測試的基礎概念與實戰技巧",
         "file": "posts/pentest-intro.md"
     }
+    {
+        "id": "3",
+        "title": "CUDA Programming 入門",
+        "category": "programming",
+        "date": "2025-01-11",
+        "tags": ["CUDAD", "GPU", "Accelerating"],
+        "excerpt": "Parallel Programming Studying",
+        "file": "posts/pp-intro.md"
+    }
 ]
