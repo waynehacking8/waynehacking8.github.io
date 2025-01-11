@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post | Wei Cheng (Wayne) Chiu</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="blog.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="site-title">waynehacking8</a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">CV</a>
+                <a href="blog.html" class="nav-link">Blog Posts</a>
+                <a href="publications.html" class="nav-link">Publications</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="blog-main">
+        <div class="post-container">
+            <a href="blog.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回文章列表</span>
+            </a>
+            <div id="post-content" class="post-content-full">
+                <!-- 文章內容將由 JavaScript 動態載入 -->
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            
+            try {
+                const response = await fetch('./posts.json');
+                const posts = await response.json();
+                const post = posts.find(p => p.id === postId);
+                
+                if (post) {
+                    document.title = `${post.title} | Wei Cheng (Wayne) Chiu`;
+                    const postContent = document.getElementById('post-content');
+                    postContent.innerHTML = `
+                        <h1>${post.title}</h1>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                ${new Date(post.date).toLocaleDateString('zh-TW')}
+                            </span>
+                            <div class="post-tags">
+                                ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        ${marked.parse(post.content)}
+                    `;
+                } else {
+                    document.getElementById('post-content').innerHTML = '<h1>文章不存在</h1>';
+                }
+            } catch (error) {
+                console.error('載入文章失敗:', error);
+                document.getElementById('post-content').innerHTML = '<h1>載入文章失敗</h1>';
+            }
+        });
+    </script>
+</body>
+</html> 
