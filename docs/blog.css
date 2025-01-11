@@ -22,6 +22,7 @@
     text-align: center;
     margin-bottom: 3rem;
     padding: 2rem;
+    margin-top: 1rem;
     background: rgba(0, 0, 0, 0.7);
     border: 1px solid var(--color-primary);
     border-radius: 8px;
@@ -65,7 +66,7 @@
 .blog-main {
     padding: 2rem;
     min-height: calc(100vh - 80px);
-    margin-top: 100px;
+    margin-top: 120px;
     background: var(--color-bg);
 }
 
@@ -73,7 +74,7 @@
 .blog-container {
     max-width: 1200px;
     margin: 0 auto 0 350px;
-    padding-top: 20px;
+    padding-top: 30px;
 }
 
 /* 文章頁面容器樣式 */
@@ -276,13 +277,13 @@
 @media (max-width: 768px) {
     .blog-container {
         margin: 0 auto;
-        padding: 20px 1rem 0;
+        padding: 30px 1rem 0;
     }
 
     .blog-main {
         padding: 1rem;
         margin-left: 0;
-        margin-top: 100px;
+        margin-top: 120px;
     }
 
     .blog-grid {
@@ -294,11 +295,15 @@
         padding: 0.6rem 1rem;
         font-size: 0.9rem;
     }
+
+    .blog-header {
+        margin-top: 0;
+    }
 }
 
 @media (max-width: 480px) {
     .blog-main {
-        margin-top: 100px;
+        margin-top: 120px;
     }
 
     .blog-categories {
