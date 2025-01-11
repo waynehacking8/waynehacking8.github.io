@@ -90,7 +90,7 @@ class Blog {
                         </div>
                     </div>
                     <p class="post-excerpt">${post.excerpt || this.truncateContent(post.content)}</p>
-                    <a href="/post.html?id=${post.id}" class="read-more-btn">
+                    <a href="./post.html?id=${post.id}" class="read-more-btn">
                         <span class="btn-text">閱讀更多</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
