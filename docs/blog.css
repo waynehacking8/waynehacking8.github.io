@@ -273,38 +273,41 @@
 
 /* 響應式設計 */
 @media (max-width: 768px) {
+    .blog-container {
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
     .blog-main {
-        margin-left: 0;
         padding: 1rem;
-        margin-top: 180px;
+        margin-left: 0;
     }
 
-    .blog-header {
-        padding: 1.5rem;
-        margin-top: 2rem;
-    }
-
-    .blog-header h1 {
-        font-size: 2rem;
-    }
-
-    .blog-categories {
-        gap: 0.8rem;
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .category {
         padding: 0.6rem 1rem;
         font-size: 0.9rem;
     }
-
-    .blog-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 @media (max-width: 480px) {
     .blog-main {
-        margin-top: 200px;
+        margin-top: 80px;
+    }
+
+    .blog-categories {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .blog-post {
+        margin: 0;
+        width: 100%;
     }
 }
 
