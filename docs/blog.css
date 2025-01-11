@@ -63,10 +63,9 @@
 
 /* 部落格主體樣式 */
 .blog-main {
-    margin-left: 350px;
+    margin-left: 0;
     padding: 2rem;
-    min-height: calc(100vh - 80px);
-    margin-top: 80px;
+    min-height: 100vh;
     background: var(--color-bg);
 }
 
@@ -440,6 +439,7 @@
 .post-content-full {
     line-height: 1.6;
     margin: 2rem 0;
+    color: var(--color-text);
 }
 
 .post-content-full h1,
@@ -466,6 +466,7 @@
     border-radius: 8px;
     padding: 2rem;
     margin-top: 2rem;
+    color: var(--color-text);
 }
 
 .post-header {
@@ -494,4 +495,21 @@
 .back-home:hover {
     background: rgba(0, 255, 0, 0.1);
     transform: translateX(-5px);
+}
+
+/* 文章內容的段落和列表樣式 */
+.post-content-full p,
+.post-content-full ul,
+.post-content-full ol {
+    color: var(--color-text);
+    margin-bottom: 1rem;
+}
+
+/* 文章內容的程式碼區塊 */
+.post-content-full code {
+    background: rgba(0, 255, 0, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: var(--font-heading);
+    color: var(--color-primary);
 } 
