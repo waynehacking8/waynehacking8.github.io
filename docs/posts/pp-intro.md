@@ -1,3 +1,23 @@
+---
+style: |
+  .language-cpp {
+    background-color: #f6f8fa;
+    border-radius: 3px;
+    padding: 16px;
+  }
+  .language-bash {
+    background-color: #282c34;
+    color: #abb2bf;
+    border-radius: 3px;
+    padding: 16px;
+  }
+  .language-plaintext {
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    padding: 16px;
+  }
+---
+
 # CUDA C/C++ 完整技術指南
 
 ## 1. CUDA 基礎架構
