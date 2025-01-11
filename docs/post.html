@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章內容</title>
+    <link rel="stylesheet" href="blog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* 確保文章內容的顏色 */
+        .post-content-full {
+            color: var(--color-text) !important;
+        }
+        .post-content-full p,
+        .post-content-full ul,
+        .post-content-full ol,
+        .post-content-full li {
+            color: var(--color-text) !important;
+        }
+        .post-content-full h1,
+        .post-content-full h2,
+        .post-content-full h3,
+        .post-content-full h4,
+        .post-content-full h5,
+        .post-content-full h6 {
+            color: var(--color-primary) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="blog-main">
+        <div class="blog-container">
+            <a href="/blog.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                返回文章列表
+            </a>
+            <article id="post-content" class="single-post">
+                <!-- 文章內容將由 JavaScript 動態載入 -->
+            </article>
+        </div>
+    </div>
+    <script src="post.js"></script>
+</body>
+</html> 
