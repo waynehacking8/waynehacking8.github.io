@@ -22,7 +22,7 @@
         "title": "CUDA Programming 入門",
         "category": "programming",
         "date": "2025-01-11",
-        "tags": ["CUDAD", "GPU", "Accelerating"],
+        "tags": ["CUDA", "GPU", "Accelerating"],
         "excerpt": "Parallel Programming Studying",
         "file": "posts/pp-intro.md"
     }
