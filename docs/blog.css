@@ -65,13 +65,14 @@
 .blog-main {
     margin-left: 0;
     padding: 2rem;
-    min-height: 100vh;
+    min-height: 100%;
     background: var(--color-bg);
 }
 
 .blog-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 1rem;
 }
 
 /* 分類按鈕容器 */
@@ -442,6 +443,27 @@
     color: var(--color-text);
 }
 
+.post-content-full p,
+.post-content-full ul,
+.post-content-full ol,
+.post-content-full h1,
+.post-content-full h2,
+.post-content-full h3,
+.post-content-full h4,
+.post-content-full h5,
+.post-content-full h6,
+.post-content-full li,
+.post-content-full strong,
+.post-content-full em,
+.post-content-full blockquote {
+    color: var(--color-text);
+    margin-bottom: 1rem;
+}
+
+.post-content-full * {
+    color: var(--color-text);
+}
+
 .post-content-full h1,
 .post-content-full h2,
 .post-content-full h3 {
@@ -465,7 +487,8 @@
     border: 1px solid var(--color-primary);
     border-radius: 8px;
     padding: 2rem;
-    margin-top: 2rem;
+    margin: 2rem auto;
+    max-width: 900px;
     color: var(--color-text);
 }
 
@@ -476,7 +499,9 @@
 .post-header h1 {
     color: var(--color-primary);
     font-family: var(--font-heading);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    text-align: left;
 }
 
 .back-home {
@@ -500,7 +525,17 @@
 /* 文章內容的段落和列表樣式 */
 .post-content-full p,
 .post-content-full ul,
-.post-content-full ol {
+.post-content-full ol,
+.post-content-full h1,
+.post-content-full h2,
+.post-content-full h3,
+.post-content-full h4,
+.post-content-full h5,
+.post-content-full h6,
+.post-content-full li,
+.post-content-full strong,
+.post-content-full em,
+.post-content-full blockquote {
     color: var(--color-text);
     margin-bottom: 1rem;
 }
@@ -512,4 +547,12 @@
     border-radius: 3px;
     font-family: var(--font-heading);
     color: var(--color-primary);
+}
+
+/* 調整整體背景 */
+body {
+    background: var(--color-bg);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
 } 
