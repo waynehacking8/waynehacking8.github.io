@@ -65,7 +65,7 @@
 .blog-main {
     padding: 2rem;
     min-height: calc(100vh - 80px);
-    margin-top: 80px;
+    margin-top: 100px;
     background: var(--color-bg);
 }
 
@@ -73,6 +73,7 @@
 .blog-container {
     max-width: 1200px;
     margin: 0 auto 0 350px;
+    padding-top: 20px;
 }
 
 /* 文章頁面容器樣式 */
@@ -275,12 +276,13 @@
 @media (max-width: 768px) {
     .blog-container {
         margin: 0 auto;
-        padding: 0 1rem;
+        padding: 20px 1rem 0;
     }
 
     .blog-main {
         padding: 1rem;
         margin-left: 0;
+        margin-top: 100px;
     }
 
     .blog-grid {
@@ -296,7 +298,7 @@
 
 @media (max-width: 480px) {
     .blog-main {
-        margin-top: 80px;
+        margin-top: 100px;
     }
 
     .blog-categories {
