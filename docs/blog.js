@@ -101,7 +101,7 @@ class Blog {
 
     openPost(postId) {
         // 導向到文章頁面，使用 URL 參數傳遞文章 ID
-        window.location.href = `/post.html?id=${postId}`;
+        window.location.href = `post.html?id=${postId}`;
     }
 
     closeModal() {
