@@ -63,16 +63,24 @@
 
 /* 部落格主體樣式 */
 .blog-main {
-    margin-left: 350px;
     padding: 2rem;
     min-height: calc(100vh - 80px);
     margin-top: 80px;
     background: var(--color-bg);
 }
 
+/* 部落格容器樣式 */
 .blog-container {
     max-width: 1200px;
+    margin-left: 350px;
     margin: 0 auto;
+}
+
+/* 文章頁面容器樣式 */
+.post-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
 /* 分類按鈕容器 */
