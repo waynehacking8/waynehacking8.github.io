@@ -506,12 +506,12 @@
 
 .post-excerpt-container {
     flex-grow: 1;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .post-actions {
     margin-top: auto;
-    padding-top: 3rem;
+    padding-top: 1.5rem;
 }
 
 .post-excerpt {
@@ -629,10 +629,10 @@
 /* 在大螢幕上增加更多間距 */
 @media (min-width: 768px) {
     .post-excerpt-container {
-        margin-bottom: 3rem;
+        margin-bottom: 1.5rem;
     }
 
     .post-actions {
-        padding-top: 4rem;
+        padding-top: 2rem;
     }
 } 
