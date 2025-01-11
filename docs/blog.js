@@ -103,11 +103,15 @@ class Blog {
                             ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
                     </div>
-                    <p class="post-excerpt">${post.excerpt || this.truncateContent(post.content)}</p>
-                    <a href="./post.html?id=${post.id}" class="read-more-btn">
-                        <span class="btn-text">閱讀更多</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+                    <div class="post-excerpt-container">
+                        <p class="post-excerpt">${post.excerpt || this.truncateContent(post.content)}</p>
+                    </div>
+                    <div class="post-actions">
+                        <a href="./post.html?id=${post.id}" class="read-more-btn">
+                            <span class="btn-text">閱讀更多</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </article>
         `;
