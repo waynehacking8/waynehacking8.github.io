@@ -1,32 +1,32 @@
----
----
-
 @import "{{ site.theme }}";
 
-// Code block styling
+// 程式碼區塊基本樣式
 .highlight {
   background-color: #f6f8fa;  // 淺灰色背景
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 16px;
   margin-bottom: 16px;
+  border: 1px solid #e1e4e8;
 }
 
 // 針對不同程式語言設定不同底色
 .language-cpp .highlight {
-  background-color: #f5f5f5;  // C++ 程式碼底色
+  background-color: #f8f0fd;  // C++ 程式碼底色(淺紫色)
 }
 
 .language-bash .highlight {
-  background-color: #f0f0f0;  // Bash 指令底色
+  background-color: #f0f6fd;  // Bash 指令底色(淺藍色)
 }
 
 .language-plaintext .highlight {
-  background-color: #f8f8f8;  // 純文字底色
+  background-color: #f6f8fa;  // 純文字底色(淺灰色)
 }
 
-// 程式碼區塊內文字顏色
+// 程式碼區塊內文字顏色與字型
 .highlight pre {
   color: #24292e;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  line-height: 1.45;
 }
 
 // 行內程式碼樣式
@@ -34,4 +34,5 @@ code {
   background-color: rgba(27,31,35,0.05);
   border-radius: 3px;
   padding: 0.2em 0.4em;
+  font-size: 85%;
 } 
