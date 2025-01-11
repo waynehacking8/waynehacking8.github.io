@@ -1,0 +1,29 @@
+[
+    {
+        "id": "1",
+        "title": "Meta-Reinforcement Learning of Structured Exploration Strategies",
+        "category": "machine-learning",
+        "date": "2025-01-11",
+        "tags": ["機器學習", "深度強化學習", "AI"],
+        "excerpt": "Meta RL",
+        "file": "posts/meta-rl.md"
+    },
+    {
+        "id": "2",
+        "title": "滲透測試入門技術",
+        "category": "cybersecurity",
+        "date": "2025-01-10",
+        "tags": ["資安", "威脅分析", "資安防護"],
+        "excerpt": "駭客入門？深入了解滲透測試的基礎概念與實戰技巧",
+        "file": "posts/pentest-intro.md"
+    },
+    {
+        "id": "3",
+        "title": "CUDA Programming 入門",
+        "category": "programming",
+        "date": "2025-01-11",
+        "tags": ["CUDA", "GPU", "Accelerating"],
+        "excerpt": "Parallel Programming Studying",
+        "file": "posts/pp-intro.md"
+    }
+]

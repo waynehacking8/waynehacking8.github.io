@@ -1,0 +1,33 @@
+/* 程式碼區塊樣式 */
+.highlight, pre.highlight, div.highlight {
+  background-color: #282c34 !important;
+  color: #abb2bf !important;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+/* 程式碼字型 */
+.highlight pre, .highlight code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important;
+  line-height: 1.45;
+}
+
+/* 語法高亮 */
+.highlight .c, .highlight .c1, .highlight .cm { color: #5c6370 !important; font-style: italic; }
+.highlight .k, .highlight .kd { color: #c678dd !important; }
+.highlight .s, .highlight .s1, .highlight .s2 { color: #98c379 !important; }
+.highlight .n { color: #e06c75 !important; }
+.highlight .o { color: #56b6c2 !important; }
+.highlight .mi, .highlight .mf { color: #d19a66 !important; }
+.highlight .p { color: #abb2bf !important; }
+.highlight .nx { color: #61afef !important; }
+
+/* 行內程式碼 */
+:not(pre) > code {
+  background-color: #2c313a !important;
+  color: #abb2bf !important;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 85%;
+} 
