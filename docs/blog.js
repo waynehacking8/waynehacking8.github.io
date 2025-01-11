@@ -89,7 +89,7 @@ class Blog {
                             ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
                     </div>
-                    <p class="post-excerpt">${post.excerpt || post.content.substring(0, 150)}...</p>
+                    <p class="post-excerpt">${post.excerpt || this.truncateContent(post.content)}</p>
                     <a href="/post.html?id=${post.id}" class="read-more-btn">
                         <span class="btn-text">閱讀更多</span>
                         <i class="fas fa-arrow-right"></i>
@@ -97,6 +97,15 @@ class Blog {
                 </div>
             </article>
         `;
+    }
+
+    truncateContent(content) {
+        // 移除 Markdown 標記，只保留純文字
+        const plainText = content.replace(/[#*`]/g, '')
+                                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+                                .replace(/\n/g, ' ')
+                                .trim();
+        return plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText;
     }
 
     closeModal() {
