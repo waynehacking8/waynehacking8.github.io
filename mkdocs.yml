@@ -14,6 +14,7 @@ nav:
   - Patches: patches.md
   - Blog:
       - blog/index.md
+      - Notes — TensorRT-LLM + Triton serving: blog/notes-trtllm-triton-serving.md
       - Tensor-parallel & the NVLink wall: blog/nccl-nvlink-bandwidth.md
       - RAG groundedness (0% vs 50%): blog/rag-groundedness-guardrail.md
       - Meta-Reinforcement Learning: blog/meta-rl.md
