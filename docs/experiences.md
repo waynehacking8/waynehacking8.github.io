@@ -60,4 +60,4 @@ Programming, Cybersecurity.
 
 - **NVIDIA DLI** — Fundamentals of Accelerated Computing with CUDA Python *(Dec 2024)*
 - **NVIDIA DLI** — Fundamentals of Accelerated Computing with CUDA C/C++ *(Nov 2024)*
-- *(and 3 more — see [LinkedIn](https://www.linkedin.com/in/wei-cheng-chiu-b547a811a/details/certifications/))*
+- *(and 3 more — see [LinkedIn](https://www.linkedin.com/in/wei-cheng-chiu/details/certifications/))*
