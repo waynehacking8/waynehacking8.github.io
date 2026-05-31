@@ -1,3 +1,7 @@
+---
+description: "Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover."
+---
+
 # Notes on Serving LLMs with TensorRT-LLM and Triton
 
 *2026-05-31 · LLM serving / NVIDIA stack*
@@ -97,26 +101,34 @@ The measured runs can use TensorRT-LLM's own OpenAI server (`trtllm-serve`), but
 Treat `trtllm-serve` as the fast path for benchmarking and Triton as the path you'd actually
 ship behind a gateway.
 
-## 7. When does TensorRT-LLM win?
+## 7. When does TensorRT-LLM win? (the measured answer)
 
-Not always — and saying so is the point. The trade-off, roughly:
+Not always — and the measurement says *which* regime, not a vibe. Across a matched-work sweep on
+4× H100, the result lands on a **concurrency crossover**:
 
-- **TensorRT-LLM / Triton** rewards you when the deployment is *stable*: fixed model, fixed TP,
-  high sustained load where the ahead-of-time engine and FP8 pay off, and you want the
-  NVIDIA-native control plane.
-- **vLLM** rewards you when you value *flexibility*: rapid model swaps, no engine-build step,
-  Python-native iteration.
+- **TensorRT-LLM (with CUDA graphs) wins at low-to-mid concurrency** — the latency-sensitive
+  regime. The ahead-of-time engine plus CUDA-graph capture removes per-iteration launch overhead
+  that dominates when the batch is small, so TTFT and inter-token latency are lower.
+- **vLLM wins at high concurrency** — the throughput-saturated regime, where its scheduler keeps
+  the GPU packed and the launch-overhead advantage no longer matters.
 
-The honest deliverable is a reproducible **serve → benchmark** loop with documented
-methodology, so the answer to "which is faster" is "here's the matched-work measurement on this
-hardware," not a vibe.
+> One caveat that cost a real bug: **CUDA graphs only help if the config actually enables them.**
+> A run that looks like "TensorRT-LLM is barely faster" can be a mis-set graph config; fixing it
+> moved the low-concurrency number substantially. Always confirm the optimisation you're
+> crediting is switched on before drawing the curve.
+
+So the decision rule is about your **load**, not brand loyalty: latency-bound, low/mid
+concurrency → TensorRT-LLM + CUDA graphs; throughput-bound, high concurrency → vLLM. The honest
+deliverable is a reproducible **serve → benchmark** loop with documented methodology that draws
+that crossover for *your* hardware.
 
 ## Takeaway
 
 Serving an LLM well is mostly about three things: putting tensor parallelism in the regime that
 helps, enabling continuous batching + paged KV-cache, and **measuring the same work** across
-stacks. The NVIDIA path adds an ahead-of-time engine and FP8 that pay off under stable, heavy
-load — and a Triton control plane you'd actually put in production.
+stacks. The measured crossover: TensorRT-LLM + CUDA graphs win **low/mid concurrency** (latency),
+vLLM wins **high concurrency** (throughput) — and a Triton control plane is what you'd actually
+put in production.
 
 → Full pipeline, Triton model repo, and the matched-work harness:
 [github.com/waynehacking8/trtllm-triton-serving](https://github.com/waynehacking8/trtllm-triton-serving)

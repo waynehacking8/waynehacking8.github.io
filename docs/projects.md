@@ -20,6 +20,7 @@ aggregation, plus FedPer / Byzantine-robust / FedAdam / FedLoRA. 33/33 tests,
 literature-cross-validated, with honest negative results on Non-IID MNIST.
 *Python · PyTorch · Federated Learning · Differential Privacy*
 :material-github: [waynehacking8/federated-learning-lab](https://github.com/waynehacking8/federated-learning-lab)
+:material-notebook-outline: [Notes: Federated Learning & Differential Privacy](blog/notes-federated-learning-dp.md)
 
 ## NVIDIA Inference & Multi-GPU Stack
 
@@ -37,6 +38,7 @@ Nsight Compute to connect kernel-level decisions to end-to-end serving latency.
 Reproducible build → serve → benchmark harness: TensorRT-LLM engines on Triton (TP=4),
 measured head-to-head against vLLM under matched concurrency.
 *TensorRT-LLM · Triton · vLLM · 4× H100 NVLink* *(release planned once results land)*
+:material-notebook-outline: [Notes: serving on TensorRT-LLM + Triton](blog/notes-trtllm-triton-serving.md)
 
 ### NCCL Collectives Benchmark
 Bus-bandwidth micro-benchmarks for all-reduce / all-gather / reduce-scatter on 4× H100
@@ -44,6 +46,7 @@ NVLink, analysed against the theoretical link budget. Measured: all-reduce **366
 (77% of NVLink)**; NVLS (NVLink SHARP) > Ring > Tree; protocol study (Simple/LL128/LL).
 *NCCL · nccl-tests · CUDA · 4× H100 NVSwitch*
 :material-github: [waynehacking8/nccl-collectives-bench](https://github.com/waynehacking8/nccl-collectives-bench)
+:material-notebook-outline: [Notes: where TP inference hits the NVLink wall](blog/nccl-nvlink-bandwidth.md)
 
 ### NIM Agent Blueprint
 Agentic RAG reference architecture on NVIDIA NIM microservices (LLM + embedding +
@@ -52,8 +55,10 @@ Measured: retrieval **recall@3 94%**, and **0% hallucination** on out-of-corpus 
 with a guarded prompt vs **50%** without it (ablation).
 *NVIDIA NIM · RAG · agents · OpenTelemetry · FastAPI*
 :material-github: [waynehacking8/nim-agent-blueprint](https://github.com/waynehacking8/nim-agent-blueprint)
+:material-notebook-outline: [Notes: 0% vs 50% hallucination](blog/rag-groundedness-guardrail.md)
 
 ### Blackwell Tensor Core Kernels
 Hand-written CUDA GEMM kernels (naive → tiled → WMMA Tensor Core), benchmarked across
 Hopper (sm_90) and Blackwell (sm_120) as a fraction of the cuBLAS ceiling.
 *CUDA · Tensor Cores · WMMA · Nsight · H100 / RTX Pro 6000* *(release planned once results land)*
+:material-notebook-outline: [Notes: CUDA Tensor Core GEMM (WMMA)](blog/notes-cuda-tensor-core-gemm.md)

@@ -1,3 +1,7 @@
+---
+description: "Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees."
+---
+
 # Notes on Federated Learning and Differential Privacy
 
 *2026-05-31 · privacy-preserving ML*

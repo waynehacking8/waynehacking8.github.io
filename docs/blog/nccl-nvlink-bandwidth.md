@@ -1,3 +1,7 @@
+---
+description: "Measuring NCCL all-reduce on 4x H100 NVLink (366 GB/s, 77% of budget) and why tensor-parallel decode hits a small-message latency wall, not a bandwidth one."
+---
+
 # Where tensor-parallel inference hits the NVLink wall
 
 *2026-05-31 · GPU / distributed systems*

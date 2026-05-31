@@ -18,6 +18,7 @@ nav:
       - Tensor-parallel & the NVLink wall: blog/nccl-nvlink-bandwidth.md
       - RAG groundedness (0% vs 50%): blog/rag-groundedness-guardrail.md
       - Notes — Federated Learning + DP: blog/notes-federated-learning-dp.md
+      - Notes — CUDA Tensor Core GEMM (WMMA): blog/notes-cuda-tensor-core-gemm.md
       - Meta-Reinforcement Learning: blog/meta-rl.md
       - CUDA Programming 入門: blog/pp-intro.md
       - 滲透測試入門技術: blog/pentest-intro.md

@@ -1,3 +1,7 @@
+---
+description: "One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~50% to 0% — and why an eval harness is the only way to see the difference."
+---
+
 # 0 % vs 50 %: making a RAG agent refuse to hallucinate
 
 *2026-05-31 · LLM / RAG*
