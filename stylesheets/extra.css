@@ -1,0 +1,7 @@
+/* Minimal tweaks on top of mkdocs-material. */
+.md-typeset h1 { font-weight: 700; }
+.md-typeset h3 { margin-top: 1.2em; margin-bottom: 0.2em; }
+.md-typeset p > em:only-child {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.85em;
+}
