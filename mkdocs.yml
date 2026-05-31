@@ -57,12 +57,15 @@ extra_css:
   - stylesheets/extra.css
 
 extra:
+  analytics:
+    provider: google
+    property: G-CM6KG884P9
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/waynehacking8
       name: GitHub
     - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/in/wei-cheng-chiu-b547a811a/
+      link: https://www.linkedin.com/in/wei-cheng-chiu/
       name: LinkedIn
     - icon: fontawesome/brands/x-twitter
       link: https://x.com/WEICHENGCH52824
