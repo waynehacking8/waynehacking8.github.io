@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
+        <meta name="description" content="Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -160,7 +160,8 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/" },
     "author": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "en"
+    "inLanguage": "en",
+    "description": "Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM \u2014 including the measured low/mid vs high concurrency crossover."
   }
   </script>
   
@@ -862,10 +863,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-when-does-tensorrt-llm-win" class="md-nav__link">
+  <a href="#7-when-does-tensorrt-llm-win-the-measured-answer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. When does TensorRT-LLM win?
+        7. When does TensorRT-LLM win? (the measured answer)
       
     </span>
   </a>
@@ -963,6 +964,34 @@
     
   
     Notes — Federated Learning + DP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes-cuda-tensor-core-gemm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes — CUDA Tensor Core GEMM (WMMA)
   
 
     
@@ -1160,10 +1189,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-when-does-tensorrt-llm-win" class="md-nav__link">
+  <a href="#7-when-does-tensorrt-llm-win-the-measured-answer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. When does TensorRT-LLM win?
+        7. When does TensorRT-LLM win? (the measured answer)
       
     </span>
   </a>
@@ -1299,23 +1328,32 @@ are noise.</p>
 </ul>
 <p>Treat <code>trtllm-serve</code> as the fast path for benchmarking and Triton as the path you'd actually
 ship behind a gateway.</p>
-<h2 id="7-when-does-tensorrt-llm-win">7. When does TensorRT-LLM win?<a class="headerlink" href="#7-when-does-tensorrt-llm-win" title="Permanent link">&para;</a></h2>
-<p>Not always — and saying so is the point. The trade-off, roughly:</p>
+<h2 id="7-when-does-tensorrt-llm-win-the-measured-answer">7. When does TensorRT-LLM win? (the measured answer)<a class="headerlink" href="#7-when-does-tensorrt-llm-win-the-measured-answer" title="Permanent link">&para;</a></h2>
+<p>Not always — and the measurement says <em>which</em> regime, not a vibe. Across a matched-work sweep on
+4× H100, the result lands on a <strong>concurrency crossover</strong>:</p>
 <ul>
-<li><strong>TensorRT-LLM / Triton</strong> rewards you when the deployment is <em>stable</em>: fixed model, fixed TP,
-  high sustained load where the ahead-of-time engine and FP8 pay off, and you want the
-  NVIDIA-native control plane.</li>
-<li><strong>vLLM</strong> rewards you when you value <em>flexibility</em>: rapid model swaps, no engine-build step,
-  Python-native iteration.</li>
+<li><strong>TensorRT-LLM (with CUDA graphs) wins at low-to-mid concurrency</strong> — the latency-sensitive
+  regime. The ahead-of-time engine plus CUDA-graph capture removes per-iteration launch overhead
+  that dominates when the batch is small, so TTFT and inter-token latency are lower.</li>
+<li><strong>vLLM wins at high concurrency</strong> — the throughput-saturated regime, where its scheduler keeps
+  the GPU packed and the launch-overhead advantage no longer matters.</li>
 </ul>
-<p>The honest deliverable is a reproducible <strong>serve → benchmark</strong> loop with documented
-methodology, so the answer to "which is faster" is "here's the matched-work measurement on this
-hardware," not a vibe.</p>
+<blockquote>
+<p>One caveat that cost a real bug: <strong>CUDA graphs only help if the config actually enables them.</strong>
+A run that looks like "TensorRT-LLM is barely faster" can be a mis-set graph config; fixing it
+moved the low-concurrency number substantially. Always confirm the optimisation you're
+crediting is switched on before drawing the curve.</p>
+</blockquote>
+<p>So the decision rule is about your <strong>load</strong>, not brand loyalty: latency-bound, low/mid
+concurrency → TensorRT-LLM + CUDA graphs; throughput-bound, high concurrency → vLLM. The honest
+deliverable is a reproducible <strong>serve → benchmark</strong> loop with documented methodology that draws
+that crossover for <em>your</em> hardware.</p>
 <h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
 <p>Serving an LLM well is mostly about three things: putting tensor parallelism in the regime that
 helps, enabling continuous batching + paged KV-cache, and <strong>measuring the same work</strong> across
-stacks. The NVIDIA path adds an ahead-of-time engine and FP8 that pay off under stable, heavy
-load — and a Triton control plane you'd actually put in production.</p>
+stacks. The measured crossover: TensorRT-LLM + CUDA graphs win <strong>low/mid concurrency</strong> (latency),
+vLLM wins <strong>high concurrency</strong> (throughput) — and a Triton control plane is what you'd actually
+put in production.</p>
 <p>→ Full pipeline, Triton model repo, and the matched-work harness:
 <a href="https://github.com/waynehacking8/trtllm-triton-serving">github.com/waynehacking8/trtllm-triton-serving</a></p>
 
@@ -1324,6 +1362,9 @@ load — and a Triton control plane you'd actually put in production.</p>
 
 
 
+
+  
+  
 
 
 

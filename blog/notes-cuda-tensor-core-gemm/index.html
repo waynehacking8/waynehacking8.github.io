@@ -6,37 +6,37 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
+        <meta name="description" content="Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM — shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
       
       
-        <link rel="canonical" href="https://waynehacking8.github.io/publications/">
+        <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-cuda-tensor-core-gemm/">
       
       
-        <link rel="prev" href="../experiences/">
+        <link rel="prev" href="../notes-federated-learning-dp/">
       
       
-        <link rel="next" href="../projects/">
+        <link rel="next" href="../meta-rl/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Publications - About Wayne</title>
+        <title>Notes — CUDA Tensor Core GEMM (WMMA) - About Wayne</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,9 +55,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -72,13 +72,13 @@
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="google-site-verification" content="pN4RB1iqwSojWvWtpmDesMXHlDIpM-DswD1Wtt_rWIU">
-  <link rel="canonical" href="https://waynehacking8.github.io/publications/">
+  <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-cuda-tensor-core-gemm/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Publications — Wei Cheng (Wayne) Chiu">
+  <meta property="og:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
-  <meta property="og:url" content="https://waynehacking8.github.io/publications/">
+  <meta property="og:url" content="https://waynehacking8.github.io/blog/notes-cuda-tensor-core-gemm/">
   <meta property="og:image" content="https://waynehacking8.github.io/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
@@ -86,7 +86,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@WEICHENGCH52824">
-  <meta name="twitter:title" content="Publications — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
   <meta name="twitter:image" content="https://waynehacking8.github.io/assets/profile.jpg">
 
@@ -151,6 +151,20 @@
 
   
   
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Notes \u2014 CUDA Tensor Core GEMM (WMMA)",
+    "url": "https://waynehacking8.github.io/blog/notes-cuda-tensor-core-gemm/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://waynehacking8.github.io/blog/notes-cuda-tensor-core-gemm/" },
+    "author": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "publisher": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "inLanguage": "en",
+    "description": "Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM \u2014 shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell."
+  }
+  </script>
+  
 
   </head>
   
@@ -171,7 +185,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#publications" class="md-skip">
+        <a href="#notes-on-cuda-tensor-core-gemm-wmma" class="md-skip">
           Skip to content
         </a>
       
@@ -185,7 +199,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="About Wayne" class="md-header__button md-logo" aria-label="About Wayne" data-md-component="logo">
+    <a href="../.." title="About Wayne" class="md-header__button md-logo" aria-label="About Wayne" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 19.2c-2.5 0-4.71-1.28-6-3.2.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"/></svg>
@@ -205,7 +219,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Publications
+              Notes — CUDA Tensor Core GEMM (WMMA)
             
           </span>
         </div>
@@ -306,7 +320,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -325,7 +339,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../experiences/" class="md-tabs__link">
+      <a href="../../experiences/" class="md-tabs__link">
         
   
   
@@ -342,11 +356,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../publications/" class="md-tabs__link">
         
   
   
@@ -365,7 +377,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../projects/" class="md-tabs__link">
+      <a href="../../projects/" class="md-tabs__link">
         
   
   
@@ -384,7 +396,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../talks/" class="md-tabs__link">
+      <a href="../../talks/" class="md-tabs__link">
         
   
   
@@ -403,7 +415,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../patches/" class="md-tabs__link">
+      <a href="../../patches/" class="md-tabs__link">
         
   
   
@@ -420,11 +432,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../blog/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -458,7 +472,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="About Wayne" class="md-nav__button md-logo" aria-label="About Wayne" data-md-component="logo">
+    <a href="../.." title="About Wayne" class="md-nav__button md-logo" aria-label="About Wayne" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 19.2c-2.5 0-4.71-1.28-6-3.2.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"/></svg>
@@ -476,7 +490,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -503,7 +517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../experiences/" class="md-nav__link">
+      <a href="../../experiences/" class="md-nav__link">
         
   
   
@@ -527,37 +541,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Publications
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../publications/" class="md-nav__link">
         
   
   
@@ -573,37 +560,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#competitions-technical-reports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Competitions &amp; Technical Reports
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -615,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projects/" class="md-nav__link">
+      <a href="../../projects/" class="md-nav__link">
         
   
   
@@ -642,7 +598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../talks/" class="md-nav__link">
+      <a href="../../talks/" class="md-nav__link">
         
   
   
@@ -669,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../patches/" class="md-nav__link">
+      <a href="../../patches/" class="md-nav__link">
         
   
   
@@ -693,26 +649,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   
@@ -730,7 +691,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -748,7 +709,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -776,7 +737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/notes-trtllm-triton-serving/" class="md-nav__link">
+      <a href="../notes-trtllm-triton-serving/" class="md-nav__link">
         
   
   
@@ -804,7 +765,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/nccl-nvlink-bandwidth/" class="md-nav__link">
+      <a href="../nccl-nvlink-bandwidth/" class="md-nav__link">
         
   
   
@@ -832,7 +793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/rag-groundedness-guardrail/" class="md-nav__link">
+      <a href="../rag-groundedness-guardrail/" class="md-nav__link">
         
   
   
@@ -860,7 +821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/notes-federated-learning-dp/" class="md-nav__link">
+      <a href="../notes-federated-learning-dp/" class="md-nav__link">
         
   
   
@@ -885,10 +846,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../blog/notes-cuda-tensor-core-gemm/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes — CUDA Tensor Core GEMM (WMMA)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -904,6 +892,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-gemm-is-the-kernel-that-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why GEMM is the kernel that matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-naive-gemm-memory-bound-by-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Naive GEMM: memory-bound by construction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Tiled GEMM: shared memory turns the problem compute-bound
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-tensor-cores-via-wmma-a-different-compute-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Tensor Cores via WMMA: a different compute unit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-number-that-tells-the-truth-of-cublas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The number that tells the truth: % of cuBLAS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-why-this-matters-going-to-blackwell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Why this matters going to Blackwell
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#takeaway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Takeaway
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -916,7 +1001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/meta-rl/" class="md-nav__link">
+      <a href="../meta-rl/" class="md-nav__link">
         
   
   
@@ -944,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/pp-intro/" class="md-nav__link">
+      <a href="../pp-intro/" class="md-nav__link">
         
   
   
@@ -972,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../blog/pentest-intro/" class="md-nav__link">
+      <a href="../pentest-intro/" class="md-nav__link">
         
   
   
@@ -1027,10 +1112,76 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#competitions-technical-reports" class="md-nav__link">
+  <a href="#1-why-gemm-is-the-kernel-that-matters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Competitions &amp; Technical Reports
+        1. Why GEMM is the kernel that matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-naive-gemm-memory-bound-by-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Naive GEMM: memory-bound by construction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Tiled GEMM: shared memory turns the problem compute-bound
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-tensor-cores-via-wmma-a-different-compute-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Tensor Cores via WMMA: a different compute unit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-number-that-tells-the-truth-of-cublas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The number that tells the truth: % of cuBLAS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-why-this-matters-going-to-blackwell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Why this matters going to Blackwell
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#takeaway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Takeaway
       
     </span>
   </a>
@@ -1054,27 +1205,119 @@
 
 
 
-<h1 id="publications">Publications<a class="headerlink" href="#publications" title="Permanent link">&para;</a></h1>
+<h1 id="notes-on-cuda-tensor-core-gemm-wmma">Notes on CUDA Tensor Core GEMM (WMMA)<a class="headerlink" href="#notes-on-cuda-tensor-core-gemm-wmma" title="Permanent link">&para;</a></h1>
+<p><em>2026-05-31 · CUDA / GPU kernels</em></p>
+<p>Working notes on writing a matrix-multiply (GEMM) kernel in CUDA and climbing from a naive
+implementation to <strong>Tensor Cores</strong> via the <strong>WMMA</strong> API — and, just as important, how to know
+how good your kernel actually is by measuring it against the <strong>cuBLAS</strong> ceiling. GEMM is the
+right thing to understand deeply: it is the operation underneath every linear layer and
+attention projection in an LLM.</p>
+<h2 id="1-why-gemm-is-the-kernel-that-matters">1. Why GEMM is the kernel that matters<a class="headerlink" href="#1-why-gemm-is-the-kernel-that-matters" title="Permanent link">&para;</a></h2>
+<p>A transformer forward pass is, to a first approximation, a stack of GEMMs. If you understand
+what makes a GEMM kernel fast on a GPU, you understand where inference latency comes from and
+why Tensor Cores exist. The progression below is the standard pedagogy — each step removes the
+bottleneck the previous one exposed.</p>
+<h2 id="2-naive-gemm-memory-bound-by-construction">2. Naive GEMM: memory-bound by construction<a class="headerlink" href="#2-naive-gemm-memory-bound-by-construction" title="Permanent link">&para;</a></h2>
+<p>The textbook kernel assigns one thread per output element <code>C[i][j]</code> and loops over <code>k</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>C[i][j] = Σ_k A[i][k] * B[k][j]
+</code></pre></div>
+<p>It's correct and it's slow. Every thread re-reads entire rows of <code>A</code> and columns of <code>B</code> from
+<strong>global memory</strong>, so the same values are fetched from DRAM hundreds of times. The kernel is
+<strong>memory-bandwidth-bound</strong> — the arithmetic units sit idle waiting on loads. The arithmetic
+intensity (FLOPs per byte) is far too low to approach peak.</p>
+<h2 id="3-tiled-gemm-shared-memory-turns-the-problem-compute-bound">3. Tiled GEMM: shared memory turns the problem compute-bound<a class="headerlink" href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound" title="Permanent link">&para;</a></h2>
+<p>The fix is <strong>shared-memory tiling</strong>. Threads in a block cooperatively load a tile of <code>A</code> and a
+tile of <code>B</code> into fast on-chip <strong>shared memory</strong>, then every thread in the block reuses those
+tiles for its partial sums before loading the next tile:</p>
 <ol>
-<li><strong>SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning</strong>
-   <strong>Wei Cheng Chiu</strong>, Shao-Jui Wang.
-   <em>IEEE Transactions on Dependable and Secure Computing (TDSC)</em> — <strong>Under Review</strong>, 2026.
-   A selective gradient-projection method for safety alignment that defends large language
-   models against harmful fine-tuning, preserving alignment while keeping fine-tuning
-   efficient.</li>
+<li>Load a <code>TILE × TILE</code> block of <code>A</code> and of <code>B</code> into shared memory (coalesced).</li>
+<li><code>__syncthreads()</code>.</li>
+<li>Each thread accumulates its <code>C</code> partial product from the shared tiles.</li>
+<li><code>__syncthreads()</code>, advance to the next tile along <code>k</code>.</li>
 </ol>
-<h2 id="competitions-technical-reports">Competitions &amp; Technical Reports<a class="headerlink" href="#competitions-technical-reports" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>NICS Privacy-Enhancing Technologies (PETs) Competition</strong> — Award.
-  Differentially-private synthetic-data generation built on <strong>MP-SPDZ</strong> (secure
-  multi-party computation) with MWEM-style mechanisms.</li>
-</ul>
+<p>This raises arithmetic intensity by a factor of <code>TILE</code>: each value loaded from global memory is
+now reused <code>TILE</code> times. The kernel crosses from memory-bound toward <strong>compute-bound</strong> — now
+the FP32 ALUs are the limit. This is the single biggest jump, and it's pure data-movement
+strategy, not math.</p>
+<h2 id="4-tensor-cores-via-wmma-a-different-compute-unit">4. Tensor Cores via WMMA: a different compute unit<a class="headerlink" href="#4-tensor-cores-via-wmma-a-different-compute-unit" title="Permanent link">&para;</a></h2>
+<p>Tiling saturates the <em>CUDA cores</em>. Tensor Cores are a <strong>separate</strong> unit that does a small
+matrix-multiply-accumulate (MMA) in one instruction — e.g. a 16×16×16 <code>D = A·B + C</code> per warp,
+on half-precision inputs with FP32 accumulation. The <strong>WMMA</strong> (Warp Matrix Multiply-Accumulate)
+API exposes them in CUDA C++:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcuda</span><span class="o">::</span><span class="nn">wmma</span><span class="p">;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">fragment</span><span class="o">&lt;</span><span class="n">matrix_a</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="n">half</span><span class="p">,</span><span class="w"> </span><span class="n">row_major</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a_frag</span><span class="p">;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">fragment</span><span class="o">&lt;</span><span class="n">matrix_b</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="n">half</span><span class="p">,</span><span class="w"> </span><span class="n">col_major</span><span class="o">&gt;</span><span class="w"> </span><span class="n">b_frag</span><span class="p">;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">fragment</span><span class="o">&lt;</span><span class="n">accumulator</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span><span class="w">        </span><span class="n">c_frag</span><span class="p">;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">fill_fragment</span><span class="p">(</span><span class="n">c_frag</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="n">load_matrix_sync</span><span class="p">(</span><span class="n">a_frag</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">lda</span><span class="p">);</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="n">load_matrix_sync</span><span class="p">(</span><span class="n">b_frag</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">ldb</span><span class="p">);</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="n">mma_sync</span><span class="p">(</span><span class="n">c_frag</span><span class="p">,</span><span class="w"> </span><span class="n">a_frag</span><span class="p">,</span><span class="w"> </span><span class="n">b_frag</span><span class="p">,</span><span class="w"> </span><span class="n">c_frag</span><span class="p">);</span><span class="w">   </span><span class="c1">// Tensor Core MMA</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">store_matrix_sync</span><span class="p">(</span><span class="n">C</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">c_frag</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="p">,</span><span class="w"> </span><span class="n">mem_row_major</span><span class="p">);</span>
+</code></pre></div>
+<p>The mental model shifts from "threads computing elements" to "<strong>warps cooperating on
+fragments</strong>." A <code>fragment</code> is an opaque, register-resident tile; you don't index its elements,
+you feed whole fragments to <code>mma_sync</code>. Inputs are FP16/BF16 (or FP8/FP4 on newer
+architectures), accumulation is FP32 — which is why mixed precision is the native language of
+Tensor Cores.</p>
+<h2 id="5-the-number-that-tells-the-truth-of-cublas">5. The number that tells the truth: % of cuBLAS<a class="headerlink" href="#5-the-number-that-tells-the-truth-of-cublas" title="Permanent link">&para;</a></h2>
+<p>A hand-written WMMA kernel will beat your tiled kernel, but it will <strong>not</strong> beat cuBLAS — and
+that's the point. cuBLAS is the practical ceiling (it does register-tiling, double-buffering,
+swizzled layouts, and architecture-specific tuning you won't replicate in an afternoon). So the
+honest metric isn't raw TFLOP/s, it's <strong>percent of the cuBLAS ceiling on the same GPU</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Kernel</th>
+<th>Typical regime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Naive</td>
+<td>a few % of peak — memory-bound</td>
+</tr>
+<tr>
+<td>Tiled (shared memory)</td>
+<td>much better, still CUDA-core bound</td>
+</tr>
+<tr>
+<td>WMMA (Tensor Core)</td>
+<td>a meaningful fraction of cuBLAS</td>
+</tr>
+<tr>
+<td>cuBLAS</td>
+<td>the ceiling (100%)</td>
+</tr>
+</tbody>
+</table>
+<p>Reporting "X % of cuBLAS on sm_90 and sm_120" is a self-describing result: it's reproducible,
+it normalises across GPUs, and it's honest about the gap to a production library. Profiling the
+WMMA kernel with <strong>Nsight Compute</strong> then tells you <em>which</em> wall you're against — memory
+throughput, Tensor Core utilisation, or occupancy.</p>
+<h2 id="6-why-this-matters-going-to-blackwell">6. Why this matters going to Blackwell<a class="headerlink" href="#6-why-this-matters-going-to-blackwell" title="Permanent link">&para;</a></h2>
+<p>Each GPU generation widens what the MMA unit accepts: Hopper added FP8, <strong>Blackwell</strong> adds
+<strong>FP4</strong> and a new generation of Tensor Core instructions (<code>tcgen05</code>). The WMMA mental model —
+fragments fed to an MMA, FP32 accumulation — carries forward; what changes is the input
+precision and the tile shapes. Understanding the FP16 WMMA path is the on-ramp to reasoning
+about NVFP4 inference on Blackwell.</p>
+<h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
+<p>GEMM performance is a ladder: naive is memory-bound, <strong>shared-memory tiling</strong> makes it
+compute-bound, and <strong>WMMA</strong> moves the compute onto Tensor Cores with mixed precision. Measure
+every rung as <strong>% of cuBLAS</strong> on the same GPU — that's the metric that's honest about how close
+you are to the ceiling and portable across Hopper and Blackwell.</p>
+<p>→ More field notes on the NVIDIA stack: <a href="https://waynehacking8.github.io/">waynehacking8.github.io</a></p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -1165,10 +1408,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
