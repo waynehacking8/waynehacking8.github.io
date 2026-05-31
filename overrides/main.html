@@ -91,7 +91,7 @@
 
   {# BlogPosting structured data — makes each blog post eligible for rich results
      and links it to the Person entity, amplifying author search visibility. #}
-  {% if page and page.url and '/blog/' in page.url and page.title and page.title != 'Blog' %}
+  {% if page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
