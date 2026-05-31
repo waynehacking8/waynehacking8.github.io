@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://waynehacking8.github.io/sitemap.xml
