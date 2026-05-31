@@ -88,4 +88,23 @@
     ]
   }
   </script>
+
+  {# BlogPosting structured data — makes each blog post eligible for rich results
+     and links it to the Person entity, amplifying author search visibility. #}
+  {% if page and page.url and '/blog/' in page.url and page.title and page.title != 'Blog' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ page.title | tojson }},
+    "url": "{{ page.canonical_url }}",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ page.canonical_url }}" },
+    "author": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "publisher": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "inLanguage": "en"{% if page.meta and page.meta.description %},
+    "description": {{ page.meta.description | tojson }}{% endif %}{% if page.meta and page.meta.date %},
+    "datePublished": {{ page.meta.date | tojson }}{% endif %}
+  }
+  </script>
+  {% endif %}
 {% endblock %}
