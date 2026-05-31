@@ -12,13 +12,13 @@
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
       
       
-        <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/">
+        <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-federated-learning-dp/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../rag-groundedness-guardrail/">
       
       
-        <link rel="next" href="../nccl-nvlink-bandwidth/">
+        <link rel="next" href="../meta-rl/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Notes — TensorRT-LLM + Triton serving - About Wayne</title>
+        <title>Notes — Federated Learning + DP - About Wayne</title>
       
     
     
@@ -72,13 +72,13 @@
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="google-site-verification" content="pN4RB1iqwSojWvWtpmDesMXHlDIpM-DswD1Wtt_rWIU">
-  <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/">
+  <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-federated-learning-dp/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
+  <meta property="og:title" content="Notes — Federated Learning + DP — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
-  <meta property="og:url" content="https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/">
+  <meta property="og:url" content="https://waynehacking8.github.io/blog/notes-federated-learning-dp/">
   <meta property="og:image" content="https://waynehacking8.github.io/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
@@ -86,7 +86,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@WEICHENGCH52824">
-  <meta name="twitter:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:title" content="Notes — Federated Learning + DP — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
   <meta name="twitter:image" content="https://waynehacking8.github.io/assets/profile.jpg">
 
@@ -155,9 +155,9 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Notes \u2014 TensorRT-LLM + Triton serving",
-    "url": "https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/",
-    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/" },
+    "headline": "Notes \u2014 Federated Learning + DP",
+    "url": "https://waynehacking8.github.io/blog/notes-federated-learning-dp/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://waynehacking8.github.io/blog/notes-federated-learning-dp/" },
     "author": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "inLanguage": "en"
@@ -184,7 +184,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#notes-on-serving-llms-with-tensorrt-llm-and-triton" class="md-skip">
+        <a href="#notes-on-federated-learning-and-differential-privacy" class="md-skip">
           Skip to content
         </a>
       
@@ -218,7 +218,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Notes — TensorRT-LLM + Triton serving
+              Notes — Federated Learning + DP
             
           </span>
         </div>
@@ -733,37 +733,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Notes — TensorRT-LLM + Triton serving
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../notes-trtllm-triton-serving/" class="md-nav__link">
         
   
   
@@ -779,114 +752,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-the-serving-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. The serving pipeline
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-tensor-parallelism-tp" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Tensor parallelism (TP)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-precision-fp16-vs-fp8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Precision: FP16 vs FP8
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-the-batching-policy-that-actually-matters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. The batching policy that actually matters
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-the-benchmark-trap-comparing-the-same-work" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. The benchmark trap: comparing the same work
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-triton-as-the-production-surface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Triton as the production surface
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-when-does-tensorrt-llm-win" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. When does TensorRT-LLM win?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -952,10 +817,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../notes-federated-learning-dp/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes — Federated Learning + DP
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -971,6 +863,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-federated-learning-actually-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What federated learning actually is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Non-IID problem (where FedAvg starts to hurt)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-differential-privacy-the-model-still-leaks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Differential privacy: the model still leaks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-secure-aggregation-hide-the-individual-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Secure aggregation: hide the individual update
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-why-from-scratch-and-3333-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Why "from scratch" and "33/33 tests"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#takeaway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Takeaway
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1094,10 +1072,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-the-serving-pipeline" class="md-nav__link">
+  <a href="#1-what-federated-learning-actually-is" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. The serving pipeline
+        1. What federated learning actually is
       
     </span>
   </a>
@@ -1105,10 +1083,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-tensor-parallelism-tp" class="md-nav__link">
+  <a href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Tensor parallelism (TP)
+        2. The Non-IID problem (where FedAvg starts to hurt)
       
     </span>
   </a>
@@ -1116,10 +1094,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-precision-fp16-vs-fp8" class="md-nav__link">
+  <a href="#3-differential-privacy-the-model-still-leaks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Precision: FP16 vs FP8
+        3. Differential privacy: the model still leaks
       
     </span>
   </a>
@@ -1127,10 +1105,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-the-batching-policy-that-actually-matters" class="md-nav__link">
+  <a href="#4-secure-aggregation-hide-the-individual-update" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. The batching policy that actually matters
+        4. Secure aggregation: hide the individual update
       
     </span>
   </a>
@@ -1138,32 +1116,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-the-benchmark-trap-comparing-the-same-work" class="md-nav__link">
+  <a href="#5-why-from-scratch-and-3333-tests" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. The benchmark trap: comparing the same work
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-triton-as-the-production-surface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Triton as the production surface
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-when-does-tensorrt-llm-win" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. When does TensorRT-LLM win?
+        5. Why "from scratch" and "33/33 tests"
       
     </span>
   </a>
@@ -1198,126 +1154,80 @@
 
 
 
-<h1 id="notes-on-serving-llms-with-tensorrt-llm-and-triton">Notes on Serving LLMs with TensorRT-LLM and Triton<a class="headerlink" href="#notes-on-serving-llms-with-tensorrt-llm-and-triton" title="Permanent link">&para;</a></h1>
-<p><em>2026-05-31 · LLM serving / NVIDIA stack</em></p>
-<p>These are working notes on taking an open-weights LLM from a Hugging Face checkpoint to a
-production-style serving endpoint on the NVIDIA stack — <strong>TensorRT-LLM</strong> for the engine,
-<strong>Triton Inference Server</strong> for the deployment surface — and benchmarking it honestly against
-<strong>vLLM</strong> on multi-GPU hardware. They follow the harness in
-<a href="https://github.com/waynehacking8/trtllm-triton-serving"><strong>trtllm-triton-serving</strong></a>
-(4× H100, NVLink).</p>
-<p>The goal is to move from "I use vLLM" to "I can stand up the NVIDIA inference stack on real
-multi-GPU hardware and reason about the trade-offs."</p>
-<h2 id="1-the-serving-pipeline">1. The serving pipeline<a class="headerlink" href="#1-the-serving-pipeline" title="Permanent link">&para;</a></h2>
-<p>The path from checkpoint to endpoint has four stages. Each one is a place where a decision
-affects latency, throughput, or accuracy:</p>
+<h1 id="notes-on-federated-learning-and-differential-privacy">Notes on Federated Learning and Differential Privacy<a class="headerlink" href="#notes-on-federated-learning-and-differential-privacy" title="Permanent link">&para;</a></h1>
+<p><em>2026-05-31 · privacy-preserving ML</em></p>
+<p>Working notes on building federated learning (FL) from scratch, what actually breaks under
+<strong>Non-IID</strong> data, and how <strong>differential privacy (DP)</strong> and <strong>secure aggregation</strong> fit on top —
+including the honest negative results that the marketing slides leave out. They follow the
+implementation in
+<a href="https://github.com/waynehacking8/federated-learning-lab"><strong>federated-learning-lab</strong></a>
+(FedAvg / FedProx / SCAFFOLD, DP-SGD, secure aggregation; 33/33 tests, literature
+cross-validated).</p>
+<h2 id="1-what-federated-learning-actually-is">1. What federated learning actually is<a class="headerlink" href="#1-what-federated-learning-actually-is" title="Permanent link">&para;</a></h2>
+<p>The data never moves. Instead of pooling everyone's data on one server, each client trains
+locally and sends <strong>model updates</strong> to a server that aggregates them. The canonical loop
+(<strong>FedAvg</strong>) is:</p>
 <ol>
-<li><strong>Checkpoint</strong> — a Hugging Face model.</li>
-<li><strong>Engine build</strong> — compile to a TensorRT-LLM engine for a <em>fixed</em> tensor-parallel degree,
-   precision, and batching policy.</li>
-<li><strong>Model repository</strong> — wrap the engine in a Triton <code>tensorrt_llm</code>-backend model repo.</li>
-<li><strong>Serving + load test</strong> — <code>trtllm-serve</code> (or Triton) exposes an OpenAI-compatible endpoint;
-   a load generator drives it under controlled concurrency.</li>
+<li>Server broadcasts the global model.</li>
+<li>Each client does a few local SGD epochs on its own data.</li>
+<li>Each client sends back its updated weights.</li>
+<li>Server averages the weights (weighted by client data size) → new global model.</li>
 </ol>
-<p>The key mental shift from vLLM: TensorRT-LLM does <strong>ahead-of-time compilation</strong>. vLLM is a
-runtime that takes the model and serves it; TensorRT-LLM <em>builds an engine</em> specialized to your
-GPU, TP degree, and precision first. That build is where the performance comes from, and also
-where the rigidity comes from.</p>
-<h2 id="2-tensor-parallelism-tp">2. Tensor parallelism (TP)<a class="headerlink" href="#2-tensor-parallelism-tp" title="Permanent link">&para;</a></h2>
-<p>For a model that doesn't fit on one GPU — or to cut latency — TensorRT-LLM shards each layer
-across GPUs. On a 4× H100 NVLink box, <code>TP=4</code> means every forward pass does an <strong>all-reduce</strong>
-across the four GPUs over NVLink.</p>
-<blockquote>
-<p>The all-reduce is not free. On this fabric it tops out around 77 % of the NVLink budget
-(see the separate <a href="../nccl-nvlink-bandwidth/">NVLink-wall notes</a>). For <strong>prefill</strong> (large
-tensors) you're bandwidth-bound and TP helps. For <strong>decode</strong> (one token at a time) you're
-pinned against the small-message latency floor, and past a point more TP makes decode
-<em>slower</em>. Pick TP for the regime you actually serve.</p>
-</blockquote>
-<h2 id="3-precision-fp16-vs-fp8">3. Precision: FP16 vs FP8<a class="headerlink" href="#3-precision-fp16-vs-fp8" title="Permanent link">&para;</a></h2>
-<p>The engine is built for a specific precision. The two that matter most on Hopper:</p>
-<table>
-<thead>
-<tr>
-<th>Precision</th>
-<th>Memory</th>
-<th>Throughput</th>
-<th>Accuracy risk</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>FP16</strong></td>
-<td>baseline</td>
-<td>baseline</td>
-<td>none (reference)</td>
-</tr>
-<tr>
-<td><strong>FP8</strong></td>
-<td>~½ weights + KV-cache</td>
-<td>higher</td>
-<td>small, model-dependent</td>
-</tr>
-</tbody>
-</table>
-<p>FP8 uses the Hopper Transformer Engine and shrinks both weights and the KV-cache, which is
-often the real bottleneck for long contexts. The honest move is to <strong>measure</strong> the accuracy
-delta on your task rather than assume FP8 is free — a quantization study belongs in the same
-harness as the throughput numbers.</p>
-<h2 id="4-the-batching-policy-that-actually-matters">4. The batching policy that actually matters<a class="headerlink" href="#4-the-batching-policy-that-actually-matters" title="Permanent link">&para;</a></h2>
-<p>Two features dominate real serving throughput:</p>
+<p>That's it. The elegance is that raw data stays on-device; the difficulty is that the clients'
+data distributions are <strong>not</strong> identical.</p>
+<h2 id="2-the-non-iid-problem-where-fedavg-starts-to-hurt">2. The Non-IID problem (where FedAvg starts to hurt)<a class="headerlink" href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt" title="Permanent link">&para;</a></h2>
+<p>FedAvg implicitly assumes every client sees roughly the same distribution. Real clients don't —
+one hospital sees different cases than another, one phone's keyboard sees different language.
+Under <strong>Non-IID</strong> data, each client's local optimum pulls in a different direction, so averaging
+their updates produces <strong>client drift</strong>: the global model lands somewhere none of them wanted.</p>
+<p>Two well-known fixes, both implemented and measured in the lab:</p>
 <ul>
-<li><strong>In-flight (continuous) batching</strong> — new requests join the running batch at the next
-  iteration instead of waiting for the current batch to drain. This is what keeps GPUs busy
-  under bursty traffic; vLLM and TensorRT-LLM both do it.</li>
-<li><strong>Paged KV-cache</strong> — the KV-cache is allocated in pages, so memory isn't reserved for the
-  worst-case sequence length per request. This is what lets you fit more concurrent sequences.</li>
+<li><strong>FedProx</strong> — add a proximal term that penalises drifting too far from the global model.
+  Stabilises training when clients are heterogeneous.</li>
+<li><strong>SCAFFOLD</strong> — track <strong>control variates</strong> (correction terms) that estimate and subtract the
+  drift direction. More state to communicate, but corrects the bias FedProx only damps.</li>
 </ul>
-<p>If a "benchmark" doesn't enable these, it isn't measuring production serving — it's measuring a
-toy.</p>
-<h2 id="5-the-benchmark-trap-comparing-the-same-work">5. The benchmark trap: comparing the same work<a class="headerlink" href="#5-the-benchmark-trap-comparing-the-same-work" title="Permanent link">&para;</a></h2>
-<p>The single most common mistake in "X vs Y" LLM benchmarks is <strong>not decoding the same number of
-tokens</strong>. If stack A happens to emit shorter completions, it looks faster while doing less work.</p>
-<p>The fix used in the harness is a <strong>controlled methodology</strong>: every request decodes <em>exactly</em>
-256 tokens by setting <code>ignore_eos=True</code> and <code>min_tokens=max_tokens</code>. Now throughput and
-latency compare identical work across TensorRT-LLM, Triton, and vLLM. Without this, the numbers
-are noise.</p>
-<p>Metrics worth reporting, all under <em>matched concurrency</em>:</p>
+<p>The honest finding worth repeating: on a strongly Non-IID split (e.g. label-skewed MNIST), the
+fancy methods <strong>don't always beat plain FedAvg by much</strong> — and sometimes the dominant lever is
+just more communication rounds. Reporting the case where your method <em>doesn't</em> win is what
+separates a lab from a brochure.</p>
+<h2 id="3-differential-privacy-the-model-still-leaks">3. Differential privacy: the model still leaks<a class="headerlink" href="#3-differential-privacy-the-model-still-leaks" title="Permanent link">&para;</a></h2>
+<p>Keeping data on-device is <strong>not</strong> privacy. Model updates leak information about the data that
+produced them — membership inference and gradient-inversion attacks reconstruct training samples
+from gradients. To get a real guarantee you add <strong>differential privacy</strong>.</p>
+<p><strong>DP-SGD</strong> makes each training step private by:</p>
+<ol>
+<li><strong>Per-sample gradient clipping</strong> — bound each example's contribution to a max norm <code>C</code>.</li>
+<li><strong>Gaussian noise</strong> — add noise calibrated to <code>C</code> to the summed gradients.</li>
+</ol>
+<p>The result is a formal <strong>(ε, δ)</strong> guarantee: the trained model is provably almost the same
+whether or not any single example was in the data. The cost is the <strong>privacy–utility
+trade-off</strong> — smaller ε (stronger privacy) means more noise and lower accuracy. There is no
+free lunch; the contribution is <em>measuring</em> the curve, not claiming privacy is costless.</p>
+<h2 id="4-secure-aggregation-hide-the-individual-update">4. Secure aggregation: hide the individual update<a class="headerlink" href="#4-secure-aggregation-hide-the-individual-update" title="Permanent link">&para;</a></h2>
+<p>DP bounds what the <em>final model</em> leaks. <strong>Secure aggregation</strong> addresses a different threat: a
+curious server seeing each client's <em>individual</em> update. With secure aggregation, clients mask
+their updates so the server can compute only the <strong>sum</strong> — no single client's contribution is
+visible — yet the masks cancel in aggregate. DP (what the model leaks) and secure aggregation
+(what the server sees) are <strong>complementary</strong>, not substitutes.</p>
+<h2 id="5-why-from-scratch-and-3333-tests">5. Why "from scratch" and "33/33 tests"<a class="headerlink" href="#5-why-from-scratch-and-3333-tests" title="Permanent link">&para;</a></h2>
+<p>Privacy ML is exactly the domain where a subtly wrong implementation gives a <em>false</em> sense of
+safety — a clipping bug or a miscalibrated noise multiplier silently voids the ε guarantee. So
+the lab:</p>
 <ul>
-<li><strong>Throughput</strong> (tokens/s, total) — the headline.</li>
-<li><strong>TTFT</strong> (time to first token) — dominated by prefill; what the user feels first.</li>
-<li><strong>Inter-token latency</strong> — dominated by decode; what the user feels while reading.</li>
+<li>implements each algorithm from scratch (FedAvg / FedProx / SCAFFOLD, plus FedPer /
+  Byzantine-robust / FedAdam / FedLoRA),</li>
+<li><strong>cross-validates against the literature</strong> so behaviour matches published results, and</li>
+<li>ships <strong>33/33 passing tests</strong> and explicit negative results.</li>
 </ul>
-<h2 id="6-triton-as-the-production-surface">6. Triton as the production surface<a class="headerlink" href="#6-triton-as-the-production-surface" title="Permanent link">&para;</a></h2>
-<p>The measured runs can use TensorRT-LLM's own OpenAI server (<code>trtllm-serve</code>), but the
-<strong>production path</strong> is the Triton <code>tensorrt_llm</code>-backend model repository (<code>triton_model_repo/</code>):</p>
-<ul>
-<li>It exposes the engine over a hardened, observable server (metrics, health, dynamic batching
-  config) instead of a script.</li>
-<li>It's the same control plane you'd use for an ensemble (tokenizer → engine → de-tokenizer) and
-  for multi-model hosting.</li>
-</ul>
-<p>Treat <code>trtllm-serve</code> as the fast path for benchmarking and Triton as the path you'd actually
-ship behind a gateway.</p>
-<h2 id="7-when-does-tensorrt-llm-win">7. When does TensorRT-LLM win?<a class="headerlink" href="#7-when-does-tensorrt-llm-win" title="Permanent link">&para;</a></h2>
-<p>Not always — and saying so is the point. The trade-off, roughly:</p>
-<ul>
-<li><strong>TensorRT-LLM / Triton</strong> rewards you when the deployment is <em>stable</em>: fixed model, fixed TP,
-  high sustained load where the ahead-of-time engine and FP8 pay off, and you want the
-  NVIDIA-native control plane.</li>
-<li><strong>vLLM</strong> rewards you when you value <em>flexibility</em>: rapid model swaps, no engine-build step,
-  Python-native iteration.</li>
-</ul>
-<p>The honest deliverable is a reproducible <strong>serve → benchmark</strong> loop with documented
-methodology, so the answer to "which is faster" is "here's the matched-work measurement on this
-hardware," not a vibe.</p>
+<p>For privacy and security work, the test suite and the reproduction <em>are</em> the credibility.</p>
 <h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
-<p>Serving an LLM well is mostly about three things: putting tensor parallelism in the regime that
-helps, enabling continuous batching + paged KV-cache, and <strong>measuring the same work</strong> across
-stacks. The NVIDIA path adds an ahead-of-time engine and FP8 that pay off under stable, heavy
-load — and a Triton control plane you'd actually put in production.</p>
-<p>→ Full pipeline, Triton model repo, and the matched-work harness:
-<a href="https://github.com/waynehacking8/trtllm-triton-serving">github.com/waynehacking8/trtllm-triton-serving</a></p>
+<p>Federated learning moves the model, not the data — but on-device ≠ private. Non-IID data breaks
+naive averaging (FedProx/SCAFFOLD help, sometimes only a little); DP-SGD buys a formal (ε, δ)
+guarantee at a measurable accuracy cost; secure aggregation hides individual updates from the
+server. The trustworthy version of all three is the one with the tests and the honest curves.</p>
+<p>→ From-scratch implementations, tests, and negative results:
+<a href="https://github.com/waynehacking8/federated-learning-lab">github.com/waynehacking8/federated-learning-lab</a></p>
 
 
 
