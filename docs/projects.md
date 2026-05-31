@@ -40,13 +40,18 @@ measured head-to-head against vLLM under matched concurrency.
 
 ### NCCL Collectives Benchmark
 Bus-bandwidth micro-benchmarks for all-reduce / all-gather / reduce-scatter on 4× H100
-NVLink, analysed against the theoretical link budget.
-*NCCL · nccl-tests · CUDA · 4× H100 NVLink* *(release planned once results land)*
+NVLink, analysed against the theoretical link budget. Measured: all-reduce **366 GB/s
+(77% of NVLink)**; NVLS (NVLink SHARP) > Ring > Tree; protocol study (Simple/LL128/LL).
+*NCCL · nccl-tests · CUDA · 4× H100 NVSwitch*
+:material-github: [waynehacking8/nccl-collectives-bench](https://github.com/waynehacking8/nccl-collectives-bench)
 
 ### NIM Agent Blueprint
 Agentic RAG reference architecture on NVIDIA NIM microservices (LLM + embedding +
 reranker) with a plan → retrieve → generate → validate loop and a built-in eval harness.
-*NVIDIA NIM · RAG · agents · OpenTelemetry · FastAPI* *(release planned once results land)*
+Measured: retrieval **recall@3 94%**, and **0% hallucination** on out-of-corpus questions
+with a guarded prompt vs **50%** without it (ablation).
+*NVIDIA NIM · RAG · agents · OpenTelemetry · FastAPI*
+:material-github: [waynehacking8/nim-agent-blueprint](https://github.com/waynehacking8/nim-agent-blueprint)
 
 ### Blackwell Tensor Core Kernels
 Hand-written CUDA GEMM kernels (naive → tiled → WMMA Tensor Core), benchmarked across
