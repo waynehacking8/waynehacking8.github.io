@@ -12,13 +12,13 @@
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
       
       
-        <link rel="canonical" href="https://waynehacking8.github.io/blog/nccl-nvlink-bandwidth/">
+        <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/">
       
       
-        <link rel="prev" href="../notes-trtllm-triton-serving/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../rag-groundedness-guardrail/">
+        <link rel="next" href="../nccl-nvlink-bandwidth/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Tensor-parallel & the NVLink wall - About Wayne</title>
+        <title>Notes — TensorRT-LLM + Triton serving - About Wayne</title>
       
     
     
@@ -72,13 +72,13 @@
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="google-site-verification" content="pN4RB1iqwSojWvWtpmDesMXHlDIpM-DswD1Wtt_rWIU">
-  <link rel="canonical" href="https://waynehacking8.github.io/blog/nccl-nvlink-bandwidth/">
+  <link rel="canonical" href="https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Tensor-parallel & the NVLink wall — Wei Cheng (Wayne) Chiu">
+  <meta property="og:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
-  <meta property="og:url" content="https://waynehacking8.github.io/blog/nccl-nvlink-bandwidth/">
+  <meta property="og:url" content="https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/">
   <meta property="og:image" content="https://waynehacking8.github.io/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
@@ -86,7 +86,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@WEICHENGCH52824">
-  <meta name="twitter:title" content="Tensor-parallel & the NVLink wall — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer. Experiences, publications, projects, talks, patches, and blog.">
   <meta name="twitter:image" content="https://waynehacking8.github.io/assets/profile.jpg">
 
@@ -168,7 +168,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#where-tensor-parallel-inference-hits-the-nvlink-wall" class="md-skip">
+        <a href="#notes-on-serving-llms-with-tensorrt-llm-and-triton" class="md-skip">
           Skip to content
         </a>
       
@@ -202,7 +202,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Tensor-parallel & the NVLink wall
+              Notes — TensorRT-LLM + Triton serving
             
           </span>
         </div>
@@ -717,34 +717,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../notes-trtllm-triton-serving/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Notes — TensorRT-LLM + Triton serving
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -764,7 +736,7 @@
   <span class="md-ellipsis">
     
   
-    Tensor-parallel & the NVLink wall
+    Notes — TensorRT-LLM + Triton serving
   
 
     
@@ -782,7 +754,7 @@
   <span class="md-ellipsis">
     
   
-    Tensor-parallel & the NVLink wall
+    Notes — TensorRT-LLM + Triton serving
   
 
     
@@ -808,10 +780,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-was-measured" class="md-nav__link">
+  <a href="#1-the-serving-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What was measured
+        1. The serving pipeline
       
     </span>
   </a>
@@ -819,10 +791,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-it-matters-for-inference" class="md-nav__link">
+  <a href="#2-tensor-parallelism-tp" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why it matters for inference
+        2. Tensor parallelism (TP)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-precision-fp16-vs-fp8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Precision: FP16 vs FP8
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-batching-policy-that-actually-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The batching policy that actually matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-benchmark-trap-comparing-the-same-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The benchmark trap: comparing the same work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-triton-as-the-production-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Triton as the production surface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-when-does-tensorrt-llm-win" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. When does TensorRT-LLM win?
       
     </span>
   </a>
@@ -844,6 +871,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nccl-nvlink-bandwidth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tensor-parallel & the NVLink wall
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -995,10 +1050,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-was-measured" class="md-nav__link">
+  <a href="#1-the-serving-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What was measured
+        1. The serving pipeline
       
     </span>
   </a>
@@ -1006,10 +1061,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-it-matters-for-inference" class="md-nav__link">
+  <a href="#2-tensor-parallelism-tp" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why it matters for inference
+        2. Tensor parallelism (TP)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-precision-fp16-vs-fp8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Precision: FP16 vs FP8
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-batching-policy-that-actually-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The batching policy that actually matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-benchmark-trap-comparing-the-same-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The benchmark trap: comparing the same work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-triton-as-the-production-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Triton as the production surface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-when-does-tensorrt-llm-win" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. When does TensorRT-LLM win?
       
     </span>
   </a>
@@ -1044,44 +1154,126 @@
 
 
 
-<h1 id="where-tensor-parallel-inference-hits-the-nvlink-wall">Where tensor-parallel inference hits the NVLink wall<a class="headerlink" href="#where-tensor-parallel-inference-hits-the-nvlink-wall" title="Permanent link">&para;</a></h1>
-<p><em>2026-05-31 · GPU / distributed systems</em></p>
-<p>Tensor parallelism splits each layer across GPUs, so every forward pass pays for an
-<strong>all-reduce</strong> over the network fabric. On a single node that fabric is NVLink/NVSwitch — and
-how close you get to its theoretical budget decides whether TP helps or hurts. This post
-measures it on <strong>4× H100</strong> and explains where the wall is.</p>
-<p>Repo with the full harness and CSVs:
-<a href="https://github.com/waynehacking8/nccl-collectives-bench"><strong>nccl-collectives-bench</strong></a>.</p>
-<h2 id="what-was-measured">What was measured<a class="headerlink" href="#what-was-measured" title="Permanent link">&para;</a></h2>
-<p>A bandwidth sweep (message size 8 B → 8 GB) of the three collectives that bound distributed
-LLM work — <strong>all-reduce, all-gather, reduce-scatter</strong> — driving the canonical
-<code>nvidia/nccl-tests</code> and adding a parser + analysis layer on top. The headline number:</p>
+<h1 id="notes-on-serving-llms-with-tensorrt-llm-and-triton">Notes on Serving LLMs with TensorRT-LLM and Triton<a class="headerlink" href="#notes-on-serving-llms-with-tensorrt-llm-and-triton" title="Permanent link">&para;</a></h1>
+<p><em>2026-05-31 · LLM serving / NVIDIA stack</em></p>
+<p>These are working notes on taking an open-weights LLM from a Hugging Face checkpoint to a
+production-style serving endpoint on the NVIDIA stack — <strong>TensorRT-LLM</strong> for the engine,
+<strong>Triton Inference Server</strong> for the deployment surface — and benchmarking it honestly against
+<strong>vLLM</strong> on multi-GPU hardware. They follow the harness in
+<a href="https://github.com/waynehacking8/trtllm-triton-serving"><strong>trtllm-triton-serving</strong></a>
+(4× H100, NVLink).</p>
+<p>The goal is to move from "I use vLLM" to "I can stand up the NVIDIA inference stack on real
+multi-GPU hardware and reason about the trade-offs."</p>
+<h2 id="1-the-serving-pipeline">1. The serving pipeline<a class="headerlink" href="#1-the-serving-pipeline" title="Permanent link">&para;</a></h2>
+<p>The path from checkpoint to endpoint has four stages. Each one is a place where a decision
+affects latency, throughput, or accuracy:</p>
+<ol>
+<li><strong>Checkpoint</strong> — a Hugging Face model.</li>
+<li><strong>Engine build</strong> — compile to a TensorRT-LLM engine for a <em>fixed</em> tensor-parallel degree,
+   precision, and batching policy.</li>
+<li><strong>Model repository</strong> — wrap the engine in a Triton <code>tensorrt_llm</code>-backend model repo.</li>
+<li><strong>Serving + load test</strong> — <code>trtllm-serve</code> (or Triton) exposes an OpenAI-compatible endpoint;
+   a load generator drives it under controlled concurrency.</li>
+</ol>
+<p>The key mental shift from vLLM: TensorRT-LLM does <strong>ahead-of-time compilation</strong>. vLLM is a
+runtime that takes the model and serves it; TensorRT-LLM <em>builds an engine</em> specialized to your
+GPU, TP degree, and precision first. That build is where the performance comes from, and also
+where the rigidity comes from.</p>
+<h2 id="2-tensor-parallelism-tp">2. Tensor parallelism (TP)<a class="headerlink" href="#2-tensor-parallelism-tp" title="Permanent link">&para;</a></h2>
+<p>For a model that doesn't fit on one GPU — or to cut latency — TensorRT-LLM shards each layer
+across GPUs. On a 4× H100 NVLink box, <code>TP=4</code> means every forward pass does an <strong>all-reduce</strong>
+across the four GPUs over NVLink.</p>
+<blockquote>
+<p>The all-reduce is not free. On this fabric it tops out around 77 % of the NVLink budget
+(see the separate <a href="../nccl-nvlink-bandwidth/">NVLink-wall notes</a>). For <strong>prefill</strong> (large
+tensors) you're bandwidth-bound and TP helps. For <strong>decode</strong> (one token at a time) you're
+pinned against the small-message latency floor, and past a point more TP makes decode
+<em>slower</em>. Pick TP for the regime you actually serve.</p>
+</blockquote>
+<h2 id="3-precision-fp16-vs-fp8">3. Precision: FP16 vs FP8<a class="headerlink" href="#3-precision-fp16-vs-fp8" title="Permanent link">&para;</a></h2>
+<p>The engine is built for a specific precision. The two that matter most on Hopper:</p>
+<table>
+<thead>
+<tr>
+<th>Precision</th>
+<th>Memory</th>
+<th>Throughput</th>
+<th>Accuracy risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FP16</strong></td>
+<td>baseline</td>
+<td>baseline</td>
+<td>none (reference)</td>
+</tr>
+<tr>
+<td><strong>FP8</strong></td>
+<td>~½ weights + KV-cache</td>
+<td>higher</td>
+<td>small, model-dependent</td>
+</tr>
+</tbody>
+</table>
+<p>FP8 uses the Hopper Transformer Engine and shrinks both weights and the KV-cache, which is
+often the real bottleneck for long contexts. The honest move is to <strong>measure</strong> the accuracy
+delta on your task rather than assume FP8 is free — a quantization study belongs in the same
+harness as the throughput numbers.</p>
+<h2 id="4-the-batching-policy-that-actually-matters">4. The batching policy that actually matters<a class="headerlink" href="#4-the-batching-policy-that-actually-matters" title="Permanent link">&para;</a></h2>
+<p>Two features dominate real serving throughput:</p>
 <ul>
-<li><strong>All-reduce bus bandwidth ≈ 366 GB/s</strong>, about <strong>77 % of the per-GPU NVLink uni-directional
-  budget</strong> on this box. That 77 % is the practical ceiling TP communication runs into; the
-  remaining gap is protocol overhead and the algorithm's traffic multiplier.</li>
-<li>Algorithm ranking at large messages: <strong>NVLS &gt; Ring &gt; Tree</strong>. NVLink SHARP (NVLS) offloads
-  the reduction into the switch, which is why it pulls ahead once messages are big enough to
-  amortise setup.</li>
-<li>A <strong>protocol study</strong> (Simple / LL / LL128) showing the small-message latency floor — the
-  regime that actually matters for <strong>decode</strong>, where each token's all-reduce is tiny.</li>
+<li><strong>In-flight (continuous) batching</strong> — new requests join the running batch at the next
+  iteration instead of waiting for the current batch to drain. This is what keeps GPUs busy
+  under bursty traffic; vLLM and TensorRT-LLM both do it.</li>
+<li><strong>Paged KV-cache</strong> — the KV-cache is allocated in pages, so memory isn't reserved for the
+  worst-case sequence length per request. This is what lets you fit more concurrent sequences.</li>
 </ul>
-<h2 id="why-it-matters-for-inference">Why it matters for inference<a class="headerlink" href="#why-it-matters-for-inference" title="Permanent link">&para;</a></h2>
-<p>Training all-reduces gradients on big tensors, so it lives in the bandwidth-bound regime
-where 366 GB/s is good news. <strong>Decode is the opposite</strong>: one token at a time means small
-messages, so you're pinned against the <em>latency</em> floor, not the bandwidth ceiling. That is the
-real "TP wall" — past a certain TP degree, the per-token all-reduce latency dominates and
-adding GPUs makes decode <em>slower</em>, not faster.</p>
-<p>The repo also includes an <strong>eager-vs-CUDA-Graph</strong> comparison of that decode latency wall:
-capturing the per-token step as a graph removes launch overhead that would otherwise be
-indistinguishable from communication cost — a reminder to measure the right thing before
-blaming the fabric.</p>
+<p>If a "benchmark" doesn't enable these, it isn't measuring production serving — it's measuring a
+toy.</p>
+<h2 id="5-the-benchmark-trap-comparing-the-same-work">5. The benchmark trap: comparing the same work<a class="headerlink" href="#5-the-benchmark-trap-comparing-the-same-work" title="Permanent link">&para;</a></h2>
+<p>The single most common mistake in "X vs Y" LLM benchmarks is <strong>not decoding the same number of
+tokens</strong>. If stack A happens to emit shorter completions, it looks faster while doing less work.</p>
+<p>The fix used in the harness is a <strong>controlled methodology</strong>: every request decodes <em>exactly</em>
+256 tokens by setting <code>ignore_eos=True</code> and <code>min_tokens=max_tokens</code>. Now throughput and
+latency compare identical work across TensorRT-LLM, Triton, and vLLM. Without this, the numbers
+are noise.</p>
+<p>Metrics worth reporting, all under <em>matched concurrency</em>:</p>
+<ul>
+<li><strong>Throughput</strong> (tokens/s, total) — the headline.</li>
+<li><strong>TTFT</strong> (time to first token) — dominated by prefill; what the user feels first.</li>
+<li><strong>Inter-token latency</strong> — dominated by decode; what the user feels while reading.</li>
+</ul>
+<h2 id="6-triton-as-the-production-surface">6. Triton as the production surface<a class="headerlink" href="#6-triton-as-the-production-surface" title="Permanent link">&para;</a></h2>
+<p>The measured runs can use TensorRT-LLM's own OpenAI server (<code>trtllm-serve</code>), but the
+<strong>production path</strong> is the Triton <code>tensorrt_llm</code>-backend model repository (<code>triton_model_repo/</code>):</p>
+<ul>
+<li>It exposes the engine over a hardened, observable server (metrics, health, dynamic batching
+  config) instead of a script.</li>
+<li>It's the same control plane you'd use for an ensemble (tokenizer → engine → de-tokenizer) and
+  for multi-model hosting.</li>
+</ul>
+<p>Treat <code>trtllm-serve</code> as the fast path for benchmarking and Triton as the path you'd actually
+ship behind a gateway.</p>
+<h2 id="7-when-does-tensorrt-llm-win">7. When does TensorRT-LLM win?<a class="headerlink" href="#7-when-does-tensorrt-llm-win" title="Permanent link">&para;</a></h2>
+<p>Not always — and saying so is the point. The trade-off, roughly:</p>
+<ul>
+<li><strong>TensorRT-LLM / Triton</strong> rewards you when the deployment is <em>stable</em>: fixed model, fixed TP,
+  high sustained load where the ahead-of-time engine and FP8 pay off, and you want the
+  NVIDIA-native control plane.</li>
+<li><strong>vLLM</strong> rewards you when you value <em>flexibility</em>: rapid model swaps, no engine-build step,
+  Python-native iteration.</li>
+</ul>
+<p>The honest deliverable is a reproducible <strong>serve → benchmark</strong> loop with documented
+methodology, so the answer to "which is faster" is "here's the matched-work measurement on this
+hardware," not a vibe.</p>
 <h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
-<p>"Use tensor parallelism" is not free advice. Measure the all-reduce on <em>your</em> fabric, know
-your 77 %, and know that the number that decides decode latency is the small-message floor —
-not the big-message bandwidth everyone quotes.</p>
-<p>→ Methodology, raw CSVs, and the roofline analysis:
-<a href="https://github.com/waynehacking8/nccl-collectives-bench">github.com/waynehacking8/nccl-collectives-bench</a></p>
+<p>Serving an LLM well is mostly about three things: putting tensor parallelism in the regime that
+helps, enabling continuous batching + paged KV-cache, and <strong>measuring the same work</strong> across
+stacks. The NVIDIA path adds an ahead-of-time engine and FP8 that pay off under stable, heavy
+load — and a Triton control plane you'd actually put in production.</p>
+<p>→ Full pipeline, Triton model repo, and the matched-work harness:
+<a href="https://github.com/waynehacking8/trtllm-triton-serving">github.com/waynehacking8/trtllm-triton-serving</a></p>
 
 
 
