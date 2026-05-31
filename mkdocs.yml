@@ -1,0 +1,87 @@
+site_name: About Wayne
+site_url: https://waynehacking8.github.io/
+site_author: Wei Cheng (Wayne) Chiu
+site_description: >-
+  Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer.
+  Experiences, publications, projects, talks, patches, and blog.
+
+nav:
+  - About: index.md
+  - Experiences: experiences.md
+  - Publications: publications.md
+  - Projects: projects.md
+  - Talks: talks.md
+  - Patches: patches.md
+  - Blog:
+      - blog/index.md
+      - Meta-Reinforcement Learning: blog/meta-rl.md
+      - CUDA Programming 入門: blog/pp-intro.md
+      - 滲透測試入門技術: blog/pentest-intro.md
+
+theme:
+  name: material
+  language: en
+  icon:
+    logo: material/account-circle
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: green
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/waynehacking8
+      name: GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/wei-cheng-chiu-b547a811a/
+      name: LinkedIn
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/WEICHENGCH52824
+      name: X
+    - icon: fontawesome/solid/envelope
+      link: mailto:waynehacking8@gmail.com
+      name: Email
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+
+copyright: Copyright &copy; 2026 Wei Cheng (Wayne) Chiu

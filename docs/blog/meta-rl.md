@@ -1,3 +1,7 @@
+# Meta-Reinforcement Learning of Structured Exploration Strategies
+
+*2025-01-11 · machine learning*
+
 ### Meta-Reinforcement Learning (Meta-RL)
 
 Meta-RL 的核心概念是**讓智能體學會如何快速適應新環境和任務**，而不僅僅是學會在特定任務上表現良好。這是一種「學習如何學習」的方法，使智能體能夠在面對未知的挑戰時更具彈性和效率。以下將深入探討 Meta-RL 的各個方面：

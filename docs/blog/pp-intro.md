@@ -1,3 +1,7 @@
+# CUDA Programming 入門
+
+*2025-01-11 · GPU / parallel programming*
+
 # CUDA C/C++ 完整技術指南
 
 ## 1. CUDA 基礎架構
