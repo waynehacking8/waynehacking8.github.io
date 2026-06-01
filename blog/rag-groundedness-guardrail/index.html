@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~50% to 0% — and why an eval harness is the only way to see the difference.">
+        <meta name="description" content="One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~40% to 0% — and why an eval harness is the only way to see the difference.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -171,7 +171,7 @@
     "author": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "inLanguage": "en",
-    "description": "One guardrail that drops a RAG agent\u0027s out-of-corpus hallucination rate from ~50% to 0% \u2014 and why an eval harness is the only way to see the difference."
+    "description": "One guardrail that drops a RAG agent\u0027s out-of-corpus hallucination rate from ~40% to 0% \u2014 and why an eval harness is the only way to see the difference."
   }
   </script>
   
@@ -195,7 +195,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#0-vs-50-making-a-rag-agent-refuse-to-hallucinate" class="md-skip">
+        <a href="#0-vs-40-making-a-rag-agent-refuse-to-hallucinate" class="md-skip">
           Skip to content
         </a>
       
@@ -1127,7 +1127,7 @@
 
 
 
-<h1 id="0-vs-50-making-a-rag-agent-refuse-to-hallucinate">0 % vs 50 %: making a RAG agent refuse to hallucinate<a class="headerlink" href="#0-vs-50-making-a-rag-agent-refuse-to-hallucinate" title="Permanent link">&para;</a></h1>
+<h1 id="0-vs-40-making-a-rag-agent-refuse-to-hallucinate">0 % vs 40 %: making a RAG agent refuse to hallucinate<a class="headerlink" href="#0-vs-40-making-a-rag-agent-refuse-to-hallucinate" title="Permanent link">&para;</a></h1>
 <p><em>2026-05-31 · LLM / RAG</em></p>
 <p>A retrieval-augmented agent is only as trustworthy as its behaviour on questions whose answer
 <strong>isn't in the corpus</strong>. The failure mode is quiet: instead of saying "I don't know," the model
@@ -1149,7 +1149,7 @@ generation prompt's contract with the retrieved context:</p>
 <tbody>
 <tr>
 <td>Generate freely from context</td>
-<td><strong>~50 %</strong></td>
+<td><strong>~40 %</strong></td>
 </tr>
 <tr>
 <td>Guarded prompt (answer <em>only</em> from context; otherwise abstain)</td>
@@ -1160,12 +1160,12 @@ generation prompt's contract with the retrieved context:</p>
 <p>Same model, same retriever, same questions. The only change is a prompt that makes "I can't
 answer that from the provided sources" a first-class, rewarded output — plus a <strong>validate</strong>
 step that checks the answer is grounded in retrieved spans before returning it. On in-corpus
-questions, retrieval <strong>recall@3 stayed at 94–100 %</strong>, so the guardrail buys safety without
+questions, retrieval <strong>recall@3 stayed at 100 %</strong>, so the guardrail buys safety without
 costing coverage.</p>
 <h2 id="why-just-prompt-better-isnt-the-lesson">Why "just prompt better" isn't the lesson<a class="headerlink" href="#why-just-prompt-better-isnt-the-lesson" title="Permanent link">&para;</a></h2>
-<p>The lesson isn't the prompt — it's that the difference between 50 % and 0 % is <strong>invisible
+<p>The lesson isn't the prompt — it's that the difference between 40 % and 0 % is <strong>invisible
 without an eval harness</strong>. A demo that only asks in-corpus questions looks perfect in both
-configurations. You only see the 50 % when you deliberately ask things the corpus can't
+configurations. You only see the 40 % when you deliberately ask things the corpus can't
 answer and <em>score groundedness</em>. So the blueprint ships with:</p>
 <ul>
 <li><strong>retrieval hit-rate</strong> (is the answer even retrievable?),</li>
