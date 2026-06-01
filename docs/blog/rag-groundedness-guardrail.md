@@ -1,8 +1,8 @@
 ---
-description: "One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~50% to 0% — and why an eval harness is the only way to see the difference."
+description: "One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~40% to 0% — and why an eval harness is the only way to see the difference."
 ---
 
-# 0 % vs 50 %: making a RAG agent refuse to hallucinate
+# 0 % vs 40 %: making a RAG agent refuse to hallucinate
 
 *2026-05-31 · LLM / RAG*
 
@@ -22,20 +22,20 @@ generation prompt's contract with the retrieved context:
 
 | Configuration | Out-of-corpus hallucination rate |
 | --- | --- |
-| Generate freely from context | **~50 %** |
+| Generate freely from context | **~40 %** |
 | Guarded prompt (answer *only* from context; otherwise abstain) | **0 %** |
 
 Same model, same retriever, same questions. The only change is a prompt that makes "I can't
 answer that from the provided sources" a first-class, rewarded output — plus a **validate**
 step that checks the answer is grounded in retrieved spans before returning it. On in-corpus
-questions, retrieval **recall@3 stayed at 94–100 %**, so the guardrail buys safety without
+questions, retrieval **recall@3 stayed at 100 %**, so the guardrail buys safety without
 costing coverage.
 
 ## Why "just prompt better" isn't the lesson
 
-The lesson isn't the prompt — it's that the difference between 50 % and 0 % is **invisible
+The lesson isn't the prompt — it's that the difference between 40 % and 0 % is **invisible
 without an eval harness**. A demo that only asks in-corpus questions looks perfect in both
-configurations. You only see the 50 % when you deliberately ask things the corpus can't
+configurations. You only see the 40 % when you deliberately ask things the corpus can't
 answer and *score groundedness*. So the blueprint ships with:
 
 - **retrieval hit-rate** (is the answer even retrievable?),

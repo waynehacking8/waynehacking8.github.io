@@ -51,11 +51,11 @@ NVLink, analysed against the theoretical link budget. Measured: all-reduce **366
 ### NIM Agent Blueprint
 Agentic RAG reference architecture on NVIDIA NIM microservices (LLM + embedding +
 reranker) with a plan → retrieve → generate → validate loop and a built-in eval harness.
-Measured: retrieval **recall@3 94%**, and **0% hallucination** on out-of-corpus questions
-with a guarded prompt vs **50%** without it (ablation).
+Measured: retrieval **recall@3 100%**, and **0% hallucination** on out-of-corpus questions
+with a guarded prompt vs **~40%** without it (ablation).
 *NVIDIA NIM · RAG · agents · OpenTelemetry · FastAPI*
 :material-github: [waynehacking8/nim-agent-blueprint](https://github.com/waynehacking8/nim-agent-blueprint)
-:material-notebook-outline: [Notes: 0% vs 50% hallucination](blog/rag-groundedness-guardrail.md)
+:material-notebook-outline: [Notes: 0% vs 40% hallucination](blog/rag-groundedness-guardrail.md)
 
 ### Blackwell Tensor Core Kernels
 Hand-written CUDA GEMM kernels (naive → tiled → WMMA Tensor Core), benchmarked across
