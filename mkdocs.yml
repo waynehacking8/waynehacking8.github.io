@@ -2,8 +2,8 @@ site_name: About Wayne
 site_url: https://waynehacking8.github.io/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
-  Personal website of Wei Cheng (Wayne) Chiu — AI Solutions Engineer.
-  Experiences, publications, projects, talks, patches, and blog.
+  Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer
+  (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.
 
 nav:
   - About: index.md

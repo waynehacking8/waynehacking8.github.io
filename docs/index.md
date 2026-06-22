@@ -2,16 +2,16 @@
 
 <img src="assets/profile.jpg" alt="Wei Cheng (Wayne) Chiu" width="160" align="right" style="border-radius: 12px; margin: 0 0 1rem 1rem;" />
 
-**Wei Cheng (Wayne) Chiu** — AI Solutions Engineer.
+**Wei Cheng (Wayne) Chiu** — Machine Learning Engineer.
 
-I build enterprise AI agents that hold up in production — multi-agent applications,
-hybrid retrieval, and the evaluation and validation that make them dependable for real
-users. I take systems end-to-end, from proof-of-concept into customer environments.
+I work on **LLM inference and GPU performance** — hand-written CUDA / Tensor-Core
+kernels, TensorRT-LLM and vLLM serving, and reproducible benchmarks on Hopper and
+Blackwell — alongside multi-agent and RAG systems taken end-to-end into production.
 
-Currently an ML Engineer at SYNCROBOTIC and an M.S. Computer Science candidate at the
-National Taiwan University of Science and Technology (NTUST, graduating April 2026),
-researching AI/LLM security and privacy-preserving machine learning in Prof. Shao-Jui
-Wang's lab.
+Most recently a Machine Learning Engineer at SYNCROBOTIC (through June 2026), and an
+M.S. in Computer Science from the National Taiwan University of Science and Technology
+(NTUST), researching AI/LLM security and privacy-preserving machine learning in
+Prof. Shao-Jui Wang's lab.
 
 My recent work spans applied LLM systems (multi-agent orchestration, RAG, LLM
 evaluation) on DGX-class hardware, the **NVIDIA inference and multi-GPU stack**

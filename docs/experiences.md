@@ -3,7 +3,7 @@
 ## Industry
 
 ### SYNCROBOTIC — Machine Learning Engineer
-*Sep 2025 – Apr 2026 · New Taipei City, Taiwan · On-site*
+*Sep 2025 – Jun 2026 · New Taipei City, Taiwan · On-site*
 
 Sole developer of an enterprise multi-agent AI platform on DGX-class hardware — owned
 end-to-end from PoC through production, rolled out at **two enterprise customers**,

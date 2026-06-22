@@ -1,11 +1,11 @@
 # Wei Cheng (Wayne) Chiu
 
-> AI Solutions Engineer building enterprise AI agents that hold up in production —
-> multi-agent applications, hybrid retrieval (RAG), and the evaluation/validation that
-> make them dependable. Works end-to-end from proof-of-concept into customer
-> environments. ML Engineer at SYNCROBOTIC and M.S. Computer Science candidate at NTUST
-> (graduating April 2026), researching AI/LLM security and privacy-preserving ML in
-> Prof. Shao-Jui Wang's lab.
+> Machine Learning Engineer focused on LLM inference and GPU performance — hand-written
+> CUDA / Tensor-Core kernels, TensorRT-LLM and vLLM serving, and reproducible benchmarks
+> on Hopper and Blackwell — alongside multi-agent and RAG systems taken into production.
+> Most recently a Machine Learning Engineer at SYNCROBOTIC (through June 2026) and an
+> M.S. Computer Science graduate of NTUST, researching AI/LLM security and
+> privacy-preserving ML in Prof. Shao-Jui Wang's lab.
 
 Specialties: applied LLM systems on DGX-class hardware; the NVIDIA inference and
 multi-GPU stack (TensorRT-LLM, Triton, NIM, NCCL, CUDA Tensor Cores); and
