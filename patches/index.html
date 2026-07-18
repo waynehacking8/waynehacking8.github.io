@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -630,6 +630,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patches
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -646,6 +664,47 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#merged-landed-in-main" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merged / landed in main
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In review
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -982,6 +1041,36 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#merged-landed-in-main" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merged / landed in main
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In review
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -998,20 +1087,120 @@
 
 
 <h1 id="patches">Patches<a class="headerlink" href="#patches" title="Permanent link">&para;</a></h1>
-<p>Upstream open-source contributions — merged or under review — to third-party projects.</p>
-<div class="admonition info">
-<p class="admonition-title">Building this list</p>
-<p>Contributions will be listed here as they are submitted and merged. Current targets,
-aligned with the projects above: documentation and reproducibility fixes to
-<strong>TensorRT-LLM</strong>, <strong>tensorrtllm_backend (Triton)</strong>, <strong>vLLM</strong>, <strong>nccl-tests</strong>, and
-<strong>PyTorch</strong>.</p>
+<p>Upstream open-source contributions to the LLM-inference stack — <strong>17 merged/landed ·
+60 in review</strong> as of 2026-07-18. Live feed:
+<a href="https://github.com/pulls?q=is%3Apr+author%3Awaynehacking8+is%3Amerged+archived%3Afalse">merged PRs</a> ·
+<a href="https://github.com/pulls?q=is%3Apr+author%3Awaynehacking8+archived%3Afalse">all PRs</a>.</p>
+<p>My focus is <strong>early consumer-Blackwell (SM120 / SM121) enablement</strong> across the stack —
+from CUTLASS / FlashInfer kernels through vLLM / SGLang engines to Dynamo /
+TensorRT-LLM disaggregated serving — plus silent-correctness bugs: code that passes
+tests but computes the wrong answer.</p>
+<h2 id="merged-landed-in-main">Merged / landed in main<a class="headerlink" href="#merged-landed-in-main" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Project</th>
+<th style="text-align: center;">#</th>
+<th>Representative merged work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FlashInfer</strong></td>
+<td style="text-align: center;">7</td>
+<td><a href="https://github.com/flashinfer-ai/flashinfer/pull/3615">SM120/121 multi-CTA radix top-k stream hang</a> · <a href="https://github.com/flashinfer-ai/flashinfer/pull/3838">SM120 NVFP4 attention qk-correction layout / row-sum / lse</a> · <a href="https://github.com/flashinfer-ai/flashinfer/pull/3614">MXFP8-aware MoE gemm profiler</a></td>
+</tr>
+<tr>
+<td><strong>vLLM</strong></td>
+<td style="text-align: center;">3</td>
+<td><a href="https://github.com/vllm-project/vllm/pull/45460">Tokenizer survives pickling</a> · <a href="https://github.com/vllm-project/vllm/pull/45376">streaming <code>message_start</code> sets <code>type</code>/<code>role</code></a> · <a href="https://github.com/vllm-project/vllm/pull/45468">clear error for structured outputs on diffusion decoders</a></td>
+</tr>
+<tr>
+<td><strong>LMDeploy</strong></td>
+<td style="text-align: center;">3</td>
+<td><a href="https://github.com/InternLM/lmdeploy/pull/4684">InternVL LoRA loading TypeError</a> · <a href="https://github.com/InternLM/lmdeploy/pull/4685">double-counted <code>max_q_seqlen</code> in decode delta</a> · <a href="https://github.com/InternLM/lmdeploy/pull/4690">builtin chat-template ImportError</a></td>
+</tr>
+<tr>
+<td><strong>PyTorch</strong></td>
+<td style="text-align: center;">1</td>
+<td><a href="https://github.com/pytorch/pytorch/pull/187216"><code>nccl.broadcast</code> was dropping its <code>root</code> argument</a> — landed in <code>main</code> (<code>c3c33fd</code>)</td>
+</tr>
+<tr>
+<td><strong>Dynamo</strong></td>
+<td style="text-align: center;">1</td>
+<td><a href="https://github.com/ai-dynamo/dynamo/pull/10616">KV-router cancels in-flight recovery on worker removal</a></td>
+</tr>
+<tr>
+<td><strong>compressed-tensors</strong></td>
+<td style="text-align: center;">1</td>
+<td><a href="https://github.com/vllm-project/compressed-tensors/pull/737">Skip device-map entries with no local module in dispatch</a></td>
+</tr>
+<tr>
+<td><strong>torchao</strong></td>
+<td style="text-align: center;">1</td>
+<td><a href="https://github.com/pytorch/ao/pull/4480">PT2E/X86 plain-linear annotation fallback for reused <code>nn.Linear</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="in-review">In review<a class="headerlink" href="#in-review" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Project</th>
+<th style="text-align: center;">#</th>
+<th>Representative work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SGLang</strong></td>
+<td style="text-align: center;">17</td>
+<td>SM120/SM121 dispatch for <code>int8_scaled_mm</code> &amp; <code>fp8_blockwise_scaled_grouped_mm</code> · SM120 shared-mem-safe attention block size</td>
+</tr>
+<tr>
+<td><strong>vLLM</strong></td>
+<td style="text-align: center;">15</td>
+<td>NVFP4 MoE per-expert scale validation · FP8 MoE+LoRA routed to Marlin · async-KV-load scheduling fix</td>
+</tr>
+<tr>
+<td><strong>FlashInfer</strong></td>
+<td style="text-align: center;">13</td>
+<td>NVFP4 global-scale threading through the unified MoE API · cuDNN full-sequence Q batch stride in batch prefill</td>
+</tr>
+<tr>
+<td><strong>Dynamo</strong></td>
+<td style="text-align: center;">5</td>
+<td>Blackwell workstation GPU SKU support · KV-router hardening follow-ups</td>
+</tr>
+<tr>
+<td><strong>NVIDIA TensorRT-LLM</strong></td>
+<td style="text-align: center;">4</td>
+<td>CuteDSL MoE ghost-token &amp; global-index fixes · DeepSeek-V2-Lite <code>e_score_correction_bias</code> guard</td>
+</tr>
+<tr>
+<td><strong>NVIDIA CUTLASS</strong></td>
+<td style="text-align: center;">4</td>
+<td>SM120 grouped NVFP4 block-scaled GEMM in <code>cutlass_library</code> · CuTeDSL sub-byte <code>make_ptr</code> / <code>is_major</code> / uint-lowering fixes</td>
+</tr>
+<tr>
+<td><strong>torchao</strong></td>
+<td style="text-align: center;">1</td>
+<td>Reused-module fallback extended to <code>nn.Conv2d</code> (follow-up to merged #4480)</td>
+</tr>
+<tr>
+<td><strong>LMCache</strong></td>
+<td style="text-align: center;">1</td>
+<td>Clear <code>reqs_status</code> on async-lookup timeout to prevent recall KeyError</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">The pattern behind these</p>
+<p>The most valuable class of bug I hunt: <strong>tests green, answers wrong</strong> — a cuDNN path
+computing only the first expert group, an out-of-bounds <code>moe_permute</code> write, an
+attention layout mismatch that silently corrupts logits on new hardware. These come
+from reading kernels, not from stack traces.</p>
 </div>
-<!--
-## Example entry (uncomment per contribution)
-
-- **NVIDIA/TensorRT-LLM** (2026) — short description of the fix.
-  [PR #____](https://github.com/NVIDIA/TensorRT-LLM/pull/____) · Merged
--->
 
 
 
@@ -1113,7 +1302,7 @@ aligned with the projects above: documentation and reproducibility fixes to
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
