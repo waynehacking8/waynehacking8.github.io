@@ -25,7 +25,7 @@ literature-cross-validated, with honest negative results on Non-IID MNIST.
 ## NVIDIA Inference & Multi-GPU Stack
 
 > A portfolio of reproducible harnesses on the NVIDIA-native stack, run on 4× H100
-> (NVLink) and an RTX Pro 6000 (Blackwell). Each repo states what it is, what it is NOT,
+> (NVLink) and Blackwell workstation hardware. Each repo states what it is, what it is NOT,
 > credits the upstream tools it drives, and ships measured results rather than claims.
 
 ### GPU Inference Benchmarks & Kernel Studies
@@ -60,5 +60,5 @@ with a guarded prompt vs **~40%** without it (ablation).
 ### Blackwell Tensor Core Kernels
 Hand-written CUDA GEMM kernels (naive → tiled → WMMA Tensor Core), benchmarked across
 Hopper (sm_90) and Blackwell (sm_120) as a fraction of the cuBLAS ceiling.
-*CUDA · Tensor Cores · WMMA · Nsight · H100 / RTX Pro 6000* *(release planned once results land)*
+*CUDA · Tensor Cores · WMMA · Nsight · H100 / Blackwell workstation* *(release planned once results land)*
 :material-notebook-outline: [Notes: CUDA Tensor Core GEMM (WMMA)](blog/notes-cuda-tensor-core-gemm.md)

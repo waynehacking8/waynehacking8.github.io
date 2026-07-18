@@ -8,10 +8,15 @@ I work on **LLM inference and GPU performance** — hand-written CUDA / Tensor-C
 kernels, TensorRT-LLM and vLLM serving, and reproducible benchmarks on Hopper and
 Blackwell — alongside multi-agent and RAG systems taken end-to-end into production.
 
-Most recently a Machine Learning Engineer at SYNCROBOTIC (through June 2026), and an
-M.S. in Computer Science from the National Taiwan University of Science and Technology
-(NTUST), researching AI/LLM security and privacy-preserving machine learning in
-Prof. Shao-Jui Wang's lab.
+Incoming **Field Application Engineer at Taiwan AI Labs** (July 2026); previously a
+Machine Learning Engineer at SYNCROBOTIC (through June 2026). M.S. in Computer Science
+from the National Taiwan University of Science and Technology (NTUST), researching
+AI/LLM security and privacy-preserving machine learning in Prof. Shao-Jui Wang's lab.
+
+Outside work I contribute upstream across the LLM-inference stack — **17 merged/landed
+patches** in FlashInfer, vLLM, LMDeploy, PyTorch, Dynamo and friends, with 60 more in
+review — focused on early consumer-Blackwell (SM120) enablement and silent-correctness
+bugs that pass tests but produce wrong results. See [Patches](patches.md).
 
 My recent work spans applied LLM systems (multi-agent orchestration, RAG, LLM
 evaluation) on DGX-class hardware, the **NVIDIA inference and multi-GPU stack**
