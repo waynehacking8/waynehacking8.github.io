@@ -7,7 +7,6 @@
 
 Field deployment of on-premises LLM systems (FedGPT) into customer environments —
 Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting.
-*(Incoming — details to follow.)*
 
 ### SYNCROBOTIC — Machine Learning Engineer
 *Sep 2025 – Jun 2026 · New Taipei City, Taiwan · On-site*

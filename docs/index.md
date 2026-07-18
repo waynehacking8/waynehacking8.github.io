@@ -2,13 +2,16 @@
 
 <img src="assets/profile.jpg" alt="Wei Cheng (Wayne) Chiu" width="160" align="right" style="border-radius: 12px; margin: 0 0 1rem 1rem;" />
 
+Hi, I'm **Wayne** 👋 — a GPU performance engineer in Taipei, happiest when an
+upstream kernel fix lands. Making every FLOP count.
+
 **Wei Cheng (Wayne) Chiu** — Machine Learning Engineer.
 
 I work on **LLM inference and GPU performance** — hand-written CUDA / Tensor-Core
 kernels, TensorRT-LLM and vLLM serving, and reproducible benchmarks on Hopper and
 Blackwell — alongside multi-agent and RAG systems taken end-to-end into production.
 
-Incoming **Field Application Engineer at Taiwan AI Labs** (July 2026); previously a
+**Field Application Engineer at Taiwan AI Labs** (since July 2026); previously a
 Machine Learning Engineer at SYNCROBOTIC (through June 2026). M.S. in Computer Science
 from the National Taiwan University of Science and Technology (NTUST), researching
 AI/LLM security and privacy-preserving machine learning in Prof. Shao-Jui Wang's lab.
