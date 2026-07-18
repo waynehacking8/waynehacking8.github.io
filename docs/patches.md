@@ -1,9 +1,12 @@
 # Patches
 
 Upstream open-source contributions to the LLM-inference stack — **17 merged/landed ·
-60 in review** as of 2026-07-18. Live feed:
-[merged PRs](https://github.com/pulls?q=is%3Apr+author%3Awaynehacking8+is%3Amerged+archived%3Afalse) ·
-[all PRs](https://github.com/pulls?q=is%3Apr+author%3Awaynehacking8+archived%3Afalse).
+60 in review** as of 2026-07-18.
+
+[**Live PR wall → wayne-prs.vercel.app**](https://wayne-prs.vercel.app){ .md-button .md-button--primary }
+— auto-updating every few minutes, with an [RSS feed](https://wayne-prs.vercel.app/feed.xml).
+The tables below are a curated snapshot of representative work; the wall is the
+always-current source of truth.
 
 My focus is **early consumer-Blackwell (SM120 / SM121) enablement** across the stack —
 from CUTLASS / FlashInfer kernels through vLLM / SGLang engines to Dynamo /
