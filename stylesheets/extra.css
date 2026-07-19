@@ -98,11 +98,14 @@
 .md-footer-meta { background: transparent; }
 .md-copyright { font-size: 0.58rem; }
 
-/* every page's content sits on the card */
+/* every page's content sits on the card; nav lives in the top tabs,
+   so the primary sidebar only steals width — drop it site-wide */
+.md-sidebar--primary { display: none; }
+.md-grid { max-width: 64rem; }
 .md-content__inner {
   background: var(--pb-card);
   border-radius: 20px;
-  padding: 1.5rem 1.9rem 1.9rem;
+  padding: 1.7rem 2.4rem 2.2rem;
   margin-bottom: 1.6rem;
   box-shadow: var(--pb-shadow);
 }
@@ -111,9 +114,15 @@
   .md-content__inner { padding: 1rem 1rem 1.4rem; border-radius: 14px; }
 }
 
+/* right-rail ToC, quiet on the lavender page */
+.md-sidebar--secondary .md-nav__title { color: var(--pb-muted); background: transparent; box-shadow: none; }
+.md-sidebar--secondary .md-nav__link { color: var(--pb-muted); font-size: 0.62rem; }
+.md-sidebar--secondary .md-nav__link--active,
+.md-sidebar--secondary .md-nav__link:hover { color: var(--pb-link); }
+
 /* ---------- typography ---------- */
-.md-typeset { font-size: 0.72rem; line-height: 1.75; }
-.md-typeset h1 { font-size: 1.5rem; font-weight: 600; color: var(--pb-ink); margin-bottom: 1em; }
+.md-typeset { font-size: 0.74rem; line-height: 1.78; }
+.md-typeset h1 { font-size: 1.55rem; font-weight: 600; color: var(--pb-ink); margin-bottom: 1em; }
 .md-typeset h2 { font-size: 0.95rem; font-weight: 700; color: var(--pb-ink); margin: 1.6em 0 0.7em; }
 .md-typeset h3 { font-size: 0.8rem; font-weight: 700; margin: 1.2em 0 0.3em; }
 .md-typeset h1::after,
@@ -297,3 +306,42 @@
 [data-md-color-scheme="slate"] .pb-tag-red { background: #45231e; color: #ef8d80; }
 [data-md-color-scheme="slate"] .pb-tag-blue { background: #1d2c44; color: #7fb0e8; }
 [data-md-color-scheme="slate"] .pb-tag-purple { background: #2f2547; color: #b49af0; }
+
+/* ---------- pbb-style interactive tag filters ---------- */
+.pb-filters {
+  position: relative;
+  border: 1px solid var(--pb-line);
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem 0.55rem;
+  margin: 1rem 0 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45em;
+}
+.pb-filters::before {
+  content: "Filters";
+  position: absolute;
+  top: -0.6em;
+  left: 0.9rem;
+  font-size: 0.56rem;
+  color: var(--pb-muted);
+  background: var(--pb-card);
+  padding: 0 0.45em;
+}
+.pb-filters-label { font-size: 0.62rem; color: var(--pb-muted); margin-right: 0.2em; }
+.pb-filters button {
+  font: inherit;
+  font-size: 0.56rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 0.5em;
+  padding: 0.08em 0.65em;
+  cursor: pointer;
+  background: var(--pb-chip-bg);
+  color: var(--pb-muted);
+  transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+}
+.pb-filters button:hover { border-color: var(--pb-link); color: var(--pb-link); }
+.pb-filters button.active { background: var(--pb-link); border-color: var(--pb-link); color: #fff; }
+.pb-pub.pb-hidden { display: none; }
