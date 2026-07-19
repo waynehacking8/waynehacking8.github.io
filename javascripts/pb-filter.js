@@ -1,7 +1,20 @@
-/* pbb-style tag filtering: toggle buttons show/hide .pb-pub cards.
+/* pbb-style tag filtering + theme toggle.
    Progressive enhancement — all cards are visible without JS. */
 (function () {
+  function initTheme() {
+    var btn = document.querySelector(".pb-theme-btn");
+    if (!btn) return;
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      /* Material's palette radios live in the hidden header; a
+         programmatic click still toggles the scheme */
+      var input = document.querySelector('input[name="__palette"]:not(:checked)');
+      if (input) input.click();
+    });
+  }
+
   function init() {
+    initTheme();
     var bar = document.querySelector(".pb-filters");
     if (!bar) return;
     var buttons = bar.querySelectorAll("button[data-tag]");
