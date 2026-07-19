@@ -129,6 +129,18 @@
   <p class="pb-quote">making every FLOP count</p>
 </aside>
 <div class="pb-main">
+<!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
+     row inside the content pane; the markdown h1 is hidden by CSS and the
+     title is rendered here instead so both live on the same row -->
+<div class="pb-nav-row">
+  <h1 class="pb-page-title">{{ page.title if page and page.title else config.site_name }}</h1>
+  <nav class="pb-nav-tabs">
+    {% for item in nav %}
+      {% set item_url = (item.children | first).url if item.children else item.url %}
+      <a class="pb-nav-link{% if item.active %} active{% endif %}" href="{{ item_url | url }}">{{ item.title }}</a>
+    {% endfor %}
+  </nav>
+</div>
 {{ super() }}
 </div>
 </div>
