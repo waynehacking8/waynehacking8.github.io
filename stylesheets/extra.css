@@ -411,6 +411,53 @@
 [data-md-color-scheme="slate"] .pb-tag-blue { background: #1d2c44; color: #7fb0e8; }
 [data-md-color-scheme="slate"] .pb-tag-purple { background: #2f2547; color: #b49af0; }
 
+/* blog index: pbb.sh post-grid — responsive auto-fill cards, whole card
+   clickable, title + colored tags + excerpt + mono date */
+.pb-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.md-typeset a.pb-post-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border: 1px solid var(--pb-line);
+  border-radius: 12px;
+  padding: 0.85rem 0.95rem;
+  color: inherit;
+  font-weight: 400;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.md-typeset a.pb-post-card:hover {
+  text-decoration: none;
+  box-shadow: var(--pb-shadow);
+  transform: translateY(-2px);
+}
+.pb-post-card .pb-post-title {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--pb-title);
+  line-height: 1.4;
+}
+.pb-post-card .pb-post-tags { margin: 0; line-height: 1; }
+.pb-post-card .pb-post-excerpt {
+  margin: 0;
+  font-size: 0.6rem;
+  line-height: 1.55;
+  color: var(--pb-muted);
+}
+.pb-post-card .pb-post-date {
+  margin: 0.2rem 0 0;
+  margin-top: auto;
+  padding-top: 0.3rem;
+  font-family: var(--pb-mono);
+  font-size: 0.54rem;
+  color: var(--pb-muted);
+}
+
 /* ---------- pbb-style interactive tag filters ---------- */
 .pb-filters {
   position: relative;
