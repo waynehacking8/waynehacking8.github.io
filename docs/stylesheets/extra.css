@@ -90,8 +90,20 @@
 .md-header__button.md-logo { display: none; }
 .md-header__title { font-weight: 600; }
 .md-tabs { background: var(--pb-page); color: var(--pb-muted); }
-.md-tabs__link { font-size: 0.64rem; opacity: 0.85; }
-.md-tabs__link--active, .md-tabs__link:hover { color: var(--pb-link); opacity: 1; }
+.md-tabs__list { display: flex; gap: 0.1rem; }
+.md-tabs__item { padding: 0 0.1rem; }
+.md-tabs__link {
+  font-size: 0.64rem;
+  opacity: 1;
+  margin: 0.5rem 0;
+  padding: 0.28rem 0.55rem;
+  border-radius: 14px;
+  color: var(--pb-muted);
+  transition: background 0.2s, color 0.2s;
+}
+.md-tabs__link:hover { background: var(--pb-chip-bg); color: var(--pb-ink); opacity: 1; }
+.md-tabs__link--active,
+.md-tabs__item--active .md-tabs__link { background: var(--pb-chip-bg); color: var(--pb-link); }
 .md-search__form, .md-search__form:hover { background: var(--pb-chip-bg); }
 .md-search__input::placeholder { color: var(--pb-muted); }
 .md-footer { border-top: none; }

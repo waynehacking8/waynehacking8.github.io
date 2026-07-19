@@ -31,6 +31,8 @@ theme:
   icon:
     logo: material/account-circle
   features:
+    - navigation.instant
+    - navigation.instant.progress
     - navigation.tabs
     - navigation.sections
     - navigation.top

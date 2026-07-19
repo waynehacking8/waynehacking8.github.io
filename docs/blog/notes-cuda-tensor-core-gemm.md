@@ -110,4 +110,4 @@ compute-bound, and **WMMA** moves the compute onto Tensor Cores with mixed preci
 every rung as **% of cuBLAS** on the same GPU — that's the metric that's honest about how close
 you are to the ceiling and portable across Hopper and Blackwell.
 
-→ More field notes on the NVIDIA stack: [waynehacking8.github.io](https://waynehacking8.github.io/)
+→ More field notes on the NVIDIA stack: [wayne.is-a.dev](https://wayne.is-a.dev/)

@@ -24,7 +24,11 @@
       });
     });
   }
-  if (document.readyState === "loading") {
+  /* document$ re-emits on every instant-navigation page swap;
+     plain DOMContentLoaded only fires on the first full load */
+  if (typeof document$ !== "undefined") {
+    document$.subscribe(init);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
     init();

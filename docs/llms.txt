@@ -15,17 +15,17 @@ trade-offs — each one links the public benchmark/code repository behind it.
 
 ## Profile
 
-- [About](https://waynehacking8.github.io/): role, focus areas, and contact.
-- [Projects](https://waynehacking8.github.io/projects/): public repositories with measured results.
-- [Experience](https://waynehacking8.github.io/experiences/): roles at SYNCROBOTIC, TSMC, and research.
+- [About](https://wayne.is-a.dev/): role, focus areas, and contact.
+- [Projects](https://wayne.is-a.dev/projects/): public repositories with measured results.
+- [Experience](https://wayne.is-a.dev/experiences/): roles at SYNCROBOTIC, TSMC, and research.
 
 ## Technical notes (blog)
 
-- [Where tensor-parallel inference hits the NVLink wall](https://waynehacking8.github.io/blog/nccl-nvlink-bandwidth/): NCCL all-reduce on 4× H100 measured at 366 GB/s busbw (77% of the NVLink budget); why decode is latency-bound, not bandwidth-bound, and where the TP latency wall is.
-- [Notes on serving LLMs with TensorRT-LLM and Triton](https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/): matched-work benchmark vs vLLM on 4× H100 — TensorRT-LLM + CUDA graphs win at low/mid concurrency, vLLM wins at high concurrency, with the crossover point.
-- [0% vs 40%: making a RAG agent refuse to hallucinate](https://waynehacking8.github.io/blog/rag-groundedness-guardrail/): a guarded prompt + groundedness validate step drops out-of-corpus hallucination from ~40% to 0% while keeping in-corpus recall@3 at 100%; why an eval harness is the only way to see the gap.
-- [Notes on federated learning and differential privacy](https://waynehacking8.github.io/blog/notes-federated-learning-dp/): from-scratch FedAvg / FedProx / SCAFFOLD with DP-SGD and secure aggregation, plus honest negative results on Non-IID data.
-- [Notes on CUDA Tensor Core GEMM (WMMA)](https://waynehacking8.github.io/blog/notes-cuda-tensor-core-gemm/): programming the Tensor Cores directly with the WMMA API, and what it teaches about GEMM performance.
+- [Where tensor-parallel inference hits the NVLink wall](https://wayne.is-a.dev/blog/nccl-nvlink-bandwidth/): NCCL all-reduce on 4× H100 measured at 366 GB/s busbw (77% of the NVLink budget); why decode is latency-bound, not bandwidth-bound, and where the TP latency wall is.
+- [Notes on serving LLMs with TensorRT-LLM and Triton](https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/): matched-work benchmark vs vLLM on 4× H100 — TensorRT-LLM + CUDA graphs win at low/mid concurrency, vLLM wins at high concurrency, with the crossover point.
+- [0% vs 40%: making a RAG agent refuse to hallucinate](https://wayne.is-a.dev/blog/rag-groundedness-guardrail/): a guarded prompt + groundedness validate step drops out-of-corpus hallucination from ~40% to 0% while keeping in-corpus recall@3 at 100%; why an eval harness is the only way to see the gap.
+- [Notes on federated learning and differential privacy](https://wayne.is-a.dev/blog/notes-federated-learning-dp/): from-scratch FedAvg / FedProx / SCAFFOLD with DP-SGD and secure aggregation, plus honest negative results on Non-IID data.
+- [Notes on CUDA Tensor Core GEMM (WMMA)](https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/): programming the Tensor Cores directly with the WMMA API, and what it teaches about GEMM performance.
 
 ## Public repositories
 

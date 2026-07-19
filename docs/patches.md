@@ -3,8 +3,8 @@
 Upstream open-source contributions to the LLM-inference stack — **17 merged/landed ·
 60 in review** as of 2026-07-18.
 
-[**Live PR wall → wayne-prs.vercel.app**](https://wayne-prs.vercel.app){ .md-button .md-button--primary }
-— auto-updating every few minutes, with an [RSS feed](https://wayne-prs.vercel.app/feed.xml).
+[**Live PR wall → prs.wayne.is-a.dev**](https://prs.wayne.is-a.dev){ .md-button .md-button--primary }
+— auto-updating every few minutes, with an [RSS feed](https://prs.wayne.is-a.dev/feed.xml).
 The tables below are a curated snapshot of representative work; the wall is the
 always-current source of truth.
 

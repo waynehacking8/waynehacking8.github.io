@@ -7,7 +7,7 @@
 
   {% set title = page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wei Cheng (Wayne) Chiu — Machine Learning Engineer" %}
   {% set desc = config.site_description %}
-  {% set image = "https://waynehacking8.github.io/assets/profile.jpg" %}
+  {% set image = "https://wayne.is-a.dev/assets/profile.jpg" %}
 
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
@@ -37,30 +37,30 @@
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://waynehacking8.github.io/#website",
-        "url": "https://waynehacking8.github.io/",
+        "@id": "https://wayne.is-a.dev/#website",
+        "url": "https://wayne.is-a.dev/",
         "name": "Wei Cheng (Wayne) Chiu",
         "inLanguage": "en",
-        "publisher": { "@id": "https://waynehacking8.github.io/#person" }
+        "publisher": { "@id": "https://wayne.is-a.dev/#person" }
       },
       {
         "@type": "ProfilePage",
-        "@id": "https://waynehacking8.github.io/#profilepage",
-        "url": "https://waynehacking8.github.io/",
+        "@id": "https://wayne.is-a.dev/#profilepage",
+        "url": "https://wayne.is-a.dev/",
         "name": "Wei Cheng (Wayne) Chiu — Machine Learning Engineer",
-        "isPartOf": { "@id": "https://waynehacking8.github.io/#website" },
-        "about": { "@id": "https://waynehacking8.github.io/#person" },
-        "mainEntity": { "@id": "https://waynehacking8.github.io/#person" }
+        "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
+        "about": { "@id": "https://wayne.is-a.dev/#person" },
+        "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
       },
       {
         "@type": "Person",
-        "@id": "https://waynehacking8.github.io/#person",
+        "@id": "https://wayne.is-a.dev/#person",
         "name": "Wei Cheng (Wayne) Chiu",
         "alternateName": ["Wayne Chiu", "邱偉誠"],
         "jobTitle": "Machine Learning Engineer",
         "description": "Machine Learning Engineer focused on LLM inference and GPU performance — hand-written CUDA / Tensor-Core kernels, TensorRT-LLM and vLLM serving, with multi-agent & RAG systems and AI/LLM security research.",
-        "url": "https://waynehacking8.github.io/",
-        "image": "https://waynehacking8.github.io/assets/profile.jpg",
+        "url": "https://wayne.is-a.dev/",
+        "image": "https://wayne.is-a.dev/assets/profile.jpg",
         "email": "mailto:waynehacking8@gmail.com",
         "knowsLanguage": ["en", "zh-Hant"],
         "alumniOf": [
@@ -99,8 +99,8 @@
     "headline": {{ page.title | tojson }},
     "url": "{{ page.canonical_url }}",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ page.canonical_url }}" },
-    "author": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "publisher": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "inLanguage": "en"{% if page.meta and page.meta.description %},
     "description": {{ page.meta.description | tojson }}{% endif %}{% if page.meta and page.meta.date %},
     "datePublished": {{ page.meta.date | tojson }}{% endif %}

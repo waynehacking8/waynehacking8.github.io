@@ -18,7 +18,7 @@ hide:
 [:fontawesome-brands-linkedin:](https://www.linkedin.com/in/wei-cheng-chiu/ "LinkedIn")
 [:fontawesome-brands-x-twitter:](https://x.com/itswaynechiu "X")
 [:fontawesome-solid-envelope:](mailto:waynehacking8@gmail.com "Email")
-[:fontawesome-solid-square-rss:](https://wayne-prs.vercel.app/feed.xml "PR feed")
+[:fontawesome-solid-square-rss:](https://prs.wayne.is-a.dev/feed.xml "PR feed")
 </p>
 
 <p class="pb-loc" markdown>:fontawesome-solid-location-dot: Taipei, Taiwan · UTC+8</p>
@@ -56,7 +56,7 @@ Outside work I live in the upstream LLM-inference stack — **17 merged/landed p
 <span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" />NVIDIA</span>
 CUTLASS / TensorRT-LLM, and
 <span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" />LMDeploy</span> —
-see the auto-updating [PR wall](https://wayne-prs.vercel.app) and [Patches](patches.md).
+see the auto-updating [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
 
 ## 🛠️ Focus
 
@@ -79,7 +79,7 @@ compute the right answer. Three threads:
   <dd>💼 Joined <strong>Taiwan AI Labs</strong> as a Field Application Engineer —
       on-prem LLM deployments (FedGPT).</dd>
   <dt>Jul 2026</dt>
-  <dd>🧱 The <a href="https://wayne-prs.vercel.app">live PR wall</a> went up — every
+  <dd>🧱 The <a href="https://prs.wayne.is-a.dev">live PR wall</a> went up — every
       upstream patch, auto-updating.</dd>
   <dt>Jul 2026</dt>
   <dd>📈 Upstream tally: <strong>17 merged/landed · 60 in review</strong> across the
@@ -113,8 +113,8 @@ compute the right answer. Three threads:
 
 <div class="pb-pub" markdown>
 <div markdown>
-<p class="pb-pub-title"><a href="https://wayne-prs.vercel.app">Live PR wall — wayne-prs.vercel.app</a></p>
-<p class="pb-pub-meta">Auto-updating feed of every upstream contribution, with <a href="https://wayne-prs.vercel.app/feed.xml">RSS</a></p>
+<p class="pb-pub-title"><a href="https://prs.wayne.is-a.dev">Live PR wall — prs.wayne.is-a.dev</a></p>
+<p class="pb-pub-meta">Auto-updating feed of every upstream contribution, with <a href="https://prs.wayne.is-a.dev/feed.xml">RSS</a></p>
 <span class="pb-tag pb-tag-blue">Open Source</span><span class="pb-tag pb-tag-green">17 merged</span><span class="pb-tag pb-tag-red">60 in review</span>
 </div>
 <img src="assets/previews/pr-wall-preview.png" alt="PR wall preview" />
