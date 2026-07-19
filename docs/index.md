@@ -39,7 +39,7 @@ evaluation) on DGX-class hardware, the **NVIDIA inference and multi-GPU stack**
 - Email: [waynehacking8@gmail.com](mailto:waynehacking8@gmail.com)
 - GitHub: [github.com/waynehacking8](https://github.com/waynehacking8)
 - LinkedIn: [in/wei-cheng-chiu](https://www.linkedin.com/in/wei-cheng-chiu/)
-- X: [@WEICHENGCH52824](https://x.com/WEICHENGCH52824)
+- X: [@itswaynechiu](https://x.com/itswaynechiu)
 
 !!! note "Disclaimer"
     The views expressed on this site are my own and do not represent those of my
