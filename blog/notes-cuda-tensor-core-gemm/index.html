@@ -83,7 +83,7 @@
   <meta property="og:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/">
-  <meta property="og:image" content="https://waynehacking8.github.io/assets/profile.jpg">
+  <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
@@ -92,7 +92,7 @@
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
-  <meta name="twitter:image" content="https://waynehacking8.github.io/assets/profile.jpg">
+  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -101,30 +101,30 @@
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://waynehacking8.github.io/#website",
-        "url": "https://waynehacking8.github.io/",
+        "@id": "https://wayne.is-a.dev/#website",
+        "url": "https://wayne.is-a.dev/",
         "name": "Wei Cheng (Wayne) Chiu",
         "inLanguage": "en",
-        "publisher": { "@id": "https://waynehacking8.github.io/#person" }
+        "publisher": { "@id": "https://wayne.is-a.dev/#person" }
       },
       {
         "@type": "ProfilePage",
-        "@id": "https://waynehacking8.github.io/#profilepage",
-        "url": "https://waynehacking8.github.io/",
+        "@id": "https://wayne.is-a.dev/#profilepage",
+        "url": "https://wayne.is-a.dev/",
         "name": "Wei Cheng (Wayne) Chiu — Machine Learning Engineer",
-        "isPartOf": { "@id": "https://waynehacking8.github.io/#website" },
-        "about": { "@id": "https://waynehacking8.github.io/#person" },
-        "mainEntity": { "@id": "https://waynehacking8.github.io/#person" }
+        "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
+        "about": { "@id": "https://wayne.is-a.dev/#person" },
+        "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
       },
       {
         "@type": "Person",
-        "@id": "https://waynehacking8.github.io/#person",
+        "@id": "https://wayne.is-a.dev/#person",
         "name": "Wei Cheng (Wayne) Chiu",
         "alternateName": ["Wayne Chiu", "邱偉誠"],
         "jobTitle": "Machine Learning Engineer",
         "description": "Machine Learning Engineer focused on LLM inference and GPU performance — hand-written CUDA / Tensor-Core kernels, TensorRT-LLM and vLLM serving, with multi-agent & RAG systems and AI/LLM security research.",
-        "url": "https://waynehacking8.github.io/",
-        "image": "https://waynehacking8.github.io/assets/profile.jpg",
+        "url": "https://wayne.is-a.dev/",
+        "image": "https://wayne.is-a.dev/assets/profile.jpg",
         "email": "mailto:waynehacking8@gmail.com",
         "knowsLanguage": ["en", "zh-Hant"],
         "alumniOf": [
@@ -162,8 +162,8 @@
     "headline": "Notes \u2014 CUDA Tensor Core GEMM (WMMA)",
     "url": "https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/" },
-    "author": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "publisher": { "@type": "Person", "@id": "https://waynehacking8.github.io/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "inLanguage": "en",
     "description": "Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM \u2014 shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell."
   }
@@ -1312,7 +1312,7 @@ about NVFP4 inference on Blackwell.</p>
 compute-bound, and <strong>WMMA</strong> moves the compute onto Tensor Cores with mixed precision. Measure
 every rung as <strong>% of cuBLAS</strong> on the same GPU — that's the metric that's honest about how close
 you are to the ceiling and portable across Hopper and Blackwell.</p>
-<p>→ More field notes on the NVIDIA stack: <a href="https://waynehacking8.github.io/">waynehacking8.github.io</a></p>
+<p>→ More field notes on the NVIDIA stack: <a href="https://wayne.is-a.dev/">wayne.is-a.dev</a></p>
 
 
 
@@ -1410,11 +1410,13 @@ you are to the ceiling and portable across Hopper and Blackwell.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
     
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
