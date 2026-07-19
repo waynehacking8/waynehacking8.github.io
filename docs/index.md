@@ -4,31 +4,6 @@ hide:
   - toc
 ---
 
-<div class="pb-grid" markdown>
-
-<div class="pb-side" markdown>
-
-<img class="pb-avatar" src="assets/profile.jpg" alt="Wei-Cheng (Wayne) Chiu" />
-
-<p class="pb-name">Wei-Cheng <b>Chiu</b></p>
-<p class="pb-cjk">邱偉誠</p>
-
-<p class="pb-icons" markdown>
-[:fontawesome-brands-github:](https://github.com/waynehacking8 "GitHub")
-[:fontawesome-brands-linkedin:](https://www.linkedin.com/in/wei-cheng-chiu/ "LinkedIn")
-[:fontawesome-brands-x-twitter:](https://x.com/itswaynechiu "X")
-[:fontawesome-solid-envelope:](mailto:waynehacking8@gmail.com "Email")
-[:fontawesome-solid-square-rss:](https://prs.wayne.is-a.dev/feed.xml "PR feed")
-</p>
-
-<p class="pb-loc" markdown>:fontawesome-solid-location-dot: Taipei, Taiwan · UTC+8</p>
-
-<p class="pb-quote">making every FLOP count</p>
-
-</div>
-
-<div class="pb-main" markdown>
-
 # About
 
 Hi, I'm **Wayne** 👋 — a GPU performance engineer, happiest when an upstream kernel
@@ -141,7 +116,3 @@ compute the right answer. Three threads:
 I'm from Taiwan :flag_tw: and based in Taipei. Away from a profiler you'll find me tending an
 over-engineered Obsidian vault. The views on this site are my own and do not represent
 those of my employer or affiliated institutions.
-
-</div>
-
-</div>

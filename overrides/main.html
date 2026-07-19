@@ -108,3 +108,28 @@
   </script>
   {% endif %}
 {% endblock %}
+
+<!-- pbb.sh layout: the profile sidebar renders on every page, left of the
+     content pane; with navigation.instant only the right pane crossfades,
+     so switching tabs keeps the sidebar in place like pbb.sh does. -->
+{% block content %}
+<div class="pb-grid">
+<aside class="pb-side{% if page and page.is_homepage %} pb-side--home{% endif %}">
+  <img class="pb-avatar" src="{{ 'assets/profile.jpg' | url }}" alt="Wei-Cheng (Wayne) Chiu" />
+  <p class="pb-name">Wei-Cheng <b>Chiu</b></p>
+  <p class="pb-cjk">邱偉誠</p>
+  <p class="pb-icons">
+    <a href="https://github.com/waynehacking8" title="GitHub"><span class="twemoji">{% include ".icons/fontawesome/brands/github.svg" %}</span></a>
+    <a href="https://www.linkedin.com/in/wei-cheng-chiu/" title="LinkedIn"><span class="twemoji">{% include ".icons/fontawesome/brands/linkedin.svg" %}</span></a>
+    <a href="https://x.com/itswaynechiu" title="X"><span class="twemoji">{% include ".icons/fontawesome/brands/x-twitter.svg" %}</span></a>
+    <a href="mailto:waynehacking8@gmail.com" title="Email"><span class="twemoji">{% include ".icons/fontawesome/solid/envelope.svg" %}</span></a>
+    <a href="https://prs.wayne.is-a.dev/feed.xml" title="PR feed"><span class="twemoji">{% include ".icons/fontawesome/solid/square-rss.svg" %}</span></a>
+  </p>
+  <p class="pb-loc"><span class="twemoji">{% include ".icons/fontawesome/solid/location-dot.svg" %}</span> Taipei, Taiwan · UTC+8</p>
+  <p class="pb-quote">making every FLOP count</p>
+</aside>
+<div class="pb-main">
+{{ super() }}
+</div>
+</div>
+{% endblock %}
