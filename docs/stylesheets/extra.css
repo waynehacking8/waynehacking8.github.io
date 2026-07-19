@@ -604,22 +604,26 @@
   /* "Wei-Cheng Chiu 邱偉誠" on one line: the CJK name rides along as
      ::after so the grid keeps three clean rows, and nowrap guarantees
      it never breaks across lines the way a 22px name did */
+  /* pbb's exact 20px/15px name pair from 390px up (iPhone 12-16, most
+     Androids). "Wei-Cheng Chiu 邱偉誠" is longer than pbb's name, so
+     below that it scales down just enough to clear the theme button
+     instead of sliding underneath it. */
   .pb-name {
     grid-area: name;
-    font-size: 20px;
+    font-size: clamp(15px, 5.13vw, 20px);
     font-weight: 200;
     letter-spacing: 0.5px;
     line-height: 1.3;
     margin: 0;
-    padding-right: 32px;
+    padding-right: 26px;
     white-space: nowrap;
   }
   .pb-name::after {
     content: "邱偉誠";
     font-family: "LXGW WenKai TC", cursive;
-    font-size: 15px;
+    font-size: clamp(11px, 3.85vw, 15px);
     font-weight: 400;
-    margin-left: 6px;
+    margin-left: 5px;
   }
   .pb-cjk { display: none; }
   .pb-icons {
@@ -633,7 +637,7 @@
   .pb-quote { display: none; }
   /* pbb puts the theme toggle in the name row; absolute against the
      card beats fixed, so it scrolls away with the strip */
-  .pb-theme-btn { position: absolute; top: 20px; right: 20px; }
+  .pb-theme-btn { position: absolute; top: 20px; right: 14px; }
 
   .pb-main { padding: 14px 20px 22px; }
   .pb-nav-row { background: var(--pb-card); padding-top: 2px; }
@@ -646,4 +650,9 @@
   .md-typeset h3 { font-size: 16px; }
   .pb-nav-link { font-size: 14px; padding: 6.4px 12.8px; border-radius: 16px; }
   .chip { font-size: 14px; }
+}
+/* very narrow legacy phones (~320px): the vw slope alone still collides */
+@media (max-width: 21em) {
+  .pb-name { font-size: 15px; }
+  .pb-name::after { font-size: 11px; }
 }
