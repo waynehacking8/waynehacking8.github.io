@@ -113,6 +113,13 @@
      content pane; with navigation.instant only the right pane crossfades,
      so switching tabs keeps the sidebar in place like pbb.sh does. -->
 {% block content %}
+<!-- pbb.sh keeps nothing at the top except a small theme toggle; the
+     Material header is hidden in CSS and this button drives its hidden
+     palette inputs instead -->
+<button class="pb-theme-btn" aria-label="Toggle theme" hidden>
+  <span class="pb-theme-sun twemoji">{% include ".icons/material/weather-sunny.svg" %}</span>
+  <span class="pb-theme-moon twemoji">{% include ".icons/material/weather-night.svg" %}</span>
+</button>
 <div class="pb-grid">
 <aside class="pb-side{% if page and page.is_homepage %} pb-side--home{% endif %}">
   <img class="pb-avatar" src="{{ 'assets/profile.jpg' | url }}" alt="Wei-Cheng (Wayne) Chiu" />

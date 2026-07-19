@@ -87,13 +87,27 @@
 }
 
 /* ---------- chrome: header, tabs, search, footer ---------- */
-.md-header {
-  background: var(--pb-page);
-  color: var(--pb-ink);
-  box-shadow: none;
+/* pbb.sh has nothing above the card except a tiny theme button; the
+   Material header (title/search/palette UI) is hidden entirely — its
+   palette inputs stay in the DOM and .pb-theme-btn drives them */
+.md-header { display: none !important; }
+.pb-theme-btn {
+  position: fixed;
+  top: 0.55rem;
+  right: 0.8rem;
+  z-index: 60;
+  border: none;
+  background: transparent;
+  padding: 0.3rem;
+  border-radius: 50%;
+  color: var(--pb-muted);
+  cursor: pointer;
+  line-height: 0;
 }
-.md-header__button.md-logo { display: none; }
-.md-header__title { font-weight: 600; }
+.pb-theme-btn:hover { background: var(--pb-chip-bg); color: var(--pb-ink); }
+.pb-theme-btn .twemoji { width: 1rem; height: 1rem; }
+[data-md-color-scheme="default"] .pb-theme-moon { display: none; }
+[data-md-color-scheme="slate"] .pb-theme-sun { display: none; }
 /* pbb.sh has no full-width tab bar under the header — nav pills live
    inside the content pane's title row (.pb-nav-row) instead */
 .md-tabs { display: none; }
@@ -106,7 +120,7 @@
   align-items: baseline;
   gap: 0.6rem;
   position: sticky;
-  top: 2.4rem;
+  top: 0;
   z-index: 5;
   background: var(--pb-card);
   padding: 0.35rem 0 0.45rem;
