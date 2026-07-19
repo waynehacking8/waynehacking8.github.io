@@ -126,7 +126,10 @@
   padding: 0.35rem 0 0.45rem;
   margin-bottom: 0.6rem;
 }
-.pb-nav-row .pb-page-title { flex-shrink: 0; }
+/* the anchor is the flex child, so it carries the no-shrink — without it
+   the title breaks mid-word ("Abo/ut") once the pills fill the row */
+.pb-nav-row .pb-page-title-link,
+.pb-nav-row .pb-page-title { flex: 0 0 auto; }
 /* it's an h1 inside .md-typeset, so it inherits the size and the
    gradient ::after bar; only the flow margins need resetting here */
 .md-typeset .pb-nav-row .pb-page-title { margin: 0; }
