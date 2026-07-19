@@ -109,9 +109,16 @@
   {% endif %}
 {% endblock %}
 
+<!-- pbb.sh has NOTHING at the top: the header is wrapped in [hidden] at
+     the HTML level (not just CSS) so no cache state can ever show it.
+     Material's palette radios inside stay programmatically clickable
+     for the floating theme button. The tabs bar is dropped entirely. -->
+{% block header %}<div hidden>{{ super() }}</div>{% endblock %}
+{% block tabs %}{% endblock %}
+
 <!-- pbb.sh layout: the profile sidebar renders on every page, left of the
-     content pane; with navigation.instant only the right pane crossfades,
-     so switching tabs keeps the sidebar in place like pbb.sh does. -->
+     content pane; only the right pane swaps on navigation, and the
+     view-transition morph slides the clicked nav pill into the page title. -->
 {% block content %}
 <!-- pbb.sh keeps nothing at the top except a small theme toggle; the
      Material header is hidden in CSS and this button drives its hidden

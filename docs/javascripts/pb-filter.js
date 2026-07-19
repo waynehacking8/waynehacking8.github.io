@@ -13,8 +13,22 @@
     });
   }
 
+  function initNavMorph() {
+    /* pbb.sh-style morph: name the clicked pill pb-title (and unname the
+       current title) right before navigation, so the browser's view
+       transition slides the pill into the next page's heading */
+    document.querySelectorAll(".pb-nav-link").forEach(function (a) {
+      a.addEventListener("click", function () {
+        var title = document.querySelector(".pb-page-title");
+        if (title) title.style.viewTransitionName = "none";
+        a.style.viewTransitionName = "pb-title";
+      });
+    });
+  }
+
   function init() {
     initTheme();
+    initNavMorph();
     var bar = document.querySelector(".pb-filters");
     if (!bar) return;
     var buttons = bar.querySelectorAll("button[data-tag]");

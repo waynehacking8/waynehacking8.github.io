@@ -153,16 +153,23 @@
    (every page has exactly one content h1) */
 .pb-main h1:not(.pb-page-title) { display: none; }
 
-/* pbb-style tab switching: with navigation.instant the header/tabs stay
-   put and only the right content pane plays this crossfade — the profile
-   sidebar (template-rendered on every page) holds still, so moving
-   between tabs reads as switching panes, not loading pages */
-@media (prefers-reduced-motion: no-preference) {
-  .pb-main { animation: pb-swap 0.22s ease-out; }
-}
-@keyframes pb-swap {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
+/* pbb-style switching via native cross-document view transitions:
+   the clicked nav pill (given the pb-title name by pb-filter.js at
+   click time) morphs into the next page's big title, the sidebar and
+   tab row keep their own stable snapshots, and the rest crossfades.
+   Browsers without the API just do a normal fast navigation. */
+@view-transition { navigation: auto; }
+.pb-page-title { view-transition-name: pb-title; }
+.pb-side { view-transition-name: pb-side; }
+.pb-nav-tabs { view-transition-name: pb-tabs; }
+::view-transition-old(pb-title),
+::view-transition-new(pb-title) { animation-duration: 0.3s; }
+::view-transition-old(pb-side),
+::view-transition-new(pb-side),
+::view-transition-old(pb-tabs),
+::view-transition-new(pb-tabs) { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
 }
 .md-search__form, .md-search__form:hover { background: var(--pb-chip-bg); }
 .md-search__input::placeholder { color: var(--pb-muted); }
