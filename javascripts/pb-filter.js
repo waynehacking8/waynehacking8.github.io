@@ -13,22 +13,46 @@
     });
   }
 
-  function initNavMorph() {
-    /* pbb.sh-style morph: name the clicked pill pb-title (and unname the
-       current title) right before navigation, so the browser's view
-       transition slides the pill into the next page's heading */
-    document.querySelectorAll(".pb-nav-link").forEach(function (a) {
-      a.addEventListener("click", function () {
+  /* pbb.sh-style soft navigation (what Astro's ClientRouter does): fetch
+     the next page, swap only .pb-main inside document.startViewTransition,
+     and name the clicked pill pb-title so it morphs into the incoming
+     heading. The sidebar's DOM is never touched, so it cannot move. */
+  var routerArmed = false;
+  function initRouter() {
+    if (routerArmed) return;
+    routerArmed = true;
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a.pb-nav-link");
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      var url = new URL(a.getAttribute("href"), location.href);
+      if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname) { e.preventDefault(); return; }
+      if (!document.startViewTransition ||
+          matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      e.preventDefault();
+      fetch(url.href).then(function (r) { return r.text(); }).then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var newMain = doc.querySelector(".pb-main");
+        var curMain = document.querySelector(".pb-main");
+        if (!newMain || !curMain) { location.href = url.href; return; }
         var title = document.querySelector(".pb-page-title");
         if (title) title.style.viewTransitionName = "none";
         a.style.viewTransitionName = "pb-title";
-      });
+        var vt = document.startViewTransition(function () {
+          curMain.replaceWith(newMain);
+          document.title = doc.title;
+          history.pushState({}, "", url.href);
+          window.scrollTo(0, 0);
+        });
+        vt.finished.then(init);
+      }).catch(function () { location.href = url.href; });
     });
+    window.addEventListener("popstate", function () { location.reload(); });
   }
 
   function init() {
     initTheme();
-    initNavMorph();
+    initRouter();
     var bar = document.querySelector(".pb-filters");
     if (!bar) return;
     var buttons = bar.querySelectorAll("button[data-tag]");

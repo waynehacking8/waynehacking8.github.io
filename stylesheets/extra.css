@@ -162,8 +162,12 @@
 .pb-page-title { view-transition-name: pb-title; }
 .pb-side { view-transition-name: pb-side; }
 .pb-nav-tabs { view-transition-name: pb-tabs; }
+::view-transition-group(pb-title) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+}
 ::view-transition-old(pb-title),
-::view-transition-new(pb-title) { animation-duration: 0.3s; }
+::view-transition-new(pb-title) { animation-duration: 0.18s; }
 ::view-transition-old(pb-side),
 ::view-transition-new(pb-side),
 ::view-transition-old(pb-tabs),
@@ -410,6 +414,47 @@
 [data-md-color-scheme="slate"] .pb-tag-red { background: #45231e; color: #ef8d80; }
 [data-md-color-scheme="slate"] .pb-tag-blue { background: #1d2c44; color: #7fb0e8; }
 [data-md-color-scheme="slate"] .pb-tag-purple { background: #2f2547; color: #b49af0; }
+
+/* experiences: pbb.sh timeline — vertical rail on the left, 28px logo
+   (or emoji) dots that punch through the line, compact title/org/date */
+.pb-timeline { position: relative; }
+.pb-timeline::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: var(--pb-line);
+}
+.md-typeset .pb-tl-item { display: flex; gap: 1rem; padding: 0.45rem 0; position: relative; }
+.pb-tl-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  background: var(--pb-card);
+  box-shadow: 0 0 0 4px var(--pb-card);
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 1;
+}
+.pb-tl-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px; }
+.pb-tl-body { flex: 1; min-width: 0; margin-top: -2px; }
+.md-typeset .pb-tl-body > p { margin: 0.5em 0; }
+.md-typeset .pb-tl-body .pb-tl-title {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--pb-ink);
+  line-height: 1.35;
+}
+.md-typeset .pb-tl-body .pb-tl-org { margin: 0; font-size: 0.66rem; color: var(--pb-muted); }
+.md-typeset .pb-tl-body .pb-tl-date { margin: 0 0 0.35em; font-size: 0.6rem; color: var(--pb-muted); opacity: 0.85; }
+.md-typeset .pb-tl-body ul { margin: 0.4em 0; }
 
 /* blog index: pbb.sh post-grid — responsive auto-fill cards, whole card
    clickable, title + colored tags + excerpt + mono date */
