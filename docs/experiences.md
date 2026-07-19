@@ -8,7 +8,7 @@
 <div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt=""></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Field Application Engineer</p>
-<p class="pb-tl-org">Taiwan AI Labs</p>
+<p class="pb-tl-org"><a href="https://ailabs.tw/zh/home/">Taiwan AILabs</a></p>
 <p class="pb-tl-date">Jul 2026 – Present · Taipei City, Taiwan</p>
 
 Field deployment of on-premises LLM systems (FedGPT) into customer environments —
