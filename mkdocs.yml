@@ -28,6 +28,7 @@ theme:
   language: en
   custom_dir: overrides
   font: false
+  favicon: assets/favicon.png
   icon:
     logo: material/account-circle
   features:
