@@ -57,8 +57,10 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
 
+# bump ?v= on every extra.css change — GitHub Pages caches assets for
+# 10 minutes and browsers honor it, so an unversioned URL shows stale CSS
 extra_css:
-  - stylesheets/extra.css
+  - stylesheets/extra.css?v=20260719.2
 
 extra_javascript:
   - javascripts/pb-filter.js
