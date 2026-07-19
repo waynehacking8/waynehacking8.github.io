@@ -4,8 +4,10 @@
    violet accents, org chips with real logos, date-pill news.
    ============================================================ */
 
-/* brush-script face for the CJK name, same as pbb.sh */
-@import url("https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap");
+/* handwritten-kai face for the CJK name — LXGW WenKai TC, because the name
+   is Traditional Chinese and pbb.sh's Ma Shan Zheng only covers Simplified
+   (邱 rendered, 偉/誠 fell back to system sans — mixed faces) */
+@import url("https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap");
 
 :root {
   --pb-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
@@ -109,10 +111,11 @@
 .md-tabs__item--active .md-tabs__link { background: var(--pb-chip-bg); color: var(--pb-link); }
 
 /* pbb-style tab switching: with navigation.instant the header/tabs stay
-   put and only the swapped-in content plays this crossfade, so moving
+   put and only the right content pane plays this crossfade — the profile
+   sidebar (template-rendered on every page) holds still, so moving
    between tabs reads as switching panes, not loading pages */
 @media (prefers-reduced-motion: no-preference) {
-  .md-content__inner { animation: pb-swap 0.22s ease-out; }
+  .pb-main { animation: pb-swap 0.22s ease-out; }
 }
 @keyframes pb-swap {
   from { opacity: 0; transform: translateY(6px); }
@@ -196,7 +199,8 @@
 }
 
 /* ============================================================
-   Landing page
+   Global profile sidebar + content pane (rendered from
+   overrides/main.html on every page, pbb.sh-style)
    ============================================================ */
 
 .pb-grid {
@@ -207,6 +211,9 @@
 }
 @media (max-width: 56em) {
   .pb-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  /* like pbb.sh, subpages drop the sidebar on small screens;
+     the homepage keeps it as the identity block */
+  .pb-side:not(.pb-side--home) { display: none; }
 }
 
 /* sidebar */
@@ -228,8 +235,8 @@
 .pb-name b { font-weight: 600; letter-spacing: 0; }
 .pb-cjk {
   color: var(--pb-ink);
-  font-family: "Ma Shan Zheng", cursive;
-  font-size: 1rem;
+  font-family: "LXGW WenKai TC", cursive;
+  font-size: 1.02rem;
   letter-spacing: 0.08em;
   margin: 0 0 0.7rem;
   text-indent: 0.08em;
