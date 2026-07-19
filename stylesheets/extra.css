@@ -94,21 +94,50 @@
 }
 .md-header__button.md-logo { display: none; }
 .md-header__title { font-weight: 600; }
-.md-tabs { background: var(--pb-page); color: var(--pb-muted); }
-.md-tabs__list { display: flex; gap: 0.1rem; }
-.md-tabs__item { padding: 0 0.1rem; }
-.md-tabs__link {
-  font-size: 0.64rem;
-  opacity: 1;
-  margin: 0.5rem 0;
-  padding: 0.28rem 0.55rem;
+/* pbb.sh has no full-width tab bar under the header — nav pills live
+   inside the content pane's title row (.pb-nav-row) instead */
+.md-tabs { display: none; }
+
+/* pbb page-nav-row: title left, pills right, one sticky row that stays
+   below the site header while the page scrolls */
+.pb-nav-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0.6rem;
+  position: sticky;
+  top: 2.4rem;
+  z-index: 5;
+  background: var(--pb-card);
+  padding: 0.35rem 0 0.45rem;
+  margin-bottom: 0.6rem;
+}
+.pb-nav-row .pb-page-title { flex-shrink: 0; }
+/* it's an h1 inside .md-typeset, so it inherits the size and the
+   gradient ::after bar; only the flow margins need resetting here */
+.md-typeset .pb-nav-row .pb-page-title { margin: 0; }
+.pb-nav-tabs {
+  display: flex;
+  gap: 0.15rem;
+  margin-left: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.pb-nav-link {
+  padding: 0.26rem 0.48rem;
   border-radius: 14px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  white-space: nowrap;
   color: var(--pb-muted);
   transition: background 0.2s, color 0.2s;
 }
-.md-tabs__link:hover { background: var(--pb-chip-bg); color: var(--pb-ink); opacity: 1; }
-.md-tabs__link--active,
-.md-tabs__item--active .md-tabs__link { background: var(--pb-chip-bg); color: var(--pb-link); }
+.pb-nav-link:hover { background: var(--pb-chip-bg); color: var(--pb-ink); text-decoration: none !important; }
+.pb-nav-link.active { background: var(--pb-chip-bg); color: var(--pb-link); }
+
+/* the row renders the title, so hide the markdown h1 duplicate
+   (every page has exactly one content h1) */
+.pb-main h1:not(.pb-page-title) { display: none; }
 
 /* pbb-style tab switching: with navigation.instant the header/tabs stay
    put and only the right content pane plays this crossfade — the profile
@@ -143,11 +172,9 @@
   .md-content__inner { padding: 1rem 1rem 1.4rem; border-radius: 14px; }
 }
 
-/* right-rail ToC, quiet on the lavender page */
-.md-sidebar--secondary .md-nav__title { color: var(--pb-muted); background: transparent; box-shadow: none; }
-.md-sidebar--secondary .md-nav__link { color: var(--pb-muted); font-size: 0.62rem; }
-.md-sidebar--secondary .md-nav__link--active,
-.md-sidebar--secondary .md-nav__link:hover { color: var(--pb-link); }
+/* pbb.sh has no right-rail ToC — drop it site-wide (important beats
+   Material's wide-screen :not([hidden]) rule) */
+.md-sidebar--secondary { display: none !important; }
 
 /* ---------- typography ---------- */
 .md-typeset { font-size: 0.74rem; line-height: 1.78; }
