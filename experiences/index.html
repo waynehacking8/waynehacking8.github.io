@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css?v=20260719.8">
+      <link rel="stylesheet" href="../stylesheets/extra.css?v=20260719.9">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -998,29 +998,41 @@
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
 <div class="pb-nav-row">
-  <h1 class="pb-page-title">Experiences</h1>
+  <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">Experiences</h1></a>
   <nav class="pb-nav-tabs">
     
-      
-      <a class="pb-nav-link" href="..">About</a>
     
       
-      <a class="pb-nav-link active" href="./">Experiences</a>
+      
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-about" href="..">About</a>
+      
     
       
-      <a class="pb-nav-link" href="../publications/">Publications</a>
     
       
-      <a class="pb-nav-link" href="../projects/">Projects</a>
+      
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../publications/">Publications</a>
+      
     
       
-      <a class="pb-nav-link" href="../talks/">Talks</a>
+      
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../projects/">Projects</a>
+      
     
       
-      <a class="pb-nav-link" href="../patches/">Patches</a>
+      
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../talks/">Talks</a>
+      
     
       
-      <a class="pb-nav-link" href="../blog/">Blog</a>
+      
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-patches" href="../patches/">Patches</a>
+      
+    
+      
+      
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-blog" href="../blog/">Blog</a>
+      
     
   </nav>
 </div>
@@ -1043,7 +1055,7 @@ Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting.
 </div>
 </div>
 <div class="pb-tl-item">
-<div class="pb-tl-icon">🤖</div>
+<div class="pb-tl-icon"><img src="/assets/logos/syncrobotic.png" alt=""></div>
 <div class="pb-tl-body">
 <p class="pb-tl-title">Machine Learning Engineer</p>
 <p class="pb-tl-org">SYNCROBOTIC</p>
@@ -1117,7 +1129,7 @@ Programming, Cybersecurity.</p>
 </div>
 </div>
 <div class="pb-tl-item">
-<div class="pb-tl-icon">🎓</div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
 <div class="pb-tl-body">
 <p class="pb-tl-title">M.S. in Structural Engineering</p>
 <p class="pb-tl-org">National Taiwan University (NTU)</p>
@@ -1125,7 +1137,7 @@ Programming, Cybersecurity.</p>
 </div>
 </div>
 <div class="pb-tl-item">
-<div class="pb-tl-icon">🎓</div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
 <div class="pb-tl-body">
 <p class="pb-tl-title">B.S. in Civil Engineering</p>
 <p class="pb-tl-org">National Taiwan University (NTU)</p>
