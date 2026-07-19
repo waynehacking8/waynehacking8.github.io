@@ -1,46 +1,147 @@
-# About Wayne
+---
+hide:
+  - navigation
+  - toc
+---
 
-<img src="assets/profile.jpg" alt="Wei Cheng (Wayne) Chiu" width="160" align="right" style="border-radius: 12px; margin: 0 0 1rem 1rem;" />
+<div class="pb-grid" markdown>
 
-Hi, I'm **Wayne** 👋 — a GPU performance engineer in Taipei, happiest when an
-upstream kernel fix lands. Making every FLOP count.
+<div class="pb-side" markdown>
 
-**Wei Cheng (Wayne) Chiu** — Machine Learning Engineer.
+<img class="pb-avatar" src="assets/profile.jpg" alt="Wei-Cheng (Wayne) Chiu" />
 
-I work on **LLM inference and GPU performance** — hand-written CUDA / Tensor-Core
-kernels, TensorRT-LLM and vLLM serving, and reproducible benchmarks on Hopper and
-Blackwell — alongside multi-agent and RAG systems taken end-to-end into production.
+<p class="pb-name">Wei-Cheng <b>Chiu</b></p>
+<p class="pb-cjk">邱偉誠</p>
 
-**Field Application Engineer at Taiwan AI Labs** (since July 2026); previously a
-Machine Learning Engineer at SYNCROBOTIC (through June 2026). M.S. in Computer Science
-from the National Taiwan University of Science and Technology (NTUST), researching
-AI/LLM security and privacy-preserving machine learning in Prof. Shao-Jui Wang's lab.
+<p class="pb-icons" markdown>
+[:fontawesome-brands-github:](https://github.com/waynehacking8 "GitHub")
+[:fontawesome-brands-linkedin:](https://www.linkedin.com/in/wei-cheng-chiu/ "LinkedIn")
+[:fontawesome-brands-x-twitter:](https://x.com/itswaynechiu "X")
+[:fontawesome-solid-envelope:](mailto:waynehacking8@gmail.com "Email")
+[:fontawesome-solid-square-rss:](https://wayne-prs.vercel.app/feed.xml "PR feed")
+</p>
 
-Outside work I contribute upstream across the LLM-inference stack — **17 merged/landed
-patches** in FlashInfer, vLLM, LMDeploy, PyTorch, Dynamo and friends, with 60 more in
-review — focused on early consumer-Blackwell (SM120) enablement and silent-correctness
-bugs that pass tests but produce wrong results. See [Patches](patches.md).
+<p class="pb-loc" markdown>:fontawesome-solid-location-dot: Taipei, Taiwan · UTC+8</p>
 
-My recent work spans applied LLM systems (multi-agent orchestration, RAG, LLM
-evaluation) on DGX-class hardware, the **NVIDIA inference and multi-GPU stack**
-(TensorRT-LLM, Triton, NIM, NCCL, CUDA Tensor Cores), and **privacy-preserving ML**
-(federated learning, differential privacy, secure multi-party computation).
+<p class="pb-quote">making every FLOP count</p>
 
-## Focus areas
+</div>
 
-- **Deployment** — taking AI systems into customer environments, from PoC through rollout and support.
-- **Reliability** — prompt/pipeline regression tests, output validation across quality and safety, distributed tracing.
-- **Retrieval & agents** — hybrid vector + keyword + knowledge-graph retrieval with semantic caching; planning / execution / validation orchestration, function calling and tool use.
-- **Serving internals** — KV-cache, quantization trade-offs, Flash Attention, CUDA kernels — enough to reason about cost and latency at design time.
-- **Research** — AI/LLM security & safety alignment; federated learning, differential privacy, secure multi-party computation.
+<div class="pb-main" markdown>
 
-## Contact
+# About
 
-- Email: [waynehacking8@gmail.com](mailto:waynehacking8@gmail.com)
-- GitHub: [github.com/waynehacking8](https://github.com/waynehacking8)
-- LinkedIn: [in/wei-cheng-chiu](https://www.linkedin.com/in/wei-cheng-chiu/)
-- X: [@itswaynechiu](https://x.com/itswaynechiu)
+Hi, I'm **Wayne** 👋 — a GPU performance engineer, happiest when an upstream kernel
+fix lands. Currently, I'm a Field Application Engineer at
+<span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" />Taiwan AI Labs</span>,
+deploying on-premises LLM systems (FedGPT) into customer environments — Linux/Kubernetes
+operations, GPU serving, and customer-facing troubleshooting.
 
-!!! note "Disclaimer"
-    The views expressed on this site are my own and do not represent those of my
-    employer or affiliated institutions.
+Previously, I was the sole developer of an enterprise multi-agent AI platform at
+<span class="chip chip-navy">SYNCROBOTIC</span>, built internal coding agents at
+<span class="chip chip-blue"><img src="assets/logos/advantech.png" alt="" />Advantech</span>,
+and served at <span class="chip chip-red"><img src="assets/logos/tsmc.png" alt="" />TSMC</span>
+under the national R&D program. I hold an M.S. in Computer Science from
+<span class="chip chip-red"><img src="assets/logos/ntust.png" alt="" />NTUST</span>
+(GPA 4.09), where I researched **LLM safety alignment** and **privacy-preserving ML**
+in Prof. Shao-Jui Wang's lab.
+
+Outside work I live in the upstream LLM-inference stack — **17 merged/landed patches ·
+60 in review** across
+<span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" />FlashInfer</span>,
+<span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" />vLLM</span>,
+<span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" />SGLang</span>,
+<span class="chip chip-orange"><img src="assets/logos/pytorch.png" alt="" />PyTorch</span>,
+<span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" />Dynamo</span>,
+<span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" />NVIDIA</span>
+CUTLASS / TensorRT-LLM, and
+<span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" />LMDeploy</span> —
+see the auto-updating [PR wall](https://wayne-prs.vercel.app) and [Patches](patches.md).
+
+## 🛠️ Focus
+
+Broadly, I care about **inference performance you can trust** — fast kernels that also
+compute the right answer. Three threads:
+
+1. **Serving internals**: KV-cache, quantization trade-offs, attention kernels —
+   enough depth to reason about cost and latency *at design time*.
+2. **Upstream enablement**: early consumer-Blackwell (**SM120**) and **NVFP4** support
+   across kernels → engines → disaggregated serving; my favorite prey is the
+   *silent-correctness* bug — tests green, answers wrong.
+3. **Trustworthy ML**: safety alignment against harmful fine-tuning; federated
+   learning, differential privacy, secure multi-party computation.
+
+## 🗞️ News
+
+<div class="pb-news">
+<dl>
+  <dt>Jul 2026</dt>
+  <dd>💼 Joined <strong>Taiwan AI Labs</strong> as a Field Application Engineer —
+      on-prem LLM deployments (FedGPT).</dd>
+  <dt>Jul 2026</dt>
+  <dd>🧱 The <a href="https://wayne-prs.vercel.app">live PR wall</a> went up — every
+      upstream patch, auto-updating.</dd>
+  <dt>Jul 2026</dt>
+  <dd>📈 Upstream tally: <strong>17 merged/landed · 60 in review</strong> across the
+      LLM-inference stack.</dd>
+  <dt>Apr 2026</dt>
+  <dd>🎓 M.S. in Computer Science from <strong>NTUST</strong>, GPA 4.09.</dd>
+  <dt>Jan 2026</dt>
+  <dd>📝 <strong>SelGrad</strong> (first-author) submitted — under review at
+      <em>IEEE TDSC</em>.</dd>
+  <dt>Sep 2025</dt>
+  <dd>💼 Joined <strong>SYNCROBOTIC</strong> — sole developer of an enterprise
+      multi-agent platform, shipped at two customers.</dd>
+  <dt>Jun 2025</dt>
+  <dd>💼 Summer at <strong>Advantech</strong> building internal coding agents.</dd>
+  <dt>Dec 2024</dt>
+  <dd>📜 NVIDIA DLI certificates — Accelerated Computing with CUDA (Python &amp; C/C++).</dd>
+  <dt>Aug 2024</dt>
+  <dd>🔬 Started graduate research on LLM security &amp; privacy-preserving ML at NTUST.</dd>
+</dl>
+</div>
+
+## 📄 Selected Work
+
+<div class="pb-pub" markdown>
+<div markdown>
+<p class="pb-pub-title"><a href="patches/">SM120 / NVFP4 enablement across the LLM-inference stack</a></p>
+<p class="pb-pub-meta">FlashInfer · CUTLASS · vLLM · SGLang · TensorRT-LLM · Dynamo — kernels to engines to disaggregated serving</p>
+<span class="pb-tag pb-tag-green">CUDA</span><span class="pb-tag pb-tag-blue">Blackwell</span><span class="pb-tag pb-tag-purple">NVFP4</span>
+</div>
+</div>
+
+<div class="pb-pub" markdown>
+<div markdown>
+<p class="pb-pub-title"><a href="https://wayne-prs.vercel.app">Live PR wall — wayne-prs.vercel.app</a></p>
+<p class="pb-pub-meta">Auto-updating feed of every upstream contribution, with <a href="https://wayne-prs.vercel.app/feed.xml">RSS</a></p>
+<span class="pb-tag pb-tag-blue">Open Source</span><span class="pb-tag pb-tag-green">17 merged</span><span class="pb-tag pb-tag-red">60 in review</span>
+</div>
+<img src="assets/previews/pr-wall-preview.png" alt="PR wall preview" />
+</div>
+
+<div class="pb-pub" markdown>
+<div markdown>
+<p class="pb-pub-title">SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning</p>
+<p class="pb-pub-meta"><b>Wei-Cheng Chiu</b>, et al. — under review at <em>IEEE TDSC</em></p>
+<span class="pb-tag pb-tag-red">Safety</span><span class="pb-tag pb-tag-purple">Alignment</span>
+</div>
+</div>
+
+<div class="pb-pub" markdown>
+<div markdown>
+<p class="pb-pub-title"><a href="projects/">Enterprise multi-agent AI platform</a></p>
+<p class="pb-pub-meta">PoC → production at two enterprise customers — routing layer, planning/execution/validation orchestration, hybrid RAG</p>
+<span class="pb-tag pb-tag-blue">Agents</span><span class="pb-tag pb-tag-green">RAG</span><span class="pb-tag pb-tag-purple">vLLM</span>
+</div>
+</div>
+
+## 📌 Misc
+
+I'm from Taiwan :flag_tw: and based in Taipei. Away from a profiler you'll find me tending an
+over-engineered Obsidian vault. The views on this site are my own and do not represent
+those of my employer or affiliated institutions.
+
+</div>
+
+</div>
