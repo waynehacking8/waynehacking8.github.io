@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://waynehacking8.github.io/</loc>
+         <loc>https://wayne.is-a.dev/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/experiences/</loc>
+         <loc>https://wayne.is-a.dev/experiences/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/patches/</loc>
+         <loc>https://wayne.is-a.dev/patches/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/projects/</loc>
+         <loc>https://wayne.is-a.dev/projects/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/publications/</loc>
+         <loc>https://wayne.is-a.dev/publications/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/talks/</loc>
+         <loc>https://wayne.is-a.dev/talks/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/</loc>
+         <loc>https://wayne.is-a.dev/blog/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/meta-rl/</loc>
+         <loc>https://wayne.is-a.dev/blog/meta-rl/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/nccl-nvlink-bandwidth/</loc>
+         <loc>https://wayne.is-a.dev/blog/nccl-nvlink-bandwidth/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/notes-cuda-tensor-core-gemm/</loc>
+         <loc>https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/notes-federated-learning-dp/</loc>
+         <loc>https://wayne.is-a.dev/blog/notes-federated-learning-dp/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/notes-trtllm-triton-serving/</loc>
+         <loc>https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/pentest-intro/</loc>
+         <loc>https://wayne.is-a.dev/blog/pentest-intro/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/pp-intro/</loc>
+         <loc>https://wayne.is-a.dev/blog/pp-intro/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
     <url>
-         <loc>https://waynehacking8.github.io/blog/rag-groundedness-guardrail/</loc>
+         <loc>https://wayne.is-a.dev/blog/rag-groundedness-guardrail/</loc>
          <lastmod>2026-07-19</lastmod>
     </url>
 </urlset>
