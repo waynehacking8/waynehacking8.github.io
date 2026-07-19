@@ -17,7 +17,7 @@ Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon">🤖</div>
+<div class="pb-tl-icon"><img src="/assets/logos/syncrobotic.png" alt=""></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Machine Learning Engineer</p>
 <p class="pb-tl-org">SYNCROBOTIC</p>
@@ -104,7 +104,7 @@ Programming, Cybersecurity.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon">🎓</div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">M.S. in Structural Engineering</p>
 <p class="pb-tl-org">National Taiwan University (NTU)</p>
@@ -113,7 +113,7 @@ Programming, Cybersecurity.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon">🎓</div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">B.S. in Civil Engineering</p>
 <p class="pb-tl-org">National Taiwan University (NTU)</p>

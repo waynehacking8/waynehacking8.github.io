@@ -147,11 +147,17 @@
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
 <div class="pb-nav-row">
-  <h1 class="pb-page-title">{{ page.title if page and page.title else config.site_name }}</h1>
+  <a class="pb-page-title-link" href="{{ page.url | url }}"><h1 class="pb-page-title">{{ page.title if page and page.title else config.site_name }}</h1></a>
   <nav class="pb-nav-tabs">
+    {# pbb.sh behavior: the current page leaves the tab list and becomes the
+       title at the far left; the remaining pages keep canonical order. Each
+       pill carries a stable per-page view-transition-name so reordering
+       slides pills to their new slots instead of cutting. #}
     {% for item in nav %}
+      {% if not item.active %}
       {% set item_url = (item.children | first).url if item.children else item.url %}
-      <a class="pb-nav-link{% if item.active %} active{% endif %}" href="{{ item_url | url }}">{{ item.title }}</a>
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-{{ item.title | lower | replace(' ', '-') }}" href="{{ item_url | url }}">{{ item.title }}</a>
+      {% endif %}
     {% endfor %}
   </nav>
 </div>
