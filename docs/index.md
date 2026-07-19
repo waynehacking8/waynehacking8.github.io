@@ -13,24 +13,24 @@ deploying on-premises LLM systems (FedGPT) into customer environments — Linux/
 operations, GPU serving, and customer-facing troubleshooting.
 
 Previously, I was the sole developer of an enterprise multi-agent AI platform at
-<span class="chip chip-navy">SYNCROBOTIC</span>, built internal coding agents at
-<span class="chip chip-blue"><img src="assets/logos/advantech.png" alt="" />Advantech</span>,
-and served at <span class="chip chip-red"><img src="assets/logos/tsmc.png" alt="" />TSMC</span>
+<a href="https://syncrobotic.ai/"><span class="chip chip-navy"><img src="assets/logos/syncrobotic.png" alt="" />SYNCROBOTIC</span></a>, built internal coding agents at
+<a href="https://www.advantech.com/en"><span class="chip chip-blue"><img src="assets/logos/advantech.png" alt="" />Advantech</span></a>,
+and served at <a href="https://www.tsmc.com/english"><span class="chip chip-red"><img src="assets/logos/tsmc.png" alt="" />TSMC</span></a>
 under the national R&D program. I hold an M.S. in Computer Science from
-<span class="chip chip-red"><img src="assets/logos/ntust.png" alt="" />NTUST</span>
+<a href="https://www.ntust.edu.tw/"><span class="chip chip-red"><img src="assets/logos/ntust.png" alt="" />NTUST</span></a>
 (GPA 4.09), where I researched **LLM safety alignment** and **privacy-preserving ML**
 in Prof. Shao-Jui Wang's lab.
 
 Outside work I live in the upstream LLM-inference stack — **17 merged/landed patches ·
 60 in review** across
-<span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" />FlashInfer</span>,
-<span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" />vLLM</span>,
-<span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" />SGLang</span>,
-<span class="chip chip-orange"><img src="assets/logos/pytorch.png" alt="" />PyTorch</span>,
-<span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" />Dynamo</span>,
-<span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" />NVIDIA</span>
-CUTLASS / TensorRT-LLM, and
-<span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" />LMDeploy</span> —
+<a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" />FlashInfer</span></a>,
+<a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" />vLLM</span></a>,
+<a href="https://github.com/sgl-project/sglang"><span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" />SGLang</span></a>,
+<a href="https://github.com/pytorch/pytorch"><span class="chip chip-orange"><img src="assets/logos/pytorch.png" alt="" />PyTorch</span></a>,
+<a href="https://github.com/ai-dynamo/dynamo"><span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" />Dynamo</span></a>,
+<a href="https://github.com/NVIDIA"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" />NVIDIA</span></a>
+<a href="https://github.com/NVIDIA/cutlass">CUTLASS</a> / <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a>, and
+<a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" />LMDeploy</span></a> —
 see the auto-updating [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
 
 ## 🛠️ Focus
@@ -60,19 +60,20 @@ compute the right answer. Three threads:
   <dd>📈 Upstream tally: <strong>17 merged/landed · 60 in review</strong> across the
       LLM-inference stack.</dd>
   <dt>Apr 2026</dt>
-  <dd>🎓 M.S. in Computer Science from <strong>NTUST</strong>, GPA 4.09.</dd>
+  <dd>🎓 M.S. in Computer Science from <a href="https://www.ntust.edu.tw/"><strong>NTUST</strong></a>, GPA 4.09.</dd>
   <dt>Jan 2026</dt>
   <dd>📝 <strong>SelGrad</strong> (first-author) submitted — under review at
       <em>IEEE TDSC</em>.</dd>
   <dt>Sep 2025</dt>
-  <dd>💼 Joined <strong>SYNCROBOTIC</strong> — sole developer of an enterprise
+  <dd>💼 Joined <a href="https://syncrobotic.ai/"><strong>SYNCROBOTIC</strong></a> — sole developer of an enterprise
       multi-agent platform, shipped at two customers.</dd>
   <dt>Jun 2025</dt>
-  <dd>💼 Summer at <strong>Advantech</strong> building internal coding agents.</dd>
+  <dd>💼 Summer at <a href="https://www.advantech.com/en"><strong>Advantech</strong></a> building internal coding agents.</dd>
   <dt>Dec 2024</dt>
-  <dd>📜 NVIDIA DLI certificates — Accelerated Computing with CUDA (Python &amp; C/C++).</dd>
+  <dd>📜 <a href="https://learn.nvidia.com/">NVIDIA DLI</a> certificates — Accelerated Computing with CUDA (Python &amp; C/C++).</dd>
   <dt>Aug 2024</dt>
-  <dd>🔬 Started graduate research on LLM security &amp; privacy-preserving ML at NTUST.</dd>
+  <dd>🔬 Started graduate research on LLM security &amp; privacy-preserving ML at
+      <a href="https://www.ntust.edu.tw/">NTUST</a>.</dd>
 </dl>
 </div>
 
@@ -81,7 +82,7 @@ compute the right answer. Three threads:
 <div class="pb-pub" markdown>
 <div markdown>
 <p class="pb-pub-title"><a href="patches/">SM120 / NVFP4 enablement across the LLM-inference stack</a></p>
-<p class="pb-pub-meta">FlashInfer · CUTLASS · vLLM · SGLang · TensorRT-LLM · Dynamo — kernels to engines to disaggregated serving</p>
+<p class="pb-pub-meta"><a href="https://github.com/flashinfer-ai/flashinfer">FlashInfer</a> · <a href="https://github.com/NVIDIA/cutlass">CUTLASS</a> · <a href="https://github.com/vllm-project/vllm">vLLM</a> · <a href="https://github.com/sgl-project/sglang">SGLang</a> · <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a> · <a href="https://github.com/ai-dynamo/dynamo">Dynamo</a> — kernels to engines to disaggregated serving</p>
 <span class="pb-tag pb-tag-green">CUDA</span><span class="pb-tag pb-tag-blue">Blackwell</span><span class="pb-tag pb-tag-purple">NVFP4</span>
 </div>
 </div>

@@ -136,8 +136,20 @@
   display: flex;
   gap: 0.15rem;
   margin-left: auto;
+  /* min-width: 0 lets overflow-x actually engage inside the flex row —
+     without it the pills' min-content width propagates up and stretches
+     the whole card past the viewport on phones */
+  min-width: 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.pb-nav-tabs::-webkit-scrollbar { display: none; }
+/* phones: title takes its own line, pills swipe on a second line */
+@media (max-width: 48em) {
+  .pb-nav-row { flex-wrap: wrap; row-gap: 0.1rem; }
+  .pb-nav-row .pb-page-title-link { flex: 1 0 100%; }
+  .pb-nav-tabs { margin-left: 0; width: 100%; }
 }
 .pb-nav-link {
   padding: 0.26rem 0.48rem;
@@ -264,7 +276,9 @@
   align-items: start;
 }
 @media (max-width: 56em) {
-  .pb-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  /* minmax(0,1fr), not 1fr: plain 1fr respects min-content, so any wide
+     child (nav row, tables) would blow the column past the phone viewport */
+  .pb-grid { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
   /* like pbb.sh, subpages drop the sidebar on small screens;
      the homepage keeps it as the identity block */
   .pb-side:not(.pb-side--home) { display: none; }
