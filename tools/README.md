@@ -6,11 +6,15 @@ is cut down to those and **inlined as a data URI** in
 (private so it cannot collide with a locally installed copy of the same family).
 `name-cjk.woff2` here is the source of record, not a served asset.
 
-Current face: **衡山行書 / MasaFont Bold** — a semi-cursive brush hand, 2396
-bytes subset. SIL OFL 1.1, © 2020 Chun yu Yao, after 青柳衡山's 衡山毛筆フォント行書
-(<https://github.com/max32002/masafont>). Reserved Font Name
-`KouzanBrushFontGyousyo`, which is why the family is renamed here; licence text
-in `OFL.txt` alongside.
+Current face: **莫大毛筆體 / Bakudai Bold** — a brush hand, 2340 bytes subset.
+SIL OFL 1.1, after 青柳衡山's 衡山毛筆フォント
+(<https://github.com/max32002/bakudaifont>). The upstream family carries a
+Reserved Font Name, which is why the family is renamed here; licence text in
+`OFL.txt` alongside.
+
+The brief landed here after two passes: Noto Serif TC 900 was 霸氣 but not
+artistic, 衡山行書 (`max32002/masafont`, also OFL) was 太草. This one keeps the
+brush strokes upright and unjoined, so it still resolves at name size.
 
 Brush glyphs sit small inside their em box, so the name is set a couple of px
 larger than the Latin would need — 23px on desktop, `clamp(12px, 4.3vw, 17px)`
