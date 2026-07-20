@@ -6,8 +6,18 @@
 
 /* handwritten-kai face for the CJK name — LXGW WenKai TC, because the name
    is Traditional Chinese and pbb.sh's Ma Shan Zheng only covers Simplified
-   (邱 rendered, 偉/誠 fell back to system sans — mixed faces) */
-@import url("https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap");
+   (邱 rendered, 偉/誠 fell back to system sans — mixed faces).
+   Self-hosted and subset to the three glyphs the site actually sets, then
+   inlined: the Google Fonts @import silently fell back to system sans on a
+   real iPhone over cellular (13MB CJK family, one more request to skip).
+   At 1.8KB inline there is no second request left to fail. */
+@font-face {
+  font-family: "LXGW WenKai TC";
+  font-style: normal;
+  font-weight: 400;
+  src: url(data:font/woff2;base64,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) format("woff2");
+  unicode-range: U+90B1, U+5049, U+8AA0; /* 邱 偉 誠 */
+}
 
 :root {
   --pb-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
