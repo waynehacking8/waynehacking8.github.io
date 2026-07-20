@@ -33,7 +33,7 @@ Outside work I live in the upstream LLM-inference stack — **17 merged/landed p
 <a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" />LMDeploy</span></a> —
 see the auto-updating [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
 
-## 🛠️ Focus
+## Focus
 
 Broadly, I care about **inference performance you can trust** — fast kernels that also
 compute the right answer. Three threads:
@@ -46,7 +46,7 @@ compute the right answer. Three threads:
 3. **Trustworthy ML**: safety alignment against harmful fine-tuning; federated
    learning, differential privacy, secure multi-party computation.
 
-## 🗞️ News
+## News
 
 <div class="pb-news">
 <dl>
@@ -77,7 +77,7 @@ compute the right answer. Three threads:
 </dl>
 </div>
 
-## 📄 Selected Work
+## Selected Work
 
 <div class="pb-pub" markdown>
 <div markdown>
@@ -112,7 +112,7 @@ compute the right answer. Three threads:
 </div>
 </div>
 
-## 📌 Misc
+## Misc
 
 I'm from Taiwan :flag_tw: and based in Taipei. Away from a profiler you'll find me tending an
 over-engineered Obsidian vault. The views on this site are my own and do not represent
