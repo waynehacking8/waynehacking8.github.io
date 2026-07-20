@@ -18,15 +18,21 @@
    cellular, and a request never made cannot be dropped.
    SIL OFL 1.1, after 青柳衡山's 衡山毛筆フォント; Reserved Font Name, hence the
    private family name here. Licence text in tools/OFL.txt. */
-/* Latin half of the name — Alex Brush Regular, subset to the ten characters
-   "Wei-Cheng Chiu" needs. This is intentionally a single-weight handwritten
-   script: the browser must not synthesize a fake bold for "Chiu". SIL OFL 1.1.
-   Private family name, same reasoning as the CJK face. */
+/* Latin half of the name — Caveat 500/700, subset to the ten characters
+   "Wei-Cheng Chiu" needs. It reads as genuine pen handwriting at sidebar
+   size without the formal flourish and fragile hairlines of Alex Brush.
+   SIL OFL 1.1. Private family name, same reasoning as the CJK face. */
 @font-face {
   font-family: "PB Name Latin";
   font-style: normal;
-  font-weight: 400;
-  src: url(data:font/woff2;base64,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) format("woff2");
+  font-weight: 500;
+  src: url(data:font/woff2;base64,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) format("woff2");
+}
+@font-face {
+  font-family: "PB Name Latin";
+  font-style: normal;
+  font-weight: 700;
+  src: url(data:font/woff2;base64,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) format("woff2");
 }
 @font-face {
   font-family: "PB Name CJK";
@@ -352,15 +358,14 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 }
 .pb-name {
   font-family: "PB Name Latin", Georgia, serif;
-  /* Alex Brush has a compact x-height; this size preserves the previous
-     optical presence while keeping its ascenders clear of adjacent rows. */
-  font-size: 33px;
-  font-weight: 400;
+  /* Caveat has a healthy x-height and stays legible without oversized swashes. */
+  font-size: 32px;
+  font-weight: 500;
   letter-spacing: 0;
   margin: 14px 0 6px;
   color: var(--pb-ink);
 }
-.pb-name b { font-weight: inherit; letter-spacing: inherit; }
+.pb-name b { font-weight: 700; letter-spacing: inherit; }
 .pb-cjk {
   color: var(--pb-ink);
   font-family: "PB Name CJK", serif;
@@ -739,9 +744,8 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
      instead of sliding underneath it. */
   .pb-name {
     grid-area: name;
-    /* Alex Brush also runs optically small at phone sizes. */
-    font-size: clamp(16px, 5.7vw, 23px);
-    font-weight: 400;
+    font-size: clamp(17px, 5.5vw, 22px);
+    font-weight: 500;
     letter-spacing: 0;
     line-height: 1.3;
     margin: 0;
@@ -853,7 +857,7 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
    is the safety net so an even narrower screen wraps the CJK name onto its
    own line instead of sliding underneath the button. */
 @media (max-width: 21em) {
-  .pb-name { font-size: 13.5px; white-space: normal; }
+  .pb-name { font-size: 16px; white-space: normal; }
   /* nowrap on the ::after keeps 邱偉誠 atomic — without it CJK breaks between
      any two characters and the name split as 邱 / 偉誠 */
   .pb-name::after { font-size: 10px; white-space: nowrap; }
