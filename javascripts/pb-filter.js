@@ -58,7 +58,9 @@
     var newMain = doc.querySelector(".pb-main");
     var curMain = document.querySelector(".pb-main");
     if (!newMain || !curMain) return false;
+    disconnectArticleToc();
     curMain.replaceWith(newMain);
+    syncSidebarToc(true);
     document.title = doc.title;
     var canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.href = url.href;
@@ -66,7 +68,10 @@
     var currentDescription = document.querySelector('meta[name="description"]');
     if (description && currentDescription) currentDescription.content = description.content;
     document.body.classList.remove("pb-strip-hidden");
-    window.scrollTo(0, 0);
+    var hashId = decodeHash(url.hash);
+    var target = hashId && document.getElementById(hashId);
+    if (target) target.scrollIntoView({ block: "start" });
+    else window.scrollTo(0, 0);
     return true;
   }
 
@@ -114,21 +119,28 @@
     if (routerArmed) return;
     routerArmed = true;
     document.addEventListener("click", function (e) {
-      var a = e.target.closest && e.target.closest("a.pb-nav-link");
+      var a = e.target.closest && e.target.closest("a[href]");
+      if (a && !a.matches(".pb-nav-link") && !a.closest(".pb-main")) a = null;
       if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0 ||
           a.target || a.hasAttribute("download")) return;
       var url = new URL(a.getAttribute("href"), location.href);
       if (url.origin !== location.origin) return;
-      if (url.pathname === location.pathname) { e.preventDefault(); return; }
+      if (url.pathname === location.pathname && url.search === location.search) {
+        if (url.hash) return;
+        e.preventDefault();
+        return;
+      }
       e.preventDefault();
-      navigate(url, a, true);
+      navigate(url, a.matches(".pb-nav-link") ? a : null, true);
     });
     ["pointerover", "focusin"].forEach(function (eventName) {
       document.addEventListener(eventName, function (e) {
-        var a = e.target.closest && e.target.closest("a.pb-nav-link");
+        var a = e.target.closest && e.target.closest("a[href]");
+        if (a && !a.matches(".pb-nav-link") && !a.closest(".pb-main")) a = null;
         if (!a) return;
         var url = new URL(a.href, location.href);
-        if (url.origin === location.origin && !pageCache.has(url.href)) {
+        if (url.origin === location.origin && url.pathname !== location.pathname &&
+            !pageCache.has(url.href)) {
           getPage(url).catch(function () {});
         }
       }, { passive: true });
@@ -142,6 +154,8 @@
      scroll-up. Bound once to window, so it survives .pb-main swaps. */
   var stripArmed = false;
   var articleTocObserver = null;
+  var articleTocMedia = window.matchMedia("(min-width: 1024px)");
+  var articleTocMediaArmed = false;
   function initStrip() {
     if (stripArmed) return;
     stripArmed = true;
@@ -162,13 +176,45 @@
     }, { passive: true });
   }
 
+  function decodeHash(hash) {
+    if (!hash) return "";
+    try { return decodeURIComponent(hash.slice(1)); }
+    catch (error) { return hash.slice(1); }
+  }
+
+  function disconnectArticleToc() {
+    if (articleTocObserver) {
+      articleTocObserver.disconnect();
+      articleTocObserver = null;
+    }
+    document.querySelectorAll('.pb-article-toc a').forEach(function (link) {
+      link.classList.remove("pb-toc-active");
+      link.removeAttribute("aria-current");
+    });
+  }
+
+  function syncSidebarToc(clearWhenMissing) {
+    var slot = document.querySelector(".pb-sidebar-toc-slot");
+    if (!slot) return;
+    var template = document.querySelector(".pb-main > .pb-article-toc-template");
+    if (template && (clearWhenMissing || !slot.firstElementChild)) {
+      slot.replaceChildren(template.content.firstElementChild.cloneNode(true));
+    }
+    else if (clearWhenMissing) slot.replaceChildren();
+  }
+
   function initArticleToc() {
-    if (articleTocObserver) articleTocObserver.disconnect();
-    var links = document.querySelectorAll('.pb-article-toc a[href^="#"]');
+    disconnectArticleToc();
+    syncSidebarToc(false);
+    var toc = articleTocMedia.matches
+      ? document.querySelector(".pb-sidebar-toc-slot .pb-article-toc--desktop")
+      : document.querySelector(".pb-main .pb-article-toc--mobile");
+    if (!toc) return;
+    var links = toc.querySelectorAll('a[href^="#"]');
     if (!links.length) return;
     var byId = new Map();
     links.forEach(function (link) {
-      var id = decodeURIComponent(link.hash.slice(1));
+      var id = decodeHash(link.hash);
       if (!byId.has(id)) byId.set(id, []);
       byId.get(id).push(link);
     });
@@ -177,13 +223,14 @@
     }).filter(Boolean);
     var setActive = function (id) {
       links.forEach(function (link) {
-        var active = decodeURIComponent(link.hash.slice(1)) === id;
+        var active = decodeHash(link.hash) === id;
         link.classList.toggle('pb-toc-active', active);
         if (active) link.setAttribute('aria-current', 'location');
         else link.removeAttribute('aria-current');
       });
     };
     if (headings[0]) setActive(headings[0].id);
+    if (!headings.length || typeof IntersectionObserver === "undefined") return;
     articleTocObserver = new IntersectionObserver(function () {
       var current = headings[0];
       headings.forEach(function (heading) {
@@ -194,10 +241,17 @@
     headings.forEach(function (heading) { articleTocObserver.observe(heading); });
   }
 
+  function initArticleTocMedia() {
+    if (articleTocMediaArmed) return;
+    articleTocMediaArmed = true;
+    articleTocMedia.addEventListener("change", initArticleToc);
+  }
+
   function init() {
     initTheme();
     initRouter();
     initStrip();
+    initArticleTocMedia();
     initArticleToc();
     document.querySelectorAll("nav.md-code__nav").forEach(function (nav, index) {
       nav.setAttribute("aria-label", "Code block " + (index + 1) + " actions");
