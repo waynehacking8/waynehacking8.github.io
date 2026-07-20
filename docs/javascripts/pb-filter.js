@@ -171,9 +171,13 @@
     var bar = document.querySelector(".pb-filters");
     if (!bar) return;
     var buttons = bar.querySelectorAll("button[data-tag]");
-    var cards = document.querySelectorAll(".pb-pub[data-tags]");
+    var cards = document.querySelectorAll(".pb-pub[data-tags], .pb-post-card[data-tags]");
     if (!buttons.length || !cards.length) return;
+    var requested = new URL(location.href).searchParams.getAll("tag");
     buttons.forEach(function (btn) {
+      if (requested.indexOf(btn.getAttribute("data-tag")) !== -1) {
+        btn.classList.add("active");
+      }
       btn.setAttribute("aria-pressed", btn.classList.contains("active"));
       btn.addEventListener("click", function () {
         btn.classList.toggle("active");
@@ -186,11 +190,23 @@
           var tags = card.getAttribute("data-tags").split(",");
           var show =
             active.length === 0 ||
-            active.some(function (t) { return tags.indexOf(t) !== -1; });
+            active.every(function (t) { return tags.indexOf(t) !== -1; });
           card.classList.toggle("pb-hidden", !show);
         });
+        var url = new URL(location.href);
+        url.searchParams.delete("tag");
+        active.forEach(function (tag) { url.searchParams.append("tag", tag); });
+        history.replaceState(history.state, "", url);
       });
     });
+    if (requested.length) {
+      cards.forEach(function (card) {
+        var tags = card.getAttribute("data-tags").split(",");
+        card.classList.toggle("pb-hidden", !requested.every(function (tag) {
+          return tags.indexOf(tag) !== -1;
+        }));
+      });
+    }
   }
   /* document$ re-emits on every instant-navigation page swap;
      plain DOMContentLoaded only fires on the first full load */

@@ -14,6 +14,8 @@ nav:
   - Patches: patches.md
   - Blog:
       - blog/index.md
+      - Inkling 975B architecture: blog/inkling-975b-architecture.md
+      - Kimi K3 2.8T architecture: blog/kimi-k3-architecture.md
       - Notes — TensorRT-LLM + Triton serving: blog/notes-trtllm-triton-serving.md
       - Tensor-parallel & the NVLink wall: blog/nccl-nvlink-bandwidth.md
       - RAG groundedness (0% vs 50%): blog/rag-groundedness-guardrail.md
@@ -61,13 +63,13 @@ theme:
 # bump ?v= on every extra.css change — GitHub Pages caches assets for
 # 10 minutes and browsers honor it, so an unversioned URL shows stale CSS
 extra_css:
-  - stylesheets/extra.css?v=20260720.14
+  - stylesheets/extra.css?v=20260720.15
 
 # same 10-minute GitHub Pages cache applies to JS — bump this ?v= on every
 # pb-filter.js change, exactly as for extra.css above. Without it a shipped
 # behaviour fix silently keeps running the old script in visitors' browsers.
 extra_javascript:
-  - javascripts/pb-filter.js?v=20260720.2
+  - javascripts/pb-filter.js?v=20260720.3
 
 extra:
   analytics:

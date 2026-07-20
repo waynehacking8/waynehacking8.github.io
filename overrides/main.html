@@ -6,8 +6,9 @@
   {{ super() }}
 
   {% set title = page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wei Cheng (Wayne) Chiu — Machine Learning Engineer" %}
-  {% set desc = config.site_description %}
-  {% set image = "https://wayne.is-a.dev/assets/profile.jpg" %}
+  {% set desc = page.meta.description if page and page.meta and page.meta.description else config.site_description %}
+  {% set image = page.meta.image if page and page.meta and page.meta.image else "https://wayne.is-a.dev/assets/profile.jpg" %}
+  {% set is_post = page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
 
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
@@ -15,7 +16,7 @@
   <link rel="canonical" href="{{ page.canonical_url }}">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="profile">
+  <meta property="og:type" content="{{ 'article' if is_post else 'profile' }}">
   <meta property="og:title" content="{{ title }}">
   <meta property="og:description" content="{{ desc }}">
   <meta property="og:url" content="{{ page.canonical_url }}">
@@ -101,8 +102,9 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ page.canonical_url }}" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "en"{% if page.meta and page.meta.description %},
-    "description": {{ page.meta.description | tojson }}{% endif %}{% if page.meta and page.meta.date %},
+    "inLanguage": "zh-Hant"{% if page.meta and page.meta.description %},
+    "description": {{ page.meta.description | tojson }}{% endif %}{% if page.meta and page.meta.image %},
+    "image": {{ page.meta.image | tojson }}{% endif %}{% if page.meta and page.meta.date %},
     "datePublished": {{ page.meta.date | tojson }}{% endif %}
   }
   </script>
