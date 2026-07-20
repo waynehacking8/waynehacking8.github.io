@@ -132,6 +132,14 @@
     {% endif %}
   {% endfor %}
 {%- endmacro %}
+{% macro render_desktop_article_toc(items) -%}
+  <nav class="pb-article-toc pb-article-toc--desktop" aria-label="Table of contents">
+    <p>On this page</p>
+    <ol>
+    {{ render_article_toc(items) }}
+    </ol>
+  </nav>
+{%- endmacro %}
 <!-- pbb.sh keeps nothing at the top except a small theme toggle; the
      Material header is hidden in CSS and this button drives its hidden
      palette inputs instead -->
@@ -162,14 +170,11 @@
   </p>
   <p class="pb-loc"><span class="twemoji">{% include ".icons/fontawesome/solid/location-dot.svg" %}</span> Taipei, Taiwan · UTC+8</p>
   <p class="pb-quote">making every FLOP count</p>
+  <div class="pb-sidebar-toc-slot">
   {% if is_post and page.toc %}
-  <nav class="pb-article-toc pb-article-toc--desktop" aria-label="Table of contents">
-    <p>On this page</p>
-    <ol>
-    {{ render_article_toc(page.toc) }}
-    </ol>
-  </nav>
+  {{ render_desktop_article_toc(page.toc) }}
   {% endif %}
+  </div>
 </section>
 <div class="pb-main">
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
@@ -191,6 +196,9 @@
   </nav>
 </div>
 {% if is_post and page.toc %}
+<template class="pb-article-toc-template">
+{{ render_desktop_article_toc(page.toc) }}
+</template>
 <details class="pb-article-toc pb-article-toc--mobile">
   <summary>On this page <span aria-hidden="true">⌄</span></summary>
   <ol>

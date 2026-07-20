@@ -5,12 +5,12 @@ Upstream open-source contributions to the LLM-inference stack — **17 merged/la
 
 <div class="pb-pr-wall">
 <a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev">
-<span class="pb-pr-wall-top"><span class="pb-live-label"><span class="pb-live-dot" aria-hidden="true"></span>Live · synced every few minutes</span><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span></span>
-<span class="pb-pr-wall-heading">Follow the work upstream <span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></span>
-<span class="pb-pr-wall-copy">Search every patch, filter by repository and status, or follow new activity as it lands.</span>
-<span class="pb-pr-wall-metrics"><span><strong>17</strong> merged / landed</span><span><strong>60</strong> in review</span></span>
+<span class="pb-pr-wall-status"><span class="pb-live-dot" aria-hidden="true"></span>Live PR wall</span>
+<strong class="pb-pr-wall-domain">prs.wayne.is-a.dev</strong>
+<span class="pb-pr-wall-counts">17 merged / landed · 60 in review</span>
+<span class="pb-pr-wall-arrow" aria-hidden="true">↗</span>
 </a>
-<a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml" aria-label="Subscribe to the PR wall RSS feed"><span class="pb-rss-icon" aria-hidden="true">◔</span><span><strong>RSS feed</strong><small>Follow new activity</small></span><span aria-hidden="true">→</span></a>
+<p class="pb-pr-wall-note">Synced every few minutes <span aria-hidden="true">·</span> <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a></p>
 </div>
 
 The tables below are a curated snapshot of representative work; the live wall is the
