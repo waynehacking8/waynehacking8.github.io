@@ -129,10 +129,17 @@
 </button>
 <div class="pb-grid">
 <aside class="pb-side{% if page and page.is_homepage %} pb-side--home{% endif %}">
-  <img class="pb-avatar" src="{{ 'assets/profile.jpg' | url }}" alt="Wei-Cheng (Wayne) Chiu" />
+  <img class="pb-avatar" src="/assets/profile.jpg" alt="Wei-Cheng (Wayne) Chiu" />
   <p class="pb-name">Wei-Cheng <b>Chiu</b></p>
   <p class="pb-cjk">邱偉誠</p>
   <p class="pb-icons">
+    {# pbb.sh leads the social row with the CV, before every other profile
+       link; the icon is academicons' `ai ai-cv`, vendored under
+       overrides/.icons since Material ships only material/fontawesome. #}
+    {# root-absolute, NOT `| url`: soft navigation swaps only .pb-main, so the
+       sidebar keeps the href it was first rendered with — a relative one would
+       resolve against the new path (/experiences/cv/) and 404 #}
+    <a class="pb-icon-cv" href="/cv/" title="CV"><span class="twemoji">{% include ".icons/academicons/cv.svg" %}</span></a>
     <a href="https://github.com/waynehacking8" title="GitHub"><span class="twemoji">{% include ".icons/fontawesome/brands/github.svg" %}</span></a>
     <a href="https://www.linkedin.com/in/wei-cheng-chiu/" title="LinkedIn"><span class="twemoji">{% include ".icons/fontawesome/brands/linkedin.svg" %}</span></a>
     <a href="https://x.com/itswaynechiu" title="X"><span class="twemoji">{% include ".icons/fontawesome/brands/x-twitter.svg" %}</span></a>
