@@ -4,21 +4,22 @@
    violet accents, org chips with real logos, date-pill news.
    ============================================================ */
 
-/* Display face for the CJK name. Wayne picked a heavy serif over the kai
-   script — "有沒有更有藝術感的 更霸氣的" — so this is Noto Serif TC at weight 900:
-   thick verticals, sharp triangular serifs, and it still reads at the 20px the
-   name is actually set in, which the handwriting candidates did not.
-   Subset to the three glyphs the site sets and inlined, for the reason below:
-   the Google Fonts @import silently fell back to system sans on a real iPhone
-   over cellular, and a request that is never made cannot be slow. 1572 bytes.
-   The family name is private so it cannot collide with a locally installed
-   Noto Serif TC, and the face is declared at weight 400 because that is the
-   weight the elements ask for — the outlines themselves are the 900 cut. */
+/* Display face for the CJK name — 衡山行書 (MasaFont Bold), a semi-cursive
+   brush hand. Wayne asked for 更草 after the heavy serif; the genuinely
+   cursive faces that also cover Traditional are rare, and the obvious ones
+   (Ma Shan Zheng, Zhi Mang Xing, Long Cang) have no 偉/誠 at all, while the
+   王漢宗 pair render them as the Simplified 伟/诚 despite passing a cmap check.
+   Subset to the three glyphs and inlined (2396 bytes) — the Google Fonts
+   @import this replaced fell back to system sans on a real iPhone over
+   cellular, and a request never made cannot be dropped.
+   SIL OFL 1.1, © 2020 Chun yu Yao, after 青柳衡山's 衡山毛筆フォント行書.
+   Reserved Font Name KouzanBrushFontGyousyo, hence the private family name
+   here. Licence text in tools/OFL.txt. */
 @font-face {
   font-family: "PB Name CJK";
   font-style: normal;
   font-weight: 400;
-  src: url(data:font/woff2;base64,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) format("woff2");
+  src: url(data:font/woff2;base64,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) format("woff2");
   unicode-range: U+90B1, U+5049, U+8AA0; /* 邱 偉 誠 */
 }
 
@@ -326,7 +327,9 @@
 .pb-cjk {
   color: var(--pb-ink);
   font-family: "PB Name CJK", serif;
-  font-size: 20px;
+  /* brush glyphs sit small inside their em box — a couple of px over the
+     Latin's optical size evens the two out */
+  font-size: 23px;
   letter-spacing: 0.08em;
   margin: 0;
   text-indent: 0.08em;
@@ -698,7 +701,7 @@
   .pb-name::after {
     content: "邱偉誠";
     font-family: "PB Name CJK", serif;
-    font-size: clamp(11px, 3.85vw, 15px);
+    font-size: clamp(12px, 4.3vw, 17px);
     font-weight: 400;
     margin-left: 5px;
   }

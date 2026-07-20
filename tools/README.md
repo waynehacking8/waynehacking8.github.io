@@ -6,11 +6,16 @@ is cut down to those and **inlined as a data URI** in
 (private so it cannot collide with a locally installed copy of the same family).
 `name-cjk.woff2` here is the source of record, not a served asset.
 
-Current face: **Noto Serif TC, weight 900** — 1572 bytes subset. Chosen over the
-previous kai script (LXGW WenKai TC) for weight and presence; it also survives
-the 20px the name is actually set at, which the handwriting candidates did not.
-The `@font-face` declares `font-weight: 400` because that is the weight the
-elements ask for — the outlines themselves are the 900 cut.
+Current face: **衡山行書 / MasaFont Bold** — a semi-cursive brush hand, 2396
+bytes subset. SIL OFL 1.1, © 2020 Chun yu Yao, after 青柳衡山's 衡山毛筆フォント行書
+(<https://github.com/max32002/masafont>). Reserved Font Name
+`KouzanBrushFontGyousyo`, which is why the family is renamed here; licence text
+in `OFL.txt` alongside.
+
+Brush glyphs sit small inside their em box, so the name is set a couple of px
+larger than the Latin would need — 23px on desktop, `clamp(12px, 4.3vw, 17px)`
+on phones. Raising it further starts to crowd the theme toggle; the name has a
+44px right gutter reserved for exactly that.
 
 ## Regenerate
 
@@ -18,8 +23,7 @@ Needed whenever the name changes: new characters have **no glyphs at all**
 otherwise, because of the `unicode-range` on the `@font-face`.
 
 ```sh
-# 1. get the full family. The Google Fonts CSS API hands back a .ttf URL when
-#    called with a plain User-Agent; grab the URL out of the CSS.
+# 1. get the full family
 curl -sL -H 'User-Agent: Mozilla/5.0' \
   'https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&display=swap'
 curl -sL -o full.ttf '<the fonts.gstatic.com .ttf URL from that CSS>'
@@ -37,10 +41,12 @@ Then bump `extra_css`'s `?v=` in `mkdocs.yml`.
 
 ## Two things worth knowing before swapping the face
 
-**Simplified-only brush fonts are a trap.** Ma Shan Zheng, Zhi Mang Xing and
-Long Cang all look great and all lack 偉 and 誠 — only 邱 renders and the rest
-fall back, which is the mixed-face bug this whole thing started with. Check
-coverage with `fontTools` before getting attached to a candidate.
+**Simplified fonts are a trap, in two different ways.** Ma Shan Zheng, Zhi Mang
+Xing and Long Cang simply lack 偉 and 誠 — only 邱 renders and the rest fall back,
+which is the mixed-face bug this whole thing started with. Worse, the 王漢宗
+faces (`cghio/wangfonts`) *pass* a cmap check at those codepoints and then draw
+the **Simplified** 伟/诚 anyway, because they are GB-to-Big5 conversions. A
+coverage check is not enough — always render the three glyphs and look.
 
 **Inline rather than link.** The earlier Google Fonts `@import` silently fell
 back to system sans on a real iPhone over cellular, while every desktop engine
