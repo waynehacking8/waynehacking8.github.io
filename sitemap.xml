@@ -2,62 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://wayne.is-a.dev/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://wayne.is-a.dev/cv/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/experiences/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/patches/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/projects/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/publications/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/talks/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/meta-rl/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/nccl-nvlink-bandwidth/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/notes-federated-learning-dp/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/pentest-intro/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/pp-intro/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://wayne.is-a.dev/blog/rag-groundedness-guardrail/</loc>
-         <lastmod>2026-07-19</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
 </urlset>

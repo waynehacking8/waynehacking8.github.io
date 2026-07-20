@@ -3,7 +3,8 @@
 > Machine Learning Engineer focused on LLM inference and GPU performance — hand-written
 > CUDA / Tensor-Core kernels, TensorRT-LLM and vLLM serving, and reproducible benchmarks
 > on Hopper and Blackwell — alongside multi-agent and RAG systems taken into production.
-> Most recently a Machine Learning Engineer at SYNCROBOTIC (through June 2026) and an
+> Currently a Field Application Engineer at Taiwan AILabs (on-premises LLM deployment),
+> previously a Machine Learning Engineer at SYNCROBOTIC (through June 2026), and an
 > M.S. Computer Science graduate of NTUST, researching AI/LLM security and
 > privacy-preserving ML in Prof. Shao-Jui Wang's lab.
 
@@ -16,6 +17,7 @@ trade-offs — each one links the public benchmark/code repository behind it.
 ## Profile
 
 - [About](https://wayne.is-a.dev/): role, focus areas, and contact.
+- [CV](https://wayne.is-a.dev/cv/): full curriculum vitae — summary, skills, experience, open source, research, education.
 - [Projects](https://wayne.is-a.dev/projects/): public repositories with measured results.
 - [Experience](https://wayne.is-a.dev/experiences/): roles at SYNCROBOTIC, TSMC, and research.
 

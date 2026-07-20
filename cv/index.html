@@ -6,35 +6,33 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
+        <meta name="description" content="Curriculum vitae of Wei Cheng (Wayne) Chiu — LLM inference and GPU performance, on-premises LLM deployment, and upstream open-source work.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
       
       
-        <link rel="canonical" href="https://wayne.is-a.dev/blog/pentest-intro/">
+        <link rel="canonical" href="https://wayne.is-a.dev/cv/">
       
-      
-        <link rel="prev" href="../pp-intro/">
       
       
       
         
       
       
-      <link rel="icon" href="../../assets/favicon.png">
+      <link rel="icon" href="../assets/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>滲透測試入門技術 - Wei-Cheng Chiu</title>
+        <title>CV - Wei-Cheng Chiu</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.1">
+      <link rel="stylesheet" href="../stylesheets/extra.css?v=20260720.1">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -74,13 +72,13 @@
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="google-site-verification" content="pN4RB1iqwSojWvWtpmDesMXHlDIpM-DswD1Wtt_rWIU">
-  <link rel="canonical" href="https://wayne.is-a.dev/blog/pentest-intro/">
+  <link rel="canonical" href="https://wayne.is-a.dev/cv/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="滲透測試入門技術 — Wei Cheng (Wayne) Chiu">
+  <meta property="og:title" content="CV — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
-  <meta property="og:url" content="https://wayne.is-a.dev/blog/pentest-intro/">
+  <meta property="og:url" content="https://wayne.is-a.dev/cv/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
@@ -88,7 +86,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="滲透測試入門技術 — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:title" content="CV — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
 
@@ -153,19 +151,6 @@
 
   
   
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "\u6ef2\u900f\u6e2c\u8a66\u5165\u9580\u6280\u8853",
-    "url": "https://wayne.is-a.dev/blog/pentest-intro/",
-    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/pentest-intro/" },
-    "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "en"
-  }
-  </script>
-  
 
   </head>
   
@@ -186,7 +171,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#cv" class="md-skip">
           Skip to content
         </a>
       
@@ -200,7 +185,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Wei-Cheng Chiu" class="md-header__button md-logo" aria-label="Wei-Cheng Chiu" data-md-component="logo">
+    <a href=".." title="Wei-Cheng Chiu" class="md-header__button md-logo" aria-label="Wei-Cheng Chiu" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 19.2c-2.5 0-4.71-1.28-6-3.2.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"/></svg>
@@ -220,7 +205,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              滲透測試入門技術
+              CV
             
           </span>
         </div>
@@ -313,7 +298,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -324,7 +311,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Wei-Cheng Chiu" class="md-nav__button md-logo" aria-label="Wei-Cheng Chiu" data-md-component="logo">
+    <a href=".." title="Wei-Cheng Chiu" class="md-nav__button md-logo" aria-label="Wei-Cheng Chiu" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 19.2c-2.5 0-4.71-1.28-6-3.2.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"/></svg>
@@ -342,7 +329,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -369,7 +356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../experiences/" class="md-nav__link">
+      <a href="../experiences/" class="md-nav__link">
         
   
   
@@ -396,7 +383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../publications/" class="md-nav__link">
+      <a href="../publications/" class="md-nav__link">
         
   
   
@@ -423,7 +410,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../projects/" class="md-nav__link">
+      <a href="../projects/" class="md-nav__link">
         
   
   
@@ -450,7 +437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../talks/" class="md-nav__link">
+      <a href="../talks/" class="md-nav__link">
         
   
   
@@ -477,7 +464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../patches/" class="md-nav__link">
+      <a href="../patches/" class="md-nav__link">
         
   
   
@@ -501,31 +488,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -543,7 +525,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -561,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../blog/" class="md-nav__link">
         
   
   
@@ -589,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../notes-trtllm-triton-serving/" class="md-nav__link">
+      <a href="../blog/notes-trtllm-triton-serving/" class="md-nav__link">
         
   
   
@@ -617,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../nccl-nvlink-bandwidth/" class="md-nav__link">
+      <a href="../blog/nccl-nvlink-bandwidth/" class="md-nav__link">
         
   
   
@@ -645,7 +627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../rag-groundedness-guardrail/" class="md-nav__link">
+      <a href="../blog/rag-groundedness-guardrail/" class="md-nav__link">
         
   
   
@@ -673,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../notes-federated-learning-dp/" class="md-nav__link">
+      <a href="../blog/notes-federated-learning-dp/" class="md-nav__link">
         
   
   
@@ -701,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../notes-cuda-tensor-core-gemm/" class="md-nav__link">
+      <a href="../blog/notes-cuda-tensor-core-gemm/" class="md-nav__link">
         
   
   
@@ -729,7 +711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../meta-rl/" class="md-nav__link">
+      <a href="../blog/meta-rl/" class="md-nav__link">
         
   
   
@@ -757,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pp-intro/" class="md-nav__link">
+      <a href="../blog/pp-intro/" class="md-nav__link">
         
   
   
@@ -782,37 +764,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    滲透測試入門技術
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../blog/pentest-intro/" class="md-nav__link">
         
   
   
@@ -828,131 +783,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        滲透測試入門
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="滲透測試入門">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        什麼是滲透測試？
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        滲透測試的目標與範圍
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        滲透測試的類型
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        滲透測試的流程
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        滲透測試的相關工具
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        滲透測試的相關規範
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        其他資安服務
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        結論
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -973,7 +803,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -992,107 +824,79 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        滲透測試入門
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="滲透測試入門">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        什麼是滲透測試？
+        Summary
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#technical-skills" class="md-nav__link">
     <span class="md-ellipsis">
       
-        滲透測試的目標與範圍
+        Technical Skills
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#experience" class="md-nav__link">
     <span class="md-ellipsis">
       
-        滲透測試的類型
+        Experience
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#open-source" class="md-nav__link">
     <span class="md-ellipsis">
       
-        滲透測試的流程
+        Open Source
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#research-publications" class="md-nav__link">
     <span class="md-ellipsis">
       
-        滲透測試的相關工具
+        Research &amp; Publications
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#education" class="md-nav__link">
     <span class="md-ellipsis">
       
-        滲透測試的相關規範
+        Education
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#certifications-awards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        其他資安服務
+        Certifications &amp; Awards
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        結論
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1142,125 +946,219 @@
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
 <div class="pb-nav-row">
-  <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">滲透測試入門技術</h1></a>
+  <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">CV</h1></a>
   <nav class="pb-nav-tabs">
     
     
       
       
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-about" href="../..">About</a>
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-about" href="..">About</a>
       
     
       
       
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../../experiences/">Experiences</a>
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../experiences/">Experiences</a>
       
     
       
       
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../../publications/">Publications</a>
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../publications/">Publications</a>
       
     
       
       
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../../projects/">Projects</a>
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../projects/">Projects</a>
       
     
       
       
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../../talks/">Talks</a>
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../talks/">Talks</a>
       
     
       
       
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-patches" href="../../patches/">Patches</a>
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-patches" href="../patches/">Patches</a>
       
     
+      
+      
+      <a class="pb-nav-link" style="view-transition-name: pb-tab-blog" href="../blog/">Blog</a>
       
     
   </nav>
 </div>
 
                   
+  
 
 
 
-<h1 id="_1">滲透測試入門技術<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p><em>2025-01-10 · cybersecurity</em></p>
-<h3 id="_2">滲透測試入門<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<p>在現今網路發達的時代，企業的資安防護至關重要。<strong>滲透測試</strong>，作為一種模擬駭客攻擊的手段，可以幫助企業檢測並修補潛在的安全漏洞，從而保護企業的敏感資料和系統安全。本文將深入探討滲透測試的定義、流程、類型以及相關工具和規範，幫助讀者全面了解這一重要的資安服務。</p>
-<h4 id="_3">什麼是滲透測試？<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
-<p><strong>滲透測試</strong>，簡單來說，就是<strong>模擬駭客的攻擊行為</strong>，對企業的網路、系統、網站等進行安全檢測，找出其中的弱點與漏洞。滲透測試不僅僅是單純的掃描漏洞，更重要的是透過實際的攻擊嘗試，來驗證這些漏洞是否真的存在，以及可能造成的危害。</p>
-<p><strong>為什麼要做滲透測試？</strong></p>
-<p>企業內部往往存在大量的<strong>敏感資料</strong>，如客戶資料、業務資料、財務資料等，這些資料一旦被駭客取得並洩露，將對企業造成巨大的損失。為了在真正的駭客攻擊之前發現並修補這些漏洞，企業需要定期進行滲透測試，檢視自身的安全防護是否足夠。</p>
-<h4 id="_4">滲透測試的目標與範圍<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
-<p>滲透測試的目標範圍涵蓋企業所使用的所有<strong>應用程式</strong>（包括網站、系統、設備等軟硬體）以及<strong>網路服務</strong>（如企業內部網路/網段）。無論是自行開發、委外開發或購買的服務/設備，都應納入滲透測試的範圍。</p>
-<p>在進行滲透測試之前，受測方需要提供以下資訊給測試方，以利時程評估和報價：
-*   測試的<strong>域名/IP</strong>，並證明合法持有。
-*   是否限制特定時間進行檢測。
-*   其他特殊需求。</p>
-<p>為了確保測試的合法性，企業需要與測試方簽訂合約，授權測試方進行滲透測試。</p>
-<h4 id="_5">滲透測試的類型<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
-<p>滲透測試根據受測方提供的資訊量，可分為以下三種主要類型：</p>
+
+<h1 id="cv">CV<a class="headerlink" href="#cv" title="Permanent link">&para;</a></h1>
+<div class="pb-cv-head">
+<p class="pb-cv-contact">
+<a href="mailto:waynehacking8@gmail.com">waynehacking8@gmail.com</a> ·
+<a href="https://www.linkedin.com/in/wei-cheng-chiu/">LinkedIn</a> ·
+<a href="https://github.com/waynehacking8">GitHub</a> ·
+<a href="https://prs.wayne.is-a.dev">PR wall</a> ·
+Taipei, Taiwan
+</p>
+<p class="pb-cv-updated">Last updated Jul 2026</p>
+</div>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Machine learning engineer working the whole depth of the LLM inference stack —
+hand-written CUDA / Tensor-Core kernels underneath, TensorRT-LLM / vLLM / SGLang
+serving above, and customer deployments on top. Currently a Field Application
+Engineer at <strong>Taiwan AILabs</strong>, putting on-premises LLM systems (FedGPT) into
+customer environments. Previously <strong>sole developer</strong> of an enterprise multi-agent
+AI platform on DGX-class hardware, taken from PoC to production at <strong>two enterprise
+customers</strong>. Active upstream — <strong>17 merged/landed patches · 60 in review</strong> across
+FlashInfer, vLLM, SGLang, PyTorch, Dynamo, CUTLASS, TensorRT-LLM and LMDeploy,
+concentrated on early consumer-Blackwell (<strong>SM120</strong>) and <strong>NVFP4</strong> enablement.
+Research background in AI/LLM security and privacy-preserving ML.</p>
+<h2 id="technical-skills">Technical Skills<a class="headerlink" href="#technical-skills" title="Permanent link">&para;</a></h2>
+<div class="pb-cv-skills">
+<dl>
+<dt>LLM Serving &amp; GPU</dt>
+<dd>vLLM, TensorRT-LLM, SGLang, Triton Inference Server, NVIDIA NIM, Dynamo,
+      FlashInfer, NCCL, Flash Attention, KV-cache, quantization (FP8 / INT4 /
+      NVFP4); CUDA C/C++, WMMA &amp; <code>mma.sync</code> Tensor Cores, CUTLASS,
+      Nsight Systems &amp; Compute</dd>
+<dt>LLM Apps &amp; Agents</dt>
+<dd>Multi-agent orchestration (LangChain, LangGraph), hybrid RAG (vector +
+      keyword + knowledge graph), LLM evaluation &amp; guardrails, function
+      calling / tool use, MCP, coding agents</dd>
+<dt>Infrastructure &amp; Ops</dt>
+<dd>Linux, Kubernetes, Docker, on-prem GPU serving, distributed tracing;
+      H100, DGX Spark (GB10) and Blackwell workstation hardware</dd>
+<dt>Privacy &amp; Security ML</dt>
+<dd>Federated learning, differential privacy, secure multi-party computation
+      (MP-SPDZ), safety alignment</dd>
+<dt>Languages</dt>
+<dd>Python, TypeScript, Rust, C/C++; PyTorch, FastAPI, NestJS;
+      PostgreSQL, Milvus, Redis</dd>
+</dl>
+</div>
+<h2 id="experience">Experience<a class="headerlink" href="#experience" title="Permanent link">&para;</a></h2>
+<div class="pb-timeline">
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">Field Application Engineer</p>
+<p class="pb-tl-org"><a href="https://ailabs.tw/zh/home/">Taiwan AILabs</a></p>
+<p class="pb-tl-date">Jul 2026 – Present · Taipei City, Taiwan</p>
 <ul>
-<li><strong>黑箱測試</strong>：受測方僅提供目標的名稱/網址/IP，測試方需要自行蒐集資訊，模擬真實駭客的攻擊。這種測試方式耗時較長，成本也較高。</li>
-<li><strong>白箱測試</strong>：受測方提供目標的所有資訊，包括內部結構、程式碼、帳號密碼等，測試方可事先針對程式碼進行審查，並擬定攻擊方式。</li>
-<li><strong>灰箱測試</strong>：受測方提供部分目標資訊，測試方仍需自行蒐集部分資訊，此類型介於黑箱與白箱之間。</li>
+<li>Field deployment of on-premises LLM systems (<strong>FedGPT</strong>) into customer environments — Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting.</li>
 </ul>
-<h4 id="_6">滲透測試的流程<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
-<p>滲透測試是一個完整的流程，主要分為以下六個階段：</p>
-<ol>
-<li><strong>資訊蒐集</strong>：這是滲透測試中最重要的一步，透過各種手段蒐集目標的所有資訊，包括主動情蒐和被動情蒐。<ul>
-<li><strong>被動情蒐</strong>：蒐集公開在網路上的資訊，如WHOIS資訊、公司聯絡資訊等。</li>
-<li><strong>主動情蒐</strong>：直接與目標互動，使用掃描工具蒐集資訊，如端口掃描、服務枚舉等。</li>
-</ul>
-</li>
-<li><strong>漏洞識別</strong>：根據收集到的資訊，判斷目標是否存在漏洞和弱點，並使用弱點掃描工具輔助。<ul>
-<li>針對系統弱點掃描的工具有 Open-VAS 與 Nessus.</li>
-<li>針對網站安全弱點掃描的工具有 AWVS 與 OWASP ZAP.</li>
-</ul>
-</li>
-<li><strong>漏洞利用</strong>：針對識別出的漏洞和弱點，利用已知的漏洞或自行撰寫的 POC (Proof of Concept) 來驗證漏洞的存在和危害性。<ul>
-<li>重大風險的漏洞可能導致遠端執行目標系統指令或任意存取敏感資料.</li>
-</ul>
-</li>
-<li><strong>清除紀錄</strong>：在測試結束後，清除測試過程中產生的所有資料，包括測試帳號、上傳檔案等，避免影響企業的正常運作。</li>
-<li><strong>撰寫報告</strong>：撰寫詳細的滲透測試報告，包括測試目的、方法、過程、結果、弱點分析和修復建議。</li>
-<li><strong>修復複測</strong>：企業根據報告內容修復漏洞後，測試方會進行複測，確認漏洞是否已修復。</li>
-</ol>
-<h4 id="_7">滲透測試的相關工具<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
-<p>滲透測試需要使用許多工具來輔助，以下是一些常用的工具及其功能：</p>
+</div>
+</div>
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/syncrobotic.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">Machine Learning Engineer — Multi-Agent AI, RAG, LLM Serving</p>
+<p class="pb-tl-org">SYNCROBOTIC</p>
+<p class="pb-tl-date">Sep 2025 – Jun 2026 · New Taipei City, Taiwan</p>
 <ul>
-<li><strong>Google Hacking</strong>：利用 Google 搜尋引擎的進階語法來尋找目標的敏感資訊，例如包含帳號密碼的檔案、網路設定檔等.</li>
-<li><strong>Shodan</strong>：一個專門搜尋網路設備的引擎，可蒐集全球設備的資訊，包括端口、版本等.</li>
-<li><strong>theHarvester</strong>：用來蒐集目標的電子郵件信箱，可針對不同的搜尋引擎進行蒐集.</li>
-<li><strong>Recon-ng</strong>：一個 Python 撰寫的情蒐框架，內含多種模組可使用，例如可以查詢是否有電子信箱洩漏的紀錄.</li>
-<li><strong>Nmap</strong>：一個強大的網路掃描工具，可以用來掃描端口、服務、版本，以及執行腳本以檢測漏洞.</li>
-<li><strong>Whois</strong>：用來查詢域名註冊資訊的工具.</li>
-<li><strong>nslookup</strong>：用來查詢 DNS 記錄的工具.</li>
-<li><strong>host</strong>：與 nslookup 功能類似，可以將域名轉換成 IP.</li>
-<li><strong>dig</strong>：另一個 DNS 查詢工具，可以檢測 DNS 伺服器的資訊.</li>
-<li><strong>fierce</strong>：利用 Perl 腳本撰寫的工具，可以定位 IP 範圍和主機名稱，並爆破子域名.</li>
-<li><strong>DNSenum</strong>：可以枚舉 DNS 資訊，找出非連續 IP 範圍，並蒐集子域名.</li>
-<li><strong>DNSrecon</strong>：可以查詢 DNS 記錄，檢查 zone transfers.</li>
-<li><strong>Sublist3r</strong>：利用 Python 撰寫，透過公開資料搜尋子域名，並進行爆破.</li>
-<li><strong>.git 洩漏工具</strong>：例如 <code>scrabble</code> 和 <code>GitHack.py</code> 可以用來從 <code>.git</code> 資料夾中獲取原始碼.</li>
-<li><strong>.DS_Store 洩漏工具</strong>：例如 <code>ds_store_exp.py</code> 可以用來從 <code>.DS_Store</code> 檔案中獲取敏感資訊.</li>
+<li><strong>Sole developer</strong> of an enterprise multi-agent AI platform on DGX-class hardware — owned end-to-end from PoC through production and rolled out at <strong>two enterprise customers</strong>, partnering with each through deployment and troubleshooting.</li>
+<li>Scoped ambiguous enterprise requirements into a working multi-agent system, and unified local and commercial LLM backends under one routing layer, removing per-team model wrappers.</li>
+<li>Designed a planning–execution–validation orchestration with topological scheduling and parallel agent dispatch for multi-step workflows.</li>
+<li>Built a hybrid retrieval layer on LightRAG (vector + keyword + knowledge graph) with embedding-based semantic caching, cutting redundant LLM calls and keeping answers consistent on repeat queries.</li>
+<li>Owned production reliability — prompt/pipeline regression tests, output validation across quality and safety, distributed tracing; added CUDA-accelerated hot paths on critical inference.</li>
 </ul>
-<h4 id="_8">滲透測試的相關規範<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
-<p>在進行滲透測試時，需要遵循一些國際標準和規範，以確保測試的有效性和安全性：
-*   <strong>OSSTMM</strong> (Open Source Security Testing Methodology Manual)：開放原始碼安全測試方法指南.
-*   <strong>PTES</strong> (Penetration Testing Execution Standard) Technical Guidelines：提供測試的注意事項與細節.
-*   <strong>OWASP</strong> (Open Web Application Security Project) APSVS (Application Security Verification Standard)：OWASP 應用程式安全驗證標準，提供 WEB 測試指南.</p>
-<h4 id="_9">其他資安服務<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
-<p>除了滲透測試之外，還有其他常見的資安服務：
-*   <strong>弱點掃描</strong>：利用掃描工具針對企業的網路、系統、網站等進行弱點掃描，主要找出已知的漏洞.
-*   <strong>紅隊演練</strong>：模擬真實駭客的攻擊，並加入社交工程、DDoS、實體安全等元素，檢測企業的整體防禦能力.
-*   <strong>BAS</strong> (Breach and Attack Simulation)：一種介於弱點掃描和滲透測試之間的自動化攻擊模擬工具，通過預先編寫好的腳本進行攻擊演練，可測試防禦設備是否能有效偵測和阻隔.</p>
-<h4 id="_10">結論<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
-<p>滲透測試是企業資安防護中不可或缺的一環。透過模擬駭客攻擊，企業可以及早發現並修補潛在的漏洞，降低資安風險。</p>
-
-
+<p><em>Stack: Python · TypeScript · Rust · vLLM · LightRAG · NestJS · CUDA</em></p>
+</div>
+</div>
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/advantech.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">AI Agent Engineer (Intern)</p>
+<p class="pb-tl-org">Advantech</p>
+<p class="pb-tl-date">Jun 2025 – Aug 2025 · Taipei City, Taiwan</p>
+<ul>
+<li>Built coding agents for internal developer tooling using function calling / tool use — automating code review, test generation, and static analysis across the SDLC (Claude Code-style assistants).</li>
+<li>Benchmarked tool-use reliability across commercial and local LLM backends; designed reusable prompt templates and skill patterns adopted by the team.</li>
+</ul>
+</div>
+</div>
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/tsmc.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">Facility Engineer — R&amp;D Alternative Military Service</p>
+<p class="pb-tl-org">TSMC (Taiwan Semiconductor Manufacturing Co.)</p>
+<p class="pb-tl-date">May 2021 – Oct 2022 · Tainan City, Taiwan</p>
+<ul>
+<li>Supported R&amp;D fab facility operations at the world's leading semiconductor foundry under the national R&amp;D alternative military service program.</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="open-source">Open Source<a class="headerlink" href="#open-source" title="Permanent link">&para;</a></h2>
+<div class="pb-timeline">
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/nvidia.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">SM120 / NVFP4 enablement across the LLM-inference stack</p>
+<p class="pb-tl-org">FlashInfer · vLLM · SGLang · PyTorch · Dynamo · CUTLASS · TensorRT-LLM · LMDeploy</p>
+<p class="pb-tl-date">2026 – Present · 17 merged/landed · 60 in review</p>
+<ul>
+<li>Kernel-level support for consumer Blackwell (<strong>SM120</strong>) and <strong>NVFP4</strong> carried upward through kernels → engines → disaggregated serving.</li>
+<li>Focus on <em>silent-correctness</em> bugs — the ones where tests pass and the answers are still wrong.</li>
+<li>Every patch tracked on the auto-updating <a href="https://prs.wayne.is-a.dev">PR wall</a> (<a href="https://prs.wayne.is-a.dev/feed.xml">RSS</a>); see also <a href="../patches/">Patches</a>.</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="research-publications">Research &amp; Publications<a class="headerlink" href="#research-publications" title="Permanent link">&para;</a></h2>
+<div class="pb-timeline">
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/ntust.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">Graduate Researcher — Prof. Shao-Jui Wang's Lab</p>
+<p class="pb-tl-org">NTUST</p>
+<p class="pb-tl-date">Aug 2024 – Present</p>
+<ul>
+<li><strong>SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning</strong> — first author, with Shao-Jui Wang. Under review at <em>IEEE Transactions on Dependable and Secure Computing (TDSC)</em>, 2026. Preserves LLM safety alignment under harmful/adversarial fine-tuning at lower compute than full re-alignment.</li>
+<li>Research in <strong>AI/LLM security and safety alignment</strong> and <strong>privacy-enhancing ML</strong> — federated learning, differential privacy, and secure multi-party computation.</li>
+<li>Differentially-private synthetic-data generation with <strong>MP-SPDZ</strong> for the NICS privacy-enhancing-technologies competition.</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="education">Education<a class="headerlink" href="#education" title="Permanent link">&para;</a></h2>
+<div class="pb-timeline">
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/ntust.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">M.S. in Computer Science and Information Engineering</p>
+<p class="pb-tl-org">National Taiwan University of Science and Technology (NTUST)</p>
+<p class="pb-tl-date">Aug 2024 – Apr 2026 · GPA 4.09 · Taipei, Taiwan</p>
+<p>Research focus: LLMOps (fine-tuning, safety alignment), CUDA parallel programming,
+inference acceleration.</p>
+</div>
+</div>
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">M.S. in Structural Engineering</p>
+<p class="pb-tl-org">National Taiwan University (NTU)</p>
+<p class="pb-tl-date">Sep 2018 – Jun 2020 · Taipei, Taiwan</p>
+</div>
+</div>
+<div class="pb-tl-item">
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
+<div class="pb-tl-body">
+<p class="pb-tl-title">B.S. in Civil Engineering</p>
+<p class="pb-tl-org">National Taiwan University (NTU)</p>
+<p class="pb-tl-date">Sep 2014 – Jun 2018 · Taipei, Taiwan</p>
+</div>
+</div>
+</div>
+<h2 id="certifications-awards">Certifications &amp; Awards<a class="headerlink" href="#certifications-awards" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>NVIDIA Deep Learning Institute</strong> — Fundamentals of Accelerated Computing with CUDA C/C++ and CUDA Python (5 certificates), 2024.</li>
+<li><strong>NICS Privacy-Enhancing Technologies (PETs) Competition</strong> — Rank 3/11, differentially-private synthetic data via MP-SPDZ.</li>
+<li><strong>International ICT Innovative Services Awards</strong>, 2024.</li>
+</ul>
 
 
 
@@ -1269,7 +1167,14 @@
 
 
   
+  
 
+
+
+  
+
+
+  
 
 
 
@@ -1360,12 +1265,12 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "content.code.copy", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js"></script>
+        <script src="../javascripts/pb-filter.js"></script>
       
     
   </body>
