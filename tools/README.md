@@ -1,7 +1,7 @@
 # Name font subsets
 
 Both halves of the name in the sidebar are set in subset, inlined faces:
-`name-cjk.woff2` (邱偉誠) and `name-latin-400.woff2` ("Wei-Cheng Chiu").
+`name-cjk.woff2` (邱偉誠) and `name-latin-500/700.woff2` ("Wei-Cheng Chiu").
 Everything below applies to both.
 
 ## CJK — 邱偉誠
@@ -29,15 +29,15 @@ on phones. Raising it further starts to crowd the theme toggle; the name has a
 
 ## Latin — Wei-Cheng Chiu
 
-**Alex Brush Regular** (SIL OFL 1.1), subset to the ten characters the name
-uses, 1.88KB, under the private family `PB Name Latin`. This handwritten script
-was explicitly selected to pair with the brush CJK. **This is a deliberate
-departure from pbb.**
+**Caveat 500 and 700** (SIL OFL 1.1), subset to the ten characters the name
+uses, ~3.9KB for the pair, under the private family `PB Name Latin`. It was
+chosen after Alex Brush proved too formal and ornamental in the live sidebar:
+Caveat reads as everyday pen handwriting while remaining clear at phone size.
+**This is a deliberate departure from pbb.**
 
-Alex Brush has only one weight, so the original thin/bold split is intentionally
-absent and synthetic bold is disabled. Its compact x-height keeps the name at
-33px on desktop and `clamp(16px, 5.7vw, 23px)` on phones. Regenerate with the
-same `fontTools.subset` command, using `--text='Wei-ChngCu '`.
+The 500/700 pair restores the original `Wei-Cheng` / `Chiu` weight contrast.
+The name is 32px on desktop and `clamp(17px, 5.5vw, 22px)` on phones.
+Regenerate with the same `fontTools.subset` command, using `--text='Wei-ChngCu '`.
 
 ## Regenerate
 
