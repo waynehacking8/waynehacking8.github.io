@@ -28,7 +28,10 @@ theme:
   language: en
   custom_dir: overrides
   font: false
-  favicon: assets/favicon.png
+  # root-absolute for the same reason the sidebar hrefs are: soft navigation
+  # pushes a new path without re-rendering <head>, so a relative favicon gets
+  # re-resolved against it and 404s (/talks/assets/favicon.png)
+  favicon: /assets/favicon.png
   icon:
     logo: material/account-circle
   features:
