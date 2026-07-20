@@ -1,7 +1,12 @@
 ---
 description: "Kimi K3 2.8T 架構解析：KDA 混合線性注意力、Attention Residuals、Stable LatentMoE，以及與 Inkling 975B 的設計分歧。"
 date: "2026-07-20"
+language: "zh-Hant"
 image: "https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1"
+tags:
+  - Architecture
+  - Linear Attention
+  - MoE
 ---
 
 # Kimi K3 2.8T：用 KDA 與 AttnRes 推進 3T 級開放模型
@@ -13,10 +18,10 @@ image: "https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176
   <figcaption>官方平台主視覺 · <a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></figcaption>
 </figure>
 
-Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token context，定位在長周期 coding、knowledge work 與 reasoning。它把超長序列與超深網路的問題分別交給 **Kimi Delta Attention（KDA）** 與 **Attention Residuals（AttnRes）**。
+Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token context，定位在長周期 coding、knowledge work 與 reasoning。它把超長序列與超深網路的問題分別交給 **Kimi Delta Attention（KDA）** 與 **Attention Residuals（AttnRes）**。[^k3-overview]
 
 !!! note "發布狀態（2026-07-20）"
-    Kimi K3 已可在 Kimi.com、Kimi Work、Kimi Code 與 API 使用；官方文件表示完整模型權重將在 **2026-07-27 前**釋出。本文不把尚未發生的權重釋出寫成已完成事件，架構細節也以現有官方資訊為限。
+    Kimi K3 已可在 Kimi.com、Kimi Work、Kimi Code 與 API 使用；官方文件表示完整模型權重將在 **2026-07-27 前**釋出。本文不把尚未發生的權重釋出寫成已完成事件，架構細節也以現有官方資訊為限。[^k3-quickstart]
 
 ## TL;DR
 
@@ -29,7 +34,7 @@ Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token co
 
 ## 1. KDA：把長序列狀態更新做得更細
 
-標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。
+標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。[^kda-paper]
 
 這種設計的核心不是「完全不需要 attention」，而是把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。
 
@@ -48,7 +53,7 @@ $G_t$ 是遺忘／保留門，$U_t$ 是當前 token 寫入的更新。KDA 的 ch
 
 ## 2. AttnRes：殘差不再只連上一層
 
-傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。
+傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。[^attnres-paper]
 
 可以把它理解成兩種不同維度的記憶：
 
@@ -88,7 +93,7 @@ K3 將 MoE 稀疏度推到 **896 experts、每次啟用 16 個**，搭配 Stable
 
 ## 5. API 與部署策略
 
-K3 API 提供固定 1M context，官方文件表示不因 context 長度採階梯式單價；cache hit、cache miss 與 output 仍分別計價。它也提供 automatic context caching、tool calls、structured output、dynamic tool loading，以及 low/high/max 的 reasoning effort 設定。
+K3 API 提供固定 1M context，官方文件表示不因 context 長度採階梯式單價；cache hit、cache miss 與 output 仍分別計價。它也提供 automatic context caching、tool calls、structured output、dynamic tool loading，以及 low/high/max 的 reasoning effort 設定。[^k3-pricing]
 
 這裡也要區分兩件事：API 能用，不等於開放權重部署已成熟。截至 7 月 20 日，權重與完整 technical report 尚未公開；任何 vLLM 吞吐、量化品質或多節點 routing 結論，都應在實際 artifact 發布後再驗證。
 
@@ -106,10 +111,8 @@ Moonshot 把 K3 的核心戰場放在 long-horizon coding：理解大型 reposit
 
 K3 的技術訊號比 2.8T 這個 headline 更重要：KDA 解序列長度、AttnRes 解模型深度、極稀疏 MoE 解容量與 active compute 的分離。如果完整權重與 technical report 如期釋出，真正值得看的將是系統層數據——精度格式、單節點／多節點吞吐、expert communication、長 context 品質與量化後退化，而不只是參數量。
 
-## References
-
-- [Kimi K3 官方技術文章](https://www.kimi.com/blog/kimi-k3)
-- [Kimi K3 Quickstart & Specifications](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart)
-- [Kimi K3 Pricing](https://platform.kimi.ai/docs/pricing/chat-k3)
-- [Kimi Linear / KDA paper](https://arxiv.org/abs/2510.26692)
-- [Attention Residuals paper](https://arxiv.org/abs/2603.15031)
+[^k3-overview]: [Moonshot AI, “Kimi K3”](https://www.kimi.com/blog/kimi-k3). Used for the announced architecture and product positioning.
+[^k3-quickstart]: [Kimi K3 Quickstart & Specifications](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart). Used for availability, context length, and release-state claims.
+[^kda-paper]: [“Kimi Linear: An Expressive, Efficient Attention Architecture”](https://arxiv.org/abs/2510.26692). Used for the KDA mechanism; K3-specific layer ratios remain undisclosed.
+[^attnres-paper]: [“Attention Residuals”](https://arxiv.org/abs/2603.15031). Used for the cross-layer residual mechanism.
+[^k3-pricing]: [Kimi API pricing](https://platform.kimi.ai/docs/pricing/chat-k3). Used for cache and token-pricing distinctions.

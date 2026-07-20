@@ -1,5 +1,13 @@
 ---
 description: "Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees."
+date: "2026-05-31"
+updated: "2026-07-21"
+language: "en"
+image: "https://wayne.is-a.dev/assets/blog/federated-dp.webp"
+tags:
+  - Privacy
+  - Federated Learning
+  - Differential Privacy
 ---
 
 # Notes on Federated Learning and Differential Privacy
@@ -15,7 +23,7 @@ Working notes on building federated learning (FL) from scratch, what actually br
 **Non-IID** data, and how **differential privacy (DP)** and **secure aggregation** fit on top —
 including the honest negative results that the marketing slides leave out. They follow the
 implementation in
-[**federated-learning-lab**](https://github.com/waynehacking8/federated-learning-lab)
+[**federated-learning-lab**](https://github.com/waynehacking8/federated-learning-lab)[^fl-repo]
 (FedAvg / FedProx / SCAFFOLD, DP-SGD, secure aggregation; 33/33 tests, literature
 cross-validated).
 
@@ -28,7 +36,7 @@ locally and sends **model updates** to a server that aggregates them. The canoni
 1. Server broadcasts the global model.
 2. Each client does a few local SGD epochs on its own data.
 3. Each client sends back its updated weights.
-4. Server averages the weights (weighted by client data size) → new global model.
+4. Server averages the weights (weighted by client data size) → new global model.[^fedavg]
 
 That's it. The elegance is that raw data stays on-device; the difficulty is that the clients'
 data distributions are **not** identical.
@@ -42,10 +50,10 @@ their updates produces **client drift**: the global model lands somewhere none o
 
 Two well-known fixes, both implemented and measured in the lab:
 
-- **FedProx** — add a proximal term that penalises drifting too far from the global model.
+- **FedProx** — add a proximal term that penalises drifting too far from the global model.[^fedprox]
   Stabilises training when clients are heterogeneous.
 - **SCAFFOLD** — track **control variates** (correction terms) that estimate and subtract the
-  drift direction. More state to communicate, but corrects the bias FedProx only damps.
+  drift direction. More state to communicate, but corrects the bias FedProx only damps.[^scaffold]
 
 The honest finding worth repeating: on a strongly Non-IID split (e.g. label-skewed MNIST), the
 fancy methods **don't always beat plain FedAvg by much** — and sometimes the dominant lever is
@@ -58,7 +66,7 @@ Keeping data on-device is **not** privacy. Model updates leak information about 
 produced them — membership inference and gradient-inversion attacks reconstruct training samples
 from gradients. To get a real guarantee you add **differential privacy**.
 
-**DP-SGD** makes each training step private by:
+**DP-SGD** makes each training step private by:[^dpsgd]
 
 1. **Per-sample gradient clipping** — bound each example's contribution to a max norm `C`.
 2. **Gaussian noise** — add noise calibrated to `C` to the summed gradients.
@@ -74,7 +82,7 @@ DP bounds what the *final model* leaks. **Secure aggregation** addresses a diffe
 curious server seeing each client's *individual* update. With secure aggregation, clients mask
 their updates so the server can compute only the **sum** — no single client's contribution is
 visible — yet the masks cancel in aggregate. DP (what the model leaks) and secure aggregation
-(what the server sees) are **complementary**, not substitutes.
+(what the server sees) are **complementary**, not substitutes.[^secagg]
 
 ## 5. Why "from scratch" and "33/33 tests"
 
@@ -98,3 +106,10 @@ server. The trustworthy version of all three is the one with the tests and the h
 
 → From-scratch implementations, tests, and negative results:
 [github.com/waynehacking8/federated-learning-lab](https://github.com/waynehacking8/federated-learning-lab)
+
+[^fl-repo]: [Federated Learning Lab](https://github.com/waynehacking8/federated-learning-lab), the primary artifact for implementations, tests, and measured negative results discussed here.
+[^fedavg]: [McMahan et al., “Communication-Efficient Learning of Deep Networks from Decentralized Data”](https://proceedings.mlr.press/v54/mcmahan17a.html).
+[^fedprox]: [Li et al., “Federated Optimization in Heterogeneous Networks”](https://proceedings.mlsys.org/paper_files/paper/2020/hash/1f5fe83998a09396ebe6477d9475ba0c-Abstract.html).
+[^scaffold]: [Karimireddy et al., “SCAFFOLD: Stochastic Controlled Averaging for Federated Learning”](https://proceedings.mlr.press/v119/karimireddy20a.html).
+[^dpsgd]: [Abadi et al., “Deep Learning with Differential Privacy”](https://dl.acm.org/doi/10.1145/2976749.2978318).
+[^secagg]: [Bonawitz et al., “Practical Secure Aggregation for Privacy-Preserving Machine Learning”](https://research.google/pubs/practical-secure-aggregation-for-privacy-preserving-machine-learning/).

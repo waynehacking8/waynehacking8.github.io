@@ -742,6 +742,43 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 }
 .pb-article-hero figcaption a { color: var(--pb-link); }
 
+/* MathJax mirrors pbb's readable inline symbols while display equations get
+   their own quiet reading surface and remain scrollable on narrow screens. */
+.md-typeset .arithmatex { max-width: 100%; }
+.md-typeset span.arithmatex { white-space: nowrap; }
+.md-typeset div.arithmatex {
+  margin: 1rem 0;
+  padding: .7rem .85rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-left: 3px solid var(--pb-link);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--pb-link) 5%, var(--pb-chip-bg));
+  scrollbar-width: thin;
+}
+.md-typeset mjx-container { color: var(--pb-ink); }
+.md-typeset mjx-container[display="true"] { margin: .2rem 0 !important; min-width: max-content; }
+
+/* Source notes use compact numbered references with visible return links. */
+.md-typeset a.footnote-ref {
+  display: inline-grid;
+  min-width: 1.2em;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--pb-chip-bg);
+  font: 650 .72em/1.2 var(--pb-mono);
+  text-decoration: none;
+}
+.md-typeset .footnote {
+  margin-top: 2rem;
+  padding-top: .8rem;
+  border-top: 1px solid var(--pb-line);
+  color: var(--pb-muted);
+  font-size: .88em;
+}
+.md-typeset .footnote ol { margin-bottom: 0; }
+.md-typeset .footnote-backref { margin-left: .25em; font-family: var(--pb-mono); }
+
 /* Article navigation: synchronized into the desktop profile rail by JS. */
 .pb-sidebar-toc-slot { margin-top: 1.05rem; }
 .pb-article-toc { min-width: 0; text-align: left; }
@@ -798,6 +835,19 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   .pb-article-toc--desktop { display: none; }
   .md-typeset .pb-article-toc--mobile { display: block; }
   .md-typeset :is(h2, h3)[id] { scroll-margin-top: 7.5rem; }
+  /* Article navigation is an index above the title, not a squeezed set of
+     controls to its right. Other compact pages retain the desktop ordering. */
+  .pb-nav-row--article {
+    align-items: stretch;
+    flex-direction: column;
+    gap: .55rem;
+  }
+  .pb-nav-row--article .pb-nav-tabs {
+    order: -1;
+    width: 100%;
+    margin-left: 0;
+    padding-bottom: .1rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

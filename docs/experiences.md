@@ -67,25 +67,6 @@ under the national R&D alternative military service program.
 
 </div>
 
-## Research
-
-<div class="pb-timeline" markdown>
-
-<div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/ntust.png" alt="" width="64" height="64" /></div>
-<div class="pb-tl-body" markdown>
-<p class="pb-tl-title">Graduate Researcher, Prof. Shao-Jui Wang's Lab</p>
-<p class="pb-tl-org">NTUST</p>
-<p class="pb-tl-date">Aug 2024 – Present</p>
-
-- Research in **AI/LLM security and safety alignment** (defending against harmful fine-tuning and adversarial attacks) and **privacy-enhancing ML** (federated learning, differential privacy, secure multi-party computation).
-- First-author of **SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning**, under review at *IEEE Transactions on Dependable and Secure Computing (TDSC)*.
-- Differentially-private synthetic-data generation with **MP-SPDZ** (secure multi-party computation) for the NICS privacy-enhancing-technologies competition.
-</div>
-</div>
-
-</div>
-
 ## Education
 
 <div class="pb-timeline" markdown>

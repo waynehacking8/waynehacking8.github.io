@@ -54,11 +54,38 @@
       });
   }
 
+  /* DOMParser documents do not inherit the destination page's base URL.
+     Resolve media before insertion so a relative `assets/...` URL cannot be
+     requested under the page being left during a soft navigation. */
+  function normalizeMediaUrls(root, url) {
+    root.querySelectorAll("[src]").forEach(function (node) {
+      var value = node.getAttribute("src");
+      if (!value || /^(?:data:|blob:|javascript:)/i.test(value)) return;
+      node.setAttribute("src", new URL(value, url).href);
+    });
+    root.querySelectorAll("video[poster]").forEach(function (node) {
+      var value = node.getAttribute("poster");
+      if (!value || /^(?:data:|blob:|javascript:)/i.test(value)) return;
+      node.setAttribute("poster", new URL(value, url).href);
+    });
+  }
+
+  function renderMath(root) {
+    if (!window.MathJax || typeof window.MathJax.typesetPromise !== "function") return;
+    window.MathJax.typesetPromise(root ? [root] : undefined).catch(function (error) {
+      console.warn("Math rendering failed", error);
+    });
+  }
+
   function updateDocument(doc, url) {
     var newMain = doc.querySelector(".pb-main");
     var curMain = document.querySelector(".pb-main");
     if (!newMain || !curMain) return false;
     disconnectArticleToc();
+    normalizeMediaUrls(newMain, url);
+    if (window.MathJax && typeof window.MathJax.typesetClear === "function") {
+      window.MathJax.typesetClear([curMain]);
+    }
     curMain.replaceWith(newMain);
     syncSidebarToc(true);
     document.title = doc.title;
@@ -253,6 +280,7 @@
     initStrip();
     initArticleTocMedia();
     initArticleToc();
+    renderMath(document.querySelector(".pb-main"));
     document.querySelectorAll("nav.md-code__nav").forEach(function (nav, index) {
       nav.setAttribute("aria-label", "Code block " + (index + 1) + " actions");
     });

@@ -1,5 +1,13 @@
 ---
 description: "Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover."
+date: "2026-05-31"
+updated: "2026-07-21"
+language: "en"
+image: "https://wayne.is-a.dev/assets/blog/trtllm-triton.webp"
+tags:
+  - Serving
+  - TensorRT-LLM
+  - Triton
 ---
 
 # Notes on Serving LLMs with TensorRT-LLM and Triton
@@ -16,7 +24,7 @@ production-style serving endpoint on the NVIDIA stack — **TensorRT-LLM** for t
 **Triton Inference Server** for the deployment surface — and benchmarking it honestly against
 **vLLM** on multi-GPU hardware. They follow the harness in
 [**trtllm-triton-serving**](https://github.com/waynehacking8/trtllm-triton-serving)
-(4× H100, NVLink).
+(4× H100, NVLink).[^serving-repo]
 
 The goal is to move from "I use vLLM" to "I can stand up the NVIDIA inference stack on real
 multi-GPU hardware and reason about the trade-offs."
@@ -36,7 +44,7 @@ affects latency, throughput, or accuracy:
 The key mental shift from vLLM: TensorRT-LLM does **ahead-of-time compilation**. vLLM is a
 runtime that takes the model and serves it; TensorRT-LLM *builds an engine* specialized to your
 GPU, TP degree, and precision first. That build is where the performance comes from, and also
-where the rigidity comes from.
+where the rigidity comes from.[^trt-docs]
 
 ## 2. Tensor parallelism (TP)
 
@@ -104,7 +112,7 @@ The measured runs can use TensorRT-LLM's own OpenAI server (`trtllm-serve`), but
   for multi-model hosting.
 
 Treat `trtllm-serve` as the fast path for benchmarking and Triton as the path you'd actually
-ship behind a gateway.
+ship behind a gateway.[^triton-docs]
 
 ## 7. When does TensorRT-LLM win? (the measured answer)
 
@@ -137,3 +145,7 @@ put in production.
 
 → Full pipeline, Triton model repo, and the matched-work harness:
 [github.com/waynehacking8/trtllm-triton-serving](https://github.com/waynehacking8/trtllm-triton-serving)
+
+[^serving-repo]: [TensorRT-LLM + Triton serving benchmark](https://github.com/waynehacking8/trtllm-triton-serving), the primary artifact for engine configs, matched-work harness, and measured crossover.
+[^trt-docs]: [TensorRT-LLM documentation](https://nvidia.github.io/TensorRT-LLM/), NVIDIA’s engine-build and runtime reference.
+[^triton-docs]: [Triton Inference Server documentation](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/), NVIDIA’s model-repository, scheduling, metrics, and protocol reference.

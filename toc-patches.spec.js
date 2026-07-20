@@ -43,9 +43,6 @@ test('every non-article soft-navigation target remains free of article TOCs', as
     ['Patches', '/patches/'],
     ['About', '/'],
     ['Experiences', '/experiences/'],
-    ['Publications', '/publications/'],
-    ['Projects', '/projects/'],
-    ['Talks', '/talks/'],
     ['Blog', '/blog/'],
   ];
   for (const [name, path] of destinations) {

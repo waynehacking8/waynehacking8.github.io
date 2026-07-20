@@ -1,123 +1,146 @@
-# Meta-Reinforcement Learning of Structured Exploration Strategies
+---
+description: "Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization."
+date: "2025-01-11"
+updated: "2026-07-21"
+language: "zh-Hant"
+image: "https://wayne.is-a.dev/assets/blog/meta-rl.webp"
+tags:
+  - Machine Learning
+  - Reinforcement Learning
+  - Survey
+---
 
-*2025-01-11 · machine learning*
+# Meta-RL：讓 policy 在 episode 內學會更新自己
+
+*2025-01-11 · updated 2026-07-21 · reinforcement learning / adaptation*
 
 <figure class="pb-article-hero">
-  <img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement learning 實驗視覺" loading="eager" decoding="async">
+  <img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement-learning experiment visualization" loading="eager" decoding="async">
   <figcaption>Prefrontal cortex as a meta-RL system · <a href="https://deepmind.google/blog/prefrontal-cortex-as-a-meta-reinforcement-learning-system/">Source: Google DeepMind</a></figcaption>
 </figure>
 
-## Meta-Reinforcement Learning (Meta-RL)
+一般的強化學習在固定 MDP 裡找一個 policy。Meta-RL 多了一層：訓練資料是一個**任務
+分布**，agent 要從新任務的少量 trajectory 推斷「這次的 dynamics／reward 到底是
+什麼」，再用 episode 內的經驗改變行為。權重可以不更新，但 policy 的有效狀態必須
+更新。這就是把學習演算法本身塞進 agent。
 
-Meta-RL 的核心概念是**讓智能體學會如何快速適應新環境和任務**，而不僅僅是學會在特定任務上表現良好。這是一種「學習如何學習」的方法，使智能體能夠在面對未知的挑戰時更具彈性和效率。以下將深入探討 Meta-RL 的各個方面：
+這個視角比「learning to learn」更可操作，因為它立即帶出三個問題：任務資訊存在哪
+裡、適應靠什麼更新、探索如何專門為辨識任務服務。
 
-### Meta-RL 的基本概念與挑戰
+## 問題設定：最佳化的不是單一任務
 
-*   **任務 (Tasks)**：Meta-RL 的目標是在多個不同的任務上進行學習。每個任務都是一個獨立的強化學習問題，可能具有不同的環境動態、獎勵函數或目標。
-*   **元學習 (Meta-Learning)**：**元學習的目標是學習一個「元策略」，這個策略可以在新任務上快速適應，而不需要從頭開始學習**。這涉及到學習如何利用過去的經驗來加速學習過程。
-*   **適應 (Adaptation)**：Meta-RL 模型必須能夠在面對新的任務時快速調整其策略。適應可以是通過少量的梯度更新、上下文信息或是其他機制來完成。
-*   **挑戰**：
-    *   **資料效率 (Data Efficiency)**：Meta-RL 通常需要大量的任務來進行元訓練，這在某些應用場景（例如機器人）中可能難以實現。
-    *   **泛化能力 (Generalization)**：如何確保模型能夠在新任務上表現良好，而不僅僅是在訓練期間看到的任務上表現良好，是一個重要的挑戰。
-    *   **魯棒性 (Robustness)**：Meta-RL 模型在面對高風險或困難的任務時，其表現可能不佳，這限制了其實際應用。
-    *   **上下文偏移 (Context Shift)**：在離線 Meta-RL 中，訓練和測試數據之間的分布差異可能導致性能下降。
-    *   **持續學習 (Continual Learning)**：如何讓模型能夠持續學習新任務，而不會遺忘舊任務，也是一個研究方向。
+令任務 $\mathcal{T}$ 從分布 $p(\mathcal{T})$ 取樣。Agent 先收集 context
+$c_{1:k}=(s,a,r,s')_{1:k}$，再透過適應機制 $A_\phi$ 產生任務條件 policy：
 
-### Meta-RL 的詳細方法
+$$
+\pi_{\mathcal{T}} = A_\phi(c_{1:k}),
+\qquad
+\max_\phi\;
+\mathbb{E}_{\mathcal{T}\sim p(\mathcal{T})}
+\left[J_{\mathcal{T}}\!\left(A_\phi(c_{1:k})\right)\right].
+\tag{1}
+$$
 
-1.  **基於梯度的方法 (Gradient-based Methods)**：
-    *   **MAML (Model-Agnostic Meta-Learning)**：
-        *   **原理**：MAML 學習一個初始模型參數，該參數可以通過少量的梯度更新快速適應新任務。它通過在多個任務上優化模型參數來實現這一點，**目標是找到一個對所有任務都通用的初始點**。
-        *   **內部迴圈 (Inner Loop)**：在每個任務上進行幾次梯度更新。
-        *   **外部迴圈 (Outer Loop)**：根據內部迴圈更新的參數來調整初始模型參數。
-        *   **數學表示**：MAML 的目標是最小化所有任務上的損失函數之和：`min θ ∑ᵢ Lᵢ(θ')`，其中 `θ'` 是在任務 `i` 上更新後的參數。
-    *   **Reptile**：
-        *   **原理**：Reptile 是一種簡化的 MAML 版本，它**避免了在外部迴圈中計算二階導數**，從而使其更易於實現。
-        *   **實現**：在每個任務上進行多次梯度更新，然後將更新後的參數與初始參數進行線性混合。
-    *  **MAESN (Model Agnostic Exploration with Structured Noise)**：
-        *   **原理**: MAESN 利用先前的經驗來學習探索策略。 它使用先前的任務來初始化策略，並獲取一個潛在的探索空間，該空間可以將結構化隨機性注入策略中，從而產生更有效的探索策略。
-        *   **數學表示**:  使用公式 (2) 和 (3) 來更新策略的參數 `θ` 和潛在空間的參數 `ω`， 目標是最大化預期回報並最小化 KL 散度。
-    *   **元梯度強化學習 (Meta-Gradient RL)**：
-        *   **原理**：通過學習如何調整超參數或損失函數來提高元學習性能。這可以通過訓練一個元控制器來實現，該控制器可以根據當前的任務調整學習過程。
+Meta-training 調整的是 $\phi$：它可能是一組容易 fine-tune 的初始權重、一個 recurrent
+state update，或一個從 context 推斷 latent task 的 encoder。Meta-test 則把新任務保留
+在訓練分布之外，否則看到的只是記憶，不是適應。
 
-2.  **基於上下文的方法 (Context-based Methods)**：
-    *   **PEARL (Probabilistic Embeddings for Actor-Critic Reinforcement Learning)**：
-        *   **原理**：PEARL **學習一個基於上下文變數的策略**，這些變數可以從少量的經驗中進行編碼，並用於執行線上概率濾波，以推斷如何解決新任務。
-        *   **實現**：PEARL 在測試時通過收集新經驗來更新上下文，並根據更新的上下文調整策略。
-        *   **優點**：PEARL 適用於離線元 RL，並且可以處理不同的任務。
-    *  **VariBAD**:
-        *   **原理**: 使用貝葉斯自適應方法，透過元學習來實現深度 RL， 它使用隱藏的狀態來表示任務。
-    *   **其他方法**：
-        *  有些方法使用循環神經網絡 (RNN)，如 LSTM 來隱式形成上下文。
+## 三條主要路線，其實在選擇「task belief 放哪裡」
 
-3.  **基於模型的方法 (Model-based Methods)**：
-    *   **PACOH-RL**：
-        *   **原理**：PACOH-RL 是一種基於模型的 Meta-RL 演算法，旨在有效適應動態變化。它**元學習動態模型的先驗**，允許使用最少的交互數據快速適應新動態。
-        *   **核心思想**：PACOH-RL 在元學習和任務適應階段結合正則化和認知不確定性量化，來提高效率。
-        *   **優點**：在資料匱乏的情況下，也能有效適應新的動態環境。
-        *   **數學表示**: 使用變分推論 (SVGD) 來近似後驗分佈，並使用不確定性估計來指導探索和數據收集。
-    *   **其他方法**：有些方法通過學習動態模型的隱含任務變量來實現元學習。
+| 路線 | 適應發生的位置 | 優點 | 主要風險 |
+| --- | --- | --- | --- |
+| Gradient-based（MAML） | 對 policy 參數做少量 gradient steps | 更新規則明確，可套在不同模型 | 二階梯度成本、RL gradient variance |
+| Recurrent（RL²） | RNN hidden state 吸收 reward/action history | 測試時不用更新權重 | hidden state 難解釋，容易記住訓練任務 |
+| Latent-context（PEARL / VariBAD） | 從 trajectory 推斷 latent task $z$ | 能表示不確定性，適合 belief-space reasoning | posterior collapse、offline context shift |
 
-4.  **其他方法**：
-    *   **RL2**：
-        *   **原理**：RL2 是一種基於循環神經網路 (RNN) 的策略梯度 Meta-RL 演算法。它將多個「試驗」中的智能體經驗嵌入到 RNN 中，旨在將 RL 更新規則編碼到 RNN 的權重中。
-        *   **適應機制**：在測試時，它通過在新任務中展開智能體來適應，更新 RNN 的隱藏狀態，並在幾次試驗後提高策略的成功率。
-    *   **離線元強化學習 (Offline Meta-RL)**：
-        *   **原理**: 利用預先收集的離線數據集來增強智能體在新任務上的泛化能力。
-        *   **挑戰**: 上下文偏移問題，即訓練和測試數據之間的分布差異可能導致性能下降。
-        *   **方法**:  CSRO (Context Shift Reduction for OMRL) 是一種解決上下文偏移問題的方法，它通過在元訓練和元測試階段減少策略對上下文的影響來提高泛化能力。
-        *   **優點**:  無需線上互動即可訓練模型。
-    *   **元模仿學習 (Meta Imitation Learning)**:
-        *   **原理**: 將元學習的技術應用於模仿學習，使智能體能夠從示範數據中快速學習新任務。
+### MAML：找一個「幾步就能改好」的起點
 
-### Meta-RL 的應用
+對每個任務先做 inner-loop 更新
 
-*   **自適應串流 (Adaptive Streaming)**：
-    *   **Ahaggar**：Ahaggar 是一種伺服器端的比特率引導解決方案，利用 Meta-RL 來根據網路條件、客戶端狀態和內容特性，動態調整比特率。Ahaggar 使用 **CMCD/SD 協議** 來簡化伺服器和客戶端之間的元數據交換。
-    *   **優點**：Ahaggar 可以提供更好的用戶體驗，減少緩衝時間，並降低帶寬消耗。
-*   **機器人 (Robotics)**：
-    *   **動態適應**：Meta-RL 可以幫助機器人快速適應不同的環境、任務和自身狀態（如負重或損壞）。
-    *   **複雜操作**：透過元模仿學習，機器人可以從示範數據中學習複雜的操作技能。
-    *   **真實世界應用**：Meta-RL 有潛力在真實世界的機器人應用中，提高其適應性和效率。
-*   **遊戲 (Gaming)**：
-    *   **快速適應**：Meta-RL 可以幫助智能體在不同的遊戲環境中快速適應，而無需從頭開始訓練。
-    *   **策略學習**：Meta-RL 可以讓智能體學會多樣化的策略，進而提升遊戲的挑戰性和趣味性。
-*   **其他領域**:
-    *    **教育**:  開發自適應學習系統，根據學生的學習狀況提供個人化的教學內容。
-    *    **醫療保健**:  用於疾病診斷、藥物開發和個人化治療方案。
-    *    **自動駕駛**: 協助自動駕駛系統適應不同的駕駛環境和突發狀況。
+$$
+\theta'_{\mathcal{T}} =
+\theta-\alpha\nabla_\theta\mathcal{L}_{\mathcal{T}}(\theta),
+\tag{2}
+$$
 
-### Meta-RL 的進階挑戰與未來方向
+外層再讓更新後的 $\theta'_{\mathcal{T}}$ 在各任務上都好。MAML 的重點不是「共用一
+個 policy」，而是學到一個適合快速移動的參數位置。RL 裡的難點是 inner/outer loop
+都帶 sampling noise，二階項也昂貴；first-order MAML 和 Reptile 用較便宜的近似換掉
+部分精確度。[^maml]
 
-*   **魯棒性 (Robustness)**：
-    *   **CVaR (Conditional Value at Risk)**：為了提高 Meta-RL 模型的魯棒性，可以使用 CVaR 來優化模型的條件風險值。
-    *    **RoML (Robust Meta RL)**: RoML 是一種元演算法，它通過識別和過採樣較困難的任務來產生任何給定 MRL 演算法的穩健版本。
-    *   **對抗性訓練 (Adversarial Training)**：另一種方法是對抗性訓練，通過在訓練過程中引入對抗樣本來提高模型的魯棒性。
-*   **探索與利用 (Exploration vs. Exploitation)**：
-    *   **結構化探索**：如何設計更有效的探索策略，以提高 Meta-RL 的學習效率。
-    *   **VIME**：一種利用變異資訊最大化來進行探索的算法。
-*   **模型複雜度 (Model Complexity)**：
-    *   **簡化模型**：如何開發更簡潔的 Meta-RL 模型，以減少計算成本和提高訓練速度。
-    *  **模組化**： 透過模組化的 Meta-RL 架構，可以更容易地擴展和適應不同問題。
-*   **超參數優化 (Hyperparameter Optimization)**：
-    *   **元學習超參數**：如何使用元學習來自動優化 Meta-RL 模型的超參數。
+### RL²：把更新規則藏進 recurrent state
 
-### 實驗設定與評估 (Experimental Setup and Evaluation)
+RL² 把前一步 action、reward、termination 與 observation 一起餵進 RNN。權重在
+meta-test 不變，但 hidden state 隨 trajectory 更新；對外看起來就像 agent 在 episode
+內執行一個自己學會的 RL algorithm。[^rl2]
 
-*   **模擬環境 (Simulated Environments)**：
-    *   **OpenAI Gym**：一個廣泛使用的強化學習環境套件。
-    *   **MuJoCo**：一個用於模擬機器人控制的物理引擎。
-    *   **其他自定義環境**：許多研究會根據特定的問題，設計自定義的模擬環境。
-*   **真實世界環境 (Real-World Environments)**：
-    *   **機器人平台**：在真實的機器人平台上測試 Meta-RL 模型的性能。
-    *   **自駕車平台**：在真實的自動駕駛場景中測試 Meta-RL 模型。
-*   **評估指標 (Evaluation Metrics)**：
-    *   **平均獎勵 (Average Reward)**：衡量模型在不同任務上的平均表現。
-    *   **累積獎勵 (Cumulative Reward)**：衡量模型在一段時間內獲得的總獎勵。
-    *    **適應速度 (Adaptation Speed)**:  衡量模型在遇到新任務時的學習速度。
-    *   **魯棒性 (Robustness)**: 衡量模型在面對不同任務或干擾時的穩定性。
-    *    **樣本效率 (Sample Efficiency)**: 衡量模型在學習過程中所需的樣本量。
+它的優點也是缺點：任何有效的更新規則都能被表示，卻很難知道網路是在推斷任務、
+記住 task ID，還是利用 benchmark 的固定順序。任務 permutation、held-out dynamics
+與 counterfactual reward tests 因此比平均 return 更重要。
 
-### 總結 (Conclusion)
+### PEARL / VariBAD：顯式維護 task belief
 
-Meta-RL 是一個充滿潛力的研究領域，它不僅可以解決傳統強化學習的限制，更可以推動人工智慧在真實世界中的應用。隨著研究的深入，我們有理由相信，Meta-RL 將在未來扮演越來越重要的角色。
+PEARL 從 context 推斷 latent $z$，policy 以 $(s,z)$ 決策；採樣不同 $z$ 也提供一種
+posterior sampling 式探索。[^pearl] VariBAD 則把 Bayes-adaptive MDP 的 belief update
+寫成 variational inference 問題，讓 agent 同時學 task inference 與 control。[^varibad]
+
+這類方法讓「我還不確定是哪個任務」成為模型的一部分，但 context distribution 很
+敏感。Offline meta-RL 若只在行為 policy 收集的 context 上訓練，部署時由新 policy
+產生的 context 可能落在 encoder 沒看過的區域。
+
+## Meta-RL 的探索不是找 reward，而是找出任務
+
+普通 exploration 關心「哪個 state 可能有高 reward」。Meta-RL 還要問「哪個 action
+最能區分目前可能的任務」。兩個 action 的即時 reward 相同，其中一個卻可能讓 posterior
+快速收斂，後續回報因此更高。
+
+MAESN 把這件事具體化：它在 latent space 注入 episode-consistent structured noise，
+而不是每一步獨立抖動 action。整段 trajectory 因此像一個可辨識的探索策略。[^maesn]
+更一般地，可以把探索價值寫成 task information gain：
+
+$$
+\text{IG}(a_t)=
+\mathbb{E}\left[
+D_{\mathrm{KL}}\!\left(
+p(\mathcal{T}\mid c_{1:t+1})\,\|\,
+p(\mathcal{T}\mid c_{1:t})
+\right)
+\right].
+\tag{3}
+$$
+
+真正的演算法通常不直接最佳化這個式子，但它提供了很好的診斷：如果 agent 只在
+training tasks 上知道該試什麼，換掉 reward mapping 後探索就會崩。
+
+## 評估時最容易藏住的四個問題
+
+1. **Task leakage**：observation、episode length 或 reset pattern 暗示 task ID。
+2. **只報 adaptation 後的 return**：沒有畫第 0、1、2 次 trial 的曲線，看不到適應
+   速度與前期探索成本。
+3. **Train/test 任務太相似**：只換連續參數的小範圍，無法區分 interpolation 與真正
+   的結構泛化。
+4. **平均值掩蓋 tail tasks**：mean return 很高，但少數 dynamics shift 完全失敗；至少
+   應同時報 quantile、worst-group 與 seed variation。
+
+一個可信的報告至少包含：held-out task construction、每個 trial 的 return、適應所用
+interaction budget、與從頭訓練／domain randomization／oracle task-ID policy 的對照。
+
+## 我會怎麼選方法
+
+- 已有可微分 policy、每個新任務允許幾步更新：先從 first-order MAML 類 baseline 開始。
+- 任務資訊天然存在長 trajectory，而且線上更新權重不方便：用 recurrent policy，但加
+  強力的 leakage tests。
+- 需要不確定性與 information-seeking exploration：選 latent-context / belief-based
+  方法，並把 posterior calibration 納入評估。
+- 只有離線資料：先處理 context shift；沒有 coverage，meta-learning 不會憑空創造新
+  任務的證據。
+
+Meta-RL 最值得保留的問題意識不是某個演算法名稱，而是：**agent 在新任務的前幾次
+互動中，究竟學到了什麼？** 如果實驗不能回答這句話，再高的最終 return 也可能只是
+任務分布被記熟了。
+
+[^maml]: [Finn et al., “Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks”](https://proceedings.mlr.press/v70/finn17a.html).
+[^rl2]: [Duan et al., “RL²: Fast Reinforcement Learning via Slow Reinforcement Learning”](https://arxiv.org/abs/1611.02779).
+[^pearl]: [Rakelly et al., “Efficient Off-Policy Meta-Reinforcement Learning via Probabilistic Context Variables”](https://proceedings.mlr.press/v97/rakelly19a.html).
+[^varibad]: [Zintgraf et al., “VariBAD: A Very Good Method for Bayes-Adaptive Deep RL via Meta-Learning”](https://jmlr.org/papers/v22/21-0657.html).
+[^maesn]: [Gupta et al., “Meta-Reinforcement Learning of Structured Exploration Strategies”](https://proceedings.neurips.cc/paper/2018/hash/4de754248c196c85ee4fbdcee89179bd-Abstract.html).

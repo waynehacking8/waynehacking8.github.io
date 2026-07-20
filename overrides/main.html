@@ -30,6 +30,9 @@
   <meta name="twitter:title" content="{{ title }}">
   <meta name="twitter:description" content="{{ desc }}">
   <meta name="twitter:image" content="{{ image }}">
+  {% if is_post and page.meta and page.meta.tags %}
+  {% for tag in page.meta.tags %}<meta property="article:tag" content="{{ tag }}">{% endfor %}
+  {% endif %}
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -102,10 +105,12 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ page.canonical_url }}" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "zh-Hant"{% if page.meta and page.meta.description %},
+    "inLanguage": {{ page.meta.language | default("en") | tojson }}{% if page.meta and page.meta.tags %},
+    "keywords": {{ page.meta.tags | tojson }}{% endif %}{% if page.meta and page.meta.description %},
     "description": {{ page.meta.description | tojson }}{% endif %}{% if page.meta and page.meta.image %},
     "image": {{ page.meta.image | tojson }}{% endif %}{% if page.meta and page.meta.date %},
-    "datePublished": {{ page.meta.date | tojson }}{% endif %}
+    "datePublished": {{ page.meta.date | tojson }}{% endif %}{% if page.meta and page.meta.updated %},
+    "dateModified": {{ page.meta.updated | tojson }}{% endif %}
   }
   </script>
   {% endif %}
@@ -180,7 +185,7 @@
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
-<div class="pb-nav-row">
+<div class="pb-nav-row{% if is_post %} pb-nav-row--article{% endif %}">
   <a class="pb-page-title-link" href="{{ page.url | url }}"><h1 class="pb-page-title">{{ page.title if page and page.title else config.site_name }}</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     {# pbb.sh behavior: the current page leaves the tab list and becomes the

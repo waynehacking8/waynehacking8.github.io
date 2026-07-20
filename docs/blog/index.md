@@ -1,20 +1,24 @@
 # Blog
 
-Technical notes on model architecture, LLM systems, GPU programming, privacy, and security.
+I use these notes to answer the questions that survive the launch post: where the
+latency comes from, which claim the evidence actually supports, and what breaks when
+an architecture meets a real runtime. Equations, measurements, and source notes stay
+next to the claim they qualify.
 
 <div class="pb-filters" aria-label="Filter blog posts by tag">
-<span class="pb-filters-label">Tags:</span>
-<button type="button" data-tag="Data">Data</button>
-<button type="button" data-tag="Attribution">Attribution</button>
-<button type="button" data-tag="Algorithm">Algorithm</button>
-<button type="button" data-tag="Theory">Theory</button>
-<button type="button" data-tag="Survey">Survey</button>
+<span class="pb-filters-label">Topics:</span>
+<button type="button" data-tag="Architecture">Architecture</button>
+<button type="button" data-tag="Serving">Serving</button>
+<button type="button" data-tag="CUDA">CUDA</button>
+<button type="button" data-tag="Distributed">Distributed</button>
+<button type="button" data-tag="RAG">RAG</button>
+<button type="button" data-tag="Privacy">Privacy</button>
+<button type="button" data-tag="ML">ML</button>
 <button type="button" data-tag="Security">Security</button>
-<button type="button" data-tag="Library">Library</button>
 </div>
 
 <div class="pb-posts">
-<a class="pb-post-card" href="inkling-975b-architecture/" data-tags="Algorithm,Theory,Data">
+<a class="pb-post-card" href="inkling-975b-architecture/" data-tags="Architecture">
 <span class="pb-post-image"><img src="/assets/blog/inkling-cover.png" alt="Inkling 官方發布視覺" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Thinking Machines</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">Inkling 975B：不只把模型做大，而是重新分配每一分算力</span>
@@ -23,7 +27,7 @@ Technical notes on model architecture, LLM systems, GPU programming, privacy, an
 <span class="pb-post-date">2026-07-20</span>
 </span>
 </a>
-<a class="pb-post-card" href="kimi-k3-architecture/" data-tags="Algorithm,Theory">
+<a class="pb-post-card" href="kimi-k3-architecture/" data-tags="Architecture">
 <span class="pb-post-image"><img src="/assets/blog/kimi-k3-cover.webp" alt="Kimi K3 官方發布視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Moonshot AI</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">Kimi K3 2.8T：用 KDA 與 AttnRes 推進 3T 級開放模型</span>
@@ -32,7 +36,7 @@ Technical notes on model architecture, LLM systems, GPU programming, privacy, an
 <span class="pb-post-date">2026-07-20</span>
 </span>
 </a>
-<a class="pb-post-card" href="notes-trtllm-triton-serving/" data-tags="Algorithm,Library">
+<a class="pb-post-card" href="notes-trtllm-triton-serving/" data-tags="Serving">
 <span class="pb-post-image"><img src="/assets/blog/trtllm-triton.webp" alt="NVIDIA TensorRT-LLM 與 Triton 部署架構" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">Notes on Serving LLMs with TensorRT-LLM and Triton</span>
@@ -41,25 +45,25 @@ Technical notes on model architecture, LLM systems, GPU programming, privacy, an
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
-<a class="pb-post-card" href="nccl-nvlink-bandwidth/" data-tags="Algorithm,Theory">
+<a class="pb-post-card" href="nccl-nvlink-bandwidth/" data-tags="Distributed">
 <span class="pb-post-image"><img src="/assets/blog/nccl-cube.webp" alt="NVIDIA NCCL 官方主視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">Where tensor-parallel inference hits the NVLink wall</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-blue">GPU</span><span class="pb-tag pb-tag-red">Distributed</span></span>
-<span class="pb-post-excerpt">Measuring NCCL all-reduce and why tensor-parallel decode hits a small-message latency wall, not a bandwidth one.</span>
+<span class="pb-post-excerpt">366 GB/s, a 23 μs floor, and the measurements that separate NVLS, CUDA Graphs, and symmetric memory from their headlines.</span>
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
-<a class="pb-post-card" href="rag-groundedness-guardrail/" data-tags="Data,Attribution,Security">
+<a class="pb-post-card" href="rag-groundedness-guardrail/" data-tags="RAG,Security">
 <span class="pb-post-image pb-image-contain"><img src="/assets/blog/rag-architecture.svg" alt="Microsoft 單租戶 RAG 架構圖" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Microsoft Learn</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">0% vs 40%: making a RAG agent refuse to hallucinate</span>
+<span class="pb-post-title">The 0% RAG result failed the harder test</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">LLM</span><span class="pb-tag pb-tag-green">RAG</span></span>
-<span class="pb-post-excerpt">One guardrail that drops out-of-corpus hallucination from ~40% to 0%—and why an eval harness is the only way to see it.</span>
+<span class="pb-post-excerpt">The easy set said 0%. Adversarial near-misses said 48%. Nine gates later, grounded verification—not a larger judge—won.</span>
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
-<a class="pb-post-card" href="notes-federated-learning-dp/" data-tags="Data,Theory,Security">
+<a class="pb-post-card" href="notes-federated-learning-dp/" data-tags="Privacy,ML,Security">
 <span class="pb-post-image"><img src="/assets/blog/federated-dp.webp" alt="Google Research 聯邦學習與差分隱私示意圖" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Google Research</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">Notes on Federated Learning and Differential Privacy</span>
@@ -68,7 +72,7 @@ Technical notes on model architecture, LLM systems, GPU programming, privacy, an
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
-<a class="pb-post-card" href="notes-cuda-tensor-core-gemm/" data-tags="Algorithm,Library">
+<a class="pb-post-card" href="notes-cuda-tensor-core-gemm/" data-tags="CUDA">
 <span class="pb-post-image pb-image-contain"><img src="/assets/blog/wmma-tile.webp" alt="NVIDIA WMMA warp tile 結構圖" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">Notes on CUDA Tensor Core GEMM (WMMA)</span>
@@ -77,16 +81,16 @@ Technical notes on model architecture, LLM systems, GPU programming, privacy, an
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
-<a class="pb-post-card" href="meta-rl/" data-tags="Algorithm,Theory,Survey">
+<a class="pb-post-card" href="meta-rl/" data-tags="ML">
 <span class="pb-post-image"><img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement learning 實驗主視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Google DeepMind</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Meta-Reinforcement Learning of Structured Exploration Strategies</span>
+<span class="pb-post-title">Meta-RL：讓 policy 在 episode 內學會更新自己</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">ML</span><span class="pb-tag pb-tag-red">RL</span></span>
-<span class="pb-post-excerpt">從「學會一個任務」走向「學會如何學習」：meta-RL 如何讓 agent 快速適應新環境。</span>
+<span class="pb-post-excerpt">把 task inference 放進 gradient、recurrent state 或 latent context；以及怎麼測出 adaptation 而不是 task memorization。</span>
 <span class="pb-post-date">2025-01-11</span>
 </span>
 </a>
-<a class="pb-post-card" href="pp-intro/" data-tags="Algorithm,Library,Survey">
+<a class="pb-post-card" href="pp-intro/" data-tags="CUDA">
 <span class="pb-post-image"><img src="/assets/blog/cuda-platform.webp" alt="NVIDIA CUDA accelerated computing 官方視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">CUDA Programming 入門</span>
@@ -95,12 +99,12 @@ Technical notes on model architecture, LLM systems, GPU programming, privacy, an
 <span class="pb-post-date">2025-01-11</span>
 </span>
 </a>
-<a class="pb-post-card" href="pentest-intro/" data-tags="Security,Survey">
+<a class="pb-post-card" href="pentest-intro/" data-tags="Security">
 <span class="pb-post-image"><img src="/assets/blog/kali-2026-2.webp" alt="Kali Linux 2026.2 官方桌面視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Kali Linux</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">滲透測試入門技術</span>
+<span class="pb-post-title">滲透測試不是掃描器：從授權邊界到可複測證據</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-red">Security</span></span>
-<span class="pb-post-excerpt">從資訊蒐集、弱點掃描到驗證與報告，理解滲透測試的目標、流程與常用工具。</span>
+<span class="pb-post-excerpt">先寫 Rules of Engagement，再談工具；用最小化驗證、證據鏈與 acceptance test 把 finding 交給修復者。</span>
 <span class="pb-post-date">2025-01-10</span>
 </span>
 </a>

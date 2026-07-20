@@ -1,5 +1,13 @@
 ---
 description: "Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM — shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell."
+date: "2026-05-31"
+updated: "2026-07-21"
+language: "en"
+image: "https://wayne.is-a.dev/assets/blog/wmma-tile.webp"
+tags:
+  - CUDA
+  - Tensor Cores
+  - Performance
 ---
 
 # Notes on CUDA Tensor Core GEMM (WMMA)
@@ -75,6 +83,10 @@ for (int k = 0; k < K; k += 16) {
 store_matrix_sync(C + ..., c_frag, ldc, mem_row_major);
 ```
 
+The supported fragment shapes, layouts, and precision combinations are architecture-specific;
+the CUDA Programming Guide is the source of truth rather than this deliberately simplified
+kernel.[^cuda-guide]
+
 The mental model shifts from "threads computing elements" to "**warps cooperating on
 fragments**." A `fragment` is an opaque, register-resident tile; you don't index its elements,
 you feed whole fragments to `mma_sync`. Inputs are FP16/BF16 (or FP8/FP4 on newer
@@ -106,7 +118,7 @@ Each GPU generation widens what the MMA unit accepts: Hopper added FP8, **Blackw
 **FP4** and a new generation of Tensor Core instructions (`tcgen05`). The WMMA mental model —
 fragments fed to an MMA, FP32 accumulation — carries forward; what changes is the input
 precision and the tile shapes. Understanding the FP16 WMMA path is the on-ramp to reasoning
-about NVFP4 inference on Blackwell.
+about NVFP4 inference on Blackwell.[^blackwell]
 
 ## Takeaway
 
@@ -116,3 +128,6 @@ every rung as **% of cuBLAS** on the same GPU — that's the metric that's hones
 you are to the ceiling and portable across Hopper and Blackwell.
 
 → More field notes on the NVIDIA stack: [wayne.is-a.dev](https://wayne.is-a.dev/)
+
+[^cuda-guide]: [CUDA C++ Programming Guide — Warp Matrix Functions](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions), NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.
+[^blackwell]: [NVIDIA Blackwell Architecture Technical Brief](https://resources.nvidia.com/en-us-blackwell-architecture), used for the generation-level Tensor Core and low-precision capability summary.

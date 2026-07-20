@@ -61,9 +61,6 @@ compute the right answer. Three threads:
       LLM-inference stack.</dd>
   <dt>Apr 2026</dt>
   <dd>🎓 M.S. in Computer Science from <a href="https://www.ntust.edu.tw/"><strong>NTUST</strong></a>, GPA 4.09.</dd>
-  <dt>Jan 2026</dt>
-  <dd>📝 <strong>SelGrad</strong> (first-author) submitted — under review at
-      <em>IEEE TDSC</em>.</dd>
   <dt>Sep 2025</dt>
   <dd>💼 Joined <a href="https://syncrobotic.ai/"><strong>SYNCROBOTIC</strong></a> — sole developer of an enterprise
       multi-agent platform, shipped at two customers.</dd>
@@ -94,22 +91,6 @@ compute the right answer. Three threads:
 <span class="pb-tag pb-tag-blue">Open Source</span><span class="pb-tag pb-tag-green">17 merged</span><span class="pb-tag pb-tag-red">60 in review</span>
 </div>
 <img src="assets/previews/pr-wall-preview.png" alt="PR wall preview" width="1378" height="874" loading="lazy" decoding="async" />
-</div>
-
-<div class="pb-pub" markdown>
-<div markdown>
-<p class="pb-pub-title">SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning</p>
-<p class="pb-pub-meta"><b>Wei-Cheng Chiu</b>, et al. — under review at <em>IEEE TDSC</em></p>
-<span class="pb-tag pb-tag-red">Safety</span><span class="pb-tag pb-tag-purple">Alignment</span>
-</div>
-</div>
-
-<div class="pb-pub" markdown>
-<div markdown>
-<p class="pb-pub-title"><a href="projects/">Enterprise multi-agent AI platform</a></p>
-<p class="pb-pub-meta">PoC → production at two enterprise customers — routing layer, planning/execution/validation orchestration, hybrid RAG</p>
-<span class="pb-tag pb-tag-blue">Agents</span><span class="pb-tag pb-tag-green">RAG</span><span class="pb-tag pb-tag-purple">vLLM</span>
-</div>
 </div>
 
 ## Misc

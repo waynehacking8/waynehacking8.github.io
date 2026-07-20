@@ -3,14 +3,11 @@ site_url: https://wayne.is-a.dev/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
   Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer
-  (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.
+  (LLM inference & GPU performance). Experience, upstream patches, and technical writing.
 
 nav:
   - About: index.md
   - Experiences: experiences.md
-  - Publications: publications.md
-  - Projects: projects.md
-  - Talks: talks.md
   - Patches: patches.md
   - Blog:
       - blog/index.md
@@ -32,7 +29,7 @@ theme:
   font: false
   # root-absolute for the same reason the sidebar hrefs are: soft navigation
   # pushes a new path without re-rendering <head>, so a relative favicon gets
-  # re-resolved against it and 404s (/talks/assets/favicon.png)
+  # re-resolved under whichever nested page is currently open and 404s
   favicon: /assets/favicon.png
   icon:
     logo: material/account-circle
@@ -63,13 +60,15 @@ theme:
 # bump ?v= on every extra.css change — GitHub Pages caches assets for
 # 10 minutes and browsers honor it, so an unversioned URL shows stale CSS
 extra_css:
-  - stylesheets/extra.css?v=20260720.24
+  - stylesheets/extra.css?v=20260721.25
 
 # same 10-minute GitHub Pages cache applies to JS — bump this ?v= on every
 # pb-filter.js change, exactly as for extra.css above. Without it a shipped
 # behaviour fix silently keeps running the old script in visitors' browsers.
 extra_javascript:
-  - javascripts/pb-filter.js?v=20260720.7
+  - javascripts/mathjax.js?v=20260721.1
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+  - javascripts/pb-filter.js?v=20260721.8
 
 extra:
   analytics:
@@ -94,6 +93,8 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - footnotes
+  - pymdownx.arithmatex:
+      generic: true
   - toc:
       permalink: true
   - pymdownx.highlight:

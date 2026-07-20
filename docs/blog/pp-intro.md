@@ -1,3 +1,15 @@
+---
+description: "CUDA C/C++ guide covering the execution model, memory hierarchy, occupancy, profiling, streams, synchronization, and kernel optimization."
+date: "2025-01-11"
+updated: "2026-07-21"
+language: "zh-Hant"
+image: "https://wayne.is-a.dev/assets/blog/cuda-platform.webp"
+tags:
+  - CUDA
+  - Parallel Programming
+  - Performance
+---
+
 # CUDA Programming 入門
 
 *2025-01-11 · GPU / parallel programming*
@@ -7,7 +19,11 @@
   <figcaption>CUDA accelerated computing platform · <a href="https://developer.nvidia.com/cuda-zone">Source: NVIDIA Developer</a></figcaption>
 </figure>
 
-# CUDA C/C++ 完整技術指南
+這份指南從 CUDA 的執行模型一路走到 profiling 與 kernel 最佳化。重點不是列出
+API，而是把每一層抽象連回硬體成本：哪些存取會合併、哪些同步會停住 warp，以及
+如何用量測結果判斷下一個值得改的瓶頸。本文的 execution model、memory hierarchy
+與 synchronization 語意以 NVIDIA CUDA C++ Programming Guide 為準；範例刻意縮短，
+production kernel 仍需補齊 bounds check 與 error handling。[^cuda-guide]
 
 ## 1. CUDA 基礎架構
 
@@ -782,4 +798,6 @@ void matrixMul(float* A, float* B, float* C, int N)
     C[row * N + col] = sum;
 }
 ```
+
+[^cuda-guide]: [NVIDIA CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/), 本文執行模型、記憶體階層、同步與 kernel launch 語意的主要規格來源。
 
