@@ -715,9 +715,12 @@
   }
   .pb-quote::before, .pb-quote::after { font-size: 14px; }
   body.pb-strip-hidden .pb-side { transform: translateY(-100%); }
+  /* Reduced motion drops the 0.3s slide, not the retract itself — pbb has no
+     guard here at all, and cancelling the transform stopped the strip from
+     ever hiding for anyone with the OS setting on (which is how Wayne's own
+     phone is configured, so the feature was invisible to him). */
   @media (prefers-reduced-motion: reduce) {
     .pb-side { transition: none; }
-    body.pb-strip-hidden .pb-side { transform: none; }
   }
   /* pbb puts the theme toggle in the name row; absolute against the
      card beats fixed, so it scrolls away with the strip */
