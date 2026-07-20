@@ -50,9 +50,27 @@
     window.addEventListener("popstate", function () { location.reload(); });
   }
 
+  /* pbb's phone profile strip retracts on scroll-down and returns on
+     scroll-up. Bound once to window, so it survives .pb-main swaps. */
+  var stripArmed = false;
+  function initStrip() {
+    if (stripArmed) return;
+    stripArmed = true;
+    var last = window.scrollY;
+    window.addEventListener("scroll", function () {
+      var y = window.scrollY;
+      /* ignore sub-pixel jitter and the rubber-band region at the top */
+      if (Math.abs(y - last) < 6) return;
+      var hide = y > last && y > 140;
+      document.body.classList.toggle("pb-strip-hidden", hide);
+      last = y;
+    }, { passive: true });
+  }
+
   function init() {
     initTheme();
     initRouter();
+    initStrip();
     var bar = document.querySelector(".pb-filters");
     if (!bar) return;
     var buttons = bar.querySelectorAll("button[data-tag]");
