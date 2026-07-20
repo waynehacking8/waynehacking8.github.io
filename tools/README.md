@@ -1,7 +1,7 @@
 # Name font subsets
 
 Both halves of the name in the sidebar are set in subset, inlined faces:
-`name-cjk.woff2` (邱偉誠) and `name-latin-300/600.woff2` ("Wei-Cheng Chiu").
+`name-cjk.woff2` (邱偉誠) and `name-latin-400.woff2` ("Wei-Cheng Chiu").
 Everything below applies to both.
 
 ## CJK — 邱偉誠
@@ -29,17 +29,15 @@ on phones. Raising it further starts to crowd the theme toggle; the name has a
 
 ## Latin — Wei-Cheng Chiu
 
-**Cormorant Garamond, 300 and 600** (SIL OFL 1.1), subset to the ten characters
-the name uses, ~3.2KB for the pair, under the private family `PB Name Latin`.
-A quill-derived high-contrast serif, so it shares a lineage with the brush CJK
-beside it — the system sans pbb.sh uses started reading as a different voice
-once the CJK became calligraphic. **This is a deliberate departure from pbb.**
+**Alex Brush Regular** (SIL OFL 1.1), subset to the ten characters the name
+uses, 1.88KB, under the private family `PB Name Latin`. This handwritten script
+was explicitly selected to pair with the brush CJK. **This is a deliberate
+departure from pbb.**
 
-Two cuts, because the thin/bold split across "Wei-Cheng" and "Chiu" is the
-shape of the original design. Cormorant sits small on the body, so the name is
-33px on desktop and `clamp(16px, 5.7vw, 23px)` on phones — a few px over what
-the sans needed. Regenerate with the same `fontTools.subset` command, using
-`--text='Wei-ChngCu '`.
+Alex Brush has only one weight, so the original thin/bold split is intentionally
+absent and synthetic bold is disabled. Its compact x-height keeps the name at
+33px on desktop and `clamp(16px, 5.7vw, 23px)` on phones. Regenerate with the
+same `fontTools.subset` command, using `--text='Wei-ChngCu '`.
 
 ## Regenerate
 
