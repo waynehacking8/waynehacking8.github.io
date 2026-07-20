@@ -123,16 +123,17 @@
 <!-- pbb.sh keeps nothing at the top except a small theme toggle; the
      Material header is hidden in CSS and this button drives its hidden
      palette inputs instead -->
-<button class="pb-theme-btn" aria-label="Toggle theme" hidden>
+<button class="pb-theme-btn" type="button" aria-label="Switch color theme" title="Switch color theme" hidden>
   <span class="pb-theme-sun twemoji">{% include ".icons/material/weather-sunny.svg" %}</span>
   <span class="pb-theme-moon twemoji">{% include ".icons/material/weather-night.svg" %}</span>
 </button>
 <div class="pb-grid">
-<aside class="pb-side{% if page and page.is_homepage %} pb-side--home{% endif %}">
-  <img class="pb-avatar" src="/assets/profile.jpg" alt="Wei-Cheng (Wayne) Chiu" />
+<section class="pb-side{% if page and page.is_homepage %} pb-side--home{% endif %}" aria-label="Profile">
+  <img class="pb-avatar" src="/assets/profile.webp" width="512" height="910"
+       alt="Wei-Cheng (Wayne) Chiu" decoding="async" fetchpriority="high" />
   <p class="pb-name">Wei-Cheng <b>Chiu</b></p>
   <p class="pb-cjk">邱偉誠</p>
-  <p class="pb-icons">
+  <p class="pb-icons" aria-label="Profile links">
     {# pbb.sh leads the social row with the CV, before every other profile
        link; the icon is academicons' `ai ai-cv`, vendored under
        overrides/.icons since Material ships only material/fontawesome. #}
@@ -140,23 +141,23 @@
        Root-absolute, NOT `| url`: soft navigation swaps only .pb-main, so the
        sidebar keeps the href it was first rendered with, and a relative one
        would resolve against the new path (/experiences/cv.pdf) and 404. #}
-    <a class="pb-icon-cv" href="/cv.pdf" title="CV"><span class="twemoji">{% include ".icons/academicons/cv.svg" %}</span></a>
-    <a href="https://github.com/waynehacking8" title="GitHub"><span class="twemoji">{% include ".icons/fontawesome/brands/github.svg" %}</span></a>
-    <a href="https://www.linkedin.com/in/wei-cheng-chiu/" title="LinkedIn"><span class="twemoji">{% include ".icons/fontawesome/brands/linkedin.svg" %}</span></a>
-    <a href="https://x.com/itswaynechiu" title="X"><span class="twemoji">{% include ".icons/fontawesome/brands/x-twitter.svg" %}</span></a>
-    <a href="mailto:waynehacking8@gmail.com" title="Email"><span class="twemoji">{% include ".icons/fontawesome/solid/envelope.svg" %}</span></a>
-    <a href="https://prs.wayne.is-a.dev/feed.xml" title="PR feed"><span class="twemoji">{% include ".icons/fontawesome/solid/square-rss.svg" %}</span></a>
+    <a class="pb-icon-cv" href="/cv.pdf" aria-label="Open CV" title="CV"><span class="twemoji">{% include ".icons/academicons/cv.svg" %}</span></a>
+    <a href="https://github.com/waynehacking8" aria-label="GitHub profile" title="GitHub"><span class="twemoji">{% include ".icons/fontawesome/brands/github.svg" %}</span></a>
+    <a href="https://www.linkedin.com/in/wei-cheng-chiu/" aria-label="LinkedIn profile" title="LinkedIn"><span class="twemoji">{% include ".icons/fontawesome/brands/linkedin.svg" %}</span></a>
+    <a href="https://x.com/itswaynechiu" aria-label="X profile" title="X"><span class="twemoji">{% include ".icons/fontawesome/brands/x-twitter.svg" %}</span></a>
+    <a href="mailto:waynehacking8@gmail.com" aria-label="Send email" title="Email"><span class="twemoji">{% include ".icons/fontawesome/solid/envelope.svg" %}</span></a>
+    <a href="https://prs.wayne.is-a.dev/feed.xml" aria-label="PR feed" title="PR feed"><span class="twemoji">{% include ".icons/fontawesome/solid/square-rss.svg" %}</span></a>
   </p>
   <p class="pb-loc"><span class="twemoji">{% include ".icons/fontawesome/solid/location-dot.svg" %}</span> Taipei, Taiwan · UTC+8</p>
   <p class="pb-quote">making every FLOP count</p>
-</aside>
+</section>
 <div class="pb-main">
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
 <div class="pb-nav-row">
   <a class="pb-page-title-link" href="{{ page.url | url }}"><h1 class="pb-page-title">{{ page.title if page and page.title else config.site_name }}</h1></a>
-  <nav class="pb-nav-tabs">
+  <nav class="pb-nav-tabs" aria-label="Primary navigation">
     {# pbb.sh behavior: the current page leaves the tab list and becomes the
        title at the far left; the remaining pages keep canonical order. Each
        pill carries a stable per-page view-transition-name so reordering

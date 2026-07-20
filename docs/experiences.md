@@ -5,7 +5,7 @@
 <div class="pb-timeline" markdown>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Field Application Engineer</p>
 <p class="pb-tl-org"><a href="https://ailabs.tw/zh/home/">Taiwan AILabs</a></p>
@@ -17,7 +17,7 @@ Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/syncrobotic.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/syncrobotic.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Machine Learning Engineer</p>
 <p class="pb-tl-org">SYNCROBOTIC</p>
@@ -38,7 +38,7 @@ partnering with each through deployment and troubleshooting.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/advantech.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/advantech.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">AI Agent Engineer</p>
 <p class="pb-tl-org">Advantech</p>
@@ -54,7 +54,7 @@ automate code review, test generation, and static analysis across the SDLC
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/tsmc.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/tsmc.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Facility Engineer (R&D Alternative Military Service)</p>
 <p class="pb-tl-org">TSMC (台積電)</p>
@@ -72,7 +72,7 @@ under the national R&D alternative military service program.
 <div class="pb-timeline" markdown>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/ntust.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntust.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Graduate Researcher, Prof. Shao-Jui Wang's Lab</p>
 <p class="pb-tl-org">NTUST</p>
@@ -91,7 +91,7 @@ under the national R&D alternative military service program.
 <div class="pb-timeline" markdown>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/ntust.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntust.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">M.S. in Computer Science and Information Engineering</p>
 <p class="pb-tl-org">National Taiwan University of Science and Technology (NTUST)</p>
@@ -104,7 +104,7 @@ Programming, Cybersecurity.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">M.S. in Structural Engineering</p>
 <p class="pb-tl-org">National Taiwan University (NTU)</p>
@@ -113,7 +113,7 @@ Programming, Cybersecurity.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/ntu.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">B.S. in Civil Engineering</p>
 <p class="pb-tl-org">National Taiwan University (NTU)</p>
@@ -128,7 +128,7 @@ Programming, Cybersecurity.
 <div class="pb-timeline" markdown>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/nvidia.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/nvidia.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Fundamentals of Accelerated Computing with CUDA Python</p>
 <p class="pb-tl-org">NVIDIA Deep Learning Institute</p>
@@ -137,7 +137,7 @@ Programming, Cybersecurity.
 </div>
 
 <div class="pb-tl-item" markdown>
-<div class="pb-tl-icon"><img src="/assets/logos/nvidia.png" alt=""></div>
+<div class="pb-tl-icon"><img src="/assets/logos/nvidia.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
 <p class="pb-tl-title">Fundamentals of Accelerated Computing with CUDA C/C++</p>
 <p class="pb-tl-org">NVIDIA Deep Learning Institute</p>
