@@ -168,6 +168,13 @@
     document.querySelectorAll("nav.md-code__nav").forEach(function (nav, index) {
       nav.setAttribute("aria-label", "Code block " + (index + 1) + " actions");
     });
+    document.querySelectorAll(".pb-post-image img").forEach(function (img) {
+      if (img.dataset.pbFallbackArmed) return;
+      img.dataset.pbFallbackArmed = "true";
+      var markFailed = function () { img.parentElement.classList.add("pb-image-failed"); };
+      img.addEventListener("error", markFailed, { once: true });
+      if (img.complete && !img.naturalWidth) markFailed();
+    });
     var bar = document.querySelector(".pb-filters");
     if (!bar) return;
     var buttons = bar.querySelectorAll("button[data-tag]");

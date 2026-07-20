@@ -63,13 +63,13 @@ theme:
 # bump ?v= on every extra.css change — GitHub Pages caches assets for
 # 10 minutes and browsers honor it, so an unversioned URL shows stale CSS
 extra_css:
-  - stylesheets/extra.css?v=20260720.15
+  - stylesheets/extra.css?v=20260720.16
 
 # same 10-minute GitHub Pages cache applies to JS — bump this ?v= on every
 # pb-filter.js change, exactly as for extra.css above. Without it a shipped
 # behaviour fix silently keeps running the old script in visitors' browsers.
 extra_javascript:
-  - javascripts/pb-filter.js?v=20260720.3
+  - javascripts/pb-filter.js?v=20260720.4
 
 extra:
   analytics:

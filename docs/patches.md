@@ -3,9 +3,12 @@
 Upstream open-source contributions to the LLM-inference stack — **17 merged/landed ·
 60 in review** as of 2026-07-18.
 
-[**Live PR wall → prs.wayne.is-a.dev**](https://prs.wayne.is-a.dev){ .md-button .md-button--primary }
-— auto-updating every few minutes, with an [RSS feed](https://prs.wayne.is-a.dev/feed.xml).
-The tables below are a curated snapshot of representative work; the wall is the
+<div class="pb-pr-wall">
+<a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><span class="pb-live-dot" aria-hidden="true"></span><span><small>Live · auto-updating</small><strong>Explore the PR wall</strong><span>Every upstream contribution, in one place.</span></span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
+<a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml" aria-label="Subscribe to the PR wall RSS feed">RSS <span aria-hidden="true">→</span></a>
+</div>
+
+The tables below are a curated snapshot of representative work; the live wall is the
 always-current source of truth.
 
 My focus is **early consumer-Blackwell (SM120 / SM121) enablement** across the stack —
