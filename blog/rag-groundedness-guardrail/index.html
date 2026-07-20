@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.14">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.15">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -72,6 +72,7 @@
   
   
   
+  
 
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
@@ -79,9 +80,9 @@
   <link rel="canonical" href="https://wayne.is-a.dev/blog/rag-groundedness-guardrail/">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="profile">
+  <meta property="og:type" content="article">
   <meta property="og:title" content="RAG groundedness (0% vs 50%) — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
+  <meta property="og:description" content="One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~40% to 0% — and why an eval harness is the only way to see the difference.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/rag-groundedness-guardrail/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
@@ -91,7 +92,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="RAG groundedness (0% vs 50%) — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
+  <meta name="twitter:description" content="One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~40% to 0% — and why an eval harness is the only way to see the difference.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
@@ -164,7 +165,7 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/rag-groundedness-guardrail/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "en",
+    "inLanguage": "zh-Hant",
     "description": "One guardrail that drops a RAG agent\u0027s out-of-corpus hallucination rate from ~40% to 0% \u2014 and why an eval harness is the only way to see the difference."
   }
   </script>
@@ -572,6 +573,62 @@
     
   
     Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inkling-975b-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inkling 975B architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kimi-k3-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 2.8T architecture
   
 
     
@@ -1207,7 +1264,7 @@ the number that separates a demo from something you'd put in front of a customer
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.2"></script>
+        <script src="../../javascripts/pb-filter.js?v=20260720.3"></script>
       
     
   </body>
