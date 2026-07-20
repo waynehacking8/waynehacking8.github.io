@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
+        <meta name="description" content="Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.24">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.25">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -82,9 +82,9 @@
   <!-- Open Graph -->
   <meta property="og:type" content="article">
   <meta property="og:title" content="Meta-Reinforcement Learning — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
+  <meta property="og:description" content="Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/meta-rl/">
-  <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/meta-rl.webp">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
@@ -92,8 +92,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="Meta-Reinforcement Learning — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer (LLM inference & GPU performance). Experiences, publications, projects, talks, patches, and blog.">
-  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta name="twitter:description" content="Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.">
+  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/meta-rl.webp">
+  
+  <meta property="article:tag" content="Machine Learning"><meta property="article:tag" content="Reinforcement Learning"><meta property="article:tag" content="Survey">
+  
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -165,7 +168,12 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/meta-rl/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "zh-Hant"
+    "inLanguage": "zh-Hant",
+    "keywords": ["Machine Learning", "Reinforcement Learning", "Survey"],
+    "description": "Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.",
+    "image": "https://wayne.is-a.dev/assets/blog/meta-rl.webp",
+    "datePublished": "2025-01-11",
+    "dateModified": "2026-07-21"
   }
   </script>
   
@@ -189,7 +197,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#meta-reinforcement-learning-of-structured-exploration-strategies" class="md-skip">
+        <a href="#meta-rl-policy-episode" class="md-skip">
           Skip to content
         </a>
       
@@ -399,87 +407,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../publications/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Publications
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../projects/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Projects
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../talks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Talks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../patches/" class="md-nav__link">
         
   
@@ -525,10 +452,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -546,8 +473,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -848,22 +775,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#meta-reinforcement-learning-meta-rl" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-Reinforcement Learning (Meta-RL)
+        問題設定：最佳化的不是單一任務
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Meta-Reinforcement Learning (Meta-RL)">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-belief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三條主要路線，其實在選擇「task belief 放哪裡」
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三條主要路線，其實在選擇「task belief 放哪裡」">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#meta-rl" class="md-nav__link">
+  <a href="#maml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-RL 的基本概念與挑戰
+        MAML：找一個「幾步就能改好」的起點
       
     </span>
   </a>
@@ -871,10 +809,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-rl_1" class="md-nav__link">
+  <a href="#rl2-recurrent-state" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-RL 的詳細方法
+        RL²：把更新規則藏進 recurrent state
       
     </span>
   </a>
@@ -882,43 +820,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-rl_2" class="md-nav__link">
+  <a href="#pearl-varibad-task-belief" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-RL 的應用
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#meta-rl_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Meta-RL 的進階挑戰與未來方向
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#experimental-setup-and-evaluation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        實驗設定與評估 (Experimental Setup and Evaluation)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        總結 (Conclusion)
+        PEARL / VariBAD：顯式維護 task belief
       
     </span>
   </a>
@@ -927,6 +832,39 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meta-rl-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meta-RL 的探索不是找 reward，而是找出任務
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        評估時最容易藏住的四個問題
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        我會怎麼選方法
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1029,22 +967,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#meta-reinforcement-learning-meta-rl" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-Reinforcement Learning (Meta-RL)
+        問題設定：最佳化的不是單一任務
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Meta-Reinforcement Learning (Meta-RL)">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-belief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三條主要路線，其實在選擇「task belief 放哪裡」
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三條主要路線，其實在選擇「task belief 放哪裡」">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#meta-rl" class="md-nav__link">
+  <a href="#maml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-RL 的基本概念與挑戰
+        MAML：找一個「幾步就能改好」的起點
       
     </span>
   </a>
@@ -1052,10 +1001,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-rl_1" class="md-nav__link">
+  <a href="#rl2-recurrent-state" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-RL 的詳細方法
+        RL²：把更新規則藏進 recurrent state
       
     </span>
   </a>
@@ -1063,43 +1012,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-rl_2" class="md-nav__link">
+  <a href="#pearl-varibad-task-belief" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Meta-RL 的應用
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#meta-rl_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Meta-RL 的進階挑戰與未來方向
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#experimental-setup-and-evaluation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        實驗設定與評估 (Experimental Setup and Evaluation)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        總結 (Conclusion)
+        PEARL / VariBAD：顯式維護 task belief
       
     </span>
   </a>
@@ -1108,6 +1024,39 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meta-rl-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meta-RL 的探索不是找 reward，而是找出任務
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        評估時最容易藏住的四個問題
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        我會怎麼選方法
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1164,31 +1113,35 @@
     
       
     
-      <li><a href="#meta-reinforcement-learning-meta-rl">Meta-Reinforcement Learning (Meta-RL)</a><ol>
-    
-      <li><a href="#meta-rl">Meta-RL 的基本概念與挑戰</a></li>
+      <li><a href="#_1">問題設定：最佳化的不是單一任務</a></li>
     
   
     
-      <li><a href="#meta-rl_1">Meta-RL 的詳細方法</a></li>
+      <li><a href="#task-belief">三條主要路線，其實在選擇「task belief 放哪裡」</a><ol>
+    
+      <li><a href="#maml">MAML：找一個「幾步就能改好」的起點</a></li>
     
   
     
-      <li><a href="#meta-rl_2">Meta-RL 的應用</a></li>
+      <li><a href="#rl2-recurrent-state">RL²：把更新規則藏進 recurrent state</a></li>
     
   
     
-      <li><a href="#meta-rl_3">Meta-RL 的進階挑戰與未來方向</a></li>
-    
-  
-    
-      <li><a href="#experimental-setup-and-evaluation">實驗設定與評估 (Experimental Setup and Evaluation)</a></li>
-    
-  
-    
-      <li><a href="#conclusion">總結 (Conclusion)</a></li>
+      <li><a href="#pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief</a></li>
     
   </ol></li>
+    
+  
+    
+      <li><a href="#meta-rl-reward">Meta-RL 的探索不是找 reward，而是找出任務</a></li>
+    
+  
+    
+      <li><a href="#_2">評估時最容易藏住的四個問題</a></li>
+    
+  
+    
+      <li><a href="#_3">我會怎麼選方法</a></li>
     
   
     
@@ -1202,7 +1155,7 @@
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
-<div class="pb-nav-row">
+<div class="pb-nav-row pb-nav-row--article">
   <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">Meta-Reinforcement Learning</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     
@@ -1215,21 +1168,6 @@
       
       
       <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../../experiences/">Experiences</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../../publications/">Publications</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../../projects/">Projects</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../../talks/">Talks</a>
       
     
       
@@ -1250,31 +1188,35 @@
     
       
     
-      <li><a href="#meta-reinforcement-learning-meta-rl">Meta-Reinforcement Learning (Meta-RL)</a><ol>
-    
-      <li><a href="#meta-rl">Meta-RL 的基本概念與挑戰</a></li>
+      <li><a href="#_1">問題設定：最佳化的不是單一任務</a></li>
     
   
     
-      <li><a href="#meta-rl_1">Meta-RL 的詳細方法</a></li>
+      <li><a href="#task-belief">三條主要路線，其實在選擇「task belief 放哪裡」</a><ol>
+    
+      <li><a href="#maml">MAML：找一個「幾步就能改好」的起點</a></li>
     
   
     
-      <li><a href="#meta-rl_2">Meta-RL 的應用</a></li>
+      <li><a href="#rl2-recurrent-state">RL²：把更新規則藏進 recurrent state</a></li>
     
   
     
-      <li><a href="#meta-rl_3">Meta-RL 的進階挑戰與未來方向</a></li>
-    
-  
-    
-      <li><a href="#experimental-setup-and-evaluation">實驗設定與評估 (Experimental Setup and Evaluation)</a></li>
-    
-  
-    
-      <li><a href="#conclusion">總結 (Conclusion)</a></li>
+      <li><a href="#pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief</a></li>
     
   </ol></li>
+    
+  
+    
+      <li><a href="#meta-rl-reward">Meta-RL 的探索不是找 reward，而是找出任務</a></li>
+    
+  
+    
+      <li><a href="#_2">評估時最容易藏住的四個問題</a></li>
+    
+  
+    
+      <li><a href="#_3">我會怎麼選方法</a></li>
     
   
     
@@ -1289,31 +1231,35 @@
     
       
     
-      <li><a href="#meta-reinforcement-learning-meta-rl">Meta-Reinforcement Learning (Meta-RL)</a><ol>
-    
-      <li><a href="#meta-rl">Meta-RL 的基本概念與挑戰</a></li>
+      <li><a href="#_1">問題設定：最佳化的不是單一任務</a></li>
     
   
     
-      <li><a href="#meta-rl_1">Meta-RL 的詳細方法</a></li>
+      <li><a href="#task-belief">三條主要路線，其實在選擇「task belief 放哪裡」</a><ol>
+    
+      <li><a href="#maml">MAML：找一個「幾步就能改好」的起點</a></li>
     
   
     
-      <li><a href="#meta-rl_2">Meta-RL 的應用</a></li>
+      <li><a href="#rl2-recurrent-state">RL²：把更新規則藏進 recurrent state</a></li>
     
   
     
-      <li><a href="#meta-rl_3">Meta-RL 的進階挑戰與未來方向</a></li>
-    
-  
-    
-      <li><a href="#experimental-setup-and-evaluation">實驗設定與評估 (Experimental Setup and Evaluation)</a></li>
-    
-  
-    
-      <li><a href="#conclusion">總結 (Conclusion)</a></li>
+      <li><a href="#pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief</a></li>
     
   </ol></li>
+    
+  
+    
+      <li><a href="#meta-rl-reward">Meta-RL 的探索不是找 reward，而是找出任務</a></li>
+    
+  
+    
+      <li><a href="#_2">評估時最容易藏住的四個問題</a></li>
+    
+  
+    
+      <li><a href="#_3">我會怎麼選方法</a></li>
     
   
     
@@ -1326,189 +1272,162 @@
 
 
 
-<h1 id="meta-reinforcement-learning-of-structured-exploration-strategies">Meta-Reinforcement Learning of Structured Exploration Strategies<a class="headerlink" href="#meta-reinforcement-learning-of-structured-exploration-strategies" title="Permanent link">&para;</a></h1>
-<p><em>2025-01-11 · machine learning</em></p>
+<h1 id="meta-rl-policy-episode">Meta-RL：讓 policy 在 episode 內學會更新自己<a class="headerlink" href="#meta-rl-policy-episode" title="Permanent link">&para;</a></h1>
+<p><em>2025-01-11 · updated 2026-07-21 · reinforcement learning / adaptation</em></p>
 <figure class="pb-article-hero">
-  <img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement learning 實驗視覺" loading="eager" decoding="async">
+  <img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement-learning experiment visualization" loading="eager" decoding="async">
   <figcaption>Prefrontal cortex as a meta-RL system · <a href="https://deepmind.google/blog/prefrontal-cortex-as-a-meta-reinforcement-learning-system/">Source: Google DeepMind</a></figcaption>
 </figure>
 
-<h2 id="meta-reinforcement-learning-meta-rl">Meta-Reinforcement Learning (Meta-RL)<a class="headerlink" href="#meta-reinforcement-learning-meta-rl" title="Permanent link">&para;</a></h2>
-<p>Meta-RL 的核心概念是<strong>讓智能體學會如何快速適應新環境和任務</strong>，而不僅僅是學會在特定任務上表現良好。這是一種「學習如何學習」的方法，使智能體能夠在面對未知的挑戰時更具彈性和效率。以下將深入探討 Meta-RL 的各個方面：</p>
-<h3 id="meta-rl">Meta-RL 的基本概念與挑戰<a class="headerlink" href="#meta-rl" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>任務 (Tasks)</strong>：Meta-RL 的目標是在多個不同的任務上進行學習。每個任務都是一個獨立的強化學習問題，可能具有不同的環境動態、獎勵函數或目標。</li>
-<li><strong>元學習 (Meta-Learning)</strong>：<strong>元學習的目標是學習一個「元策略」，這個策略可以在新任務上快速適應，而不需要從頭開始學習</strong>。這涉及到學習如何利用過去的經驗來加速學習過程。</li>
-<li><strong>適應 (Adaptation)</strong>：Meta-RL 模型必須能夠在面對新的任務時快速調整其策略。適應可以是通過少量的梯度更新、上下文信息或是其他機制來完成。</li>
-<li><strong>挑戰</strong>：<ul>
-<li><strong>資料效率 (Data Efficiency)</strong>：Meta-RL 通常需要大量的任務來進行元訓練，這在某些應用場景（例如機器人）中可能難以實現。</li>
-<li><strong>泛化能力 (Generalization)</strong>：如何確保模型能夠在新任務上表現良好，而不僅僅是在訓練期間看到的任務上表現良好，是一個重要的挑戰。</li>
-<li><strong>魯棒性 (Robustness)</strong>：Meta-RL 模型在面對高風險或困難的任務時，其表現可能不佳，這限制了其實際應用。</li>
-<li><strong>上下文偏移 (Context Shift)</strong>：在離線 Meta-RL 中，訓練和測試數據之間的分布差異可能導致性能下降。</li>
-<li><strong>持續學習 (Continual Learning)</strong>：如何讓模型能夠持續學習新任務，而不會遺忘舊任務，也是一個研究方向。</li>
-</ul>
-</li>
-</ul>
-<h3 id="meta-rl_1">Meta-RL 的詳細方法<a class="headerlink" href="#meta-rl_1" title="Permanent link">&para;</a></h3>
+<p>一般的強化學習在固定 MDP 裡找一個 policy。Meta-RL 多了一層：訓練資料是一個<strong>任務
+分布</strong>，agent 要從新任務的少量 trajectory 推斷「這次的 dynamics／reward 到底是
+什麼」，再用 episode 內的經驗改變行為。權重可以不更新，但 policy 的有效狀態必須
+更新。這就是把學習演算法本身塞進 agent。</p>
+<p>這個視角比「learning to learn」更可操作，因為它立即帶出三個問題：任務資訊存在哪
+裡、適應靠什麼更新、探索如何專門為辨識任務服務。</p>
+<h2 id="_1">問題設定：最佳化的不是單一任務<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>令任務 <span class="arithmatex">\(\mathcal{T}\)</span> 從分布 <span class="arithmatex">\(p(\mathcal{T})\)</span> 取樣。Agent 先收集 context
+<span class="arithmatex">\(c_{1:k}=(s,a,r,s')_{1:k}\)</span>，再透過適應機制 <span class="arithmatex">\(A_\phi\)</span> 產生任務條件 policy：</p>
+<div class="arithmatex">\[
+\pi_{\mathcal{T}} = A_\phi(c_{1:k}),
+\qquad
+\max_\phi\;
+\mathbb{E}_{\mathcal{T}\sim p(\mathcal{T})}
+\left[J_{\mathcal{T}}\!\left(A_\phi(c_{1:k})\right)\right].
+\tag{1}
+\]</div>
+<p>Meta-training 調整的是 <span class="arithmatex">\(\phi\)</span>：它可能是一組容易 fine-tune 的初始權重、一個 recurrent
+state update，或一個從 context 推斷 latent task 的 encoder。Meta-test 則把新任務保留
+在訓練分布之外，否則看到的只是記憶，不是適應。</p>
+<h2 id="task-belief">三條主要路線，其實在選擇「task belief 放哪裡」<a class="headerlink" href="#task-belief" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>路線</th>
+<th>適應發生的位置</th>
+<th>優點</th>
+<th>主要風險</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gradient-based（MAML）</td>
+<td>對 policy 參數做少量 gradient steps</td>
+<td>更新規則明確，可套在不同模型</td>
+<td>二階梯度成本、RL gradient variance</td>
+</tr>
+<tr>
+<td>Recurrent（RL²）</td>
+<td>RNN hidden state 吸收 reward/action history</td>
+<td>測試時不用更新權重</td>
+<td>hidden state 難解釋，容易記住訓練任務</td>
+</tr>
+<tr>
+<td>Latent-context（PEARL / VariBAD）</td>
+<td>從 trajectory 推斷 latent task <span class="arithmatex">\(z\)</span></td>
+<td>能表示不確定性，適合 belief-space reasoning</td>
+<td>posterior collapse、offline context shift</td>
+</tr>
+</tbody>
+</table>
+<h3 id="maml">MAML：找一個「幾步就能改好」的起點<a class="headerlink" href="#maml" title="Permanent link">&para;</a></h3>
+<p>對每個任務先做 inner-loop 更新</p>
+<div class="arithmatex">\[
+\theta'_{\mathcal{T}} =
+\theta-\alpha\nabla_\theta\mathcal{L}_{\mathcal{T}}(\theta),
+\tag{2}
+\]</div>
+<p>外層再讓更新後的 <span class="arithmatex">\(\theta'_{\mathcal{T}}\)</span> 在各任務上都好。MAML 的重點不是「共用一
+個 policy」，而是學到一個適合快速移動的參數位置。RL 裡的難點是 inner/outer loop
+都帶 sampling noise，二階項也昂貴；first-order MAML 和 Reptile 用較便宜的近似換掉
+部分精確度。<sup id="fnref:maml"><a class="footnote-ref" href="#fn:maml">1</a></sup></p>
+<h3 id="rl2-recurrent-state">RL²：把更新規則藏進 recurrent state<a class="headerlink" href="#rl2-recurrent-state" title="Permanent link">&para;</a></h3>
+<p>RL² 把前一步 action、reward、termination 與 observation 一起餵進 RNN。權重在
+meta-test 不變，但 hidden state 隨 trajectory 更新；對外看起來就像 agent 在 episode
+內執行一個自己學會的 RL algorithm。<sup id="fnref:rl2"><a class="footnote-ref" href="#fn:rl2">2</a></sup></p>
+<p>它的優點也是缺點：任何有效的更新規則都能被表示，卻很難知道網路是在推斷任務、
+記住 task ID，還是利用 benchmark 的固定順序。任務 permutation、held-out dynamics
+與 counterfactual reward tests 因此比平均 return 更重要。</p>
+<h3 id="pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief<a class="headerlink" href="#pearl-varibad-task-belief" title="Permanent link">&para;</a></h3>
+<p>PEARL 從 context 推斷 latent <span class="arithmatex">\(z\)</span>，policy 以 <span class="arithmatex">\((s,z)\)</span> 決策；採樣不同 <span class="arithmatex">\(z\)</span> 也提供一種
+posterior sampling 式探索。<sup id="fnref:pearl"><a class="footnote-ref" href="#fn:pearl">3</a></sup> VariBAD 則把 Bayes-adaptive MDP 的 belief update
+寫成 variational inference 問題，讓 agent 同時學 task inference 與 control。<sup id="fnref:varibad"><a class="footnote-ref" href="#fn:varibad">4</a></sup></p>
+<p>這類方法讓「我還不確定是哪個任務」成為模型的一部分，但 context distribution 很
+敏感。Offline meta-RL 若只在行為 policy 收集的 context 上訓練，部署時由新 policy
+產生的 context 可能落在 encoder 沒看過的區域。</p>
+<h2 id="meta-rl-reward">Meta-RL 的探索不是找 reward，而是找出任務<a class="headerlink" href="#meta-rl-reward" title="Permanent link">&para;</a></h2>
+<p>普通 exploration 關心「哪個 state 可能有高 reward」。Meta-RL 還要問「哪個 action
+最能區分目前可能的任務」。兩個 action 的即時 reward 相同，其中一個卻可能讓 posterior
+快速收斂，後續回報因此更高。</p>
+<p>MAESN 把這件事具體化：它在 latent space 注入 episode-consistent structured noise，
+而不是每一步獨立抖動 action。整段 trajectory 因此像一個可辨識的探索策略。<sup id="fnref:maesn"><a class="footnote-ref" href="#fn:maesn">5</a></sup>
+更一般地，可以把探索價值寫成 task information gain：</p>
+<div class="arithmatex">\[
+\text{IG}(a_t)=
+\mathbb{E}\left[
+D_{\mathrm{KL}}\!\left(
+p(\mathcal{T}\mid c_{1:t+1})\,\|\,
+p(\mathcal{T}\mid c_{1:t})
+\right)
+\right].
+\tag{3}
+\]</div>
+<p>真正的演算法通常不直接最佳化這個式子，但它提供了很好的診斷：如果 agent 只在
+training tasks 上知道該試什麼，換掉 reward mapping 後探索就會崩。</p>
+<h2 id="_2">評估時最容易藏住的四個問題<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ol>
-<li>
-<p><strong>基於梯度的方法 (Gradient-based Methods)</strong>：</p>
+<li><strong>Task leakage</strong>：observation、episode length 或 reset pattern 暗示 task ID。</li>
+<li><strong>只報 adaptation 後的 return</strong>：沒有畫第 0、1、2 次 trial 的曲線，看不到適應
+   速度與前期探索成本。</li>
+<li><strong>Train/test 任務太相似</strong>：只換連續參數的小範圍，無法區分 interpolation 與真正
+   的結構泛化。</li>
+<li><strong>平均值掩蓋 tail tasks</strong>：mean return 很高，但少數 dynamics shift 完全失敗；至少
+   應同時報 quantile、worst-group 與 seed variation。</li>
+</ol>
+<p>一個可信的報告至少包含：held-out task construction、每個 trial 的 return、適應所用
+interaction budget、與從頭訓練／domain randomization／oracle task-ID policy 的對照。</p>
+<h2 id="_3">我會怎麼選方法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>MAML (Model-Agnostic Meta-Learning)</strong>：<ul>
-<li><strong>原理</strong>：MAML 學習一個初始模型參數，該參數可以通過少量的梯度更新快速適應新任務。它通過在多個任務上優化模型參數來實現這一點，<strong>目標是找到一個對所有任務都通用的初始點</strong>。</li>
-<li><strong>內部迴圈 (Inner Loop)</strong>：在每個任務上進行幾次梯度更新。</li>
-<li><strong>外部迴圈 (Outer Loop)</strong>：根據內部迴圈更新的參數來調整初始模型參數。</li>
-<li><strong>數學表示</strong>：MAML 的目標是最小化所有任務上的損失函數之和：<code>min θ ∑ᵢ Lᵢ(θ')</code>，其中 <code>θ'</code> 是在任務 <code>i</code> 上更新後的參數。</li>
+<li>已有可微分 policy、每個新任務允許幾步更新：先從 first-order MAML 類 baseline 開始。</li>
+<li>任務資訊天然存在長 trajectory，而且線上更新權重不方便：用 recurrent policy，但加
+  強力的 leakage tests。</li>
+<li>需要不確定性與 information-seeking exploration：選 latent-context / belief-based
+  方法，並把 posterior calibration 納入評估。</li>
+<li>只有離線資料：先處理 context shift；沒有 coverage，meta-learning 不會憑空創造新
+  任務的證據。</li>
 </ul>
+<p>Meta-RL 最值得保留的問題意識不是某個演算法名稱，而是：<strong>agent 在新任務的前幾次
+互動中，究竟學到了什麼？</strong> 如果實驗不能回答這句話，再高的最終 return 也可能只是
+任務分布被記熟了。</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:maml">
+<p><a href="https://proceedings.mlr.press/v70/finn17a.html">Finn et al., “Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks”</a>.&#160;<a class="footnote-backref" href="#fnref:maml" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li><strong>Reptile</strong>：<ul>
-<li><strong>原理</strong>：Reptile 是一種簡化的 MAML 版本，它<strong>避免了在外部迴圈中計算二階導數</strong>，從而使其更易於實現。</li>
-<li><strong>實現</strong>：在每個任務上進行多次梯度更新，然後將更新後的參數與初始參數進行線性混合。</li>
-</ul>
+<li id="fn:rl2">
+<p><a href="https://arxiv.org/abs/1611.02779">Duan et al., “RL²: Fast Reinforcement Learning via Slow Reinforcement Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:rl2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
-<li><strong>MAESN (Model Agnostic Exploration with Structured Noise)</strong>：<ul>
-<li><strong>原理</strong>: MAESN 利用先前的經驗來學習探索策略。 它使用先前的任務來初始化策略，並獲取一個潛在的探索空間，該空間可以將結構化隨機性注入策略中，從而產生更有效的探索策略。</li>
-<li><strong>數學表示</strong>:  使用公式 (2) 和 (3) 來更新策略的參數 <code>θ</code> 和潛在空間的參數 <code>ω</code>， 目標是最大化預期回報並最小化 KL 散度。</li>
-</ul>
+<li id="fn:pearl">
+<p><a href="https://proceedings.mlr.press/v97/rakelly19a.html">Rakelly et al., “Efficient Off-Policy Meta-Reinforcement Learning via Probabilistic Context Variables”</a>.&#160;<a class="footnote-backref" href="#fnref:pearl" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
-<li><strong>元梯度強化學習 (Meta-Gradient RL)</strong>：<ul>
-<li><strong>原理</strong>：通過學習如何調整超參數或損失函數來提高元學習性能。這可以通過訓練一個元控制器來實現，該控制器可以根據當前的任務調整學習過程。</li>
-</ul>
+<li id="fn:varibad">
+<p><a href="https://jmlr.org/papers/v22/21-0657.html">Zintgraf et al., “VariBAD: A Very Good Method for Bayes-Adaptive Deep RL via Meta-Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:varibad" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
-</ul>
-</li>
-<li>
-<p><strong>基於上下文的方法 (Context-based Methods)</strong>：</p>
-<ul>
-<li><strong>PEARL (Probabilistic Embeddings for Actor-Critic Reinforcement Learning)</strong>：<ul>
-<li><strong>原理</strong>：PEARL <strong>學習一個基於上下文變數的策略</strong>，這些變數可以從少量的經驗中進行編碼，並用於執行線上概率濾波，以推斷如何解決新任務。</li>
-<li><strong>實現</strong>：PEARL 在測試時通過收集新經驗來更新上下文，並根據更新的上下文調整策略。</li>
-<li><strong>優點</strong>：PEARL 適用於離線元 RL，並且可以處理不同的任務。</li>
-</ul>
-</li>
-<li><strong>VariBAD</strong>:<ul>
-<li><strong>原理</strong>: 使用貝葉斯自適應方法，透過元學習來實現深度 RL， 它使用隱藏的狀態來表示任務。</li>
-</ul>
-</li>
-<li><strong>其他方法</strong>：<ul>
-<li>有些方法使用循環神經網絡 (RNN)，如 LSTM 來隱式形成上下文。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>基於模型的方法 (Model-based Methods)</strong>：</p>
-<ul>
-<li><strong>PACOH-RL</strong>：<ul>
-<li><strong>原理</strong>：PACOH-RL 是一種基於模型的 Meta-RL 演算法，旨在有效適應動態變化。它<strong>元學習動態模型的先驗</strong>，允許使用最少的交互數據快速適應新動態。</li>
-<li><strong>核心思想</strong>：PACOH-RL 在元學習和任務適應階段結合正則化和認知不確定性量化，來提高效率。</li>
-<li><strong>優點</strong>：在資料匱乏的情況下，也能有效適應新的動態環境。</li>
-<li><strong>數學表示</strong>: 使用變分推論 (SVGD) 來近似後驗分佈，並使用不確定性估計來指導探索和數據收集。</li>
-</ul>
-</li>
-<li><strong>其他方法</strong>：有些方法通過學習動態模型的隱含任務變量來實現元學習。</li>
-</ul>
-</li>
-<li>
-<p><strong>其他方法</strong>：</p>
-<ul>
-<li><strong>RL2</strong>：<ul>
-<li><strong>原理</strong>：RL2 是一種基於循環神經網路 (RNN) 的策略梯度 Meta-RL 演算法。它將多個「試驗」中的智能體經驗嵌入到 RNN 中，旨在將 RL 更新規則編碼到 RNN 的權重中。</li>
-<li><strong>適應機制</strong>：在測試時，它通過在新任務中展開智能體來適應，更新 RNN 的隱藏狀態，並在幾次試驗後提高策略的成功率。</li>
-</ul>
-</li>
-<li><strong>離線元強化學習 (Offline Meta-RL)</strong>：<ul>
-<li><strong>原理</strong>: 利用預先收集的離線數據集來增強智能體在新任務上的泛化能力。</li>
-<li><strong>挑戰</strong>: 上下文偏移問題，即訓練和測試數據之間的分布差異可能導致性能下降。</li>
-<li><strong>方法</strong>:  CSRO (Context Shift Reduction for OMRL) 是一種解決上下文偏移問題的方法，它通過在元訓練和元測試階段減少策略對上下文的影響來提高泛化能力。</li>
-<li><strong>優點</strong>:  無需線上互動即可訓練模型。</li>
-</ul>
-</li>
-<li><strong>元模仿學習 (Meta Imitation Learning)</strong>:<ul>
-<li><strong>原理</strong>: 將元學習的技術應用於模仿學習，使智能體能夠從示範數據中快速學習新任務。</li>
-</ul>
-</li>
-</ul>
+<li id="fn:maesn">
+<p><a href="https://proceedings.neurips.cc/paper/2018/hash/4de754248c196c85ee4fbdcee89179bd-Abstract.html">Gupta et al., “Meta-Reinforcement Learning of Structured Exploration Strategies”</a>.&#160;<a class="footnote-backref" href="#fnref:maesn" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 </ol>
-<h3 id="meta-rl_2">Meta-RL 的應用<a class="headerlink" href="#meta-rl_2" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>自適應串流 (Adaptive Streaming)</strong>：<ul>
-<li><strong>Ahaggar</strong>：Ahaggar 是一種伺服器端的比特率引導解決方案，利用 Meta-RL 來根據網路條件、客戶端狀態和內容特性，動態調整比特率。Ahaggar 使用 <strong>CMCD/SD 協議</strong> 來簡化伺服器和客戶端之間的元數據交換。</li>
-<li><strong>優點</strong>：Ahaggar 可以提供更好的用戶體驗，減少緩衝時間，並降低帶寬消耗。</li>
-</ul>
-</li>
-<li><strong>機器人 (Robotics)</strong>：<ul>
-<li><strong>動態適應</strong>：Meta-RL 可以幫助機器人快速適應不同的環境、任務和自身狀態（如負重或損壞）。</li>
-<li><strong>複雜操作</strong>：透過元模仿學習，機器人可以從示範數據中學習複雜的操作技能。</li>
-<li><strong>真實世界應用</strong>：Meta-RL 有潛力在真實世界的機器人應用中，提高其適應性和效率。</li>
-</ul>
-</li>
-<li><strong>遊戲 (Gaming)</strong>：<ul>
-<li><strong>快速適應</strong>：Meta-RL 可以幫助智能體在不同的遊戲環境中快速適應，而無需從頭開始訓練。</li>
-<li><strong>策略學習</strong>：Meta-RL 可以讓智能體學會多樣化的策略，進而提升遊戲的挑戰性和趣味性。</li>
-</ul>
-</li>
-<li><strong>其他領域</strong>:<ul>
-<li><strong>教育</strong>:  開發自適應學習系統，根據學生的學習狀況提供個人化的教學內容。</li>
-<li><strong>醫療保健</strong>:  用於疾病診斷、藥物開發和個人化治療方案。</li>
-<li><strong>自動駕駛</strong>: 協助自動駕駛系統適應不同的駕駛環境和突發狀況。</li>
-</ul>
-</li>
-</ul>
-<h3 id="meta-rl_3">Meta-RL 的進階挑戰與未來方向<a class="headerlink" href="#meta-rl_3" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>魯棒性 (Robustness)</strong>：<ul>
-<li><strong>CVaR (Conditional Value at Risk)</strong>：為了提高 Meta-RL 模型的魯棒性，可以使用 CVaR 來優化模型的條件風險值。</li>
-<li><strong>RoML (Robust Meta RL)</strong>: RoML 是一種元演算法，它通過識別和過採樣較困難的任務來產生任何給定 MRL 演算法的穩健版本。</li>
-<li><strong>對抗性訓練 (Adversarial Training)</strong>：另一種方法是對抗性訓練，通過在訓練過程中引入對抗樣本來提高模型的魯棒性。</li>
-</ul>
-</li>
-<li><strong>探索與利用 (Exploration vs. Exploitation)</strong>：<ul>
-<li><strong>結構化探索</strong>：如何設計更有效的探索策略，以提高 Meta-RL 的學習效率。</li>
-<li><strong>VIME</strong>：一種利用變異資訊最大化來進行探索的算法。</li>
-</ul>
-</li>
-<li><strong>模型複雜度 (Model Complexity)</strong>：<ul>
-<li><strong>簡化模型</strong>：如何開發更簡潔的 Meta-RL 模型，以減少計算成本和提高訓練速度。</li>
-<li><strong>模組化</strong>： 透過模組化的 Meta-RL 架構，可以更容易地擴展和適應不同問題。</li>
-</ul>
-</li>
-<li><strong>超參數優化 (Hyperparameter Optimization)</strong>：<ul>
-<li><strong>元學習超參數</strong>：如何使用元學習來自動優化 Meta-RL 模型的超參數。</li>
-</ul>
-</li>
-</ul>
-<h3 id="experimental-setup-and-evaluation">實驗設定與評估 (Experimental Setup and Evaluation)<a class="headerlink" href="#experimental-setup-and-evaluation" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>模擬環境 (Simulated Environments)</strong>：<ul>
-<li><strong>OpenAI Gym</strong>：一個廣泛使用的強化學習環境套件。</li>
-<li><strong>MuJoCo</strong>：一個用於模擬機器人控制的物理引擎。</li>
-<li><strong>其他自定義環境</strong>：許多研究會根據特定的問題，設計自定義的模擬環境。</li>
-</ul>
-</li>
-<li><strong>真實世界環境 (Real-World Environments)</strong>：<ul>
-<li><strong>機器人平台</strong>：在真實的機器人平台上測試 Meta-RL 模型的性能。</li>
-<li><strong>自駕車平台</strong>：在真實的自動駕駛場景中測試 Meta-RL 模型。</li>
-</ul>
-</li>
-<li><strong>評估指標 (Evaluation Metrics)</strong>：<ul>
-<li><strong>平均獎勵 (Average Reward)</strong>：衡量模型在不同任務上的平均表現。</li>
-<li><strong>累積獎勵 (Cumulative Reward)</strong>：衡量模型在一段時間內獲得的總獎勵。</li>
-<li><strong>適應速度 (Adaptation Speed)</strong>:  衡量模型在遇到新任務時的學習速度。</li>
-<li><strong>魯棒性 (Robustness)</strong>: 衡量模型在面對不同任務或干擾時的穩定性。</li>
-<li><strong>樣本效率 (Sample Efficiency)</strong>: 衡量模型在學習過程中所需的樣本量。</li>
-</ul>
-</li>
-</ul>
-<h3 id="conclusion">總結 (Conclusion)<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h3>
-<p>Meta-RL 是一個充滿潛力的研究領域，它不僅可以解決傳統強化學習的限制，更可以推動人工智慧在真實世界中的應用。隨著研究的深入，我們有理由相信，Meta-RL 將在未來扮演越來越重要的角色。</p>
+</div>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -1609,7 +1528,11 @@
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.7"></script>
+        <script src="../../javascripts/mathjax.js?v=20260721.1"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/pb-filter.js?v=20260721.8"></script>
       
     
   </body>

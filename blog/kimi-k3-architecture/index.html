@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.24">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.25">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -94,6 +94,9 @@
   <meta name="twitter:title" content="Kimi K3 2.8T architecture — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Kimi K3 2.8T 架構解析：KDA 混合線性注意力、Attention Residuals、Stable LatentMoE，以及與 Inkling 975B 的設計分歧。">
   <meta name="twitter:image" content="https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1">
+  
+  <meta property="article:tag" content="Architecture"><meta property="article:tag" content="Linear Attention"><meta property="article:tag" content="MoE">
+  
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -166,6 +169,7 @@
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "inLanguage": "zh-Hant",
+    "keywords": ["Architecture", "Linear Attention", "MoE"],
     "description": "Kimi K3 2.8T \u67b6\u69cb\u89e3\u6790\uff1aKDA \u6df7\u5408\u7dda\u6027\u6ce8\u610f\u529b\u3001Attention Residuals\u3001Stable LatentMoE\uff0c\u4ee5\u53ca\u8207 Inkling 975B \u7684\u8a2d\u8a08\u5206\u6b67\u3002",
     "image": "https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1",
     "datePublished": "2026-07-20"
@@ -402,87 +406,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../publications/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Publications
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../projects/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Projects
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../talks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Talks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../patches/" class="md-nav__link">
         
   
@@ -528,10 +451,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -549,8 +472,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -809,17 +732,6 @@
     <span class="md-ellipsis">
       
         結語
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
       
     </span>
   </a>
@@ -1225,17 +1137,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1333,10 +1234,6 @@
     
   
     
-      <li><a href="#references">References</a></li>
-    
-  
-    
   
     </ol>
   </nav>
@@ -1347,7 +1244,7 @@
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
-<div class="pb-nav-row">
+<div class="pb-nav-row pb-nav-row--article">
   <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">Kimi K3 2.8T architecture</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     
@@ -1360,21 +1257,6 @@
       
       
       <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../../experiences/">Experiences</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../../publications/">Publications</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../../projects/">Projects</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../../talks/">Talks</a>
       
     
       
@@ -1439,10 +1321,6 @@
     
   
     
-      <li><a href="#references">References</a></li>
-    
-  
-    
   
     </ol>
   </nav>
@@ -1498,10 +1376,6 @@
     
   
     
-      <li><a href="#references">References</a></li>
-    
-  
-    
   
   </ol>
 </details>
@@ -1518,10 +1392,10 @@
   <figcaption>官方平台主視覺 · <a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></figcaption>
 </figure>
 
-<p>Moonshot AI 發布 <strong>Kimi K3</strong> API：2.8T 總參數、原生視覺、1M-token context，定位在長周期 coding、knowledge work 與 reasoning。它把超長序列與超深網路的問題分別交給 <strong>Kimi Delta Attention（KDA）</strong> 與 <strong>Attention Residuals（AttnRes）</strong>。</p>
+<p>Moonshot AI 發布 <strong>Kimi K3</strong> API：2.8T 總參數、原生視覺、1M-token context，定位在長周期 coding、knowledge work 與 reasoning。它把超長序列與超深網路的問題分別交給 <strong>Kimi Delta Attention（KDA）</strong> 與 <strong>Attention Residuals（AttnRes）</strong>。<sup id="fnref:k3-overview"><a class="footnote-ref" href="#fn:k3-overview">1</a></sup></p>
 <div class="admonition note">
 <p class="admonition-title">發布狀態（2026-07-20）</p>
-<p>Kimi K3 已可在 Kimi.com、Kimi Work、Kimi Code 與 API 使用；官方文件表示完整模型權重將在 <strong>2026-07-27 前</strong>釋出。本文不把尚未發生的權重釋出寫成已完成事件，架構細節也以現有官方資訊為限。</p>
+<p>Kimi K3 已可在 Kimi.com、Kimi Work、Kimi Code 與 API 使用；官方文件表示完整模型權重將在 <strong>2026-07-27 前</strong>釋出。本文不把尚未發生的權重釋出寫成已完成事件，架構細節也以現有官方資訊為限。<sup id="fnref:k3-quickstart"><a class="footnote-ref" href="#fn:k3-quickstart">2</a></sup></p>
 </div>
 <h2 id="tldr">TL;DR<a class="headerlink" href="#tldr" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1533,18 +1407,18 @@
 <li>API 已上線；完整權重截至本文日期仍是預告狀態。</li>
 </ul>
 <h2 id="1-kda">1. KDA：把長序列狀態更新做得更細<a class="headerlink" href="#1-kda" title="Permanent link">&para;</a></h2>
-<p>標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。</p>
+<p>標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。<sup id="fnref:kda-paper"><a class="footnote-ref" href="#fn:kda-paper">3</a></sup></p>
 <p>這種設計的核心不是「完全不需要 attention」，而是把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。</p>
 <p>目前 K3 的完整 layer ratio、kernel 細節與消融實驗要等 technical report；因此，網路流傳的精確 6.3× 解碼速度不能在缺乏同硬體、同 batch 與同輸出設定下直接泛化到所有部署。</p>
 <h3 id="linear-attention">Linear attention 真正改變的是哪個狀態<a class="headerlink" href="#linear-attention" title="Permanent link">&para;</a></h3>
-<p>標準 causal attention 在第 $t$ 個 token 需要讀取先前所有 key/value；線性或 recurrent-style attention 則維護一個固定形狀的狀態 $S_t$，概念上可寫成：</p>
-<p>$$
+<p>標準 causal attention 在第 <span class="arithmatex">\(t\)</span> 個 token 需要讀取先前所有 key/value；線性或 recurrent-style attention 則維護一個固定形狀的狀態 <span class="arithmatex">\(S_t\)</span>，概念上可寫成：</p>
+<div class="arithmatex">\[
 S_t = G_t \odot S_{t-1} + U_t,
 \qquad y_t = q_t^\top S_t.
-$$</p>
-<p>$G_t$ 是遺忘／保留門，$U_t$ 是當前 token 寫入的更新。KDA 的 channel-wise gating 重點，是不同 feature channels 不必共用同一個衰減速率。這將「回看全部歷史」改成「更新摘要狀態」，但也帶來新的 kernel 問題：狀態更新有序列依賴，training 需要可平行化 scan，decode 則要讓 state 常駐在高速記憶體中。架構上的線性複雜度，只有在 kernel fusion 與 memory layout 做好時才會變成實際吞吐。</p>
+\]</div>
+<p><span class="arithmatex">\(G_t\)</span> 是遺忘／保留門，<span class="arithmatex">\(U_t\)</span> 是當前 token 寫入的更新。KDA 的 channel-wise gating 重點，是不同 feature channels 不必共用同一個衰減速率。這將「回看全部歷史」改成「更新摘要狀態」，但也帶來新的 kernel 問題：狀態更新有序列依賴，training 需要可平行化 scan，decode 則要讓 state 常駐在高速記憶體中。架構上的線性複雜度，只有在 kernel fusion 與 memory layout 做好時才會變成實際吞吐。</p>
 <h2 id="2-attnres">2. AttnRes：殘差不再只連上一層<a class="headerlink" href="#2-attnres" title="Permanent link">&para;</a></h2>
-<p>傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。</p>
+<p>傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。<sup id="fnref:attnres-paper"><a class="footnote-ref" href="#fn:attnres-paper">4</a></sup></p>
 <p>可以把它理解成兩種不同維度的記憶：</p>
 <ul>
 <li>KDA 處理<strong>序列方向</strong>的長距離資訊流。</li>
@@ -1606,7 +1480,7 @@ $$</p>
 </table>
 <p>兩者都在離開「每層 full attention＋RoPE＋同一套 optimizer」的單一路線，但方法不同。Inkling 降低全域 attention 的出現頻率，再用卷積補局部混合；K3 把序列記憶改造成 KDA state update，並用 AttnRes 改造深度方向的訊號傳遞。</p>
 <h2 id="5-api">5. API 與部署策略<a class="headerlink" href="#5-api" title="Permanent link">&para;</a></h2>
-<p>K3 API 提供固定 1M context，官方文件表示不因 context 長度採階梯式單價；cache hit、cache miss 與 output 仍分別計價。它也提供 automatic context caching、tool calls、structured output、dynamic tool loading，以及 low/high/max 的 reasoning effort 設定。</p>
+<p>K3 API 提供固定 1M context，官方文件表示不因 context 長度採階梯式單價；cache hit、cache miss 與 output 仍分別計價。它也提供 automatic context caching、tool calls、structured output、dynamic tool loading，以及 low/high/max 的 reasoning effort 設定。<sup id="fnref:k3-pricing"><a class="footnote-ref" href="#fn:k3-pricing">5</a></sup></p>
 <p>這裡也要區分兩件事：API 能用，不等於開放權重部署已成熟。截至 7 月 20 日，權重與完整 technical report 尚未公開；任何 vLLM 吞吐、量化品質或多節點 routing 結論，都應在實際 artifact 發布後再驗證。</p>
 <h2 id="6">6. 核心場景：長鏈條系統工程<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
 <p>Moonshot 把 K3 的核心戰場放在 long-horizon coding：理解大型 repository、協調 terminal tools，並在視覺回饋下處理 frontend、game development 與 CAD。官方 kernel optimization case study 甚至讓模型在最多 24 小時的 sandbox 內反覆 profile、改寫與 benchmark GPU kernels。</p>
@@ -1615,14 +1489,26 @@ $$</p>
 <p>官方自己承認 K3 整體能力仍落後最強 proprietary models。Arena、GDPval 或 kernel benchmark 各自測量不同能力，而且 vendor-reported 結果可能使用不同 harness、thinking budget 與工具權限。Frontend Arena 的單項名次、Artificial Analysis 指標或 hallucination rate，都應附上測試版本與方法，不能拼成一個「全面勝過某模型」的結論。</p>
 <h2 id="_2">結語<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>K3 的技術訊號比 2.8T 這個 headline 更重要：KDA 解序列長度、AttnRes 解模型深度、極稀疏 MoE 解容量與 active compute 的分離。如果完整權重與 technical report 如期釋出，真正值得看的將是系統層數據——精度格式、單節點／多節點吞吐、expert communication、長 context 品質與量化後退化，而不只是參數量。</p>
-<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="https://www.kimi.com/blog/kimi-k3">Kimi K3 官方技術文章</a></li>
-<li><a href="https://platform.kimi.ai/docs/guide/kimi-k3-quickstart">Kimi K3 Quickstart &amp; Specifications</a></li>
-<li><a href="https://platform.kimi.ai/docs/pricing/chat-k3">Kimi K3 Pricing</a></li>
-<li><a href="https://arxiv.org/abs/2510.26692">Kimi Linear / KDA paper</a></li>
-<li><a href="https://arxiv.org/abs/2603.15031">Attention Residuals paper</a></li>
-</ul>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:k3-overview">
+<p><a href="https://www.kimi.com/blog/kimi-k3">Moonshot AI, “Kimi K3”</a>. Used for the announced architecture and product positioning.&#160;<a class="footnote-backref" href="#fnref:k3-overview" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:k3-quickstart">
+<p><a href="https://platform.kimi.ai/docs/guide/kimi-k3-quickstart">Kimi K3 Quickstart &amp; Specifications</a>. Used for availability, context length, and release-state claims.&#160;<a class="footnote-backref" href="#fnref:k3-quickstart" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:kda-paper">
+<p><a href="https://arxiv.org/abs/2510.26692">“Kimi Linear: An Expressive, Efficient Attention Architecture”</a>. Used for the KDA mechanism; K3-specific layer ratios remain undisclosed.&#160;<a class="footnote-backref" href="#fnref:kda-paper" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:attnres-paper">
+<p><a href="https://arxiv.org/abs/2603.15031">“Attention Residuals”</a>. Used for the cross-layer residual mechanism.&#160;<a class="footnote-backref" href="#fnref:attnres-paper" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:k3-pricing">
+<p><a href="https://platform.kimi.ai/docs/pricing/chat-k3">Kimi API pricing</a>. Used for cache and token-pricing distinctions.&#160;<a class="footnote-backref" href="#fnref:k3-pricing" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1732,7 +1618,11 @@ $$</p>
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.7"></script>
+        <script src="../../javascripts/mathjax.js?v=20260721.1"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/pb-filter.js?v=20260721.8"></script>
       
     
   </body>

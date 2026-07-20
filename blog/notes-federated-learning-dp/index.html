@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.24">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.25">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -84,7 +84,7 @@
   <meta property="og:title" content="Notes — Federated Learning + DP — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/notes-federated-learning-dp/">
-  <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/federated-dp.webp">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
@@ -93,7 +93,10 @@
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="Notes — Federated Learning + DP — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees.">
-  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/federated-dp.webp">
+  
+  <meta property="article:tag" content="Privacy"><meta property="article:tag" content="Federated Learning"><meta property="article:tag" content="Differential Privacy">
+  
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -165,8 +168,12 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/notes-federated-learning-dp/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "zh-Hant",
-    "description": "Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees."
+    "inLanguage": "en",
+    "keywords": ["Privacy", "Federated Learning", "Differential Privacy"],
+    "description": "Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees.",
+    "image": "https://wayne.is-a.dev/assets/blog/federated-dp.webp",
+    "datePublished": "2026-05-31",
+    "dateModified": "2026-07-21"
   }
   </script>
   
@@ -400,87 +407,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../publications/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Publications
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../projects/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Projects
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../talks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Talks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../patches/" class="md-nav__link">
         
   
@@ -526,10 +452,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -547,8 +473,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1165,7 +1091,7 @@
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
-<div class="pb-nav-row">
+<div class="pb-nav-row pb-nav-row--article">
   <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">Notes — Federated Learning + DP</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     
@@ -1178,21 +1104,6 @@
       
       
       <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../../experiences/">Experiences</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../../publications/">Publications</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../../projects/">Projects</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../../talks/">Talks</a>
       
     
       
@@ -1292,7 +1203,7 @@
 <strong>Non-IID</strong> data, and how <strong>differential privacy (DP)</strong> and <strong>secure aggregation</strong> fit on top —
 including the honest negative results that the marketing slides leave out. They follow the
 implementation in
-<a href="https://github.com/waynehacking8/federated-learning-lab"><strong>federated-learning-lab</strong></a>
+<a href="https://github.com/waynehacking8/federated-learning-lab"><strong>federated-learning-lab</strong></a><sup id="fnref:fl-repo"><a class="footnote-ref" href="#fn:fl-repo">1</a></sup>
 (FedAvg / FedProx / SCAFFOLD, DP-SGD, secure aggregation; 33/33 tests, literature
 cross-validated).</p>
 <h2 id="1-what-federated-learning-actually-is">1. What federated learning actually is<a class="headerlink" href="#1-what-federated-learning-actually-is" title="Permanent link">&para;</a></h2>
@@ -1303,7 +1214,7 @@ locally and sends <strong>model updates</strong> to a server that aggregates the
 <li>Server broadcasts the global model.</li>
 <li>Each client does a few local SGD epochs on its own data.</li>
 <li>Each client sends back its updated weights.</li>
-<li>Server averages the weights (weighted by client data size) → new global model.</li>
+<li>Server averages the weights (weighted by client data size) → new global model.<sup id="fnref:fedavg"><a class="footnote-ref" href="#fn:fedavg">2</a></sup></li>
 </ol>
 <p>That's it. The elegance is that raw data stays on-device; the difficulty is that the clients'
 data distributions are <strong>not</strong> identical.</p>
@@ -1314,10 +1225,10 @@ Under <strong>Non-IID</strong> data, each client's local optimum pulls in a diff
 their updates produces <strong>client drift</strong>: the global model lands somewhere none of them wanted.</p>
 <p>Two well-known fixes, both implemented and measured in the lab:</p>
 <ul>
-<li><strong>FedProx</strong> — add a proximal term that penalises drifting too far from the global model.
+<li><strong>FedProx</strong> — add a proximal term that penalises drifting too far from the global model.<sup id="fnref:fedprox"><a class="footnote-ref" href="#fn:fedprox">3</a></sup>
   Stabilises training when clients are heterogeneous.</li>
 <li><strong>SCAFFOLD</strong> — track <strong>control variates</strong> (correction terms) that estimate and subtract the
-  drift direction. More state to communicate, but corrects the bias FedProx only damps.</li>
+  drift direction. More state to communicate, but corrects the bias FedProx only damps.<sup id="fnref:scaffold"><a class="footnote-ref" href="#fn:scaffold">4</a></sup></li>
 </ul>
 <p>The honest finding worth repeating: on a strongly Non-IID split (e.g. label-skewed MNIST), the
 fancy methods <strong>don't always beat plain FedAvg by much</strong> — and sometimes the dominant lever is
@@ -1327,7 +1238,7 @@ separates a lab from a brochure.</p>
 <p>Keeping data on-device is <strong>not</strong> privacy. Model updates leak information about the data that
 produced them — membership inference and gradient-inversion attacks reconstruct training samples
 from gradients. To get a real guarantee you add <strong>differential privacy</strong>.</p>
-<p><strong>DP-SGD</strong> makes each training step private by:</p>
+<p><strong>DP-SGD</strong> makes each training step private by:<sup id="fnref:dpsgd"><a class="footnote-ref" href="#fn:dpsgd">5</a></sup></p>
 <ol>
 <li><strong>Per-sample gradient clipping</strong> — bound each example's contribution to a max norm <code>C</code>.</li>
 <li><strong>Gaussian noise</strong> — add noise calibrated to <code>C</code> to the summed gradients.</li>
@@ -1341,7 +1252,7 @@ free lunch; the contribution is <em>measuring</em> the curve, not claiming priva
 curious server seeing each client's <em>individual</em> update. With secure aggregation, clients mask
 their updates so the server can compute only the <strong>sum</strong> — no single client's contribution is
 visible — yet the masks cancel in aggregate. DP (what the model leaks) and secure aggregation
-(what the server sees) are <strong>complementary</strong>, not substitutes.</p>
+(what the server sees) are <strong>complementary</strong>, not substitutes.<sup id="fnref:secagg"><a class="footnote-ref" href="#fn:secagg">6</a></sup></p>
 <h2 id="5-why-from-scratch-and-3333-tests">5. Why "from scratch" and "33/33 tests"<a class="headerlink" href="#5-why-from-scratch-and-3333-tests" title="Permanent link">&para;</a></h2>
 <p>Privacy ML is exactly the domain where a subtly wrong implementation gives a <em>false</em> sense of
 safety — a clipping bug or a miscalibrated noise multiplier silently voids the ε guarantee. So
@@ -1360,6 +1271,29 @@ guarantee at a measurable accuracy cost; secure aggregation hides individual upd
 server. The trustworthy version of all three is the one with the tests and the honest curves.</p>
 <p>→ From-scratch implementations, tests, and negative results:
 <a href="https://github.com/waynehacking8/federated-learning-lab">github.com/waynehacking8/federated-learning-lab</a></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:fl-repo">
+<p><a href="https://github.com/waynehacking8/federated-learning-lab">Federated Learning Lab</a>, the primary artifact for implementations, tests, and measured negative results discussed here.&#160;<a class="footnote-backref" href="#fnref:fl-repo" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:fedavg">
+<p><a href="https://proceedings.mlr.press/v54/mcmahan17a.html">McMahan et al., “Communication-Efficient Learning of Deep Networks from Decentralized Data”</a>.&#160;<a class="footnote-backref" href="#fnref:fedavg" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:fedprox">
+<p><a href="https://proceedings.mlsys.org/paper_files/paper/2020/hash/1f5fe83998a09396ebe6477d9475ba0c-Abstract.html">Li et al., “Federated Optimization in Heterogeneous Networks”</a>.&#160;<a class="footnote-backref" href="#fnref:fedprox" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:scaffold">
+<p><a href="https://proceedings.mlr.press/v119/karimireddy20a.html">Karimireddy et al., “SCAFFOLD: Stochastic Controlled Averaging for Federated Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:scaffold" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:dpsgd">
+<p><a href="https://dl.acm.org/doi/10.1145/2976749.2978318">Abadi et al., “Deep Learning with Differential Privacy”</a>.&#160;<a class="footnote-backref" href="#fnref:dpsgd" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:secagg">
+<p><a href="https://research.google/pubs/practical-secure-aggregation-for-privacy-preserving-machine-learning/">Bonawitz et al., “Practical Secure Aggregation for Privacy-Preserving Machine Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:secagg" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1469,7 +1403,11 @@ server. The trustworthy version of all three is the one with the tests and the h
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.7"></script>
+        <script src="../../javascripts/mathjax.js?v=20260721.1"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/pb-filter.js?v=20260721.8"></script>
       
     
   </body>

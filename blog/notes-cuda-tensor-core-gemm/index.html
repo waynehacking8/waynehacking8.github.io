@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.24">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.25">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -84,7 +84,7 @@
   <meta property="og:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM — shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/">
-  <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/wmma-tile.webp">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
@@ -93,7 +93,10 @@
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM — shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.">
-  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/wmma-tile.webp">
+  
+  <meta property="article:tag" content="CUDA"><meta property="article:tag" content="Tensor Cores"><meta property="article:tag" content="Performance">
+  
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -165,8 +168,12 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "zh-Hant",
-    "description": "Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM \u2014 shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell."
+    "inLanguage": "en",
+    "keywords": ["CUDA", "Tensor Cores", "Performance"],
+    "description": "Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM \u2014 shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.",
+    "image": "https://wayne.is-a.dev/assets/blog/wmma-tile.webp",
+    "datePublished": "2026-05-31",
+    "dateModified": "2026-07-21"
   }
   </script>
   
@@ -400,87 +407,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../publications/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Publications
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../projects/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Projects
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../talks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Talks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../patches/" class="md-nav__link">
         
   
@@ -526,10 +452,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -547,8 +473,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1191,7 +1117,7 @@
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
-<div class="pb-nav-row">
+<div class="pb-nav-row pb-nav-row--article">
   <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">Notes — CUDA Tensor Core GEMM (WMMA)</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     
@@ -1204,21 +1130,6 @@
       
       
       <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../../experiences/">Experiences</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../../publications/">Publications</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../../projects/">Projects</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../../talks/">Talks</a>
       
     
       
@@ -1372,6 +1283,9 @@ API exposes them in CUDA C++:</p>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">store_matrix_sync</span><span class="p">(</span><span class="n">C</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">c_frag</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="p">,</span><span class="w"> </span><span class="n">mem_row_major</span><span class="p">);</span>
 </code></pre></div>
+<p>The supported fragment shapes, layouts, and precision combinations are architecture-specific;
+the CUDA Programming Guide is the source of truth rather than this deliberately simplified
+kernel.<sup id="fnref:cuda-guide"><a class="footnote-ref" href="#fn:cuda-guide">1</a></sup></p>
 <p>The mental model shifts from "threads computing elements" to "<strong>warps cooperating on
 fragments</strong>." A <code>fragment</code> is an opaque, register-resident tile; you don't index its elements,
 you feed whole fragments to <code>mma_sync</code>. Inputs are FP16/BF16 (or FP8/FP4 on newer
@@ -1417,13 +1331,24 @@ throughput, Tensor Core utilisation, or occupancy.</p>
 <strong>FP4</strong> and a new generation of Tensor Core instructions (<code>tcgen05</code>). The WMMA mental model —
 fragments fed to an MMA, FP32 accumulation — carries forward; what changes is the input
 precision and the tile shapes. Understanding the FP16 WMMA path is the on-ramp to reasoning
-about NVFP4 inference on Blackwell.</p>
+about NVFP4 inference on Blackwell.<sup id="fnref:blackwell"><a class="footnote-ref" href="#fn:blackwell">2</a></sup></p>
 <h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
 <p>GEMM performance is a ladder: naive is memory-bound, <strong>shared-memory tiling</strong> makes it
 compute-bound, and <strong>WMMA</strong> moves the compute onto Tensor Cores with mixed precision. Measure
 every rung as <strong>% of cuBLAS</strong> on the same GPU — that's the metric that's honest about how close
 you are to the ceiling and portable across Hopper and Blackwell.</p>
 <p>→ More field notes on the NVIDIA stack: <a href="https://wayne.is-a.dev/">wayne.is-a.dev</a></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:cuda-guide">
+<p><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions">CUDA C++ Programming Guide — Warp Matrix Functions</a>, NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.&#160;<a class="footnote-backref" href="#fnref:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:blackwell">
+<p><a href="https://resources.nvidia.com/en-us-blackwell-architecture">NVIDIA Blackwell Architecture Technical Brief</a>, used for the generation-level Tensor Core and low-precision capability summary.&#160;<a class="footnote-backref" href="#fnref:blackwell" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1533,7 +1458,11 @@ you are to the ceiling and portable across Hopper and Blackwell.</p>
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.7"></script>
+        <script src="../../javascripts/mathjax.js?v=20260721.1"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/pb-filter.js?v=20260721.8"></script>
       
     
   </body>

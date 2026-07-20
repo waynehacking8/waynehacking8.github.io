@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.24">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.25">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -84,7 +84,7 @@
   <meta property="og:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/">
-  <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/trtllm-triton.webp">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
@@ -93,7 +93,10 @@
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover.">
-  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/trtllm-triton.webp">
+  
+  <meta property="article:tag" content="Serving"><meta property="article:tag" content="TensorRT-LLM"><meta property="article:tag" content="Triton">
+  
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -165,8 +168,12 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "zh-Hant",
-    "description": "Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM \u2014 including the measured low/mid vs high concurrency crossover."
+    "inLanguage": "en",
+    "keywords": ["Serving", "TensorRT-LLM", "Triton"],
+    "description": "Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM \u2014 including the measured low/mid vs high concurrency crossover.",
+    "image": "https://wayne.is-a.dev/assets/blog/trtllm-triton.webp",
+    "datePublished": "2026-05-31",
+    "dateModified": "2026-07-21"
   }
   </script>
   
@@ -400,87 +407,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../publications/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Publications
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../projects/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Projects
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../talks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Talks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../patches/" class="md-nav__link">
         
   
@@ -526,10 +452,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -547,8 +473,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1217,7 +1143,7 @@
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
-<div class="pb-nav-row">
+<div class="pb-nav-row pb-nav-row--article">
   <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">Notes — TensorRT-LLM + Triton serving</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     
@@ -1230,21 +1156,6 @@
       
       
       <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../../experiences/">Experiences</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../../publications/">Publications</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../../projects/">Projects</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../../talks/">Talks</a>
       
     
       
@@ -1361,7 +1272,7 @@ production-style serving endpoint on the NVIDIA stack — <strong>TensorRT-LLM</
 <strong>Triton Inference Server</strong> for the deployment surface — and benchmarking it honestly against
 <strong>vLLM</strong> on multi-GPU hardware. They follow the harness in
 <a href="https://github.com/waynehacking8/trtllm-triton-serving"><strong>trtllm-triton-serving</strong></a>
-(4× H100, NVLink).</p>
+(4× H100, NVLink).<sup id="fnref:serving-repo"><a class="footnote-ref" href="#fn:serving-repo">1</a></sup></p>
 <p>The goal is to move from "I use vLLM" to "I can stand up the NVIDIA inference stack on real
 multi-GPU hardware and reason about the trade-offs."</p>
 <h2 id="1-the-serving-pipeline">1. The serving pipeline<a class="headerlink" href="#1-the-serving-pipeline" title="Permanent link">&para;</a></h2>
@@ -1378,7 +1289,7 @@ affects latency, throughput, or accuracy:</p>
 <p>The key mental shift from vLLM: TensorRT-LLM does <strong>ahead-of-time compilation</strong>. vLLM is a
 runtime that takes the model and serves it; TensorRT-LLM <em>builds an engine</em> specialized to your
 GPU, TP degree, and precision first. That build is where the performance comes from, and also
-where the rigidity comes from.</p>
+where the rigidity comes from.<sup id="fnref:trt-docs"><a class="footnote-ref" href="#fn:trt-docs">2</a></sup></p>
 <h2 id="2-tensor-parallelism-tp">2. Tensor parallelism (TP)<a class="headerlink" href="#2-tensor-parallelism-tp" title="Permanent link">&para;</a></h2>
 <p>For a model that doesn't fit on one GPU — or to cut latency — TensorRT-LLM shards each layer
 across GPUs. On a 4× H100 NVLink box, <code>TP=4</code> means every forward pass does an <strong>all-reduce</strong>
@@ -1454,7 +1365,7 @@ are noise.</p>
   for multi-model hosting.</li>
 </ul>
 <p>Treat <code>trtllm-serve</code> as the fast path for benchmarking and Triton as the path you'd actually
-ship behind a gateway.</p>
+ship behind a gateway.<sup id="fnref:triton-docs"><a class="footnote-ref" href="#fn:triton-docs">3</a></sup></p>
 <h2 id="7-when-does-tensorrt-llm-win-the-measured-answer">7. When does TensorRT-LLM win? (the measured answer)<a class="headerlink" href="#7-when-does-tensorrt-llm-win-the-measured-answer" title="Permanent link">&para;</a></h2>
 <p>Not always — and the measurement says <em>which</em> regime, not a vibe. Across a matched-work sweep on
 4× H100, the result lands on a <strong>concurrency crossover</strong>:</p>
@@ -1483,6 +1394,20 @@ vLLM wins <strong>high concurrency</strong> (throughput) — and a Triton contro
 put in production.</p>
 <p>→ Full pipeline, Triton model repo, and the matched-work harness:
 <a href="https://github.com/waynehacking8/trtllm-triton-serving">github.com/waynehacking8/trtllm-triton-serving</a></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:serving-repo">
+<p><a href="https://github.com/waynehacking8/trtllm-triton-serving">TensorRT-LLM + Triton serving benchmark</a>, the primary artifact for engine configs, matched-work harness, and measured crossover.&#160;<a class="footnote-backref" href="#fnref:serving-repo" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:trt-docs">
+<p><a href="https://nvidia.github.io/TensorRT-LLM/">TensorRT-LLM documentation</a>, NVIDIA’s engine-build and runtime reference.&#160;<a class="footnote-backref" href="#fnref:trt-docs" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:triton-docs">
+<p><a href="https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/">Triton Inference Server documentation</a>, NVIDIA’s model-repository, scheduling, metrics, and protocol reference.&#160;<a class="footnote-backref" href="#fnref:triton-docs" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1592,7 +1517,11 @@ put in production.</p>
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.7"></script>
+        <script src="../../javascripts/mathjax.js?v=20260721.1"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/pb-filter.js?v=20260721.8"></script>
       
     
   </body>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~40% to 0% — and why an eval harness is the only way to see the difference.">
+        <meta name="description" content="Why a 0% RAG hallucination result failed on adversarial near-misses, what nine gates actually caught, and why grounding beats a larger judge.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.24">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.25">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -82,9 +82,9 @@
   <!-- Open Graph -->
   <meta property="og:type" content="article">
   <meta property="og:title" content="RAG groundedness (0% vs 50%) — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~40% to 0% — and why an eval harness is the only way to see the difference.">
+  <meta property="og:description" content="Why a 0% RAG hallucination result failed on adversarial near-misses, what nine gates actually caught, and why grounding beats a larger judge.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/rag-groundedness-guardrail/">
-  <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/rag-architecture.svg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
@@ -92,8 +92,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="RAG groundedness (0% vs 50%) — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="One guardrail that drops a RAG agent's out-of-corpus hallucination rate from ~40% to 0% — and why an eval harness is the only way to see the difference.">
-  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
+  <meta name="twitter:description" content="Why a 0% RAG hallucination result failed on adversarial near-misses, what nine gates actually caught, and why grounding beats a larger judge.">
+  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/rag-architecture.svg">
+  
+  <meta property="article:tag" content="RAG"><meta property="article:tag" content="Evaluation"><meta property="article:tag" content="Grounding"><meta property="article:tag" content="LLM">
+  
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
@@ -165,8 +168,12 @@
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/rag-groundedness-guardrail/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "zh-Hant",
-    "description": "One guardrail that drops a RAG agent\u0027s out-of-corpus hallucination rate from ~40% to 0% \u2014 and why an eval harness is the only way to see the difference."
+    "inLanguage": "en",
+    "keywords": ["RAG", "Evaluation", "Grounding", "LLM"],
+    "description": "Why a 0% RAG hallucination result failed on adversarial near-misses, what nine gates actually caught, and why grounding beats a larger judge.",
+    "image": "https://wayne.is-a.dev/assets/blog/rag-architecture.svg",
+    "datePublished": "2026-05-31",
+    "dateModified": "2026-07-21"
   }
   </script>
   
@@ -190,7 +197,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#0-vs-40-making-a-rag-agent-refuse-to-hallucinate" class="md-skip">
+        <a href="#the-0-rag-result-failed-the-harder-test" class="md-skip">
           Skip to content
         </a>
       
@@ -400,87 +407,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../publications/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Publications
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../projects/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Projects
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../talks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Talks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../patches/" class="md-nav__link">
         
   
@@ -526,10 +452,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -547,8 +473,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -765,10 +691,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-ablation" class="md-nav__link">
+  <a href="#the-two-evaluations-were-testing-different-problems" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The ablation
+        The two evaluations were testing different problems
       
     </span>
   </a>
@@ -776,10 +702,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-just-prompt-better-isnt-the-lesson" class="md-nav__link">
+  <a href="#define-the-failure-before-reporting-the-percentage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why "just prompt better" isn't the lesson
+        Define the failure before reporting the percentage
       
     </span>
   </a>
@@ -787,10 +713,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
+  <a href="#same-model-validation-shares-the-generators-blind-spots" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Takeaway
+        Same-model validation shares the generator’s blind spots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#better-retrieval-did-not-make-abstention-safer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Better retrieval did not make abstention safer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-i-would-deploy-from-these-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What I would deploy from these results
       
     </span>
   </a>
@@ -980,10 +928,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-ablation" class="md-nav__link">
+  <a href="#the-two-evaluations-were-testing-different-problems" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The ablation
+        The two evaluations were testing different problems
       
     </span>
   </a>
@@ -991,10 +939,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-just-prompt-better-isnt-the-lesson" class="md-nav__link">
+  <a href="#define-the-failure-before-reporting-the-percentage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why "just prompt better" isn't the lesson
+        Define the failure before reporting the percentage
       
     </span>
   </a>
@@ -1002,10 +950,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
+  <a href="#same-model-validation-shares-the-generators-blind-spots" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Takeaway
+        Same-model validation shares the generator’s blind spots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#better-retrieval-did-not-make-abstention-safer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Better retrieval did not make abstention safer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-i-would-deploy-from-these-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What I would deploy from these results
       
     </span>
   </a>
@@ -1065,15 +1035,23 @@
     
       
     
-      <li><a href="#the-ablation">The ablation</a></li>
+      <li><a href="#the-two-evaluations-were-testing-different-problems">The two evaluations were testing different problems</a></li>
     
   
     
-      <li><a href="#why-just-prompt-better-isnt-the-lesson">Why "just prompt better" isn't the lesson</a></li>
+      <li><a href="#define-the-failure-before-reporting-the-percentage">Define the failure before reporting the percentage</a></li>
     
   
     
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#same-model-validation-shares-the-generators-blind-spots">Same-model validation shares the generator’s blind spots</a></li>
+    
+  
+    
+      <li><a href="#better-retrieval-did-not-make-abstention-safer">Better retrieval did not make abstention safer</a></li>
+    
+  
+    
+      <li><a href="#what-i-would-deploy-from-these-results">What I would deploy from these results</a></li>
     
   
     
@@ -1087,7 +1065,7 @@
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
      row inside the content pane; the markdown h1 is hidden by CSS and the
      title is rendered here instead so both live on the same row -->
-<div class="pb-nav-row">
+<div class="pb-nav-row pb-nav-row--article">
   <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">RAG groundedness (0% vs 50%)</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     
@@ -1100,21 +1078,6 @@
       
       
       <a class="pb-nav-link" style="view-transition-name: pb-tab-experiences" href="../../experiences/">Experiences</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-publications" href="../../publications/">Publications</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-projects" href="../../projects/">Projects</a>
-      
-    
-      
-      
-      <a class="pb-nav-link" style="view-transition-name: pb-tab-talks" href="../../talks/">Talks</a>
       
     
       
@@ -1135,15 +1098,23 @@
     
       
     
-      <li><a href="#the-ablation">The ablation</a></li>
+      <li><a href="#the-two-evaluations-were-testing-different-problems">The two evaluations were testing different problems</a></li>
     
   
     
-      <li><a href="#why-just-prompt-better-isnt-the-lesson">Why "just prompt better" isn't the lesson</a></li>
+      <li><a href="#define-the-failure-before-reporting-the-percentage">Define the failure before reporting the percentage</a></li>
     
   
     
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#same-model-validation-shares-the-generators-blind-spots">Same-model validation shares the generator’s blind spots</a></li>
+    
+  
+    
+      <li><a href="#better-retrieval-did-not-make-abstention-safer">Better retrieval did not make abstention safer</a></li>
+    
+  
+    
+      <li><a href="#what-i-would-deploy-from-these-results">What I would deploy from these results</a></li>
     
   
     
@@ -1158,15 +1129,23 @@
     
       
     
-      <li><a href="#the-ablation">The ablation</a></li>
+      <li><a href="#the-two-evaluations-were-testing-different-problems">The two evaluations were testing different problems</a></li>
     
   
     
-      <li><a href="#why-just-prompt-better-isnt-the-lesson">Why "just prompt better" isn't the lesson</a></li>
+      <li><a href="#define-the-failure-before-reporting-the-percentage">Define the failure before reporting the percentage</a></li>
     
   
     
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#same-model-validation-shares-the-generators-blind-spots">Same-model validation shares the generator’s blind spots</a></li>
+    
+  
+    
+      <li><a href="#better-retrieval-did-not-make-abstention-safer">Better retrieval did not make abstention safer</a></li>
+    
+  
+    
+      <li><a href="#what-i-would-deploy-from-these-results">What I would deploy from these results</a></li>
     
   
     
@@ -1179,64 +1158,180 @@
 
 
 
-<h1 id="0-vs-40-making-a-rag-agent-refuse-to-hallucinate">0 % vs 40 %: making a RAG agent refuse to hallucinate<a class="headerlink" href="#0-vs-40-making-a-rag-agent-refuse-to-hallucinate" title="Permanent link">&para;</a></h1>
-<p><em>2026-05-31 · LLM / RAG</em></p>
+<h1 id="the-0-rag-result-failed-the-harder-test">The 0% RAG result failed the harder test<a class="headerlink" href="#the-0-rag-result-failed-the-harder-test" title="Permanent link">&para;</a></h1>
+<p><em>2026-05-31 · updated 2026-07-21 · RAG / evaluation / grounding</em></p>
 <figure class="pb-article-hero pb-article-contain">
-  <img src="/assets/blog/rag-architecture.svg" alt="Microsoft 單租戶 RAG 參考架構圖" loading="eager" decoding="async">
+  <img src="/assets/blog/rag-architecture.svg" alt="Microsoft single-tenant RAG reference architecture" loading="eager" decoding="async">
   <figcaption>Grounded RAG reference architecture · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag">Source: Microsoft Learn</a></figcaption>
 </figure>
 
-<p>A retrieval-augmented agent is only as trustworthy as its behaviour on questions whose answer
-<strong>isn't in the corpus</strong>. The failure mode is quiet: instead of saying "I don't know," the model
-invents a confident, well-formed, wrong answer. This post shows a single guardrail that takes
-that from common to never — and, crucially, <em>measures</em> it.</p>
-<p>Reference architecture:
-<a href="https://github.com/waynehacking8/nim-agent-blueprint"><strong>nim-agent-blueprint</strong></a> — agentic RAG on
-the NVIDIA NIM stack with a built-in eval harness.</p>
-<h2 id="the-ablation">The ablation<a class="headerlink" href="#the-ablation" title="Permanent link">&para;</a></h2>
-<p>The agent loop is <strong>plan → retrieve → generate → validate</strong>. The interesting variable is the
-generation prompt's contract with the retrieved context:</p>
+<p>My first evaluation made a tidy claim: a guarded prompt cut hallucination from <strong>4/10 to
+0/10</strong> on unanswerable questions. The run was real, reproducible, and almost useless as a
+headline. Ten questions were too few, and “out of corpus” was the easy failure mode—the
+model had no relevant passage tempting it toward a plausible answer.<sup id="fnref:repo"><a class="footnote-ref" href="#fn:repo">1</a></sup></p>
+<p>The scaled rerun used 100 answerable and 100 adversarially unanswerable SQuAD 2.0 questions.
+Each near-miss question retrieves an on-topic passage that does <em>not</em> contain the answer.
+Here the guarded generator hallucinated on <strong>48/100</strong> questions; without the guard it failed
+on <strong>78/100</strong>.<sup id="fnref:squad-report"><a class="footnote-ref" href="#fn:squad-report">2</a></sup> The 0% result did not generalize. That reversal is the useful
+result.</p>
+<h2 id="the-two-evaluations-were-testing-different-problems">The two evaluations were testing different problems<a class="headerlink" href="#the-two-evaluations-were-testing-different-problems" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Configuration</th>
-<th>Out-of-corpus hallucination rate</th>
+<th>Evaluation</th>
+<th style="text-align: right;">Unanswerable set</th>
+<th style="text-align: right;">Guarded</th>
+<th style="text-align: right;">Unguarded</th>
+<th>What it measures</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Generate freely from context</td>
-<td><strong>~40 %</strong></td>
+<td>Initial harness</td>
+<td style="text-align: right;">10 out-of-corpus questions</td>
+<td style="text-align: right;">0/10</td>
+<td style="text-align: right;">4/10</td>
+<td>Can the model abstain when evidence is plainly absent?</td>
 </tr>
 <tr>
-<td>Guarded prompt (answer <em>only</em> from context; otherwise abstain)</td>
-<td><strong>0 %</strong></td>
+<td>Scaled rerun</td>
+<td style="text-align: right;">100 adversarial near-misses</td>
+<td style="text-align: right;">48/100</td>
+<td style="text-align: right;">78/100</td>
+<td>Can it resist a relevant-looking passage that lacks the answer?</td>
 </tr>
 </tbody>
 </table>
-<p>Same model, same retriever, same questions. The only change is a prompt that makes "I can't
-answer that from the provided sources" a first-class, rewarded output — plus a <strong>validate</strong>
-step that checks the answer is grounded in retrieved spans before returning it. On in-corpus
-questions, retrieval <strong>recall@3 stayed at 100 %</strong>, so the guardrail buys safety without
-costing coverage.</p>
-<h2 id="why-just-prompt-better-isnt-the-lesson">Why "just prompt better" isn't the lesson<a class="headerlink" href="#why-just-prompt-better-isnt-the-lesson" title="Permanent link">&para;</a></h2>
-<p>The lesson isn't the prompt — it's that the difference between 40 % and 0 % is <strong>invisible
-without an eval harness</strong>. A demo that only asks in-corpus questions looks perfect in both
-configurations. You only see the 40 % when you deliberately ask things the corpus can't
-answer and <em>score groundedness</em>. So the blueprint ships with:</p>
-<ul>
-<li><strong>retrieval hit-rate</strong> (is the answer even retrievable?),</li>
-<li><strong>answer groundedness</strong> via LLM-as-judge (is the answer supported by what was retrieved?),</li>
-<li><strong>latency</strong>, and OpenTelemetry traces per agent step.</li>
-</ul>
-<p>That's the difference between "it works on my five questions" and "here is the number a
-partner can hold me to."</p>
-<h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
-<p>For enterprise RAG, abstention is a feature, not a failure. Make "I don't know" a rewarded
-output, validate groundedness before returning, and <strong>measure the out-of-corpus rate</strong> — it's
-the number that separates a demo from something you'd put in front of a customer.</p>
-<p>→ Runnable blueprint + eval harness:
+<p>The first result still describes those ten examples. It just cannot support “this guardrail
+solves hallucination.” The harder set changes both the point estimate and the mechanism: the
+context is no longer empty or irrelevant, so “answer only from context” can steer the model
+toward a wrong span instead of toward abstention.</p>
+<h2 id="define-the-failure-before-reporting-the-percentage">Define the failure before reporting the percentage<a class="headerlink" href="#define-the-failure-before-reporting-the-percentage" title="Permanent link">&para;</a></h2>
+<p>For the unanswerable slice, let <span class="arithmatex">\(h_i=1\)</span> when answer <span class="arithmatex">\(i\)</span> contains a claim unsupported by the
+retrieved passage. The reported hallucination rate is</p>
+<div class="arithmatex">\[
+\widehat{H}_{\text{unanswerable}} =
+\frac{1}{N_{\text{unanswerable}}}
+\sum_{i=1}^{N_{\text{unanswerable}}} h_i.
+\tag{1}
+\]</div>
+<p>That denominator must travel with the percentage. A zero from <span class="arithmatex">\(N=10\)</span> and a zero from
+<span class="arithmatex">\(N=1{,}000\)</span> are not the same amount of evidence. The scaled report therefore includes Wilson
+95% confidence intervals and paired exact McNemar tests where two gates score the same
+answers.<sup id="fnref2:squad-report"><a class="footnote-ref" href="#fn:squad-report">2</a></sup></p>
+<p>Retrieval recall and hallucination rate also stay separate. An answer may retrieve the gold
+passage and still invent a claim; an unanswerable question may retrieve the intended
+near-miss perfectly and <em>still</em> require abstention.</p>
+<h2 id="same-model-validation-shares-the-generators-blind-spots">Same-model validation shares the generator’s blind spots<a class="headerlink" href="#same-model-validation-shares-the-generators-blind-spots" title="Permanent link">&para;</a></h2>
+<p>The original <code>validate()</code> step asked the same 8B model family to judge its own unguarded
+answers. It caught only one of four hallucinations in the small run. At scale, the plain
+self-judge reached <strong>27% recall</strong>. Switching to an independent 8B model family raised recall
+to <strong>41%</strong>, but 53 of 96 hallucinations escaped both judges.<sup id="fnref:judge-report"><a class="footnote-ref" href="#fn:judge-report">3</a></sup></p>
+<table>
+<thead>
+<tr>
+<th>Gate on the same 200 answers</th>
+<th style="text-align: right;">Precision</th>
+<th style="text-align: right;">Recall</th>
+<th style="text-align: right;">F1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Same-family judge</td>
+<td style="text-align: right;">79%</td>
+<td style="text-align: right;">27%</td>
+<td style="text-align: right;">0.40</td>
+</tr>
+<tr>
+<td>Cross-family judge</td>
+<td style="text-align: right;">74%</td>
+<td style="text-align: right;">41%</td>
+<td style="text-align: right;">0.52</td>
+</tr>
+<tr>
+<td>Same-family judge + chain of thought</td>
+<td style="text-align: right;">81%</td>
+<td style="text-align: right;">40%</td>
+<td style="text-align: right;">0.53</td>
+</tr>
+<tr>
+<td>Cross-family judge + chain of thought</td>
+<td style="text-align: right;">62%</td>
+<td style="text-align: right;">49%</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr>
+<td>MiniCheck-FT5 770M</td>
+<td style="text-align: right;">66%</td>
+<td style="text-align: right;">36%</td>
+<td style="text-align: right;">0.47</td>
+</tr>
+<tr>
+<td>Cross-family judge <strong>OR</strong> MiniCheck</td>
+<td style="text-align: right;">63%</td>
+<td style="text-align: right;">55%</td>
+<td style="text-align: right;">0.59</td>
+</tr>
+</tbody>
+</table>
+<p>The smallest model in that table gives the most interesting signal. MiniCheck is a 770M
+grounded NLI verifier: it compares the answer against evidence instead of deciding from its
+parametric memory. It recovered 12 of the 53 errors missed by both 8B judges—more blind spots
+than any generative-judge variant.<sup id="fnref:minicheck"><a class="footnote-ref" href="#fn:minicheck">5</a></sup><sup id="fnref2:judge-report"><a class="footnote-ref" href="#fn:judge-report">3</a></sup></p>
+<p>This is why “use a bigger judge” is not the default answer. A separate 70B experiment found
+no meaningful recall advantage over the cross-family 8B judge on its paired set, while the
+grounded verifier continued to catch errors the large parametric judge missed.<sup id="fnref2:repo"><a class="footnote-ref" href="#fn:repo">1</a></sup></p>
+<h2 id="better-retrieval-did-not-make-abstention-safer">Better retrieval did not make abstention safer<a class="headerlink" href="#better-retrieval-did-not-make-abstention-safer" title="Permanent link">&para;</a></h2>
+<p>Adding a cross-encoder reranker improved retrieval recall@3 from <strong>85% to 96%</strong> and substring
+answer accuracy from <strong>70% to 81%</strong>. Hallucination did not improve: guarded answers moved
+from 48% to 52%, and unguarded answers from 78% to 86%; neither change was statistically
+significant.<sup id="fnref:rerank-report"><a class="footnote-ref" href="#fn:rerank-report">4</a></sup></p>
+<p>That result is easy to misread. The reranker worked—it surfaced more relevant passages. On an
+adversarially unanswerable question, however, a more relevant <em>answerless</em> passage gives the
+generator a better near-miss. Retrieval quality and abstention safety are different axes.</p>
+<h2 id="what-i-would-deploy-from-these-results">What I would deploy from these results<a class="headerlink" href="#what-i-would-deploy-from-these-results" title="Permanent link">&para;</a></h2>
+<p>The measured gate with the best coverage is the union of two different failure detectors:
+block when either the cross-family judge or MiniCheck flags the answer. It reaches 55% recall
+on the common Phase-5 run, with 63% precision. That is not a solved system; 29 of 96
+hallucinations still escaped every tested gate.</p>
+<p>So the production contract is explicit:</p>
+<ol>
+<li><strong>Generate with an abstention instruction</strong>, because it still cuts the hard-set failure
+   rate by 30 points.</li>
+<li><strong>Verify against evidence</strong>, not only with another generative model.</li>
+<li><strong>Log the rejected and escaped cases</strong> with retrieved spans so the next evaluation set is
+   built from real failures.</li>
+<li><strong>Report precision and recall</strong>, not just the residual hallucination rate; an aggressive
+   gate can look safe by blocking correct answers.</li>
+<li><strong>Keep a deterministic adversarial set</strong> and rerun paired comparisons whenever the model,
+   retriever, prompt, or judge changes.</li>
+</ol>
+<p>The lesson is no longer “one prompt gets to zero.” It is that easy abstention tests can make a
+weak guardrail look finished. The useful evaluation is the one designed to break the story
+you most want to tell.</p>
+<p>→ Reproduce the runs, inspect row-level verdicts, and read the statistical caveats:
 <a href="https://github.com/waynehacking8/nim-agent-blueprint">github.com/waynehacking8/nim-agent-blueprint</a></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:repo">
+<p><a href="https://github.com/waynehacking8/nim-agent-blueprint">NIM Agent Blueprint</a>, the primary repository containing the agent graph, datasets, committed row-level verdicts, reports, and reproduction commands.&#160;<a class="footnote-backref" href="#fnref:repo" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:repo" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:squad-report">
+<p><a href="https://github.com/waynehacking8/nim-agent-blueprint/blob/main/eval/report_squad.md">SQuAD 2.0 evaluation report</a>, including the N=200 design, Wilson intervals, and paired comparisons.&#160;<a class="footnote-backref" href="#fnref:squad-report" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:squad-report" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:judge-report">
+<p><a href="https://github.com/waynehacking8/nim-agent-blueprint/blob/main/eval/report_judge_variants.md">Judge-variant report</a>, comparing same-family, cross-family, chain-of-thought, MiniCheck, and union gates on shared answers.&#160;<a class="footnote-backref" href="#fnref:judge-report" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:judge-report" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:rerank-report">
+<p><a href="https://github.com/waynehacking8/nim-agent-blueprint/blob/main/eval/report_rerank.md">Reranker ablation</a>, with paired retrieval, accuracy, and hallucination results.&#160;<a class="footnote-backref" href="#fnref:rerank-report" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:minicheck">
+<p><a href="https://arxiv.org/abs/2404.10774">MiniCheck: Efficient Fact-Checking of LLMs on Grounding Documents</a>, the grounded verifier used in the evaluation.&#160;<a class="footnote-backref" href="#fnref:minicheck" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1346,7 +1441,11 @@ the number that separates a demo from something you'd put in front of a customer
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.7"></script>
+        <script src="../../javascripts/mathjax.js?v=20260721.1"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/pb-filter.js?v=20260721.8"></script>
       
     
   </body>

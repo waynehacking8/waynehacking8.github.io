@@ -18,8 +18,7 @@ trade-offs — each one links the public benchmark/code repository behind it.
 
 - [About](https://wayne.is-a.dev/): role, focus areas, and contact.
 - [CV (PDF)](https://wayne.is-a.dev/cv.pdf): full curriculum vitae — summary, skills, experience, open source, research, education.
-- [Projects](https://wayne.is-a.dev/projects/): public repositories with measured results.
-- [Experience](https://wayne.is-a.dev/experiences/): roles at SYNCROBOTIC, TSMC, and research.
+- [Experience](https://wayne.is-a.dev/experiences/): industry roles, responsibilities, and education.
 
 ## Technical notes (blog)
 
