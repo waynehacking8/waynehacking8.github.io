@@ -266,9 +266,12 @@
    overrides/main.html on every page, pbb.sh-style)
    ============================================================ */
 
+/* pbb splits its 24-column layout 7/17 between sidebar and content
+   (measured: 351.55 / 853 at a 1280 viewport) — fractional, not a fixed
+   sidebar, so the two panes scale together */
 .pb-grid {
   display: grid;
-  grid-template-columns: 205px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 7fr) minmax(0, 17fr);
   gap: 2.4rem;
   align-items: start;
 }
@@ -281,44 +284,92 @@
 /* sidebar */
 .pb-side { text-align: center; position: sticky; top: 4rem; }
 @media (max-width: 56em) { .pb-side { position: static; } }
+/* pbb's avatar is a 180px-tall rounded rectangle (height fixed, cover crop,
+   radius 3rem @16px root = 48px). Its source photo is landscape; this one is
+   a tall portrait, so the width is set explicitly to hold pbb's ~79%-of-column
+   proportion and object-position keeps the head in frame under the crop.
+   NOTE: sizes here are px, not rem — Material's root is 20px, not pbb's 16px,
+   so rem values from pbb's stylesheet would come out 25% too large. */
 .pb-side img.pb-avatar {
-  width: 168px;
-  border-radius: 26%;
+  width: 79%;
+  height: 180px;
+  object-fit: cover;
+  /* the 1536x2730 source is far taller than this 1.39 box, so cover shows only
+     the middle ~40% of its height; 50% lands that slice on head-to-thigh
+     (the subject runs 41%-85% down the frame) instead of empty canopy */
+  object-position: center 50%;
+  border-radius: 48px;
   display: block;
   margin: 0.4rem auto 0;
 }
 .pb-name {
-  font-size: 1.3rem;
+  font-size: 28px;
   font-weight: 200;
   letter-spacing: 2px;
-  margin: 0.9rem 0 0.1rem;
+  margin: 16px 0 8px;
   color: var(--pb-ink);
 }
 .pb-name b { font-weight: 600; letter-spacing: 0; }
 .pb-cjk {
   color: var(--pb-ink);
   font-family: "LXGW WenKai TC", cursive;
-  font-size: 1.02rem;
+  font-size: 20px;
   letter-spacing: 0.08em;
-  margin: 0 0 0.7rem;
+  margin: 0;
   text-indent: 0.08em;
 }
-.pb-icons { display: flex; justify-content: center; gap: 0.75em; margin: 0 0 0.4rem; }
-.pb-icons a { color: var(--pb-ink); opacity: 0.75; }
-.pb-icons a:hover { color: var(--pb-link); opacity: 1; text-decoration: none; }
-.pb-icons .twemoji { width: 1.05em; height: 1.05em; }
-.pb-loc { color: var(--pb-muted); font-size: 0.62rem; margin: 0.5rem 0 0; }
+/* pbb's social row: 36px square buttons, 6px radius, 2px apart, each with a
+   17.6px glyph and a chip-coloured hover plate — not bare inline icons */
+.pb-icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 0;
+  margin: 0;
+}
+.pb-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  color: var(--pb-ink);
+  transition: color 0.2s, background 0.2s;
+}
+.pb-icons a:hover { color: var(--pb-link); background: var(--pb-chip-bg); text-decoration: none; }
+.pb-icons .twemoji { width: 17.6px; height: 17.6px; }
+/* pbb's contact block: a 200px column centred in the sidebar with its text
+   left-aligned and the pin sitting in a 2rem gutter */
+.pb-loc {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  margin: 0 auto;
+  padding: 9.6px 0 0;
+  font-size: 15px;
+  text-align: left;
+  color: var(--pb-ink);
+}
+.pb-loc .twemoji {
+  display: inline-flex;
+  justify-content: center;
+  width: 32px;
+  flex-shrink: 0;
+}
+.pb-loc .twemoji svg { width: 16px; height: 16px; }
 .pb-quote {
   color: var(--pb-muted);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 0.68rem;
+  font-size: 14.4px;
   font-style: italic;
   letter-spacing: 0.3px;
-  margin: 1rem 0 0;
+  margin: 20.8px 0 0;
 }
 .pb-quote::before, .pb-quote::after {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.15rem;
+  font-size: 25.6px;
   line-height: 0;
   color: var(--pb-link);
   opacity: 0.6;
@@ -610,7 +661,10 @@
   .md-content__inner {
     position: relative;
     padding: 0;
-    overflow: hidden;
+    /* clip, not hidden: `overflow:hidden` makes this a scroll container and
+       kills position:sticky on the profile strip inside it. `clip` still
+       trims the rounded corners without creating one. */
+    overflow: clip;
     border-radius: 24px;
     margin: 6.4px 6.4px 1rem;
   }
@@ -618,14 +672,22 @@
 
   .pb-side,
   .pb-side:not(.pb-side--home) { display: grid; }
+  /* pbb's phone strip is a sticky header that retracts when you scroll down
+     and returns on scroll up (its `body.header-hidden` → translateY(-100%));
+     pb-filter.js drives the class */
   .pb-side {
-    position: static;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--pb-card);
+    transition: transform 0.3s ease;
     text-align: left;
     grid-template-columns: 72px minmax(0, 1fr);
     grid-template-areas:
       "avatar name"
       "avatar social"
-      "avatar loc";
+      "avatar loc"
+      "avatar quote";
     align-content: center;
     column-gap: 12px;
     row-gap: 2px;
@@ -655,7 +717,10 @@
     letter-spacing: 0.5px;
     line-height: 1.3;
     margin: 0;
-    padding-right: 26px;
+    /* clears the theme button, which is 36px wide inset 20px from the card
+       edge — the old 26px was sized for the previous 32px/14px button and
+       let "邱偉誠" slide under it */
+    padding-right: 44px;
     white-space: nowrap;
   }
   .pb-name::after {
@@ -666,18 +731,59 @@
     margin-left: 5px;
   }
   .pb-cjk { display: none; }
+  /* pbb's phone social row: same 6px-radius buttons as desktop, dropped to
+     32px with a 16.8px glyph and no gap (the buttons carry their own padding) */
   .pb-icons {
     grid-area: social;
     justify-content: flex-start;
-    gap: 1em;
+    gap: 0;
+    padding: 0;
     margin: 5px 0 0;
   }
-  .pb-icons .twemoji { width: 1.2em; height: 1.2em; }
-  .pb-loc { grid-area: loc; margin: 5px 0 0; font-size: 12px; }
-  .pb-quote { display: none; }
+  .pb-icons a { width: 32px; height: 32px; }
+  .pb-icons .twemoji { width: 16.8px; height: 16.8px; }
+  .pb-loc {
+    grid-area: loc;
+    width: auto;
+    margin: 5px 0 0;
+    padding: 0;
+    font-size: 12px;
+    color: var(--pb-muted);
+  }
+  .pb-loc .twemoji { width: auto; margin-right: 4px; }
+  .pb-loc .twemoji svg { width: 12px; height: 12px; }
+  /* pbb keeps the quote on phones (12px, marks at 14px) — it was hidden here.
+     "making every FLOP count" is far longer than pbb's "I speak TeX", so it
+     takes its own row rather than sitting beside the location; the strip grows
+     ~20px past pbb's 129px, which is the price of keeping both lines. */
+  .pb-quote {
+    display: block;
+    grid-area: quote;
+    font-size: 12px;
+    margin: 2px 0 0;
+    text-align: left;
+  }
+  .pb-quote::before, .pb-quote::after { font-size: 14px; }
+  body.pb-strip-hidden .pb-side { transform: translateY(-100%); }
+  @media (prefers-reduced-motion: reduce) {
+    .pb-side { transition: none; }
+    body.pb-strip-hidden .pb-side { transform: none; }
+  }
   /* pbb puts the theme toggle in the name row; absolute against the
      card beats fixed, so it scrolls away with the strip */
-  .pb-theme-btn { position: absolute; top: 20px; right: 14px; }
+  .pb-theme-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 10px;
+  }
+  .pb-theme-btn .twemoji { width: 16px; height: 16px; }
 
   .pb-main { padding: 14px 20px 22px; }
   .pb-nav-row { background: var(--pb-card); padding-top: 2px; }
@@ -699,8 +805,18 @@
   .md-typeset .pb-cv-skills dt { font-size: 14px; }
   .md-typeset .pb-cv-skills dd { font-size: 14px; line-height: 1.55; }
 }
-/* very narrow legacy phones (~320px): the vw slope alone still collides */
+/* pbb drops the CV icon once the row would crowd (its own breakpoint, to the px) */
+@media (max-width: 370px) {
+  .pb-icons .pb-icon-cv { display: none; }
+}
+/* very narrow legacy phones (~320px): the vw slope alone still collides.
+   Re-tuned for the 36px theme button (the old 15/11 pair was sized against
+   the 32px one and let 邱偉誠 run under it at 320px); `white-space: normal`
+   is the safety net so an even narrower screen wraps the CJK name onto its
+   own line instead of sliding underneath the button. */
 @media (max-width: 21em) {
-  .pb-name { font-size: 15px; }
-  .pb-name::after { font-size: 11px; }
+  .pb-name { font-size: 13.5px; white-space: normal; }
+  /* nowrap on the ::after keeps 邱偉誠 atomic — without it CJK breaks between
+     any two characters and the name split as 邱 / 偉誠 */
+  .pb-name::after { font-size: 10px; white-space: nowrap; }
 }
