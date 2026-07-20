@@ -13,7 +13,7 @@
 - Render the desktop TOC with each replaceable `.pb-main`, then move that single current node into a dedicated persistent sidebar slot during initialization. Clear the slot and disconnect its observer before every main-content swap.
 - Use one viewport-appropriate TOC as the scroll-spy source so exactly one current link receives `aria-current="location"`.
 - Keep native hash navigation and add heading scroll margins for the sticky navigation/profile strip.
-- Use one compact PR-wall link with a subtle live marker, visible URL, inline counts, and a separate text-level RSS link below it.
+- Use one prose-scale PR-wall link with the visible URL and a quiet text-level RSS line below it; counts stay in the surrounding introduction and tables instead of being repeated as component metrics.
 
 ## Verification matrix
 
@@ -45,5 +45,13 @@
 - Lighthouse 13.4.0 desktop:
   - Article: Performance 93, Accessibility 100, Best Practices 100, SEO 100, CLS 0.
   - Patches: Performance 97, Accessibility 100, Best Practices 100, SEO 100, CLS 0.
-- Cache versions: `extra.css?v=20260720.23` and `pb-filter.js?v=20260720.7`.
+- Cache versions: `extra.css?v=20260720.24` and `pb-filter.js?v=20260720.7`.
 - Lighthouse produced valid JSON reports; its Windows launcher logged a non-fatal temporary-profile cleanup warning after report generation.
+
+## PR-wall consistency follow-up
+
+- Removed the remaining grid, live-status dot, repeated count summary, borders, and separate RSS treatment; the destination is now a two-line paragraph in the existing prose flow.
+- Inspected desktop light/dark and 390 px light/320 px dark screenshots for spacing, wrapping, hierarchy, and overflow.
+- `python -m mkdocs build --strict`: passed.
+- `npx playwright test toc-patches.spec.js pr-wall-and-images.spec.js`: 29 passed.
+- Patches Lighthouse: Performance 99, Accessibility 100, Best Practices 100, SEO 100, CLS 0.

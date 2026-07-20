@@ -3,15 +3,10 @@
 Upstream open-source contributions to the LLM-inference stack — **17 merged/landed ·
 60 in review** as of 2026-07-18.
 
-<div class="pb-pr-wall">
-<a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev">
-<span class="pb-pr-wall-status"><span class="pb-live-dot" aria-hidden="true"></span>Live PR wall</span>
-<strong class="pb-pr-wall-domain">prs.wayne.is-a.dev</strong>
-<span class="pb-pr-wall-counts">17 merged / landed · 60 in review</span>
-<span class="pb-pr-wall-arrow" aria-hidden="true">↗</span>
-</a>
-<p class="pb-pr-wall-note">Synced every few minutes <span aria-hidden="true">·</span> <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a></p>
-</div>
+<p class="pb-pr-wall">
+<a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><strong>Live PR wall</strong><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
+<span class="pb-pr-wall-note">Updated every few minutes <span aria-hidden="true">·</span> <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a></span>
+</p>
 
 The tables below are a curated snapshot of representative work; the live wall is the
 always-current source of truth.
