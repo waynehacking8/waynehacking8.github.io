@@ -23,10 +23,9 @@ Needed whenever the name changes: new characters have **no glyphs at all**
 otherwise, because of the `unicode-range` on the `@font-face`.
 
 ```sh
-# 1. get the full family
-curl -sL -H 'User-Agent: Mozilla/5.0' \
-  'https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@900&display=swap'
-curl -sL -o full.ttf '<the fonts.gstatic.com .ttf URL from that CSS>'
+# 1. get the full family (19MB)
+curl -sL -o full.ttf \
+  https://raw.githubusercontent.com/max32002/masafont/master/tw/MasaFont-Bold.ttf
 
 # 2. cut it to just the glyphs in the name
 python -m fontTools.subset full.ttf --text='邱偉誠' --flavor=woff2 \
@@ -51,7 +50,7 @@ coverage check is not enough — always render the three glyphs and look.
 **Inline rather than link.** The earlier Google Fonts `@import` silently fell
 back to system sans on a real iPhone over cellular, while every desktop engine
 reported the font loaded — a second request, to any host, is a request that can
-be dropped. At ~1.5KB the font rides along inside the stylesheet and there is
+be dropped. At ~2.4KB the font rides along inside the stylesheet and there is
 nothing left to fail.
 
 Verify a swap with the font hosts blocked at the network layer, and compare
