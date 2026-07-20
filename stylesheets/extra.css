@@ -603,46 +603,6 @@
 .pb-filters button.active { background: var(--pb-link); border-color: var(--pb-link); color: #fff; }
 .pb-pub.pb-hidden { display: none; }
 
-/* ---------- CV page ---------- */
-/* contact strip under the title, mirroring the one-line header of the
-   PDF CV; the timeline sections below reuse .pb-timeline verbatim */
-.md-typeset .pb-cv-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.4rem 1rem;
-  border-bottom: 1px solid var(--pb-line);
-  padding-bottom: 0.6rem;
-  margin: -0.4rem 0 1.2rem;
-}
-.md-typeset .pb-cv-contact { margin: 0; font-size: 0.66rem; color: var(--pb-muted); }
-.md-typeset .pb-cv-updated {
-  margin: 0;
-  font-family: var(--pb-mono);
-  font-size: 0.54rem;
-  color: var(--pb-muted);
-}
-/* same two-column rhythm as .pb-news, so the CV reads as one system */
-.pb-cv-skills dl {
-  display: grid;
-  grid-template-columns: 9.5em minmax(0, 1fr);
-  column-gap: 1rem;
-  row-gap: 0.5em;
-  margin: 0;
-}
-.md-typeset .pb-cv-skills dt {
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: var(--pb-ink);
-  margin: 0;
-}
-.md-typeset .pb-cv-skills dd { margin: 0; font-size: 0.68rem; color: var(--pb-muted); }
-@media (max-width: 40em) {
-  .pb-cv-skills dl { grid-template-columns: minmax(0, 1fr); row-gap: 0.15em; }
-  .md-typeset .pb-cv-skills dd { margin-bottom: 0.5em; }
-}
-
 /* ============================================================
    Phone layout — pbb.sh's mobile treatment, measured off the
    live site: the tall centered sidebar collapses into a 129px
@@ -686,7 +646,6 @@
     grid-template-areas:
       "avatar name"
       "avatar social"
-      "avatar loc"
       "avatar quote";
     align-content: center;
     column-gap: 12px;
@@ -742,25 +701,16 @@
   }
   .pb-icons a { width: 32px; height: 32px; }
   .pb-icons .twemoji { width: 16.8px; height: 16.8px; }
-  .pb-loc {
-    grid-area: loc;
-    width: auto;
-    margin: 5px 0 0;
-    padding: 0;
-    font-size: 12px;
-    color: var(--pb-muted);
-  }
-  .pb-loc .twemoji { width: auto; margin-right: 4px; }
-  .pb-loc .twemoji svg { width: 12px; height: 12px; }
-  /* pbb keeps the quote on phones (12px, marks at 14px) — it was hidden here.
-     "making every FLOP count" is far longer than pbb's "I speak TeX", so it
-     takes its own row rather than sitting beside the location; the strip grows
-     ~20px past pbb's 129px, which is the price of keeping both lines. */
+  /* pbb's phone strip is exactly three rows — name, socials, quote. It carries
+     no location line there (that lives in the desktop sidebar), so hiding it
+     here is what keeps the strip at pbb's 129px instead of a fourth row. */
+  .pb-loc { display: none; }
+  /* pbb keeps the quote on phones: 12px, marks at 14px */
   .pb-quote {
     display: block;
     grid-area: quote;
     font-size: 12px;
-    margin: 2px 0 0;
+    margin: 5px 0 0;
     text-align: left;
   }
   .pb-quote::before, .pb-quote::after { font-size: 14px; }
@@ -796,14 +746,6 @@
   .md-typeset h3 { font-size: 16px; }
   .pb-nav-link { font-size: 14px; padding: 6.4px 12.8px; border-radius: 16px; }
   .chip { font-size: 14px; }
-
-  /* CV page follows the same phone type scale — the rem-based desktop
-     sizes would land near 10px against a 15px body */
-  .md-typeset .pb-cv-head { flex-direction: column; gap: 2px; }
-  .md-typeset .pb-cv-contact { font-size: 13px; line-height: 1.5; }
-  .md-typeset .pb-cv-updated { font-size: 11px; }
-  .md-typeset .pb-cv-skills dt { font-size: 14px; }
-  .md-typeset .pb-cv-skills dd { font-size: 14px; line-height: 1.55; }
 }
 /* pbb drops the CV icon once the row would crowd (its own breakpoint, to the px) */
 @media (max-width: 370px) {
