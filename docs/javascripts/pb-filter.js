@@ -1,15 +1,26 @@
 /* pbb-style tag filtering + theme toggle.
    Progressive enhancement — all cards are visible without JS. */
 (function () {
+  var themeArmed = false;
   function initTheme() {
     var btn = document.querySelector(".pb-theme-btn");
     if (!btn) return;
     btn.hidden = false;
+    /* document$ re-emits on every page swap; without this the handler
+       stacks up and an even number of them cancels the toggle out */
+    if (themeArmed) return;
+    themeArmed = true;
     btn.addEventListener("click", function () {
-      /* Material's palette radios live in the hidden header; a
-         programmatic click still toggles the scheme */
-      var input = document.querySelector('input[name="__palette"]:not(:checked)');
-      if (input) input.click();
+      /* Material's palette radios live in the hidden header; a programmatic
+         click still toggles the scheme. Pick the target by the CURRENT
+         scheme rather than by :not(:checked) — with media-query palettes
+         neither radio is checked on first paint, so the old selector
+         matched index 0 and the very first click re-selected the palette
+         that was already active, doing nothing visible. */
+      var inputs = document.querySelectorAll('input[name="__palette"]');
+      if (inputs.length < 2) return;
+      var isDark = document.body.getAttribute("data-md-color-scheme") === "slate";
+      inputs[isDark ? 0 : 1].click();
     });
   }
 
