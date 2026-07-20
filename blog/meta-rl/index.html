@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.16">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.17">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1124,6 +1124,8 @@
               
               <article class="md-content__inner md-typeset">
                 
+
+
 <!-- pbb.sh keeps nothing at the top except a small theme toggle; the
      Material header is hidden in CSS and this button drives its hidden
      palette inputs instead -->
@@ -1152,6 +1154,46 @@
   </p>
   <p class="pb-loc"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M0 188.6C0 84.4 86 0 192 0s192 84.4 192 188.6c0 119.3-120.2 262.3-170.4 316.8-11.8 12.8-31.5 12.8-43.3 0C120.1 450.9-.1 307.9-.1 188.6zM192 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128"/></svg></span> Taipei, Taiwan · UTC+8</p>
   <p class="pb-quote">making every FLOP count</p>
+  
+  <nav class="pb-article-toc pb-article-toc--desktop" aria-label="Table of contents">
+    <p>On this page</p>
+    <ol>
+    
+    
+      
+    
+      <li><a href="#meta-reinforcement-learning-meta-rl">Meta-Reinforcement Learning (Meta-RL)</a><ol>
+    
+      <li><a href="#meta-rl">Meta-RL 的基本概念與挑戰</a></li>
+    
+  
+    
+      <li><a href="#meta-rl_1">Meta-RL 的詳細方法</a></li>
+    
+  
+    
+      <li><a href="#meta-rl_2">Meta-RL 的應用</a></li>
+    
+  
+    
+      <li><a href="#meta-rl_3">Meta-RL 的進階挑戰與未來方向</a></li>
+    
+  
+    
+      <li><a href="#experimental-setup-and-evaluation">實驗設定與評估 (Experimental Setup and Evaluation)</a></li>
+    
+  
+    
+      <li><a href="#conclusion">總結 (Conclusion)</a></li>
+    
+  </ol></li>
+    
+  
+    
+  
+    </ol>
+  </nav>
+  
 </section>
 <div class="pb-main">
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
@@ -1197,12 +1239,57 @@
   </nav>
 </div>
 
+<details class="pb-article-toc pb-article-toc--mobile">
+  <summary>On this page <span aria-hidden="true">⌄</span></summary>
+  <ol>
+  
+    
+      
+    
+      <li><a href="#meta-reinforcement-learning-meta-rl">Meta-Reinforcement Learning (Meta-RL)</a><ol>
+    
+      <li><a href="#meta-rl">Meta-RL 的基本概念與挑戰</a></li>
+    
+  
+    
+      <li><a href="#meta-rl_1">Meta-RL 的詳細方法</a></li>
+    
+  
+    
+      <li><a href="#meta-rl_2">Meta-RL 的應用</a></li>
+    
+  
+    
+      <li><a href="#meta-rl_3">Meta-RL 的進階挑戰與未來方向</a></li>
+    
+  
+    
+      <li><a href="#experimental-setup-and-evaluation">實驗設定與評估 (Experimental Setup and Evaluation)</a></li>
+    
+  
+    
+      <li><a href="#conclusion">總結 (Conclusion)</a></li>
+    
+  </ol></li>
+    
+  
+    
+  
+  </ol>
+</details>
+
+
                   
 
 
 
 <h1 id="meta-reinforcement-learning-of-structured-exploration-strategies">Meta-Reinforcement Learning of Structured Exploration Strategies<a class="headerlink" href="#meta-reinforcement-learning-of-structured-exploration-strategies" title="Permanent link">&para;</a></h1>
 <p><em>2025-01-11 · machine learning</em></p>
+<figure class="pb-article-hero">
+  <img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement learning 實驗視覺" loading="eager" decoding="async">
+  <figcaption>Prefrontal cortex as a meta-RL system · <a href="https://deepmind.google/blog/prefrontal-cortex-as-a-meta-reinforcement-learning-system/">Source: Google DeepMind</a></figcaption>
+</figure>
+
 <h2 id="meta-reinforcement-learning-meta-rl">Meta-Reinforcement Learning (Meta-RL)<a class="headerlink" href="#meta-reinforcement-learning-meta-rl" title="Permanent link">&para;</a></h2>
 <p>Meta-RL 的核心概念是<strong>讓智能體學會如何快速適應新環境和任務</strong>，而不僅僅是學會在特定任務上表現良好。這是一種「學習如何學習」的方法，使智能體能夠在面對未知的挑戰時更具彈性和效率。以下將深入探討 Meta-RL 的各個方面：</p>
 <h3 id="meta-rl">Meta-RL 的基本概念與挑戰<a class="headerlink" href="#meta-rl" title="Permanent link">&para;</a></h3>
@@ -1479,7 +1566,7 @@
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.4"></script>
+        <script src="../../javascripts/pb-filter.js?v=20260720.5"></script>
       
     
   </body>

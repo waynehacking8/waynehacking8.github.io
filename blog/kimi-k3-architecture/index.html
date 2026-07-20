@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.16">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260720.17">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -702,6 +702,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. KDA：把長序列狀態更新做得更細">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linear-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linear attention 真正改變的是哪個狀態
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -723,6 +740,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="3. Stable LatentMoE：896 選 16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#moe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三個不能混為一談的 MoE 數字
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1078,6 +1112,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. KDA：把長序列狀態更新做得更細">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linear-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linear attention 真正改變的是哪個狀態
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1099,6 +1150,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="3. Stable LatentMoE：896 選 16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#moe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三個不能混為一談的 MoE 數字
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1181,6 +1249,8 @@
               
               <article class="md-content__inner md-typeset">
                 
+
+
 <!-- pbb.sh keeps nothing at the top except a small theme toggle; the
      Material header is hidden in CSS and this button drives its hidden
      palette inputs instead -->
@@ -1209,6 +1279,66 @@
   </p>
   <p class="pb-loc"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M0 188.6C0 84.4 86 0 192 0s192 84.4 192 188.6c0 119.3-120.2 262.3-170.4 316.8-11.8 12.8-31.5 12.8-43.3 0C120.1 450.9-.1 307.9-.1 188.6zM192 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128"/></svg></span> Taipei, Taiwan · UTC+8</p>
   <p class="pb-quote">making every FLOP count</p>
+  
+  <nav class="pb-article-toc pb-article-toc--desktop" aria-label="Table of contents">
+    <p>On this page</p>
+    <ol>
+    
+    
+      
+    
+      <li><a href="#tldr">TL;DR</a></li>
+    
+  
+    
+      <li><a href="#1-kda">1. KDA：把長序列狀態更新做得更細</a><ol>
+    
+      <li><a href="#linear-attention">Linear attention 真正改變的是哪個狀態</a></li>
+    
+  </ol></li>
+    
+  
+    
+      <li><a href="#2-attnres">2. AttnRes：殘差不再只連上一層</a></li>
+    
+  
+    
+      <li><a href="#3-stable-latentmoe896-16">3. Stable LatentMoE：896 選 16</a><ol>
+    
+      <li><a href="#moe">三個不能混為一談的 MoE 數字</a></li>
+    
+  </ol></li>
+    
+  
+    
+      <li><a href="#4-inkling-975b">4. 與 Inkling 975B 的路線差異</a></li>
+    
+  
+    
+      <li><a href="#5-api">5. API 與部署策略</a></li>
+    
+  
+    
+      <li><a href="#6">6. 核心場景：長鏈條系統工程</a></li>
+    
+  
+    
+      <li><a href="#_1">如何理性閱讀目前的榜單</a></li>
+    
+  
+    
+      <li><a href="#_2">結語</a></li>
+    
+  
+    
+      <li><a href="#references">References</a></li>
+    
+  
+    
+  
+    </ol>
+  </nav>
+  
 </section>
 <div class="pb-main">
 <!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
@@ -1254,6 +1384,66 @@
   </nav>
 </div>
 
+<details class="pb-article-toc pb-article-toc--mobile">
+  <summary>On this page <span aria-hidden="true">⌄</span></summary>
+  <ol>
+  
+    
+      
+    
+      <li><a href="#tldr">TL;DR</a></li>
+    
+  
+    
+      <li><a href="#1-kda">1. KDA：把長序列狀態更新做得更細</a><ol>
+    
+      <li><a href="#linear-attention">Linear attention 真正改變的是哪個狀態</a></li>
+    
+  </ol></li>
+    
+  
+    
+      <li><a href="#2-attnres">2. AttnRes：殘差不再只連上一層</a></li>
+    
+  
+    
+      <li><a href="#3-stable-latentmoe896-16">3. Stable LatentMoE：896 選 16</a><ol>
+    
+      <li><a href="#moe">三個不能混為一談的 MoE 數字</a></li>
+    
+  </ol></li>
+    
+  
+    
+      <li><a href="#4-inkling-975b">4. 與 Inkling 975B 的路線差異</a></li>
+    
+  
+    
+      <li><a href="#5-api">5. API 與部署策略</a></li>
+    
+  
+    
+      <li><a href="#6">6. 核心場景：長鏈條系統工程</a></li>
+    
+  
+    
+      <li><a href="#_1">如何理性閱讀目前的榜單</a></li>
+    
+  
+    
+      <li><a href="#_2">結語</a></li>
+    
+  
+    
+      <li><a href="#references">References</a></li>
+    
+  
+    
+  
+  </ol>
+</details>
+
+
                   
 
 
@@ -1261,8 +1451,8 @@
 <h1 id="kimi-k3-28t-kda-attnres-3t">Kimi K3 2.8T：用 KDA 與 AttnRes 推進 3T 級開放模型<a class="headerlink" href="#kimi-k3-28t-kda-attnres-3t" title="Permanent link">&para;</a></h1>
 <p><em>2026-07-20 · LLM Architecture / Linear Attention / Agentic Coding</em></p>
 <figure class="pb-article-hero">
-  <img src="https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1" alt="Moonshot AI 官方 Kimi K3 主視覺" loading="eager" decoding="async">
-  <figcaption>官方平台主視覺 · Source: Moonshot AI</figcaption>
+  <img src="/assets/blog/kimi-k3-cover.webp" alt="Moonshot AI 官方 Kimi K3 主視覺" loading="eager" decoding="async">
+  <figcaption>官方平台主視覺 · <a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></figcaption>
 </figure>
 
 <p>Moonshot AI 發布 <strong>Kimi K3</strong> API：2.8T 總參數、原生視覺、1M-token context，定位在長周期 coding、knowledge work 與 reasoning。它把超長序列與超深網路的問題分別交給 <strong>Kimi Delta Attention（KDA）</strong> 與 <strong>Attention Residuals（AttnRes）</strong>。</p>
@@ -1283,6 +1473,13 @@
 <p>標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。</p>
 <p>這種設計的核心不是「完全不需要 attention」，而是把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。</p>
 <p>目前 K3 的完整 layer ratio、kernel 細節與消融實驗要等 technical report；因此，網路流傳的精確 6.3× 解碼速度不能在缺乏同硬體、同 batch 與同輸出設定下直接泛化到所有部署。</p>
+<h3 id="linear-attention">Linear attention 真正改變的是哪個狀態<a class="headerlink" href="#linear-attention" title="Permanent link">&para;</a></h3>
+<p>標準 causal attention 在第 $t$ 個 token 需要讀取先前所有 key/value；線性或 recurrent-style attention 則維護一個固定形狀的狀態 $S_t$，概念上可寫成：</p>
+<p>$$
+S_t = G_t \odot S_{t-1} + U_t,
+\qquad y_t = q_t^\top S_t.
+$$</p>
+<p>$G_t$ 是遺忘／保留門，$U_t$ 是當前 token 寫入的更新。KDA 的 channel-wise gating 重點，是不同 feature channels 不必共用同一個衰減速率。這將「回看全部歷史」改成「更新摘要狀態」，但也帶來新的 kernel 問題：狀態更新有序列依賴，training 需要可平行化 scan，decode 則要讓 state 常駐在高速記憶體中。架構上的線性複雜度，只有在 kernel fusion 與 memory layout 做好時才會變成實際吞吐。</p>
 <h2 id="2-attnres">2. AttnRes：殘差不再只連上一層<a class="headerlink" href="#2-attnres" title="Permanent link">&para;</a></h2>
 <p>傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。</p>
 <p>可以把它理解成兩種不同維度的記憶：</p>
@@ -1294,6 +1491,14 @@
 <h2 id="3-stable-latentmoe896-16">3. Stable LatentMoE：896 選 16<a class="headerlink" href="#3-stable-latentmoe896-16" title="Permanent link">&para;</a></h2>
 <p>K3 將 MoE 稀疏度推到 <strong>896 experts、每次啟用 16 個</strong>，搭配 Stable LatentMoE。超大總參數提供更大的模型容量，稀疏啟用則控制每個 token 實際執行的計算量。</p>
 <p>但 active FLOPs 低，不代表部署免費。完整權重仍需要龐大儲存與記憶體容量，跨 GPU／跨節點的 expert routing 也可能受通訊、memory bandwidth 與負載平衡限制。真正的 serving 成本要等權重、量化方案與 vLLM 等 runtime 的實測，而不能只從「16/896」推導。</p>
+<h3 id="moe">三個不能混為一談的 MoE 數字<a class="headerlink" href="#moe" title="Permanent link">&para;</a></h3>
+<p>評估 896 選 16 時，至少要分開看三個 budget：</p>
+<ol>
+<li><strong>Capacity</strong>：2.8T 總參數決定 checkpoint 與可容納的專家知識容量。</li>
+<li><strong>Active compute</strong>：每 token 啟用 16 個 experts，決定主要矩陣乘法量，但還要加 attention、router 與 shared components。</li>
+<li><strong>Communication</strong>：token dispatch/all-to-all 取決於 expert placement、batch 組成與負載平衡；它可能在 FLOPs 尚未飽和前先受網路與 HBM bandwidth 限制。</li>
+</ol>
+<p>因此「稀疏度更高」不是免費的 scaling law。若 token 分布偏向少數 experts，capacity factor 會造成 padding 或 dropped/rerouted tokens；若 experts 橫跨節點，all-to-all latency 也會成為 decode 的尾延遲來源。</p>
 <h2 id="4-inkling-975b">4. 與 Inkling 975B 的路線差異<a class="headerlink" href="#4-inkling-975b" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1464,7 +1669,7 @@
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260720.4"></script>
+        <script src="../../javascripts/pb-filter.js?v=20260720.5"></script>
       
     
   </body>
