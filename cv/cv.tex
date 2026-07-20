@@ -1,0 +1,135 @@
+% Wei Cheng (Wayne) Chiu --- CV
+% Build:  tectonic cv.tex     Output: cv.pdf -> copied to docs/cv.pdf
+% Layout follows the original one-page CV: centred name, rule-under-smallcaps
+% section headings, org/date and role/location on facing margins.
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.45in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{ragged2e}
+\usepackage{microtype}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{0pt}
+
+% SMALL CAPS section heading with a full-width rule beneath it
+\titleformat{\section}
+  {\normalsize\scshape}{}{0em}{}[\vspace{-0.7em}\rule{\textwidth}{0.4pt}]
+\titlespacing{\section}{0pt}{0.55em}{0.25em}
+\linespread{0.98}
+
+\newcommand{\link}[2]{\href{#1}{\underline{#2}}}
+
+% One experience/education entry: org + date, then role + location
+\newcommand{\entry}[4]{%
+  \textbf{#1}\hfill #2\\
+  \textit{#3}\hfill \textit{#4}\\[0.15em]}
+
+\newlist{tight}{itemize}{1}
+\setlist[tight]{leftmargin=1.2em,itemsep=0.1em,parsep=0pt,topsep=0.2em,label=\textbullet}
+
+\begin{document}
+\RaggedRight
+
+% ---------- header ----------
+\begin{center}
+  {\LARGE Wei Cheng (Wayne) Chiu}\\[0.4em]
+  \link{mailto:waynehacking8@gmail.com}{waynehacking8@gmail.com} $|$
+  \link{https://www.linkedin.com/in/wei-cheng-chiu/}{LinkedIn} $|$
+  \link{https://github.com/waynehacking8}{GitHub} $|$
+  \link{https://wayne.is-a.dev}{Website} $|$
+  \link{https://prs.wayne.is-a.dev}{PR Wall}
+\end{center}
+
+% ---------- summary ----------
+\section*{\scshape Summary}
+Machine learning engineer working the whole depth of the LLM inference stack ---
+hand-written CUDA / Tensor-Core kernels underneath, TensorRT-LLM / vLLM / SGLang serving
+above, and customer deployments on top. Currently a \textbf{Field Application Engineer} at
+Taiwan AILabs, putting on-premises LLM systems (FedGPT) into customer environments.
+Previously \textbf{sole developer} of an enterprise multi-agent AI platform on DGX-class
+hardware, taken from PoC to production at \textbf{two enterprise customers}. Active
+upstream --- \textbf{17 merged/landed patches, 60 in review} across FlashInfer, vLLM,
+SGLang, PyTorch, Dynamo, CUTLASS, TensorRT-LLM and LMDeploy, concentrated on early
+consumer-Blackwell (\textbf{SM120}) and \textbf{NVFP4} enablement. Research background in
+AI/LLM security and privacy-preserving ML.
+
+% ---------- skills ----------
+\section*{\scshape Technical Skills}
+% 1.55in keeps every label on one line — narrower columns hyphenated
+% "Privacy & Secu-rity ML" and wrapped "LLM Serving & GPU"
+\begin{tabular}{@{}p{1.55in}p{5.9in}@{}}
+\textbf{LLM Serving \& GPU} & vLLM, TensorRT-LLM, SGLang, Triton, NVIDIA NIM, Dynamo, FlashInfer, NCCL, Flash Attention, KV-cache, Quantization (FP8 / INT4 / NVFP4); CUDA C/C++, WMMA \& \texttt{mma.sync} Tensor Cores, CUTLASS, Nsight Systems \& Compute \\[0.15em]
+\textbf{LLM Apps \& Agents} & Multi-Agent Orchestration (LangChain, LangGraph), Hybrid RAG (Vector + Keyword + Knowledge Graph), LLM Evaluation \& Guardrails, Function Calling / Tool Use, MCP, Coding Agents \\[0.15em]
+\textbf{Infrastructure \& Ops} & Linux, Kubernetes, Docker, On-prem GPU Serving, Distributed Tracing; H100, DGX Spark (GB10), Blackwell workstation hardware \\[0.15em]
+\textbf{Privacy \& Security ML} & Federated Learning, Differential Privacy, Secure Multi-Party Computation (MP-SPDZ), Safety Alignment \\[0.15em]
+\textbf{Languages} & Python, TypeScript, Rust, C/C++; PyTorch, FastAPI, NestJS; PostgreSQL, Milvus, Redis \\
+\end{tabular}
+
+% ---------- experience ----------
+\section*{\scshape Experience}
+
+\entry{Taiwan AILabs}{Jul 2026 -- Present}{Field Application Engineer}{Taipei, Taiwan}
+\begin{tight}
+  \item Field deployment of on-premises LLM systems (\textbf{FedGPT}) into customer environments --- Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting
+\end{tight}
+\vspace{0.25em}
+
+\entry{SYNCROBOTIC}{Sep 2025 -- Jun 2026}{Machine Learning Engineer --- Multi-Agent AI, RAG, LLM Serving}{New Taipei City, Taiwan}
+\begin{tight}
+  \item \textbf{Sole developer} of an enterprise multi-agent AI platform on DGX-class hardware --- owned end-to-end from PoC through production and rolled out at \textbf{two enterprise customers}, partnering with each through deployment and troubleshooting
+  \item Scoped ambiguous enterprise requirements into a working multi-agent system and \textbf{unified local and commercial LLM backends} under one routing layer, removing per-team model wrappers
+  \item Designed a planning--execution--validation orchestration with topological scheduling and parallel agent dispatch for multi-step workflows
+  \item Built a hybrid retrieval layer on LightRAG (vector + keyword + knowledge graph) with embedding-based semantic caching, cutting redundant LLM calls and keeping answers consistent on repeat queries
+  \item Owned production reliability --- prompt/pipeline regression tests, output validation across quality and safety, distributed tracing; added CUDA-accelerated hot paths on critical inference
+\end{tight}
+\vspace{0.25em}
+
+\entry{Advantech}{Jun 2025 -- Aug 2025}{AI Agent Engineer (Intern)}{Taipei, Taiwan}
+\begin{tight}
+  \item Built coding agents for internal developer tooling using \textbf{function calling / tool use} --- automating code review, test generation, and static analysis across the SDLC; benchmarked tool-use reliability across commercial and local LLM backends and designed reusable prompt templates adopted by the team
+\end{tight}
+\vspace{0.25em}
+
+\entry{TSMC (Taiwan Semiconductor Manufacturing Co.)}{May 2021 -- Oct 2022}{R\&D Alternative Military Service --- Facility Engineer}{Tainan, Taiwan}
+\begin{tight}
+  \item Supported R\&D fab facility operations at the world's leading semiconductor foundry under the national R\&D alternative military service program
+\end{tight}
+
+% ---------- open source ----------
+\section*{\scshape Open Source}
+\textbf{SM120 / NVFP4 enablement across the LLM-inference stack}\hfill 17 merged/landed, 60 in review\\
+\textit{FlashInfer $\cdot$ vLLM $\cdot$ SGLang $\cdot$ PyTorch $\cdot$ Dynamo $\cdot$ CUTLASS $\cdot$ TensorRT-LLM $\cdot$ LMDeploy}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
+\begin{tight}
+  \item Kernel-level support for consumer Blackwell (\textbf{SM120}) and \textbf{NVFP4} carried upward through kernels $\rightarrow$ engines $\rightarrow$ disaggregated serving
+  \item Focus on \textit{silent-correctness} bugs --- the ones where tests pass and the answers are still wrong
+\end{tight}
+
+% ---------- research ----------
+\section*{\scshape Research \& Publications}
+\textbf{SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning}
+--- first author, with Shao-Jui Wang. \textit{IEEE Transactions on Dependable and Secure Computing
+(TDSC)}, under review, 2026. Preserves LLM safety alignment under harmful/adversarial fine-tuning at
+lower compute than full re-alignment.\\[0.15em]
+Research at NTUST (advised by Prof.\ Shao-Jui Wang) in \textbf{AI/LLM security} and
+\textbf{privacy-enhancing ML} --- federated learning, differential privacy, and secure
+multi-party computation.
+
+% ---------- education ----------
+\section*{\scshape Education}
+\entry{National Taiwan University of Science and Technology (NTUST)}{Aug 2024 -- Apr 2026}{M.S.\ in Computer Science and Information Engineering --- GPA 4.09}{Taipei, Taiwan}
+\vspace{0.2em}
+\entry{National Taiwan University (NTU)}{Sep 2014 -- Jun 2020}{M.S.\ in Structural Engineering (2020) $|$ B.S.\ in Civil Engineering (2018)}{Taipei, Taiwan}
+
+% ---------- awards ----------
+\section*{\scshape Certifications \& Awards}
+NVIDIA DLI --- Accelerated Computing with CUDA C/C++ and CUDA Python (5 certificates)
+$\cdot$ NICS Privacy-Enhancing Technologies (PETs) Competition --- Rank 3/11 (DP synthetic
+data via MP-SPDZ) $\cdot$ International ICT Innovative Services Awards, 2024
+
+\end{document}

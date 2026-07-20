@@ -2,3 +2,6 @@ site/
 .venv/
 __pycache__/
 .DS_Store
+
+# build artefact of cv/cv.tex; the published copy is docs/cv.pdf
+cv/cv.pdf
