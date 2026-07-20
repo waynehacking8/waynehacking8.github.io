@@ -42,8 +42,17 @@
 - Visually inspected `mobile-article-light-320.png`, `mobile-article-dark-320.png`, `equation-desktop-light.png`, and `equation-desktop-dark.png`.
 - `git diff --check`: passed.
 
+## Production evidence
+
+- Content commit `698f552` pushed to `main`; GitHub Actions deploy run #66 succeeded in 26 seconds.
+- Public HTML serves `extra.css?v=20260721.25`, `mathjax.js?v=20260721.1`, and MathJax 3.2.2.
+- Comprehensive production matrix: 21/21 passed across content, metadata, math, responsive layout, history, images, links, and settled light/dark accessibility.
+- Production smoke and portfolio/PR-wall integration matrix: 9/9 passed.
+- Live 320 px dark article and 1440 px light equation screenshots were visually inspected after deployment.
+
 ## Unverified input
 
 - Exact Threads-post voice matching remains unverified because the feedback did not include its URL or text.
 - The requested `pbn.sh` reference was not retrievable; the repository's existing captured `pbb.sh` reference was used only for layout cues.
-- The local ecosystem specs that require a separate service on port 3001 and the production-only specs are outside this local verification matrix; they require that service or a deployment.
+- Local ecosystem specs that require a separate service on port 3001 were not run.
+- One legacy ecosystem assertion against the external GitHub profile was excluded because it expects unrelated README text outside this repository and request.
