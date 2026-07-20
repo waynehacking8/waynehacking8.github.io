@@ -6,6 +6,11 @@ description: "One guardrail that drops a RAG agent's out-of-corpus hallucination
 
 *2026-05-31 · LLM / RAG*
 
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/rag-architecture.svg" alt="Microsoft 單租戶 RAG 參考架構圖" loading="eager" decoding="async">
+  <figcaption>Grounded RAG reference architecture · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag">Source: Microsoft Learn</a></figcaption>
+</figure>
+
 A retrieval-augmented agent is only as trustworthy as its behaviour on questions whose answer
 **isn't in the corpus**. The failure mode is quiet: instead of saying "I don't know," the model
 invents a confident, well-formed, wrong answer. This post shows a single guardrail that takes

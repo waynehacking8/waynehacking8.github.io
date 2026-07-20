@@ -141,6 +141,7 @@
   /* pbb's phone profile strip retracts on scroll-down and returns on
      scroll-up. Bound once to window, so it survives .pb-main swaps. */
   var stripArmed = false;
+  var articleTocObserver = null;
   function initStrip() {
     if (stripArmed) return;
     stripArmed = true;
@@ -161,10 +162,43 @@
     }, { passive: true });
   }
 
+  function initArticleToc() {
+    if (articleTocObserver) articleTocObserver.disconnect();
+    var links = document.querySelectorAll('.pb-article-toc a[href^="#"]');
+    if (!links.length) return;
+    var byId = new Map();
+    links.forEach(function (link) {
+      var id = decodeURIComponent(link.hash.slice(1));
+      if (!byId.has(id)) byId.set(id, []);
+      byId.get(id).push(link);
+    });
+    var headings = Array.from(byId.keys()).map(function (id) {
+      return document.getElementById(id);
+    }).filter(Boolean);
+    var setActive = function (id) {
+      links.forEach(function (link) {
+        var active = decodeURIComponent(link.hash.slice(1)) === id;
+        link.classList.toggle('pb-toc-active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+    if (headings[0]) setActive(headings[0].id);
+    articleTocObserver = new IntersectionObserver(function () {
+      var current = headings[0];
+      headings.forEach(function (heading) {
+        if (heading.getBoundingClientRect().top <= 150) current = heading;
+      });
+      if (current) setActive(current.id);
+    }, { rootMargin: '-120px 0px -65% 0px' });
+    headings.forEach(function (heading) { articleTocObserver.observe(heading); });
+  }
+
   function init() {
     initTheme();
     initRouter();
     initStrip();
+    initArticleToc();
     document.querySelectorAll("nav.md-code__nav").forEach(function (nav, index) {
       nav.setAttribute("aria-label", "Code block " + (index + 1) + " actions");
     });

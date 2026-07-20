@@ -2,6 +2,11 @@
 
 *2025-01-11 · GPU / parallel programming*
 
+<figure class="pb-article-hero">
+  <img src="/assets/blog/cuda-platform.webp" alt="NVIDIA CUDA accelerated computing 官方視覺" loading="eager" decoding="async">
+  <figcaption>CUDA accelerated computing platform · <a href="https://developer.nvidia.com/cuda-zone">Source: NVIDIA Developer</a></figcaption>
+</figure>
+
 # CUDA C/C++ 完整技術指南
 
 ## 1. CUDA 基礎架構

@@ -6,6 +6,11 @@ description: "Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), wha
 
 *2026-05-31 · privacy-preserving ML*
 
+<figure class="pb-article-hero">
+  <img src="/assets/blog/federated-dp.webp" alt="Google Research 聯邦學習與差分隱私實驗圖" loading="eager" decoding="async">
+  <figcaption>Federated learning with formal DP guarantees · <a href="https://research.google/blog/federated-learning-with-formal-differential-privacy-guarantees/">Source: Google Research</a></figcaption>
+</figure>
+
 Working notes on building federated learning (FL) from scratch, what actually breaks under
 **Non-IID** data, and how **differential privacy (DP)** and **secure aggregation** fit on top —
 including the honest negative results that the marketing slides leave out. They follow the

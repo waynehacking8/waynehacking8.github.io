@@ -6,6 +6,11 @@ description: "Measuring NCCL all-reduce on 4x H100 NVLink (366 GB/s, 77% of budg
 
 *2026-05-31 · GPU / distributed systems*
 
+<figure class="pb-article-hero">
+  <img src="/assets/blog/nccl-cube.webp" alt="NVIDIA NCCL 官方視覺" loading="eager" decoding="async">
+  <figcaption>NCCL communication stack · <a href="https://developer.nvidia.com/blog/enabling-fast-inference-and-resilient-training-with-nccl-2-27/">Source: NVIDIA Developer</a></figcaption>
+</figure>
+
 Tensor parallelism splits each layer across GPUs, so every forward pass pays for an
 **all-reduce** over the network fabric. On a single node that fabric is NVLink/NVSwitch — and
 how close you get to its theoretical budget decides whether TP helps or hurts. This post

@@ -6,6 +6,11 @@ description: "Notes on CUDA matrix multiply from naive to tiled to Tensor Core (
 
 *2026-05-31 · CUDA / GPU kernels*
 
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/wmma-tile.webp" alt="NVIDIA WMMA warp tile 結構圖" loading="eager" decoding="async">
+  <figcaption>WMMA warp-level tile structure · <a href="https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/">Source: NVIDIA Developer</a></figcaption>
+</figure>
+
 Working notes on writing a matrix-multiply (GEMM) kernel in CUDA and climbing from a naive
 implementation to **Tensor Cores** via the **WMMA** API — and, just as important, how to know
 how good your kernel actually is by measuring it against the **cuBLAS** ceiling. GEMM is the

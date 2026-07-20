@@ -6,6 +6,11 @@ description: "Taking an LLM from a Hugging Face checkpoint to a production Tenso
 
 *2026-05-31 · LLM serving / NVIDIA stack*
 
+<figure class="pb-article-hero">
+  <img src="/assets/blog/trtllm-triton.webp" alt="NVIDIA TensorRT-LLM 與 Triton 推論服務架構視覺" loading="eager" decoding="async">
+  <figcaption>TensorRT-LLM production serving · <a href="https://developer.nvidia.com/blog/scaling-llms-with-nvidia-triton-and-nvidia-tensorrt-llm-using-kubernetes/">Source: NVIDIA Developer</a></figcaption>
+</figure>
+
 These are working notes on taking an open-weights LLM from a Hugging Face checkpoint to a
 production-style serving endpoint on the NVIDIA stack — **TensorRT-LLM** for the engine,
 **Triton Inference Server** for the deployment surface — and benchmarking it honestly against

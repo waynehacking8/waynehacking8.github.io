@@ -9,8 +9,8 @@ image: "https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176
 *2026-07-20 · LLM Architecture / Linear Attention / Agentic Coding*
 
 <figure class="pb-article-hero">
-  <img src="https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1" alt="Moonshot AI 官方 Kimi K3 主視覺" loading="eager" decoding="async">
-  <figcaption>官方平台主視覺 · Source: Moonshot AI</figcaption>
+  <img src="/assets/blog/kimi-k3-cover.webp" alt="Moonshot AI 官方 Kimi K3 主視覺" loading="eager" decoding="async">
+  <figcaption>官方平台主視覺 · <a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></figcaption>
 </figure>
 
 Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token context，定位在長周期 coding、knowledge work 與 reasoning。它把超長序列與超深網路的問題分別交給 **Kimi Delta Attention（KDA）** 與 **Attention Residuals（AttnRes）**。
@@ -35,6 +35,17 @@ Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token co
 
 目前 K3 的完整 layer ratio、kernel 細節與消融實驗要等 technical report；因此，網路流傳的精確 6.3× 解碼速度不能在缺乏同硬體、同 batch 與同輸出設定下直接泛化到所有部署。
 
+### Linear attention 真正改變的是哪個狀態
+
+標準 causal attention 在第 $t$ 個 token 需要讀取先前所有 key/value；線性或 recurrent-style attention 則維護一個固定形狀的狀態 $S_t$，概念上可寫成：
+
+$$
+S_t = G_t \odot S_{t-1} + U_t,
+\qquad y_t = q_t^\top S_t.
+$$
+
+$G_t$ 是遺忘／保留門，$U_t$ 是當前 token 寫入的更新。KDA 的 channel-wise gating 重點，是不同 feature channels 不必共用同一個衰減速率。這將「回看全部歷史」改成「更新摘要狀態」，但也帶來新的 kernel 問題：狀態更新有序列依賴，training 需要可平行化 scan，decode 則要讓 state 常駐在高速記憶體中。架構上的線性複雜度，只有在 kernel fusion 與 memory layout 做好時才會變成實際吞吐。
+
 ## 2. AttnRes：殘差不再只連上一層
 
 傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。
@@ -51,6 +62,16 @@ Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token co
 K3 將 MoE 稀疏度推到 **896 experts、每次啟用 16 個**，搭配 Stable LatentMoE。超大總參數提供更大的模型容量，稀疏啟用則控制每個 token 實際執行的計算量。
 
 但 active FLOPs 低，不代表部署免費。完整權重仍需要龐大儲存與記憶體容量，跨 GPU／跨節點的 expert routing 也可能受通訊、memory bandwidth 與負載平衡限制。真正的 serving 成本要等權重、量化方案與 vLLM 等 runtime 的實測，而不能只從「16/896」推導。
+
+### 三個不能混為一談的 MoE 數字
+
+評估 896 選 16 時，至少要分開看三個 budget：
+
+1. **Capacity**：2.8T 總參數決定 checkpoint 與可容納的專家知識容量。
+2. **Active compute**：每 token 啟用 16 個 experts，決定主要矩陣乘法量，但還要加 attention、router 與 shared components。
+3. **Communication**：token dispatch/all-to-all 取決於 expert placement、batch 組成與負載平衡；它可能在 FLOPs 尚未飽和前先受網路與 HBM bandwidth 限制。
+
+因此「稀疏度更高」不是免費的 scaling law。若 token 分布偏向少數 experts，capacity factor 會造成 padding 或 dropped/rerouted tokens；若 experts 橫跨節點，all-to-all latency 也會成為 decode 的尾延遲來源。
 
 ## 4. 與 Inkling 975B 的路線差異
 
