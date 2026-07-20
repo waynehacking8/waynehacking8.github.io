@@ -1,4 +1,10 @@
-# CJK name font subset
+# Name font subsets
+
+Both halves of the name in the sidebar are set in subset, inlined faces:
+`name-cjk.woff2` (邱偉誠) and `name-latin-300/600.woff2` ("Wei-Cheng Chiu").
+Everything below applies to both.
+
+## CJK — 邱偉誠
 
 The site sets exactly three glyphs in a display face — 邱 偉 誠 — so the family
 is cut down to those and **inlined as a data URI** in
@@ -20,6 +26,20 @@ Brush glyphs sit small inside their em box, so the name is set a couple of px
 larger than the Latin would need — 23px on desktop, `clamp(12px, 4.3vw, 17px)`
 on phones. Raising it further starts to crowd the theme toggle; the name has a
 44px right gutter reserved for exactly that.
+
+## Latin — Wei-Cheng Chiu
+
+**Cormorant Garamond, 300 and 600** (SIL OFL 1.1), subset to the ten characters
+the name uses, ~3.2KB for the pair, under the private family `PB Name Latin`.
+A quill-derived high-contrast serif, so it shares a lineage with the brush CJK
+beside it — the system sans pbb.sh uses started reading as a different voice
+once the CJK became calligraphic. **This is a deliberate departure from pbb.**
+
+Two cuts, because the thin/bold split across "Wei-Cheng" and "Chiu" is the
+shape of the original design. Cormorant sits small on the body, so the name is
+33px on desktop and `clamp(16px, 5.7vw, 23px)` on phones — a few px over what
+the sans needed. Regenerate with the same `fontTools.subset` command, using
+`--text='Wei-ChngCu '`.
 
 ## Regenerate
 
