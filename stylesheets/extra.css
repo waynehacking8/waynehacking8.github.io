@@ -18,6 +18,25 @@
    cellular, and a request never made cannot be dropped.
    SIL OFL 1.1, after 青柳衡山's 衡山毛筆フォント; Reserved Font Name, hence the
    private family name here. Licence text in tools/OFL.txt. */
+/* Latin half of the name — Cormorant Garamond, subset to the ten characters
+   "Wei-Cheng Chiu" needs. A quill-derived high-contrast serif, so it shares a
+   lineage with the brush CJK next to it; the system sans that pbb.sh uses read
+   as a different voice once the CJK became calligraphic. Two cuts, because the
+   thin/bold split across "Wei-Cheng" and "Chiu" is the shape of the original.
+   SIL OFL 1.1. Private family name, same reasoning as the CJK face. */
+@font-face {
+  font-family: "PB Name Latin";
+  font-style: normal;
+  font-weight: 300;
+  src: url(data:font/woff2;base64,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) format("woff2");
+}
+@font-face {
+  font-family: "PB Name Latin";
+  font-style: normal;
+  font-weight: 600;
+  src: url(data:font/woff2;base64,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) format("woff2");
+}
+
 @font-face {
   font-family: "PB Name CJK";
   font-style: normal;
@@ -320,10 +339,14 @@
   margin: 0.4rem auto 0;
 }
 .pb-name {
-  font-size: 28px;
-  font-weight: 200;
-  letter-spacing: 2px;
-  margin: 16px 0 8px;
+  font-family: "PB Name Latin", Georgia, serif;
+  /* Cormorant sits small on the body, so it needs a few px over the sans it
+     replaced to hold the same presence; 300 is its lightest cut, standing in
+     for the 200 the system stack was set at */
+  font-size: 33px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin: 14px 0 6px;
   color: var(--pb-ink);
 }
 .pb-name b { font-weight: 600; letter-spacing: 0; }
@@ -690,9 +713,11 @@
      instead of sliding underneath it. */
   .pb-name {
     grid-area: name;
-    font-size: clamp(15px, 5.13vw, 20px);
-    font-weight: 200;
-    letter-spacing: 0.5px;
+    /* Cormorant runs small on the body — a couple of px over the sans's cap
+       so the strip's name keeps the same presence */
+    font-size: clamp(16px, 5.7vw, 23px);
+    font-weight: 300;
+    letter-spacing: 0.3px;
     line-height: 1.3;
     margin: 0;
     /* clears the theme button, which is 36px wide inset 20px from the card
