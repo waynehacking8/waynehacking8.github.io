@@ -275,7 +275,7 @@
   gap: 2.4rem;
   align-items: start;
 }
-@media (max-width: 56em) {
+@media (max-width: 1023px) {
   /* minmax(0,1fr), not 1fr: plain 1fr respects min-content, so any wide
      child (nav row, tables) would blow the column past the phone viewport */
   .pb-grid { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
@@ -283,7 +283,7 @@
 
 /* sidebar */
 .pb-side { text-align: center; position: sticky; top: 4rem; }
-@media (max-width: 56em) { .pb-side { position: static; } }
+@media (max-width: 1023px) { .pb-side { position: static; } }
 /* pbb's avatar is a 180px-tall rounded rectangle (height fixed, cover crop,
    radius 3rem @16px root = 48px). Its source photo is landscape; this one is
    a tall portrait, so the width is set explicitly to hold pbb's ~79%-of-column
@@ -615,7 +615,7 @@
    Must stay last in this file: it re-enables .pb-side on
    subpages, which an earlier rule of equal specificity hides.
    ============================================================ */
-@media (max-width: 56em) {
+@media (max-width: 1023px) {
   .md-grid { max-width: none; }
   .md-main__inner { margin-top: 0; }
   .md-content__inner {
@@ -746,6 +746,30 @@
   .md-typeset h3 { font-size: 16px; }
   .pb-nav-link { font-size: 14px; padding: 6.4px 12.8px; border-radius: 16px; }
   .chip { font-size: 14px; }
+}
+/* Once the strip is wide enough, pbb moves the quote up onto the social row and
+   pushes it to the right edge (its flex row stops wrapping at ~480px). Below
+   that it sits on its own row, which is what the base grid above already does. */
+/* pbb makes this jump at 480px; "making every FLOP count" is ~174px against its
+   ~80px "I speak TeX", so below 560px the icons would wrap and the strip would
+   grow past pbb's 151px. Same layout, moved to where the longer quote fits —
+   measured: the icon row stops wrapping at 580px. */
+@media (min-width: 580px) and (max-width: 1023px) {
+  /* measured off pbb: from 480px its strip avatar grows 85x88 -> a 110x110
+     square and the strip settles at 151px, holding both to 1023px */
+  .pb-side {
+    grid-template-columns: 110px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "avatar name   name"
+      "avatar social quote";
+  }
+  .pb-side img.pb-avatar { width: 110px; height: 110px; }
+  .pb-quote {
+    justify-self: end;
+    align-self: center;
+    margin: 5px 0 0 16px;
+    white-space: nowrap;
+  }
 }
 /* pbb drops the CV icon once the row would crowd (its own breakpoint, to the px) */
 @media (max-width: 370px) {
