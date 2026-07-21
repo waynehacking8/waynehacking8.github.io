@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.25">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.26">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1241,11 +1241,13 @@
   </div>
 </section>
 <div class="pb-main">
-<!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
-     row inside the content pane; the markdown h1 is hidden by CSS and the
-     title is rendered here instead so both live on the same row -->
+<!-- pbb.sh page-nav-row: the current section label sits at left and the
+     remaining primary destinations sit at right. An article keeps "Blog" in
+     this sticky row while its own title remains part of the scrolling body. -->
 <div class="pb-nav-row pb-nav-row--article">
-  <a class="pb-page-title-link" href="./"><h1 class="pb-page-title">Kimi K3 2.8T architecture</h1></a>
+  
+  
+  <a class="pb-page-title-link" href="../"><h1 class="pb-page-title">Blog</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     
     
@@ -1268,6 +1270,9 @@
     
   </nav>
 </div>
+
+<h1 class="pb-post-title">Kimi K3 2.8T architecture</h1>
+
 
 <template class="pb-article-toc-template">
 <nav class="pb-article-toc pb-article-toc--desktop" aria-label="Table of contents">
@@ -1622,7 +1627,7 @@ S_t = G_t \odot S_{t-1} + U_t,
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
       
-        <script src="../../javascripts/pb-filter.js?v=20260721.8"></script>
+        <script src="../../javascripts/pb-filter.js?v=20260721.9"></script>
       
     
   </body>

@@ -183,21 +183,38 @@
   var articleTocObserver = null;
   var articleTocMedia = window.matchMedia("(min-width: 1024px)");
   var articleTocMediaArmed = false;
+  function syncProfileHeight() {
+    var profile = document.querySelector(".pb-side");
+    if (!profile) return;
+    document.documentElement.style.setProperty(
+      "--pb-mobile-profile-height",
+      profile.offsetHeight + "px"
+    );
+  }
+
   function initStrip() {
+    /* The sticky label bar uses the rendered profile height just as pbb.sh
+       does, so its restored position stays exact across widths and fonts. */
+    syncProfileHeight();
     if (stripArmed) return;
     stripArmed = true;
     var last = window.scrollY;
     var ticking = false;
+    window.addEventListener("resize", syncProfileHeight);
     window.addEventListener("scroll", function () {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(function () {
         var y = window.scrollY;
-        /* ignore sub-pixel jitter and the rubber-band region at the top */
-        if (Math.abs(y - last) >= 6) {
-          document.body.classList.toggle("pb-strip-hidden", y > last && y > 140);
-          last = y;
+        var delta = y - last;
+        if (window.innerWidth > 1023 || y < 50) {
+          document.body.classList.remove("pb-strip-hidden");
+        } else if (delta > 5) {
+          document.body.classList.add("pb-strip-hidden");
+        } else if (delta < -5) {
+          document.body.classList.remove("pb-strip-hidden");
         }
+        last = y;
         ticking = false;
       });
     }, { passive: true });

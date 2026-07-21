@@ -161,13 +161,13 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: 0;
   position: sticky;
-  top: 0;
-  z-index: 5;
+  top: 48px;
+  z-index: 40;
   background: var(--pb-card);
-  padding: 0.35rem 0 0.45rem;
-  margin-bottom: 0.6rem;
+  padding: 20px 40px 20px 24px;
+  margin: 0 -40px 40px -24px;
 }
 /* the anchor is the flex child, so it carries the no-shrink — without it
    the title breaks mid-word ("Abo/ut") once the pills fill the row */
@@ -175,12 +175,12 @@
 .pb-nav-row .pb-page-title { flex: 0 0 auto; }
 /* it's an h1 inside .md-typeset, so it inherits the size and the
    gradient ::after bar; only the flow margins need resetting here */
-.md-typeset .pb-nav-row .pb-page-title { margin: 0; }
+.md-typeset .pb-nav-row .pb-page-title { margin: 0; font-size: 30px; line-height: 1.3; }
 .md-typeset .pb-page-title-link,
 .md-typeset .pb-page-title-link:hover { color: inherit; text-decoration: none !important; }
 .pb-nav-tabs {
   display: flex;
-  gap: 0.15rem;
+  gap: 0.25rem;
   margin-left: auto;
   /* min-width: 0 lets overflow-x actually engage inside the flex row —
      without it the pills' min-content width propagates up and stretches
@@ -193,10 +193,11 @@
 }
 .pb-nav-tabs::-webkit-scrollbar { display: none; }
 .pb-nav-link {
-  padding: 0.26rem 0.48rem;
+  padding: 6.4px 12.8px;
   border-radius: 14px;
-  font-size: 0.62rem;
+  font-size: 14px;
   font-weight: 500;
+  line-height: 20px;
   white-space: nowrap;
   color: var(--pb-muted);
   transition: background 0.2s, color 0.2s;
@@ -216,9 +217,23 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   outline-offset: 3px;
 }
 
-/* the row renders the title, so hide the markdown h1 duplicate
-   (every page has exactly one content h1) */
-.pb-main h1:not(.pb-page-title) { display: none; }
+/* Page labels are rendered in the sticky row. Articles additionally render a
+   pbb-style post title below it; only the duplicate Markdown h1 stays hidden. */
+.pb-main h1:not(.pb-page-title):not(.pb-post-title) { display: none; }
+.md-typeset .pb-post-title {
+  margin: 0 0 12px;
+  padding-left: 12px;
+  border-left: 4px solid var(--pb-link);
+  color: var(--pb-ink);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.md-typeset .pb-post-title::before,
+.md-typeset .pb-post-title::after {
+  display: none;
+}
 
 /* pbb-style switching via native cross-document view transitions:
    the clicked nav pill (given the pb-title name by pb-filter.js at
@@ -829,25 +844,12 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .pb-article-toc--mobile[open] > ol { max-height: min(52vh, 22rem); padding: .15rem .45rem .55rem; overflow-y: auto; }
 .pb-article-toc--mobile a { display: flex; min-height: 2.2rem; align-items: center; padding-block: .4rem; font-size: .7rem; }
 .pb-article-toc--mobile ol ol a { font-size: .64rem; }
-.md-typeset :is(h2, h3)[id] { scroll-margin-top: 4.5rem; }
+.md-typeset :is(h2, h3)[id] { scroll-margin-top: 6.5rem; }
 @media (max-width: 1023px) {
   .pb-sidebar-toc-slot { display: none; }
   .pb-article-toc--desktop { display: none; }
   .md-typeset .pb-article-toc--mobile { display: block; }
   .md-typeset :is(h2, h3)[id] { scroll-margin-top: 7.5rem; }
-  /* Article navigation is an index above the title, not a squeezed set of
-     controls to its right. Other compact pages retain the desktop ordering. */
-  .pb-nav-row--article {
-    align-items: stretch;
-    flex-direction: column;
-    gap: .55rem;
-  }
-  .pb-nav-row--article .pb-nav-tabs {
-    order: -1;
-    width: 100%;
-    margin-left: 0;
-    padding-bottom: .1rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -944,7 +946,7 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
     top: 0;
     z-index: 50;
     background: var(--pb-card);
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
     text-align: left;
     grid-template-columns: 72px minmax(0, 1fr);
     grid-template-areas:
@@ -1019,12 +1021,14 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   }
   .pb-quote::before, .pb-quote::after { font-size: 14px; }
   body.pb-strip-hidden .pb-side { transform: translateY(-100%); }
+  body.pb-strip-hidden .pb-nav-row { top: 0; }
   /* Reduced motion drops the 0.3s slide, not the retract itself — pbb has no
      guard here at all, and cancelling the transform stopped the strip from
      ever hiding for anyone with the OS setting on (which is how Wayne's own
      phone is configured, so the feature was invisible to him). */
   @media (prefers-reduced-motion: reduce) {
-    .pb-side { transition: none; }
+    body .pb-side,
+    body .pb-nav-row { transition: none; }
   }
   /* pbb puts the theme toggle in the name row; absolute against the
      card beats fixed, so it scrolls away with the strip */
@@ -1042,17 +1046,31 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   }
   .pb-theme-btn .twemoji { width: 16px; height: 16px; }
 
-  .pb-main { padding: 14px 20px 22px; }
-  .pb-nav-row { background: var(--pb-card); padding-top: 2px; }
+  .pb-main { padding: 20px 24px 24px; }
+  .pb-nav-row {
+    top: var(--pb-mobile-profile-height, 129px);
+    margin: 0 -24px 40px;
+    padding: 20px 24px;
+    background: var(--pb-card);
+    box-shadow: 0 -10px 0 0 var(--pb-card);
+    transition: top 0.25s ease;
+  }
 
   /* pbb's phone type scale: 15px body, 22.4px page title, and pills
      with real touch padding instead of the 12px desktop chips */
   .md-typeset { font-size: 15px; line-height: 1.6; }
-  .md-typeset .pb-page-title { font-size: 22.4px; }
+  .md-typeset .pb-nav-row .pb-page-title { font-size: 22.4px; }
   .md-typeset h2 { font-size: 18px; }
   .md-typeset h3 { font-size: 16px; }
   .pb-nav-link { font-size: 14px; padding: 6.4px 12.8px; border-radius: 16px; }
   .chip { font-size: 14px; }
+}
+@media (max-width: 579px) {
+  .pb-side,
+  .pb-side:not(.pb-side--home) {
+    height: 129px;
+    min-height: 129px;
+  }
 }
 /* Once the strip is wide enough, pbb moves the quote up onto the social row and
    pushes it to the right edge (its flex row stops wrapping at ~480px). Below
