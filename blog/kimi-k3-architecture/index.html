@@ -29,7 +29,7 @@
     
     
       
-        <title>Kimi K3 2.8T architecture - Wei-Cheng Chiu</title>
+        <title>Kimi K3 — KDA, AttnRes, MoE - Wei-Cheng Chiu</title>
       
     
     
@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.26">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.27">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -81,7 +81,7 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Kimi K3 2.8T architecture — Wei Cheng (Wayne) Chiu">
+  <meta property="og:title" content="Kimi K3 — KDA, AttnRes, MoE — Wei Cheng (Wayne) Chiu">
   <meta property="og:description" content="Kimi K3 2.8T 架構解析：KDA 混合線性注意力、Attention Residuals、Stable LatentMoE，以及與 Inkling 975B 的設計分歧。">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/kimi-k3-architecture/">
   <meta property="og:image" content="https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1">
@@ -91,7 +91,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="Kimi K3 2.8T architecture — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:title" content="Kimi K3 — KDA, AttnRes, MoE — Wei Cheng (Wayne) Chiu">
   <meta name="twitter:description" content="Kimi K3 2.8T 架構解析：KDA 混合線性注意力、Attention Residuals、Stable LatentMoE，以及與 Inkling 975B 的設計分歧。">
   <meta name="twitter:image" content="https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1">
   
@@ -163,7 +163,7 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Kimi K3 2.8T architecture",
+    "headline": "Kimi K3 \u2014 KDA, AttnRes, MoE",
     "url": "https://wayne.is-a.dev/blog/kimi-k3-architecture/",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/kimi-k3-architecture/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
@@ -196,7 +196,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kimi-k3-28t-kda-attnres-3t" class="md-skip">
+        <a href="#kimi-k3-28tkdaattnres-896-16-moe" class="md-skip">
           Skip to content
         </a>
       
@@ -230,7 +230,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kimi K3 2.8T architecture
+              Kimi K3 — KDA, AttnRes, MoE
             
           </span>
         </div>
@@ -525,7 +525,7 @@
   <span class="md-ellipsis">
     
   
-    Inkling 975B architecture
+    Inkling 975B — 5:1 attention
   
 
     
@@ -562,7 +562,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 2.8T architecture
+    Kimi K3 — KDA, AttnRes, MoE
   
 
     
@@ -580,7 +580,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 2.8T architecture
+    Kimi K3 — KDA, AttnRes, MoE
   
 
     
@@ -617,22 +617,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-kda" class="md-nav__link">
+  <a href="#1-kda-channel-wise-gating" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. KDA：把長序列狀態更新做得更細
+        1. KDA：用 channel-wise gating 更新長序列狀態
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. KDA：把長序列狀態更新做得更細">
+    <nav class="md-nav" aria-label="1. KDA：用 channel-wise gating 更新長序列狀態">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#linear-attention" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Linear attention 真正改變的是哪個狀態
+        Linear attention 維護的狀態
       
     </span>
   </a>
@@ -706,10 +706,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6" class="md-nav__link">
+  <a href="#6-moonshot-long-horizon-coding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. 核心場景：長鏈條系統工程
+        6. Moonshot 主打 long-horizon coding
       
     </span>
   </a>
@@ -720,7 +720,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        如何理性閱讀目前的榜單
+        榜單的比較限制
       
     </span>
   </a>
@@ -731,7 +731,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        結語
+        權重發布後還缺哪些資料
       
     </span>
   </a>
@@ -761,7 +761,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — TensorRT-LLM + Triton serving
+    TensorRT-LLM vs vLLM
   
 
     
@@ -817,7 +817,7 @@
   <span class="md-ellipsis">
     
   
-    RAG groundedness (0% vs 50%)
+    The 0% RAG result failed the harder test
   
 
     
@@ -845,7 +845,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — Federated Learning + DP
+    FedAvg, DP-SGD & secure aggregation
   
 
     
@@ -873,7 +873,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — CUDA Tensor Core GEMM (WMMA)
+    Naive GEMM to WMMA
   
 
     
@@ -1016,22 +1016,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-kda" class="md-nav__link">
+  <a href="#1-kda-channel-wise-gating" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. KDA：把長序列狀態更新做得更細
+        1. KDA：用 channel-wise gating 更新長序列狀態
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. KDA：把長序列狀態更新做得更細">
+    <nav class="md-nav" aria-label="1. KDA：用 channel-wise gating 更新長序列狀態">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#linear-attention" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Linear attention 真正改變的是哪個狀態
+        Linear attention 維護的狀態
       
     </span>
   </a>
@@ -1105,10 +1105,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6" class="md-nav__link">
+  <a href="#6-moonshot-long-horizon-coding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. 核心場景：長鏈條系統工程
+        6. Moonshot 主打 long-horizon coding
       
     </span>
   </a>
@@ -1119,7 +1119,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        如何理性閱讀目前的榜單
+        榜單的比較限制
       
     </span>
   </a>
@@ -1130,7 +1130,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        結語
+        權重發布後還缺哪些資料
       
     </span>
   </a>
@@ -1194,9 +1194,9 @@
     
   
     
-      <li><a href="#1-kda">1. KDA：把長序列狀態更新做得更細</a><ol>
+      <li><a href="#1-kda-channel-wise-gating">1. KDA：用 channel-wise gating 更新長序列狀態</a><ol>
     
-      <li><a href="#linear-attention">Linear attention 真正改變的是哪個狀態</a></li>
+      <li><a href="#linear-attention">Linear attention 維護的狀態</a></li>
     
   </ol></li>
     
@@ -1222,15 +1222,15 @@
     
   
     
-      <li><a href="#6">6. 核心場景：長鏈條系統工程</a></li>
+      <li><a href="#6-moonshot-long-horizon-coding">6. Moonshot 主打 long-horizon coding</a></li>
     
   
     
-      <li><a href="#_1">如何理性閱讀目前的榜單</a></li>
+      <li><a href="#_1">榜單的比較限制</a></li>
     
   
     
-      <li><a href="#_2">結語</a></li>
+      <li><a href="#_2">權重發布後還缺哪些資料</a></li>
     
   
     
@@ -1271,7 +1271,7 @@
   </nav>
 </div>
 
-<h1 class="pb-post-title">Kimi K3 2.8T architecture</h1>
+<h1 class="pb-post-title">Kimi K3 — KDA, AttnRes, MoE</h1>
 
 
 <template class="pb-article-toc-template">
@@ -1286,9 +1286,9 @@
     
   
     
-      <li><a href="#1-kda">1. KDA：把長序列狀態更新做得更細</a><ol>
+      <li><a href="#1-kda-channel-wise-gating">1. KDA：用 channel-wise gating 更新長序列狀態</a><ol>
     
-      <li><a href="#linear-attention">Linear attention 真正改變的是哪個狀態</a></li>
+      <li><a href="#linear-attention">Linear attention 維護的狀態</a></li>
     
   </ol></li>
     
@@ -1314,15 +1314,15 @@
     
   
     
-      <li><a href="#6">6. 核心場景：長鏈條系統工程</a></li>
+      <li><a href="#6-moonshot-long-horizon-coding">6. Moonshot 主打 long-horizon coding</a></li>
     
   
     
-      <li><a href="#_1">如何理性閱讀目前的榜單</a></li>
+      <li><a href="#_1">榜單的比較限制</a></li>
     
   
     
-      <li><a href="#_2">結語</a></li>
+      <li><a href="#_2">權重發布後還缺哪些資料</a></li>
     
   
     
@@ -1341,9 +1341,9 @@
     
   
     
-      <li><a href="#1-kda">1. KDA：把長序列狀態更新做得更細</a><ol>
+      <li><a href="#1-kda-channel-wise-gating">1. KDA：用 channel-wise gating 更新長序列狀態</a><ol>
     
-      <li><a href="#linear-attention">Linear attention 真正改變的是哪個狀態</a></li>
+      <li><a href="#linear-attention">Linear attention 維護的狀態</a></li>
     
   </ol></li>
     
@@ -1369,15 +1369,15 @@
     
   
     
-      <li><a href="#6">6. 核心場景：長鏈條系統工程</a></li>
+      <li><a href="#6-moonshot-long-horizon-coding">6. Moonshot 主打 long-horizon coding</a></li>
     
   
     
-      <li><a href="#_1">如何理性閱讀目前的榜單</a></li>
+      <li><a href="#_1">榜單的比較限制</a></li>
     
   
     
-      <li><a href="#_2">結語</a></li>
+      <li><a href="#_2">權重發布後還缺哪些資料</a></li>
     
   
     
@@ -1390,7 +1390,7 @@
 
 
 
-<h1 id="kimi-k3-28t-kda-attnres-3t">Kimi K3 2.8T：用 KDA 與 AttnRes 推進 3T 級開放模型<a class="headerlink" href="#kimi-k3-28t-kda-attnres-3t" title="Permanent link">&para;</a></h1>
+<h1 id="kimi-k3-28tkdaattnres-896-16-moe">Kimi K3 2.8T：KDA、AttnRes 與 896 選 16 的 MoE<a class="headerlink" href="#kimi-k3-28tkdaattnres-896-16-moe" title="Permanent link">&para;</a></h1>
 <p><em>2026-07-20 · LLM Architecture / Linear Attention / Agentic Coding</em></p>
 <figure class="pb-article-hero">
   <img src="/assets/blog/kimi-k3-cover.webp" alt="Moonshot AI 官方 Kimi K3 主視覺" loading="eager" decoding="async">
@@ -1411,11 +1411,11 @@
 <li>官方稱相較 K2 約有 <strong>2.5× overall scaling efficiency</strong>；這是廠商數據，完整技術報告仍待發布。</li>
 <li>API 已上線；完整權重截至本文日期仍是預告狀態。</li>
 </ul>
-<h2 id="1-kda">1. KDA：把長序列狀態更新做得更細<a class="headerlink" href="#1-kda" title="Permanent link">&para;</a></h2>
+<h2 id="1-kda-channel-wise-gating">1. KDA：用 channel-wise gating 更新長序列狀態<a class="headerlink" href="#1-kda-channel-wise-gating" title="Permanent link">&para;</a></h2>
 <p>標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。<sup id="fnref:kda-paper"><a class="footnote-ref" href="#fn:kda-paper">3</a></sup></p>
-<p>這種設計的核心不是「完全不需要 attention」，而是把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。</p>
+<p>KDA 把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。</p>
 <p>目前 K3 的完整 layer ratio、kernel 細節與消融實驗要等 technical report；因此，網路流傳的精確 6.3× 解碼速度不能在缺乏同硬體、同 batch 與同輸出設定下直接泛化到所有部署。</p>
-<h3 id="linear-attention">Linear attention 真正改變的是哪個狀態<a class="headerlink" href="#linear-attention" title="Permanent link">&para;</a></h3>
+<h3 id="linear-attention">Linear attention 維護的狀態<a class="headerlink" href="#linear-attention" title="Permanent link">&para;</a></h3>
 <p>標準 causal attention 在第 <span class="arithmatex">\(t\)</span> 個 token 需要讀取先前所有 key/value；線性或 recurrent-style attention 則維護一個固定形狀的狀態 <span class="arithmatex">\(S_t\)</span>，概念上可寫成：</p>
 <div class="arithmatex">\[
 S_t = G_t \odot S_{t-1} + U_t,
@@ -1424,15 +1424,15 @@ S_t = G_t \odot S_{t-1} + U_t,
 <p><span class="arithmatex">\(G_t\)</span> 是遺忘／保留門，<span class="arithmatex">\(U_t\)</span> 是當前 token 寫入的更新。KDA 的 channel-wise gating 重點，是不同 feature channels 不必共用同一個衰減速率。這將「回看全部歷史」改成「更新摘要狀態」，但也帶來新的 kernel 問題：狀態更新有序列依賴，training 需要可平行化 scan，decode 則要讓 state 常駐在高速記憶體中。架構上的線性複雜度，只有在 kernel fusion 與 memory layout 做好時才會變成實際吞吐。</p>
 <h2 id="2-attnres">2. AttnRes：殘差不再只連上一層<a class="headerlink" href="#2-attnres" title="Permanent link">&para;</a></h2>
 <p>傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。<sup id="fnref:attnres-paper"><a class="footnote-ref" href="#fn:attnres-paper">4</a></sup></p>
-<p>可以把它理解成兩種不同維度的記憶：</p>
+<p>KDA 與 AttnRes 分別處理兩個方向的資訊流：</p>
 <ul>
 <li>KDA 處理<strong>序列方向</strong>的長距離資訊流。</li>
 <li>AttnRes 處理<strong>網路深度方向</strong>的跨層資訊流。</li>
 </ul>
-<p>官方稱 KDA、AttnRes、訓練與資料 recipe 合計，讓 K3 相較 K2 的 overall scaling efficiency 約提升 2.5×。這是整體結果，不能只歸因於 AttnRes，也不能直接解讀為訓練時間必然縮短 60%。</p>
+<p>官方公布的 2.5× overall scaling efficiency 是 KDA、AttnRes、訓練與資料 recipe 的合計結果，不能單獨歸因於 AttnRes，也不等同於訓練時間縮短 60%。</p>
 <h2 id="3-stable-latentmoe896-16">3. Stable LatentMoE：896 選 16<a class="headerlink" href="#3-stable-latentmoe896-16" title="Permanent link">&para;</a></h2>
 <p>K3 將 MoE 稀疏度推到 <strong>896 experts、每次啟用 16 個</strong>，搭配 Stable LatentMoE。超大總參數提供更大的模型容量，稀疏啟用則控制每個 token 實際執行的計算量。</p>
-<p>但 active FLOPs 低，不代表部署免費。完整權重仍需要龐大儲存與記憶體容量，跨 GPU／跨節點的 expert routing 也可能受通訊、memory bandwidth 與負載平衡限制。真正的 serving 成本要等權重、量化方案與 vLLM 等 runtime 的實測，而不能只從「16/896」推導。</p>
+<p>16/896 只描述 active experts。部署仍需儲存完整權重，並負擔跨 GPU／節點 routing、memory bandwidth 與負載平衡成本。完整 serving 成本要等權重、量化方案與 vLLM 等 runtime 的實測。</p>
 <h3 id="moe">三個不能混為一談的 MoE 數字<a class="headerlink" href="#moe" title="Permanent link">&para;</a></h3>
 <p>評估 896 選 16 時，至少要分開看三個 budget：</p>
 <ol>
@@ -1440,7 +1440,7 @@ S_t = G_t \odot S_{t-1} + U_t,
 <li><strong>Active compute</strong>：每 token 啟用 16 個 experts，決定主要矩陣乘法量，但還要加 attention、router 與 shared components。</li>
 <li><strong>Communication</strong>：token dispatch/all-to-all 取決於 expert placement、batch 組成與負載平衡；它可能在 FLOPs 尚未飽和前先受網路與 HBM bandwidth 限制。</li>
 </ol>
-<p>因此「稀疏度更高」不是免費的 scaling law。若 token 分布偏向少數 experts，capacity factor 會造成 padding 或 dropped/rerouted tokens；若 experts 橫跨節點，all-to-all latency 也會成為 decode 的尾延遲來源。</p>
+<p>提高稀疏度也會增加 routing 與負載平衡壓力。若 token 分布偏向少數 experts，capacity factor 會造成 padding 或 dropped／rerouted tokens；若 experts 橫跨節點，all-to-all latency 也會成為 decode 的尾延遲來源。</p>
 <h2 id="4-inkling-975b">4. 與 Inkling 975B 的路線差異<a class="headerlink" href="#4-inkling-975b" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1486,14 +1486,14 @@ S_t = G_t \odot S_{t-1} + U_t,
 <p>兩者都在離開「每層 full attention＋RoPE＋同一套 optimizer」的單一路線，但方法不同。Inkling 降低全域 attention 的出現頻率，再用卷積補局部混合；K3 把序列記憶改造成 KDA state update，並用 AttnRes 改造深度方向的訊號傳遞。</p>
 <h2 id="5-api">5. API 與部署策略<a class="headerlink" href="#5-api" title="Permanent link">&para;</a></h2>
 <p>K3 API 提供固定 1M context，官方文件表示不因 context 長度採階梯式單價；cache hit、cache miss 與 output 仍分別計價。它也提供 automatic context caching、tool calls、structured output、dynamic tool loading，以及 low/high/max 的 reasoning effort 設定。<sup id="fnref:k3-pricing"><a class="footnote-ref" href="#fn:k3-pricing">5</a></sup></p>
-<p>這裡也要區分兩件事：API 能用，不等於開放權重部署已成熟。截至 7 月 20 日，權重與完整 technical report 尚未公開；任何 vLLM 吞吐、量化品質或多節點 routing 結論，都應在實際 artifact 發布後再驗證。</p>
-<h2 id="6">6. 核心場景：長鏈條系統工程<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
-<p>Moonshot 把 K3 的核心戰場放在 long-horizon coding：理解大型 repository、協調 terminal tools，並在視覺回饋下處理 frontend、game development 與 CAD。官方 kernel optimization case study 甚至讓模型在最多 24 小時的 sandbox 內反覆 profile、改寫與 benchmark GPU kernels。</p>
-<p>這和 Inkling 的差異很鮮明：Inkling 強調可控制的推理成本與文字／圖片／音訊通用底座；K3 更像是為長工作流與大型工程任務設計的 agentic model。兩者不是單純用一張 benchmark 表就能互相取代。</p>
-<h2 id="_1">如何理性閱讀目前的榜單<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>截至 7 月 20 日，只有 API 已上線；權重與完整 technical report 尚未公開，因此還沒有可驗證的 vLLM 吞吐、量化品質或多節點 routing 結果。</p>
+<h2 id="6-moonshot-long-horizon-coding">6. Moonshot 主打 long-horizon coding<a class="headerlink" href="#6-moonshot-long-horizon-coding" title="Permanent link">&para;</a></h2>
+<p>Moonshot 展示的 long-horizon coding 任務包括理解大型 repository、協調 terminal tools，以及用視覺回饋處理 frontend、game development 與 CAD。官方 kernel optimization case study 讓模型在最多 24 小時的 sandbox 內反覆 profile、改寫與 benchmark GPU kernels。</p>
+<p>Inkling 主打可控制的推理成本與文字／圖片／音訊通用底座；K3 的產品展示則集中在長工作流與大型工程任務。兩者的輸入模態與服務場景不同，單張 benchmark 表不足以比較部署取捨。</p>
+<h2 id="_1">榜單的比較限制<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>官方自己承認 K3 整體能力仍落後最強 proprietary models。Arena、GDPval 或 kernel benchmark 各自測量不同能力，而且 vendor-reported 結果可能使用不同 harness、thinking budget 與工具權限。Frontend Arena 的單項名次、Artificial Analysis 指標或 hallucination rate，都應附上測試版本與方法，不能拼成一個「全面勝過某模型」的結論。</p>
-<h2 id="_2">結語<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>K3 的技術訊號比 2.8T 這個 headline 更重要：KDA 解序列長度、AttnRes 解模型深度、極稀疏 MoE 解容量與 active compute 的分離。如果完整權重與 technical report 如期釋出，真正值得看的將是系統層數據——精度格式、單節點／多節點吞吐、expert communication、長 context 品質與量化後退化，而不只是參數量。</p>
+<h2 id="_2">權重發布後還缺哪些資料<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>權重與 technical report 發布後，仍需補上精度格式、單節點／多節點吞吐、expert communication、長 context 品質和量化退化，才能判斷 2.8T 架構的實際部署成本。</p>
 <div class="footnote">
 <hr />
 <ol>

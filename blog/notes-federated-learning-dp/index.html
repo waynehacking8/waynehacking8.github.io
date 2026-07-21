@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees.">
+        <meta name="description" content="FedAvg under Non-IID data, DP-SGD, and secure aggregation, with paragraph-by-paragraph Traditional Chinese and measured negative results.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -29,7 +29,7 @@
     
     
       
-        <title>Notes — Federated Learning + DP - Wei-Cheng Chiu</title>
+        <title>FedAvg, DP-SGD & secure aggregation - Wei-Cheng Chiu</title>
       
     
     
@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.26">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.27">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -81,8 +81,8 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Notes — Federated Learning + DP — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees.">
+  <meta property="og:title" content="FedAvg, DP-SGD & secure aggregation — Wei Cheng (Wayne) Chiu">
+  <meta property="og:description" content="FedAvg under Non-IID data, DP-SGD, and secure aggregation, with paragraph-by-paragraph Traditional Chinese and measured negative results.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/notes-federated-learning-dp/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/federated-dp.webp">
   <meta property="profile:first_name" content="Wei Cheng">
@@ -91,8 +91,8 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="Notes — Federated Learning + DP — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees.">
+  <meta name="twitter:title" content="FedAvg, DP-SGD & secure aggregation — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:description" content="FedAvg under Non-IID data, DP-SGD, and secure aggregation, with paragraph-by-paragraph Traditional Chinese and measured negative results.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/federated-dp.webp">
   
   <meta property="article:tag" content="Privacy"><meta property="article:tag" content="Federated Learning"><meta property="article:tag" content="Differential Privacy">
@@ -163,14 +163,14 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Notes \u2014 Federated Learning + DP",
+    "headline": "FedAvg, DP-SGD \u0026 secure aggregation",
     "url": "https://wayne.is-a.dev/blog/notes-federated-learning-dp/",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/notes-federated-learning-dp/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "en",
+    "inLanguage": ["en", "zh-Hant"],
     "keywords": ["Privacy", "Federated Learning", "Differential Privacy"],
-    "description": "Federated learning from scratch (FedAvg / FedProx / SCAFFOLD), what breaks under Non-IID data, and how DP-SGD and secure aggregation add real privacy guarantees.",
+    "description": "FedAvg under Non-IID data, DP-SGD, and secure aggregation, with paragraph-by-paragraph Traditional Chinese and measured negative results.",
     "image": "https://wayne.is-a.dev/assets/blog/federated-dp.webp",
     "datePublished": "2026-05-31",
     "dateModified": "2026-07-21"
@@ -197,7 +197,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#notes-on-federated-learning-and-differential-privacy" class="md-skip">
+        <a href="#fedavg-under-non-iid-data-what-dp-sgd-and-secure-aggregation-protectnon-iid-fedavgdp-sgd-secure-aggregation" class="md-skip">
           Skip to content
         </a>
       
@@ -231,7 +231,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Notes — Federated Learning + DP
+              FedAvg, DP-SGD & secure aggregation
             
           </span>
         </div>
@@ -526,7 +526,7 @@
   <span class="md-ellipsis">
     
   
-    Inkling 975B architecture
+    Inkling 975B — 5:1 attention
   
 
     
@@ -554,7 +554,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 2.8T architecture
+    Kimi K3 — KDA, AttnRes, MoE
   
 
     
@@ -582,7 +582,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — TensorRT-LLM + Triton serving
+    TensorRT-LLM vs vLLM
   
 
     
@@ -638,7 +638,7 @@
   <span class="md-ellipsis">
     
   
-    RAG groundedness (0% vs 50%)
+    The 0% RAG result failed the harder test
   
 
     
@@ -675,7 +675,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — Federated Learning + DP
+    FedAvg, DP-SGD & secure aggregation
   
 
     
@@ -693,7 +693,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — Federated Learning + DP
+    FedAvg, DP-SGD & secure aggregation
   
 
     
@@ -719,10 +719,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-what-federated-learning-actually-is" class="md-nav__link">
+  <a href="#1-the-fedavg-training-loopfedavg" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. What federated learning actually is
+        1. The FedAvg training loop｜FedAvg 訓練迴圈
       
     </span>
   </a>
@@ -730,10 +730,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt" class="md-nav__link">
+  <a href="#2-the-non-iid-problemnon-iid" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. The Non-IID problem (where FedAvg starts to hurt)
+        2. The Non-IID problem｜Non-IID 問題
       
     </span>
   </a>
@@ -741,10 +741,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-differential-privacy-the-model-still-leaks" class="md-nav__link">
+  <a href="#3-differential-privacy-local-data-can-still-leakdifferential-privacy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Differential privacy: the model still leaks
+        3. Differential privacy: local data can still leak｜Differential privacy：本地資料仍可能外洩
       
     </span>
   </a>
@@ -752,10 +752,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-secure-aggregation-hide-the-individual-update" class="md-nav__link">
+  <a href="#4-secure-aggregation-hides-individual-updatessecure-aggregation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Secure aggregation: hide the individual update
+        4. Secure aggregation hides individual updates｜Secure aggregation 隱藏個別更新
       
     </span>
   </a>
@@ -763,21 +763,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-why-from-scratch-and-3333-tests" class="md-nav__link">
+  <a href="#5-implementation-checks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Why "from scratch" and "33/33 tests"
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
+        5. Implementation checks｜實作檢查
       
     </span>
   </a>
@@ -807,7 +796,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — CUDA Tensor Core GEMM (WMMA)
+    Naive GEMM to WMMA
   
 
     
@@ -939,10 +928,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-what-federated-learning-actually-is" class="md-nav__link">
+  <a href="#1-the-fedavg-training-loopfedavg" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. What federated learning actually is
+        1. The FedAvg training loop｜FedAvg 訓練迴圈
       
     </span>
   </a>
@@ -950,10 +939,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt" class="md-nav__link">
+  <a href="#2-the-non-iid-problemnon-iid" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. The Non-IID problem (where FedAvg starts to hurt)
+        2. The Non-IID problem｜Non-IID 問題
       
     </span>
   </a>
@@ -961,10 +950,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-differential-privacy-the-model-still-leaks" class="md-nav__link">
+  <a href="#3-differential-privacy-local-data-can-still-leakdifferential-privacy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Differential privacy: the model still leaks
+        3. Differential privacy: local data can still leak｜Differential privacy：本地資料仍可能外洩
       
     </span>
   </a>
@@ -972,10 +961,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-secure-aggregation-hide-the-individual-update" class="md-nav__link">
+  <a href="#4-secure-aggregation-hides-individual-updatessecure-aggregation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Secure aggregation: hide the individual update
+        4. Secure aggregation hides individual updates｜Secure aggregation 隱藏個別更新
       
     </span>
   </a>
@@ -983,21 +972,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-why-from-scratch-and-3333-tests" class="md-nav__link">
+  <a href="#5-implementation-checks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Why "from scratch" and "33/33 tests"
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
+        5. Implementation checks｜實作檢查
       
     </span>
   </a>
@@ -1057,27 +1035,23 @@
     
       
     
-      <li><a href="#1-what-federated-learning-actually-is">1. What federated learning actually is</a></li>
+      <li><a href="#1-the-fedavg-training-loopfedavg">1. The FedAvg training loop｜FedAvg 訓練迴圈</a></li>
     
   
     
-      <li><a href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt">2. The Non-IID problem (where FedAvg starts to hurt)</a></li>
+      <li><a href="#2-the-non-iid-problemnon-iid">2. The Non-IID problem｜Non-IID 問題</a></li>
     
   
     
-      <li><a href="#3-differential-privacy-the-model-still-leaks">3. Differential privacy: the model still leaks</a></li>
+      <li><a href="#3-differential-privacy-local-data-can-still-leakdifferential-privacy">3. Differential privacy: local data can still leak｜Differential privacy：本地資料仍可能外洩</a></li>
     
   
     
-      <li><a href="#4-secure-aggregation-hide-the-individual-update">4. Secure aggregation: hide the individual update</a></li>
+      <li><a href="#4-secure-aggregation-hides-individual-updatessecure-aggregation">4. Secure aggregation hides individual updates｜Secure aggregation 隱藏個別更新</a></li>
     
   
     
-      <li><a href="#5-why-from-scratch-and-3333-tests">5. Why "from scratch" and "33/33 tests"</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#5-implementation-checks">5. Implementation checks｜實作檢查</a></li>
     
   
     
@@ -1118,7 +1092,7 @@
   </nav>
 </div>
 
-<h1 class="pb-post-title">Notes — Federated Learning + DP</h1>
+<h1 class="pb-post-title">FedAvg, DP-SGD & secure aggregation</h1>
 
 
 <template class="pb-article-toc-template">
@@ -1129,27 +1103,23 @@
     
       
     
-      <li><a href="#1-what-federated-learning-actually-is">1. What federated learning actually is</a></li>
+      <li><a href="#1-the-fedavg-training-loopfedavg">1. The FedAvg training loop｜FedAvg 訓練迴圈</a></li>
     
   
     
-      <li><a href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt">2. The Non-IID problem (where FedAvg starts to hurt)</a></li>
+      <li><a href="#2-the-non-iid-problemnon-iid">2. The Non-IID problem｜Non-IID 問題</a></li>
     
   
     
-      <li><a href="#3-differential-privacy-the-model-still-leaks">3. Differential privacy: the model still leaks</a></li>
+      <li><a href="#3-differential-privacy-local-data-can-still-leakdifferential-privacy">3. Differential privacy: local data can still leak｜Differential privacy：本地資料仍可能外洩</a></li>
     
   
     
-      <li><a href="#4-secure-aggregation-hide-the-individual-update">4. Secure aggregation: hide the individual update</a></li>
+      <li><a href="#4-secure-aggregation-hides-individual-updatessecure-aggregation">4. Secure aggregation hides individual updates｜Secure aggregation 隱藏個別更新</a></li>
     
   
     
-      <li><a href="#5-why-from-scratch-and-3333-tests">5. Why "from scratch" and "33/33 tests"</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#5-implementation-checks">5. Implementation checks｜實作檢查</a></li>
     
   
     
@@ -1164,27 +1134,23 @@
     
       
     
-      <li><a href="#1-what-federated-learning-actually-is">1. What federated learning actually is</a></li>
+      <li><a href="#1-the-fedavg-training-loopfedavg">1. The FedAvg training loop｜FedAvg 訓練迴圈</a></li>
     
   
     
-      <li><a href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt">2. The Non-IID problem (where FedAvg starts to hurt)</a></li>
+      <li><a href="#2-the-non-iid-problemnon-iid">2. The Non-IID problem｜Non-IID 問題</a></li>
     
   
     
-      <li><a href="#3-differential-privacy-the-model-still-leaks">3. Differential privacy: the model still leaks</a></li>
+      <li><a href="#3-differential-privacy-local-data-can-still-leakdifferential-privacy">3. Differential privacy: local data can still leak｜Differential privacy：本地資料仍可能外洩</a></li>
     
   
     
-      <li><a href="#4-secure-aggregation-hide-the-individual-update">4. Secure aggregation: hide the individual update</a></li>
+      <li><a href="#4-secure-aggregation-hides-individual-updatessecure-aggregation">4. Secure aggregation hides individual updates｜Secure aggregation 隱藏個別更新</a></li>
     
   
     
-      <li><a href="#5-why-from-scratch-and-3333-tests">5. Why "from scratch" and "33/33 tests"</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#5-implementation-checks">5. Implementation checks｜實作檢查</a></li>
     
   
     
@@ -1197,105 +1163,86 @@
 
 
 
-<h1 id="notes-on-federated-learning-and-differential-privacy">Notes on Federated Learning and Differential Privacy<a class="headerlink" href="#notes-on-federated-learning-and-differential-privacy" title="Permanent link">&para;</a></h1>
-<p><em>2026-05-31 · privacy-preserving ML</em></p>
+<h1 id="fedavg-under-non-iid-data-what-dp-sgd-and-secure-aggregation-protectnon-iid-fedavgdp-sgd-secure-aggregation">FedAvg Under Non-IID Data: What DP-SGD and Secure Aggregation Protect｜Non-IID 資料下的 FedAvg：DP-SGD 與 Secure Aggregation 各自保護什麼<a class="headerlink" href="#fedavg-under-non-iid-data-what-dp-sgd-and-secure-aggregation-protectnon-iid-fedavgdp-sgd-secure-aggregation" title="Permanent link">&para;</a></h1>
+<p><em>2026-05-31 · updated 2026-07-21 · privacy-preserving ML</em></p>
 <figure class="pb-article-hero">
   <img src="/assets/blog/federated-dp.webp" alt="Google Research 聯邦學習與差分隱私實驗圖" loading="eager" decoding="async">
-  <figcaption>Federated learning with formal DP guarantees · <a href="https://research.google/blog/federated-learning-with-formal-differential-privacy-guarantees/">Source: Google Research</a></figcaption>
+  <figcaption>Federated learning with formal DP guarantees · 具有正式 DP 保證的聯邦學習 · <a href="https://research.google/blog/federated-learning-with-formal-differential-privacy-guarantees/">Source: Google Research</a></figcaption>
 </figure>
 
-<p>Working notes on building federated learning (FL) from scratch, what actually breaks under
-<strong>Non-IID</strong> data, and how <strong>differential privacy (DP)</strong> and <strong>secure aggregation</strong> fit on top —
-including the honest negative results that the marketing slides leave out. They follow the
-implementation in
-<a href="https://github.com/waynehacking8/federated-learning-lab"><strong>federated-learning-lab</strong></a><sup id="fnref:fl-repo"><a class="footnote-ref" href="#fn:fl-repo">1</a></sup>
-(FedAvg / FedProx / SCAFFOLD, DP-SGD, secure aggregation; 33/33 tests, literature
-cross-validated).</p>
-<h2 id="1-what-federated-learning-actually-is">1. What federated learning actually is<a class="headerlink" href="#1-what-federated-learning-actually-is" title="Permanent link">&para;</a></h2>
-<p>The data never moves. Instead of pooling everyone's data on one server, each client trains
-locally and sends <strong>model updates</strong> to a server that aggregates them. The canonical loop
-(<strong>FedAvg</strong>) is:</p>
+<p>The <a href="https://github.com/waynehacking8/federated-learning-lab"><strong>federated-learning-lab</strong></a><sup id="fnref:fl-repo"><a class="footnote-ref" href="#fn:fl-repo">1</a></sup> implements FedAvg, FedProx, SCAFFOLD, DP-SGD, and secure aggregation from scratch. Its tests and experiments show where Non-IID data causes client drift, where extra communication rounds matter more than a different optimizer, and which privacy threat each defense covers.</p>
+<p class="pb-translation" lang="zh-Hant"><a href="https://github.com/waynehacking8/federated-learning-lab"><strong>federated-learning-lab</strong></a><sup id="fnref2:fl-repo"><a class="footnote-ref" href="#fn:fl-repo">1</a></sup> 從頭實作 FedAvg、FedProx、SCAFFOLD、DP-SGD 與 secure aggregation。測試與實驗顯示 Non-IID 資料如何造成 client drift、哪些情況下增加 communication rounds 比換 optimizer 更有影響，以及每種隱私防禦各自處理哪個威脅。</p>
+<p>The repository includes 33/33 passing tests and cross-checks the implementations against the cited literature.</p>
+<p class="pb-translation" lang="zh-Hant">Repository 內含 33／33 通過的測試，並以引用文獻交叉檢查各項實作。</p>
+<h2 id="1-the-fedavg-training-loopfedavg">1. The FedAvg training loop｜FedAvg 訓練迴圈<a class="headerlink" href="#1-the-fedavg-training-loopfedavg" title="Permanent link">&para;</a></h2>
+<p>Raw training examples remain on each client, while model updates are sent to an aggregation server. The canonical FedAvg loop is:<sup id="fnref:fedavg"><a class="footnote-ref" href="#fn:fedavg">2</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">原始訓練樣本留在各個 client，model updates 則傳給 aggregation server。標準 FedAvg 迴圈如下：<sup id="fnref2:fedavg"><a class="footnote-ref" href="#fn:fedavg">2</a></sup></p>
 <ol>
-<li>Server broadcasts the global model.</li>
-<li>Each client does a few local SGD epochs on its own data.</li>
-<li>Each client sends back its updated weights.</li>
-<li>Server averages the weights (weighted by client data size) → new global model.<sup id="fnref:fedavg"><a class="footnote-ref" href="#fn:fedavg">2</a></sup></li>
+<li>The server broadcasts the global model.<br><span class="pb-inline-translation" lang="zh-Hant">Server 廣播 global model。</span></li>
+<li>Each client runs a few local SGD epochs on its own data.<br><span class="pb-inline-translation" lang="zh-Hant">每個 client 用自己的資料執行數個 local SGD epochs。</span></li>
+<li>Each client returns its updated weights.<br><span class="pb-inline-translation" lang="zh-Hant">每個 client 回傳更新後的 weights。</span></li>
+<li>The server computes a data-size-weighted average to produce the next global model.<br><span class="pb-inline-translation" lang="zh-Hant">Server 依 client data size 加權平均，產生下一版 global model。</span></li>
 </ol>
-<p>That's it. The elegance is that raw data stays on-device; the difficulty is that the clients'
-data distributions are <strong>not</strong> identical.</p>
-<h2 id="2-the-non-iid-problem-where-fedavg-starts-to-hurt">2. The Non-IID problem (where FedAvg starts to hurt)<a class="headerlink" href="#2-the-non-iid-problem-where-fedavg-starts-to-hurt" title="Permanent link">&para;</a></h2>
-<p>FedAvg implicitly assumes every client sees roughly the same distribution. Real clients don't —
-one hospital sees different cases than another, one phone's keyboard sees different language.
-Under <strong>Non-IID</strong> data, each client's local optimum pulls in a different direction, so averaging
-their updates produces <strong>client drift</strong>: the global model lands somewhere none of them wanted.</p>
-<p>Two well-known fixes, both implemented and measured in the lab:</p>
+<p>FedAvg keeps raw examples local, but heterogeneous client distributions make the local updates drift in different directions.</p>
+<p class="pb-translation" lang="zh-Hant">FedAvg 讓原始樣本留在本地，但異質的 client distributions 會使各地更新往不同方向偏移。</p>
+<h2 id="2-the-non-iid-problemnon-iid">2. The Non-IID problem｜Non-IID 問題<a class="headerlink" href="#2-the-non-iid-problemnon-iid" title="Permanent link">&para;</a></h2>
+<p>FedAvg works best when participating clients sample similar distributions. Real clients differ: one hospital sees a different case mix from another, and one phone’s keyboard sees different language. Under Non-IID data, the average of those local updates can land in a region that is poor for many clients. This is client drift.</p>
+<p class="pb-translation" lang="zh-Hant">參與的 clients 取樣自相近分布時，FedAvg 最容易運作。現實中的 clients 並不相同：不同醫院會遇到不同病例組合，不同手機鍵盤也會看到不同語言。資料是 Non-IID 時，local updates 的平均可能落在許多 clients 都表現不佳的區域，這就是 client drift。</p>
+<p>The lab implements and measures two common corrections:</p>
+<p class="pb-translation" lang="zh-Hant">Lab 實作並量測兩種常見修正方法：</p>
 <ul>
-<li><strong>FedProx</strong> — add a proximal term that penalises drifting too far from the global model.<sup id="fnref:fedprox"><a class="footnote-ref" href="#fn:fedprox">3</a></sup>
-  Stabilises training when clients are heterogeneous.</li>
-<li><strong>SCAFFOLD</strong> — track <strong>control variates</strong> (correction terms) that estimate and subtract the
-  drift direction. More state to communicate, but corrects the bias FedProx only damps.<sup id="fnref:scaffold"><a class="footnote-ref" href="#fn:scaffold">4</a></sup></li>
+<li><strong>FedProx</strong> adds a proximal term that penalizes movement too far from the global model. It can stabilize training when clients are heterogeneous.<sup id="fnref:fedprox"><a class="footnote-ref" href="#fn:fedprox">3</a></sup><br><span class="pb-inline-translation" lang="zh-Hant"><strong>FedProx</strong> 加入 proximal term，懲罰離 global model 太遠的更新；clients 異質時可提高穩定性。<sup id="fnref2:fedprox"><a class="footnote-ref" href="#fn:fedprox">3</a></sup></span></li>
+<li><strong>SCAFFOLD</strong> tracks control variates that estimate and subtract the drift direction. It communicates more state, but corrects bias that FedProx only damps.<sup id="fnref:scaffold"><a class="footnote-ref" href="#fn:scaffold">4</a></sup><br><span class="pb-inline-translation" lang="zh-Hant"><strong>SCAFFOLD</strong> 維護 control variates，估計並扣除 drift direction。它要傳輸更多狀態，但能修正 FedProx 只會抑制的 bias。<sup id="fnref2:scaffold"><a class="footnote-ref" href="#fn:scaffold">4</a></sup></span></li>
 </ul>
-<p>The honest finding worth repeating: on a strongly Non-IID split (e.g. label-skewed MNIST), the
-fancy methods <strong>don't always beat plain FedAvg by much</strong> — and sometimes the dominant lever is
-just more communication rounds. Reporting the case where your method <em>doesn't</em> win is what
-separates a lab from a brochure.</p>
-<h2 id="3-differential-privacy-the-model-still-leaks">3. Differential privacy: the model still leaks<a class="headerlink" href="#3-differential-privacy-the-model-still-leaks" title="Permanent link">&para;</a></h2>
-<p>Keeping data on-device is <strong>not</strong> privacy. Model updates leak information about the data that
-produced them — membership inference and gradient-inversion attacks reconstruct training samples
-from gradients. To get a real guarantee you add <strong>differential privacy</strong>.</p>
-<p><strong>DP-SGD</strong> makes each training step private by:<sup id="fnref:dpsgd"><a class="footnote-ref" href="#fn:dpsgd">5</a></sup></p>
+<p>On the label-skewed MNIST split in this repository, FedProx and SCAFFOLD did not consistently outperform FedAvg by a large margin. Increasing communication rounds sometimes had more effect.</p>
+<p class="pb-translation" lang="zh-Hant">在這個 repository 的 label-skewed MNIST split 上，FedProx 與 SCAFFOLD 並未持續大幅勝過 FedAvg；增加 communication rounds 有時反而更有影響。</p>
+<h2 id="3-differential-privacy-local-data-can-still-leakdifferential-privacy">3. Differential privacy: local data can still leak｜Differential privacy：本地資料仍可能外洩<a class="headerlink" href="#3-differential-privacy-local-data-can-still-leakdifferential-privacy" title="Permanent link">&para;</a></h2>
+<p>Keeping raw data on-device does not by itself provide privacy. Model updates can expose information through membership inference or gradient inversion. DP-SGD adds a formal differential-privacy bound to training.<sup id="fnref:dpsgd"><a class="footnote-ref" href="#fn:dpsgd">5</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">把原始資料留在裝置上，本身並不構成隱私保證。Model updates 仍可能透過 membership inference 或 gradient inversion 洩漏資訊。DP-SGD 會在訓練中加入正式的 differential-privacy bound。<sup id="fnref2:dpsgd"><a class="footnote-ref" href="#fn:dpsgd">5</a></sup></p>
+<p>DP-SGD changes each training step in two ways:</p>
+<p class="pb-translation" lang="zh-Hant">DP-SGD 對每個 training step 做兩項修改：</p>
 <ol>
-<li><strong>Per-sample gradient clipping</strong> — bound each example's contribution to a max norm <code>C</code>.</li>
-<li><strong>Gaussian noise</strong> — add noise calibrated to <code>C</code> to the summed gradients.</li>
+<li><strong>Per-sample gradient clipping</strong> bounds each example’s contribution to a maximum norm <code>C</code>.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Per-sample gradient clipping</strong> 把每筆樣本的貢獻限制在最大 norm <code>C</code>。</span></li>
+<li><strong>Gaussian noise</strong> adds noise calibrated to <code>C</code> to the summed gradients.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Gaussian noise</strong> 依 <code>C</code> 校準後，加入 summed gradients。</span></li>
 </ol>
-<p>The result is a formal <strong>(ε, δ)</strong> guarantee: the trained model is provably almost the same
-whether or not any single example was in the data. The cost is the <strong>privacy–utility
-trade-off</strong> — smaller ε (stronger privacy) means more noise and lower accuracy. There is no
-free lunch; the contribution is <em>measuring</em> the curve, not claiming privacy is costless.</p>
-<h2 id="4-secure-aggregation-hide-the-individual-update">4. Secure aggregation: hide the individual update<a class="headerlink" href="#4-secure-aggregation-hide-the-individual-update" title="Permanent link">&para;</a></h2>
-<p>DP bounds what the <em>final model</em> leaks. <strong>Secure aggregation</strong> addresses a different threat: a
-curious server seeing each client's <em>individual</em> update. With secure aggregation, clients mask
-their updates so the server can compute only the <strong>sum</strong> — no single client's contribution is
-visible — yet the masks cancel in aggregate. DP (what the model leaks) and secure aggregation
-(what the server sees) are <strong>complementary</strong>, not substitutes.<sup id="fnref:secagg"><a class="footnote-ref" href="#fn:secagg">6</a></sup></p>
-<h2 id="5-why-from-scratch-and-3333-tests">5. Why "from scratch" and "33/33 tests"<a class="headerlink" href="#5-why-from-scratch-and-3333-tests" title="Permanent link">&para;</a></h2>
-<p>Privacy ML is exactly the domain where a subtly wrong implementation gives a <em>false</em> sense of
-safety — a clipping bug or a miscalibrated noise multiplier silently voids the ε guarantee. So
-the lab:</p>
+<p>An <span class="arithmatex">\((\varepsilon,\delta)\)</span>-DP bound limits how much the output distribution can change when one example is added or removed. Lower <span class="arithmatex">\(\varepsilon\)</span> generally requires more noise, so the report must show privacy budget and utility together.</p>
+<p class="pb-translation" lang="zh-Hant"><span class="arithmatex">\((\varepsilon,\delta)\)</span>-DP bound 會限制加入或移除一筆樣本時，輸出分布最多能改變多少。較低的 <span class="arithmatex">\(\varepsilon\)</span> 通常需要更多 noise，因此報告必須同時呈現 privacy budget 與 utility。</p>
+<h2 id="4-secure-aggregation-hides-individual-updatessecure-aggregation">4. Secure aggregation hides individual updates｜Secure aggregation 隱藏個別更新<a class="headerlink" href="#4-secure-aggregation-hides-individual-updatessecure-aggregation" title="Permanent link">&para;</a></h2>
+<p>DP limits what the final model can reveal. Secure aggregation addresses a different threat: an aggregation server inspecting each client’s update. Clients mask their updates so the server can recover only the sum; the individual masks cancel when aggregated.<sup id="fnref:secagg"><a class="footnote-ref" href="#fn:secagg">6</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">DP 限制 final model 能洩漏的資訊。Secure aggregation 處理另一個威脅：aggregation server 檢查每個 client 的 update。Clients 先遮罩更新，server 只能還原總和；個別 masks 會在聚合時互相抵銷。<sup id="fnref2:secagg"><a class="footnote-ref" href="#fn:secagg">6</a></sup></p>
+<p>The two mechanisms are complementary. DP bounds model leakage, while secure aggregation limits what the server observes during training.</p>
+<p class="pb-translation" lang="zh-Hant">兩種機制互補：DP 約束 model leakage，secure aggregation 則限制 server 在訓練期間能看到的內容。</p>
+<h2 id="5-implementation-checks">5. Implementation checks｜實作檢查<a class="headerlink" href="#5-implementation-checks" title="Permanent link">&para;</a></h2>
+<p>A clipping bug or miscalibrated noise multiplier can invalidate the intended privacy bound. The lab therefore checks four things:</p>
+<p class="pb-translation" lang="zh-Hant">Clipping bug 或校準錯誤的 noise multiplier 都可能使預期的 privacy bound 失效，因此 lab 會檢查四件事：</p>
 <ul>
-<li>implements each algorithm from scratch (FedAvg / FedProx / SCAFFOLD, plus FedPer /
-  Byzantine-robust / FedAdam / FedLoRA),</li>
-<li><strong>cross-validates against the literature</strong> so behaviour matches published results, and</li>
-<li>ships <strong>33/33 passing tests</strong> and explicit negative results.</li>
+<li>Implementations cover FedAvg, FedProx, SCAFFOLD, FedPer, Byzantine-robust aggregation, FedAdam, and FedLoRA.<br><span class="pb-inline-translation" lang="zh-Hant">實作涵蓋 FedAvg、FedProx、SCAFFOLD、FedPer、Byzantine-robust aggregation、FedAdam 與 FedLoRA。</span></li>
+<li>DP tests check clipping and noise behavior rather than only final accuracy.<br><span class="pb-inline-translation" lang="zh-Hant">DP 測試會檢查 clipping 與 noise 行為，不只看最終 accuracy。</span></li>
+<li>Literature cross-checks verify that measured behavior is consistent with the cited methods.<br><span class="pb-inline-translation" lang="zh-Hant">文獻交叉檢查會確認實測行為是否和引用方法一致。</span></li>
+<li>The 33/33 tests and negative results remain in the repository with reproduction commands.<br><span class="pb-inline-translation" lang="zh-Hant">33／33 項測試、負面結果與重現命令都保留在 repository。</span></li>
 </ul>
-<p>For privacy and security work, the test suite and the reproduction <em>are</em> the credibility.</p>
-<h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
-<p>Federated learning moves the model, not the data — but on-device ≠ private. Non-IID data breaks
-naive averaging (FedProx/SCAFFOLD help, sometimes only a little); DP-SGD buys a formal (ε, δ)
-guarantee at a measurable accuracy cost; secure aggregation hides individual updates from the
-server. The trustworthy version of all three is the one with the tests and the honest curves.</p>
-<p>→ From-scratch implementations, tests, and negative results:
+<p>→ Implementations, tests, and negative results:<br><span class="pb-inline-translation" lang="zh-Hant">實作、測試與負面結果：</span>
 <a href="https://github.com/waynehacking8/federated-learning-lab">github.com/waynehacking8/federated-learning-lab</a></p>
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:fl-repo">
-<p><a href="https://github.com/waynehacking8/federated-learning-lab">Federated Learning Lab</a>, the primary artifact for implementations, tests, and measured negative results discussed here.&#160;<a class="footnote-backref" href="#fnref:fl-repo" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p><a href="https://github.com/waynehacking8/federated-learning-lab">Federated Learning Lab</a>, the primary artifact for implementations, tests, and measured negative results discussed here.／本文實作、測試與負面結果的主要來源。&#160;<a class="footnote-backref" href="#fnref:fl-repo" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:fl-repo" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:fedavg">
-<p><a href="https://proceedings.mlr.press/v54/mcmahan17a.html">McMahan et al., “Communication-Efficient Learning of Deep Networks from Decentralized Data”</a>.&#160;<a class="footnote-backref" href="#fnref:fedavg" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p><a href="https://proceedings.mlr.press/v54/mcmahan17a.html">McMahan et al., “Communication-Efficient Learning of Deep Networks from Decentralized Data”</a>.／FedAvg 原始論文。&#160;<a class="footnote-backref" href="#fnref:fedavg" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:fedavg" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:fedprox">
-<p><a href="https://proceedings.mlsys.org/paper_files/paper/2020/hash/1f5fe83998a09396ebe6477d9475ba0c-Abstract.html">Li et al., “Federated Optimization in Heterogeneous Networks”</a>.&#160;<a class="footnote-backref" href="#fnref:fedprox" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p><a href="https://proceedings.mlsys.org/paper_files/paper/2020/hash/1f5fe83998a09396ebe6477d9475ba0c-Abstract.html">Li et al., “Federated Optimization in Heterogeneous Networks”</a>.／FedProx 論文。&#160;<a class="footnote-backref" href="#fnref:fedprox" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:fedprox" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 <li id="fn:scaffold">
-<p><a href="https://proceedings.mlr.press/v119/karimireddy20a.html">Karimireddy et al., “SCAFFOLD: Stochastic Controlled Averaging for Federated Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:scaffold" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p><a href="https://proceedings.mlr.press/v119/karimireddy20a.html">Karimireddy et al., “SCAFFOLD: Stochastic Controlled Averaging for Federated Learning”</a>.／SCAFFOLD 論文。&#160;<a class="footnote-backref" href="#fnref:scaffold" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:scaffold" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:dpsgd">
-<p><a href="https://dl.acm.org/doi/10.1145/2976749.2978318">Abadi et al., “Deep Learning with Differential Privacy”</a>.&#160;<a class="footnote-backref" href="#fnref:dpsgd" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p><a href="https://dl.acm.org/doi/10.1145/2976749.2978318">Abadi et al., “Deep Learning with Differential Privacy”</a>.／DP-SGD 論文。&#160;<a class="footnote-backref" href="#fnref:dpsgd" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:dpsgd" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:secagg">
-<p><a href="https://research.google/pubs/practical-secure-aggregation-for-privacy-preserving-machine-learning/">Bonawitz et al., “Practical Secure Aggregation for Privacy-Preserving Machine Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:secagg" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+<p><a href="https://research.google/pubs/practical-secure-aggregation-for-privacy-preserving-machine-learning/">Bonawitz et al., “Practical Secure Aggregation for Privacy-Preserving Machine Learning”</a>.／Secure aggregation 論文。&#160;<a class="footnote-backref" href="#fnref:secagg" title="Jump back to footnote 6 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:secagg" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

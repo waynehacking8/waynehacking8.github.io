@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM — shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.">
+        <meta name="description" content="From naive GEMM to shared-memory tiling and WMMA, with paragraph-by-paragraph Traditional Chinese and comparisons against cuBLAS on the same GPU.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -29,7 +29,7 @@
     
     
       
-        <title>Notes — CUDA Tensor Core GEMM (WMMA) - Wei-Cheng Chiu</title>
+        <title>Naive GEMM to WMMA - Wei-Cheng Chiu</title>
       
     
     
@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.26">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.27">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -81,8 +81,8 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM — shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.">
+  <meta property="og:title" content="Naive GEMM to WMMA — Wei Cheng (Wayne) Chiu">
+  <meta property="og:description" content="From naive GEMM to shared-memory tiling and WMMA, with paragraph-by-paragraph Traditional Chinese and comparisons against cuBLAS on the same GPU.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/wmma-tile.webp">
   <meta property="profile:first_name" content="Wei Cheng">
@@ -91,8 +91,8 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="Notes — CUDA Tensor Core GEMM (WMMA) — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM — shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.">
+  <meta name="twitter:title" content="Naive GEMM to WMMA — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:description" content="From naive GEMM to shared-memory tiling and WMMA, with paragraph-by-paragraph Traditional Chinese and comparisons against cuBLAS on the same GPU.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/wmma-tile.webp">
   
   <meta property="article:tag" content="CUDA"><meta property="article:tag" content="Tensor Cores"><meta property="article:tag" content="Performance">
@@ -163,14 +163,14 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Notes \u2014 CUDA Tensor Core GEMM (WMMA)",
+    "headline": "Naive GEMM to WMMA",
     "url": "https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "en",
+    "inLanguage": ["en", "zh-Hant"],
     "keywords": ["CUDA", "Tensor Cores", "Performance"],
-    "description": "Notes on CUDA matrix multiply from naive to tiled to Tensor Core (WMMA) GEMM \u2014 shared-memory tiling, fragments, and measuring against the cuBLAS ceiling on Hopper and Blackwell.",
+    "description": "From naive GEMM to shared-memory tiling and WMMA, with paragraph-by-paragraph Traditional Chinese and comparisons against cuBLAS on the same GPU.",
     "image": "https://wayne.is-a.dev/assets/blog/wmma-tile.webp",
     "datePublished": "2026-05-31",
     "dateModified": "2026-07-21"
@@ -197,7 +197,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#notes-on-cuda-tensor-core-gemm-wmma" class="md-skip">
+        <a href="#from-naive-gemm-to-wmma-where-each-cuda-kernel-stalls-naive-gemm-wmma-cuda-kernel" class="md-skip">
           Skip to content
         </a>
       
@@ -231,7 +231,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Notes — CUDA Tensor Core GEMM (WMMA)
+              Naive GEMM to WMMA
             
           </span>
         </div>
@@ -526,7 +526,7 @@
   <span class="md-ellipsis">
     
   
-    Inkling 975B architecture
+    Inkling 975B — 5:1 attention
   
 
     
@@ -554,7 +554,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 2.8T architecture
+    Kimi K3 — KDA, AttnRes, MoE
   
 
     
@@ -582,7 +582,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — TensorRT-LLM + Triton serving
+    TensorRT-LLM vs vLLM
   
 
     
@@ -638,7 +638,7 @@
   <span class="md-ellipsis">
     
   
-    RAG groundedness (0% vs 50%)
+    The 0% RAG result failed the harder test
   
 
     
@@ -666,7 +666,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — Federated Learning + DP
+    FedAvg, DP-SGD & secure aggregation
   
 
     
@@ -703,7 +703,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — CUDA Tensor Core GEMM (WMMA)
+    Naive GEMM to WMMA
   
 
     
@@ -721,7 +721,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — CUDA Tensor Core GEMM (WMMA)
+    Naive GEMM to WMMA
   
 
     
@@ -747,10 +747,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-why-gemm-is-the-kernel-that-matters" class="md-nav__link">
+  <a href="#1-gemm-in-a-transformer-forward-passtransformer-forward-pass-gemm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Why GEMM is the kernel that matters
+        1. GEMM in a transformer forward pass｜Transformer forward pass 裡的 GEMM
       
     </span>
   </a>
@@ -758,10 +758,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-naive-gemm-memory-bound-by-construction" class="md-nav__link">
+  <a href="#2-naive-gemm-memory-bound-by-constructionnaive-gemm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Naive GEMM: memory-bound by construction
+        2. Naive GEMM: memory-bound by construction｜Naive GEMM：結構上就受限於記憶體
       
     </span>
   </a>
@@ -769,10 +769,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound" class="md-nav__link">
+  <a href="#3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Tiled GEMM: shared memory turns the problem compute-bound
+        3. Tiled GEMM: reuse through shared memory｜Tiled GEMM：用 shared memory 重複利用資料
       
     </span>
   </a>
@@ -780,10 +780,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-tensor-cores-via-wmma-a-different-compute-unit" class="md-nav__link">
+  <a href="#4-tensor-cores-through-wmma-wmma-tensor-cores" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Tensor Cores via WMMA: a different compute unit
+        4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores
       
     </span>
   </a>
@@ -791,10 +791,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-the-number-that-tells-the-truth-of-cublas" class="md-nav__link">
+  <a href="#5-compare-against-cublas-on-the-same-shape-shape-cublas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. The number that tells the truth: % of cuBLAS
+        5. Compare against cuBLAS on the same shape｜用相同 shape 與 cuBLAS 比較
       
     </span>
   </a>
@@ -802,21 +802,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-why-this-matters-going-to-blackwell" class="md-nav__link">
+  <a href="#6-from-wmma-to-blackwell-tcgen05-wmma-blackwell-tcgen05" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Why this matters going to Blackwell
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
+        6. From WMMA to Blackwell tcgen05｜從 WMMA 走到 Blackwell tcgen05
       
     </span>
   </a>
@@ -950,10 +939,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-why-gemm-is-the-kernel-that-matters" class="md-nav__link">
+  <a href="#1-gemm-in-a-transformer-forward-passtransformer-forward-pass-gemm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Why GEMM is the kernel that matters
+        1. GEMM in a transformer forward pass｜Transformer forward pass 裡的 GEMM
       
     </span>
   </a>
@@ -961,10 +950,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-naive-gemm-memory-bound-by-construction" class="md-nav__link">
+  <a href="#2-naive-gemm-memory-bound-by-constructionnaive-gemm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Naive GEMM: memory-bound by construction
+        2. Naive GEMM: memory-bound by construction｜Naive GEMM：結構上就受限於記憶體
       
     </span>
   </a>
@@ -972,10 +961,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound" class="md-nav__link">
+  <a href="#3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Tiled GEMM: shared memory turns the problem compute-bound
+        3. Tiled GEMM: reuse through shared memory｜Tiled GEMM：用 shared memory 重複利用資料
       
     </span>
   </a>
@@ -983,10 +972,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-tensor-cores-via-wmma-a-different-compute-unit" class="md-nav__link">
+  <a href="#4-tensor-cores-through-wmma-wmma-tensor-cores" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Tensor Cores via WMMA: a different compute unit
+        4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores
       
     </span>
   </a>
@@ -994,10 +983,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-the-number-that-tells-the-truth-of-cublas" class="md-nav__link">
+  <a href="#5-compare-against-cublas-on-the-same-shape-shape-cublas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. The number that tells the truth: % of cuBLAS
+        5. Compare against cuBLAS on the same shape｜用相同 shape 與 cuBLAS 比較
       
     </span>
   </a>
@@ -1005,21 +994,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-why-this-matters-going-to-blackwell" class="md-nav__link">
+  <a href="#6-from-wmma-to-blackwell-tcgen05-wmma-blackwell-tcgen05" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Why this matters going to Blackwell
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
+        6. From WMMA to Blackwell tcgen05｜從 WMMA 走到 Blackwell tcgen05
       
     </span>
   </a>
@@ -1079,31 +1057,27 @@
     
       
     
-      <li><a href="#1-why-gemm-is-the-kernel-that-matters">1. Why GEMM is the kernel that matters</a></li>
+      <li><a href="#1-gemm-in-a-transformer-forward-passtransformer-forward-pass-gemm">1. GEMM in a transformer forward pass｜Transformer forward pass 裡的 GEMM</a></li>
     
   
     
-      <li><a href="#2-naive-gemm-memory-bound-by-construction">2. Naive GEMM: memory-bound by construction</a></li>
+      <li><a href="#2-naive-gemm-memory-bound-by-constructionnaive-gemm">2. Naive GEMM: memory-bound by construction｜Naive GEMM：結構上就受限於記憶體</a></li>
     
   
     
-      <li><a href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound">3. Tiled GEMM: shared memory turns the problem compute-bound</a></li>
+      <li><a href="#3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory">3. Tiled GEMM: reuse through shared memory｜Tiled GEMM：用 shared memory 重複利用資料</a></li>
     
   
     
-      <li><a href="#4-tensor-cores-via-wmma-a-different-compute-unit">4. Tensor Cores via WMMA: a different compute unit</a></li>
+      <li><a href="#4-tensor-cores-through-wmma-wmma-tensor-cores">4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores</a></li>
     
   
     
-      <li><a href="#5-the-number-that-tells-the-truth-of-cublas">5. The number that tells the truth: % of cuBLAS</a></li>
+      <li><a href="#5-compare-against-cublas-on-the-same-shape-shape-cublas">5. Compare against cuBLAS on the same shape｜用相同 shape 與 cuBLAS 比較</a></li>
     
   
     
-      <li><a href="#6-why-this-matters-going-to-blackwell">6. Why this matters going to Blackwell</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#6-from-wmma-to-blackwell-tcgen05-wmma-blackwell-tcgen05">6. From WMMA to Blackwell tcgen05｜從 WMMA 走到 Blackwell tcgen05</a></li>
     
   
     
@@ -1144,7 +1118,7 @@
   </nav>
 </div>
 
-<h1 class="pb-post-title">Notes — CUDA Tensor Core GEMM (WMMA)</h1>
+<h1 class="pb-post-title">Naive GEMM to WMMA</h1>
 
 
 <template class="pb-article-toc-template">
@@ -1155,31 +1129,27 @@
     
       
     
-      <li><a href="#1-why-gemm-is-the-kernel-that-matters">1. Why GEMM is the kernel that matters</a></li>
+      <li><a href="#1-gemm-in-a-transformer-forward-passtransformer-forward-pass-gemm">1. GEMM in a transformer forward pass｜Transformer forward pass 裡的 GEMM</a></li>
     
   
     
-      <li><a href="#2-naive-gemm-memory-bound-by-construction">2. Naive GEMM: memory-bound by construction</a></li>
+      <li><a href="#2-naive-gemm-memory-bound-by-constructionnaive-gemm">2. Naive GEMM: memory-bound by construction｜Naive GEMM：結構上就受限於記憶體</a></li>
     
   
     
-      <li><a href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound">3. Tiled GEMM: shared memory turns the problem compute-bound</a></li>
+      <li><a href="#3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory">3. Tiled GEMM: reuse through shared memory｜Tiled GEMM：用 shared memory 重複利用資料</a></li>
     
   
     
-      <li><a href="#4-tensor-cores-via-wmma-a-different-compute-unit">4. Tensor Cores via WMMA: a different compute unit</a></li>
+      <li><a href="#4-tensor-cores-through-wmma-wmma-tensor-cores">4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores</a></li>
     
   
     
-      <li><a href="#5-the-number-that-tells-the-truth-of-cublas">5. The number that tells the truth: % of cuBLAS</a></li>
+      <li><a href="#5-compare-against-cublas-on-the-same-shape-shape-cublas">5. Compare against cuBLAS on the same shape｜用相同 shape 與 cuBLAS 比較</a></li>
     
   
     
-      <li><a href="#6-why-this-matters-going-to-blackwell">6. Why this matters going to Blackwell</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#6-from-wmma-to-blackwell-tcgen05-wmma-blackwell-tcgen05">6. From WMMA to Blackwell tcgen05｜從 WMMA 走到 Blackwell tcgen05</a></li>
     
   
     
@@ -1194,31 +1164,27 @@
     
       
     
-      <li><a href="#1-why-gemm-is-the-kernel-that-matters">1. Why GEMM is the kernel that matters</a></li>
+      <li><a href="#1-gemm-in-a-transformer-forward-passtransformer-forward-pass-gemm">1. GEMM in a transformer forward pass｜Transformer forward pass 裡的 GEMM</a></li>
     
   
     
-      <li><a href="#2-naive-gemm-memory-bound-by-construction">2. Naive GEMM: memory-bound by construction</a></li>
+      <li><a href="#2-naive-gemm-memory-bound-by-constructionnaive-gemm">2. Naive GEMM: memory-bound by construction｜Naive GEMM：結構上就受限於記憶體</a></li>
     
   
     
-      <li><a href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound">3. Tiled GEMM: shared memory turns the problem compute-bound</a></li>
+      <li><a href="#3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory">3. Tiled GEMM: reuse through shared memory｜Tiled GEMM：用 shared memory 重複利用資料</a></li>
     
   
     
-      <li><a href="#4-tensor-cores-via-wmma-a-different-compute-unit">4. Tensor Cores via WMMA: a different compute unit</a></li>
+      <li><a href="#4-tensor-cores-through-wmma-wmma-tensor-cores">4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores</a></li>
     
   
     
-      <li><a href="#5-the-number-that-tells-the-truth-of-cublas">5. The number that tells the truth: % of cuBLAS</a></li>
+      <li><a href="#5-compare-against-cublas-on-the-same-shape-shape-cublas">5. Compare against cuBLAS on the same shape｜用相同 shape 與 cuBLAS 比較</a></li>
     
   
     
-      <li><a href="#6-why-this-matters-going-to-blackwell">6. Why this matters going to Blackwell</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#6-from-wmma-to-blackwell-tcgen05-wmma-blackwell-tcgen05">6. From WMMA to Blackwell tcgen05｜從 WMMA 走到 Blackwell tcgen05</a></li>
     
   
     
@@ -1231,50 +1197,39 @@
 
 
 
-<h1 id="notes-on-cuda-tensor-core-gemm-wmma">Notes on CUDA Tensor Core GEMM (WMMA)<a class="headerlink" href="#notes-on-cuda-tensor-core-gemm-wmma" title="Permanent link">&para;</a></h1>
-<p><em>2026-05-31 · CUDA / GPU kernels</em></p>
+<h1 id="from-naive-gemm-to-wmma-where-each-cuda-kernel-stalls-naive-gemm-wmma-cuda-kernel">From Naive GEMM to WMMA: Where Each CUDA Kernel Stalls｜從 Naive GEMM 到 WMMA：每個 CUDA kernel 卡在哪裡<a class="headerlink" href="#from-naive-gemm-to-wmma-where-each-cuda-kernel-stalls-naive-gemm-wmma-cuda-kernel" title="Permanent link">&para;</a></h1>
+<p><em>2026-05-31 · updated 2026-07-21 · CUDA / GPU kernels</em></p>
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/wmma-tile.webp" alt="NVIDIA WMMA warp tile 結構圖" loading="eager" decoding="async">
-  <figcaption>WMMA warp-level tile structure · <a href="https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/">Source: NVIDIA Developer</a></figcaption>
+  <figcaption>WMMA warp-level tile structure · WMMA warp-level tile 結構 · <a href="https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/">Source: NVIDIA Developer</a></figcaption>
 </figure>
 
-<p>Working notes on writing a matrix-multiply (GEMM) kernel in CUDA and climbing from a naive
-implementation to <strong>Tensor Cores</strong> via the <strong>WMMA</strong> API — and, just as important, how to know
-how good your kernel actually is by measuring it against the <strong>cuBLAS</strong> ceiling. GEMM is the
-right thing to understand deeply: it is the operation underneath every linear layer and
-attention projection in an LLM.</p>
-<h2 id="1-why-gemm-is-the-kernel-that-matters">1. Why GEMM is the kernel that matters<a class="headerlink" href="#1-why-gemm-is-the-kernel-that-matters" title="Permanent link">&para;</a></h2>
-<p>A transformer forward pass is, to a first approximation, a stack of GEMMs. If you understand
-what makes a GEMM kernel fast on a GPU, you understand where inference latency comes from and
-why Tensor Cores exist. The progression below is the standard pedagogy — each step removes the
-bottleneck the previous one exposed.</p>
-<h2 id="2-naive-gemm-memory-bound-by-construction">2. Naive GEMM: memory-bound by construction<a class="headerlink" href="#2-naive-gemm-memory-bound-by-construction" title="Permanent link">&para;</a></h2>
+<p>This article follows one GEMM through three implementations: one output element per thread, shared-memory tiling, and warp-level WMMA. Each version is compared with cuBLAS on the same GPU. GEMM sits underneath the linear layers and attention projections in an LLM.</p>
+<p class="pb-translation" lang="zh-Hant">這篇文章用三種實作走過同一個 GEMM：每個 thread 計算一個輸出元素、shared-memory tiling，以及 warp-level WMMA。每一版都和同一張 GPU 上的 cuBLAS 比較。LLM 的 linear layers 與 attention projections 底下都會用到 GEMM。</p>
+<h2 id="1-gemm-in-a-transformer-forward-passtransformer-forward-pass-gemm">1. GEMM in a transformer forward pass｜Transformer forward pass 裡的 GEMM<a class="headerlink" href="#1-gemm-in-a-transformer-forward-passtransformer-forward-pass-gemm" title="Permanent link">&para;</a></h2>
+<p>A transformer forward pass contains a stack of matrix multiplications. GEMM performance determines much of the cost of linear projections, while the kernel’s memory traffic, tile shape, and precision decide how closely it approaches the GPU’s compute throughput. The three versions below expose those constraints one at a time.</p>
+<p class="pb-translation" lang="zh-Hant">Transformer forward pass 會執行一連串矩陣乘法。Linear projections 的大部分成本取決於 GEMM，而 kernel 的記憶體流量、tile shape 與 precision，會決定它能多接近 GPU 的 compute throughput。下面三個版本依序把這些限制攤開。</p>
+<h2 id="2-naive-gemm-memory-bound-by-constructionnaive-gemm">2. Naive GEMM: memory-bound by construction｜Naive GEMM：結構上就受限於記憶體<a class="headerlink" href="#2-naive-gemm-memory-bound-by-constructionnaive-gemm" title="Permanent link">&para;</a></h2>
 <p>The textbook kernel assigns one thread per output element <code>C[i][j]</code> and loops over <code>k</code>:</p>
+<p class="pb-translation" lang="zh-Hant">教科書版本會讓每個 thread 負責一個輸出元素 <code>C[i][j]</code>，再沿著 <code>k</code> 迴圈累加：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>C[i][j] = Σ_k A[i][k] * B[k][j]
 </code></pre></div>
-<p>It's correct and it's slow. Every thread re-reads entire rows of <code>A</code> and columns of <code>B</code> from
-<strong>global memory</strong>, so the same values are fetched from DRAM hundreds of times. The kernel is
-<strong>memory-bandwidth-bound</strong> — the arithmetic units sit idle waiting on loads. The arithmetic
-intensity (FLOPs per byte) is far too low to approach peak.</p>
-<h2 id="3-tiled-gemm-shared-memory-turns-the-problem-compute-bound">3. Tiled GEMM: shared memory turns the problem compute-bound<a class="headerlink" href="#3-tiled-gemm-shared-memory-turns-the-problem-compute-bound" title="Permanent link">&para;</a></h2>
-<p>The fix is <strong>shared-memory tiling</strong>. Threads in a block cooperatively load a tile of <code>A</code> and a
-tile of <code>B</code> into fast on-chip <strong>shared memory</strong>, then every thread in the block reuses those
-tiles for its partial sums before loading the next tile:</p>
+<p>It is correct and slow. Every thread re-reads entire rows of <code>A</code> and columns of <code>B</code> from global memory, so the same values are fetched from DRAM hundreds of times. The arithmetic units wait on loads because arithmetic intensity—FLOPs per byte—is too low to approach peak compute.</p>
+<p class="pb-translation" lang="zh-Hant">這個版本正確，但很慢。每個 thread 都會從 global memory 重讀 <code>A</code> 的整列與 <code>B</code> 的整欄，同一批值可能從 DRAM 取回數百次。Arithmetic intensity，也就是每 byte 對應的 FLOPs，低到無法接近 peak compute，運算單元大部分時間都在等資料。</p>
+<h2 id="3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory">3. Tiled GEMM: reuse through shared memory｜Tiled GEMM：用 shared memory 重複利用資料<a class="headerlink" href="#3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory" title="Permanent link">&para;</a></h2>
+<p>Shared-memory tiling changes the data path. Threads in a block cooperatively load a tile of <code>A</code> and <code>B</code> into on-chip shared memory, reuse those values for partial sums, and then advance along <code>k</code>:</p>
+<p class="pb-translation" lang="zh-Hant">Shared-memory tiling 改變資料搬移方式。Block 內的 threads 合作把 <code>A</code> 與 <code>B</code> 的 tile 搬進晶片上的 shared memory，重複使用這些值計算 partial sums，再沿著 <code>k</code> 前進：</p>
 <ol>
-<li>Load a <code>TILE × TILE</code> block of <code>A</code> and of <code>B</code> into shared memory (coalesced).</li>
-<li><code>__syncthreads()</code>.</li>
-<li>Each thread accumulates its <code>C</code> partial product from the shared tiles.</li>
-<li><code>__syncthreads()</code>, advance to the next tile along <code>k</code>.</li>
+<li>Load a <code>TILE × TILE</code> block of <code>A</code> and <code>B</code> into shared memory with coalesced accesses.<br><span class="pb-inline-translation" lang="zh-Hant">用 coalesced accesses 把 <code>A</code> 與 <code>B</code> 的 <code>TILE × TILE</code> 區塊載入 shared memory。</span></li>
+<li>Call <code>__syncthreads()</code>.<br><span class="pb-inline-translation" lang="zh-Hant">呼叫 <code>__syncthreads()</code>。</span></li>
+<li>Accumulate each thread’s partial product from the shared tiles.<br><span class="pb-inline-translation" lang="zh-Hant">每個 thread 從 shared tiles 累加自己的 partial product。</span></li>
+<li>Synchronize again and load the next tile along <code>k</code>.<br><span class="pb-inline-translation" lang="zh-Hant">再次同步，再載入 <code>k</code> 方向的下一個 tile。</span></li>
 </ol>
-<p>This raises arithmetic intensity by a factor of <code>TILE</code>: each value loaded from global memory is
-now reused <code>TILE</code> times. The kernel crosses from memory-bound toward <strong>compute-bound</strong> — now
-the FP32 ALUs are the limit. This is the single biggest jump, and it's pure data-movement
-strategy, not math.</p>
-<h2 id="4-tensor-cores-via-wmma-a-different-compute-unit">4. Tensor Cores via WMMA: a different compute unit<a class="headerlink" href="#4-tensor-cores-via-wmma-a-different-compute-unit" title="Permanent link">&para;</a></h2>
-<p>Tiling saturates the <em>CUDA cores</em>. Tensor Cores are a <strong>separate</strong> unit that does a small
-matrix-multiply-accumulate (MMA) in one instruction — e.g. a 16×16×16 <code>D = A·B + C</code> per warp,
-on half-precision inputs with FP32 accumulation. The <strong>WMMA</strong> (Warp Matrix Multiply-Accumulate)
-API exposes them in CUDA C++:</p>
+<p>Tiling increases reuse before another global-memory load. Whether the kernel becomes compute-bound depends on tile size, occupancy, layout, and matrix shape; tiling alone does not guarantee that transition.</p>
+<p class="pb-translation" lang="zh-Hant">Tiling 讓資料在下一次 global-memory load 前被重複使用。Kernel 是否會轉成 compute-bound，仍取決於 tile size、occupancy、layout 與 matrix shape；光是加入 tiling 並不保證完成這個轉換。</p>
+<h2 id="4-tensor-cores-through-wmma-wmma-tensor-cores">4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores<a class="headerlink" href="#4-tensor-cores-through-wmma-wmma-tensor-cores" title="Permanent link">&para;</a></h2>
+<p>Tiling can saturate CUDA cores. Tensor Cores are a separate execution unit for matrix-multiply-accumulate instructions—for example, a 16×16×16 <code>D = A·B + C</code> operation per warp with half-precision inputs and FP32 accumulation. CUDA C++ exposes this path through the WMMA (Warp Matrix Multiply-Accumulate) API:</p>
+<p class="pb-translation" lang="zh-Hant">Tiling 可以讓 CUDA cores 飽和。Tensor Cores 是另一組執行單元，負責 matrix-multiply-accumulate 指令；例如每個 warp 執行一次 16×16×16 的 <code>D = A·B + C</code>，輸入使用 half precision，累加則使用 FP32。CUDA C++ 透過 WMMA（Warp Matrix Multiply-Accumulate）API 暴露這條路徑：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcuda</span><span class="o">::</span><span class="nn">wmma</span><span class="p">;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">fragment</span><span class="o">&lt;</span><span class="n">matrix_a</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="n">half</span><span class="p">,</span><span class="w"> </span><span class="n">row_major</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a_frag</span><span class="p">;</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">fragment</span><span class="o">&lt;</span><span class="n">matrix_b</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="n">half</span><span class="p">,</span><span class="w"> </span><span class="n">col_major</span><span class="o">&gt;</span><span class="w"> </span><span class="n">b_frag</span><span class="p">;</span>
@@ -1288,69 +1243,54 @@ API exposes them in CUDA C++:</p>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">store_matrix_sync</span><span class="p">(</span><span class="n">C</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">c_frag</span><span class="p">,</span><span class="w"> </span><span class="n">ldc</span><span class="p">,</span><span class="w"> </span><span class="n">mem_row_major</span><span class="p">);</span>
 </code></pre></div>
-<p>The supported fragment shapes, layouts, and precision combinations are architecture-specific;
-the CUDA Programming Guide is the source of truth rather than this deliberately simplified
-kernel.<sup id="fnref:cuda-guide"><a class="footnote-ref" href="#fn:cuda-guide">1</a></sup></p>
-<p>The mental model shifts from "threads computing elements" to "<strong>warps cooperating on
-fragments</strong>." A <code>fragment</code> is an opaque, register-resident tile; you don't index its elements,
-you feed whole fragments to <code>mma_sync</code>. Inputs are FP16/BF16 (or FP8/FP4 on newer
-architectures), accumulation is FP32 — which is why mixed precision is the native language of
-Tensor Cores.</p>
-<h2 id="5-the-number-that-tells-the-truth-of-cublas">5. The number that tells the truth: % of cuBLAS<a class="headerlink" href="#5-the-number-that-tells-the-truth-of-cublas" title="Permanent link">&para;</a></h2>
-<p>A hand-written WMMA kernel will beat your tiled kernel, but it will <strong>not</strong> beat cuBLAS — and
-that's the point. cuBLAS is the practical ceiling (it does register-tiling, double-buffering,
-swizzled layouts, and architecture-specific tuning you won't replicate in an afternoon). So the
-honest metric isn't raw TFLOP/s, it's <strong>percent of the cuBLAS ceiling on the same GPU</strong>:</p>
+<p>Supported fragment shapes, layouts, and precision combinations depend on the GPU architecture. The CUDA Programming Guide, rather than this shortened kernel, defines the exact requirements.<sup id="fnref:cuda-guide"><a class="footnote-ref" href="#fn:cuda-guide">1</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">支援的 fragment shapes、layouts 與 precision combinations 會隨 GPU 架構改變。上面的 kernel 刻意省略細節，精確限制仍以 CUDA Programming Guide 為準。<sup id="fnref2:cuda-guide"><a class="footnote-ref" href="#fn:cuda-guide">1</a></sup></p>
+<p>WMMA assigns each fragment to a warp. The API exposes fragment load, MMA, and store operations rather than a stable per-thread element mapping. Inputs may use FP16 or BF16—and FP8 or FP4 on newer architectures—while accumulation commonly uses FP32.</p>
+<p class="pb-translation" lang="zh-Hant">WMMA 以 warp 為單位分配 fragment。API 暴露的是 fragment load、MMA 與 store，不提供穩定的 per-thread element mapping。輸入可用 FP16 或 BF16；較新的架構也支援 FP8 或 FP4，而 accumulation 通常使用 FP32。</p>
+<h2 id="5-compare-against-cublas-on-the-same-shape-shape-cublas">5. Compare against cuBLAS on the same shape｜用相同 shape 與 cuBLAS 比較<a class="headerlink" href="#5-compare-against-cublas-on-the-same-shape-shape-cublas" title="Permanent link">&para;</a></h2>
+<p>cuBLAS is the production baseline, not a universal upper bound for every shape. It uses register tiling, double buffering, swizzled layouts, and architecture-specific tuning. A specialized hand-written kernel can exceed a selected cuBLAS path on some shapes, so report both absolute throughput and the ratio to cuBLAS under matched conditions.</p>
+<p class="pb-translation" lang="zh-Hant">cuBLAS 是 production baseline，不是所有 shape 的絕對上限。它使用 register tiling、double buffering、swizzled layouts 與架構專屬調校；針對特定 shape 的手寫 kernel 仍可能超過某條 cuBLAS path。因此，應在條件一致時同時回報絕對吞吐量與相對 cuBLAS 比值。</p>
 <table>
 <thead>
 <tr>
-<th>Kernel</th>
-<th>Typical regime</th>
+<th>Kernel／核心</th>
+<th>Typical regime／典型狀態</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Naive</td>
-<td>a few % of peak — memory-bound</td>
+<td>A few percent of peak; memory-bound／僅達 peak 的少數百分比，受限於記憶體</td>
 </tr>
 <tr>
-<td>Tiled (shared memory)</td>
-<td>much better, still CUDA-core bound</td>
+<td>Tiled (shared memory)／Tiled（shared memory）</td>
+<td>Higher reuse; often still CUDA-core bound／重複利用率較高，通常仍受 CUDA core 限制</td>
 </tr>
 <tr>
-<td>WMMA (Tensor Core)</td>
-<td>a meaningful fraction of cuBLAS</td>
+<td>WMMA (Tensor Core)／WMMA（Tensor Core）</td>
+<td>A meaningful fraction of the matched cuBLAS result／可達相同條件 cuBLAS 結果的一定比例</td>
 </tr>
 <tr>
 <td>cuBLAS</td>
-<td>the ceiling (100%)</td>
+<td>Production baseline for the selected shape and algorithm (100%)／指定 shape 與 algorithm 的 production baseline（100%）</td>
 </tr>
 </tbody>
 </table>
-<p>Reporting "X % of cuBLAS on sm_90 and sm_120" is a self-describing result: it's reproducible,
-it normalises across GPUs, and it's honest about the gap to a production library. Profiling the
-WMMA kernel with <strong>Nsight Compute</strong> then tells you <em>which</em> wall you're against — memory
-throughput, Tensor Core utilisation, or occupancy.</p>
-<h2 id="6-why-this-matters-going-to-blackwell">6. Why this matters going to Blackwell<a class="headerlink" href="#6-why-this-matters-going-to-blackwell" title="Permanent link">&para;</a></h2>
-<p>Each GPU generation widens what the MMA unit accepts: Hopper added FP8, <strong>Blackwell</strong> adds
-<strong>FP4</strong> and a new generation of Tensor Core instructions (<code>tcgen05</code>). The WMMA mental model —
-fragments fed to an MMA, FP32 accumulation — carries forward; what changes is the input
-precision and the tile shapes. Understanding the FP16 WMMA path is the on-ramp to reasoning
-about NVFP4 inference on Blackwell.<sup id="fnref:blackwell"><a class="footnote-ref" href="#fn:blackwell">2</a></sup></p>
-<h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
-<p>GEMM performance is a ladder: naive is memory-bound, <strong>shared-memory tiling</strong> makes it
-compute-bound, and <strong>WMMA</strong> moves the compute onto Tensor Cores with mixed precision. Measure
-every rung as <strong>% of cuBLAS</strong> on the same GPU — that's the metric that's honest about how close
-you are to the ceiling and portable across Hopper and Blackwell.</p>
-<p>→ More field notes on the NVIDIA stack: <a href="https://wayne.is-a.dev/">wayne.is-a.dev</a></p>
+<p>A reproducible result needs the GPU, matrix shape, precision, warm-up, timing method, cuBLAS algorithm, and measured TFLOP/s. The cuBLAS ratio belongs beside those values; results reported for <code>sm_90</code> and <code>sm_120</code> must remain separate. Nsight Compute can then identify whether the remaining limit is memory throughput, Tensor Core utilization, or occupancy.</p>
+<p class="pb-translation" lang="zh-Hant">可重現的結果要附上 GPU、matrix shape、precision、warm-up、timing method、cuBLAS algorithm 與實測 TFLOP/s，再把 cuBLAS ratio 放在這些數值旁；<code>sm_90</code> 與 <code>sm_120</code> 的結果也必須分開回報。接著可用 Nsight Compute 判斷剩餘限制來自 memory throughput、Tensor Core utilization 或 occupancy。</p>
+<h2 id="6-from-wmma-to-blackwell-tcgen05-wmma-blackwell-tcgen05">6. From WMMA to Blackwell <code>tcgen05</code>｜從 WMMA 走到 Blackwell <code>tcgen05</code><a class="headerlink" href="#6-from-wmma-to-blackwell-tcgen05-wmma-blackwell-tcgen05" title="Permanent link">&para;</a></h2>
+<p>Each GPU generation changes the precision and tile shapes accepted by the MMA unit. Hopper added FP8; Blackwell adds FP4 and a new Tensor Core instruction generation, <code>tcgen05</code>. The warp-level WMMA path remains useful background, but Blackwell kernels use different data movement and instruction interfaces.<sup id="fnref:blackwell"><a class="footnote-ref" href="#fn:blackwell">2</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">每一代 GPU 都會改變 MMA unit 可接受的 precision 與 tile shapes。Hopper 加入 FP8；Blackwell 則加入 FP4 與新一代 Tensor Core 指令 <code>tcgen05</code>。Warp-level WMMA 仍是有用的背景知識，但 Blackwell kernel 使用的資料搬移與指令介面已經不同。<sup id="fnref2:blackwell"><a class="footnote-ref" href="#fn:blackwell">2</a></sup></p>
+<p>→ More field notes on the NVIDIA stack:<br><span class="pb-inline-translation" lang="zh-Hant">更多 NVIDIA stack 實作筆記：</span>
+<a href="https://wayne.is-a.dev/">wayne.is-a.dev</a></p>
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:cuda-guide">
-<p><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions">CUDA C++ Programming Guide — Warp Matrix Functions</a>, NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.&#160;<a class="footnote-backref" href="#fnref:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions">CUDA C++ Programming Guide — Warp Matrix Functions</a>, NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.／NVIDIA 對 WMMA fragments、layouts 與同步需求的規格。&#160;<a class="footnote-backref" href="#fnref:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:blackwell">
-<p><a href="https://resources.nvidia.com/en-us-blackwell-architecture">NVIDIA Blackwell Architecture Technical Brief</a>, used for the generation-level Tensor Core and low-precision capability summary.&#160;<a class="footnote-backref" href="#fnref:blackwell" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p><a href="https://resources.nvidia.com/en-us-blackwell-architecture">NVIDIA Blackwell Architecture Technical Brief</a>, used for the generation-level Tensor Core and low-precision capability summary.／本文 Tensor Core 世代差異與低精度能力的來源。&#160;<a class="footnote-backref" href="#fnref:blackwell" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:blackwell" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

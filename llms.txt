@@ -11,8 +11,8 @@
 Specialties: applied LLM systems on DGX-class hardware; the NVIDIA inference and
 multi-GPU stack (TensorRT-LLM, Triton, NIM, NCCL, CUDA Tensor Cores); and
 privacy-preserving ML (federated learning, differential privacy, secure multi-party
-computation). The technical notes below are measured, reproducible, and honest about
-trade-offs — each one links the public benchmark/code repository behind it.
+computation). The technical notes below report measurements and trade-offs directly;
+each one links the public benchmark/code repository behind it.
 
 ## Profile
 
@@ -22,18 +22,18 @@ trade-offs — each one links the public benchmark/code repository behind it.
 
 ## Technical notes (blog)
 
-- [Where tensor-parallel inference hits the NVLink wall](https://wayne.is-a.dev/blog/nccl-nvlink-bandwidth/): NCCL all-reduce on 4× H100 measured at 366 GB/s busbw (77% of the NVLink budget); why decode is latency-bound, not bandwidth-bound, and where the TP latency wall is.
-- [Notes on serving LLMs with TensorRT-LLM and Triton](https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/): matched-work benchmark vs vLLM on 4× H100 — TensorRT-LLM + CUDA graphs win at low/mid concurrency, vLLM wins at high concurrency, with the crossover point.
-- [0% vs 40%: making a RAG agent refuse to hallucinate](https://wayne.is-a.dev/blog/rag-groundedness-guardrail/): a guarded prompt + groundedness validate step drops out-of-corpus hallucination from ~40% to 0% while keeping in-corpus recall@3 at 100%; why an eval harness is the only way to see the gap.
-- [Notes on federated learning and differential privacy](https://wayne.is-a.dev/blog/notes-federated-learning-dp/): from-scratch FedAvg / FedProx / SCAFFOLD with DP-SGD and secure aggregation, plus honest negative results on Non-IID data.
-- [Notes on CUDA Tensor Core GEMM (WMMA)](https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/): programming the Tensor Cores directly with the WMMA API, and what it teaches about GEMM performance.
+- [Where tensor-parallel inference hits the NVLink wall](https://wayne.is-a.dev/blog/nccl-nvlink-bandwidth/): bilingual English/Traditional Chinese measurements of 366 GB/s busbw and a roughly 23 μs small-message floor on 4× H100.
+- [TensorRT-LLM vs vLLM on 4×H100: The Concurrency Crossover](https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/): bilingual matched-work benchmark where TensorRT-LLM + CUDA Graphs lead at low/mid concurrency and vLLM leads at high concurrency.
+- [The 0% RAG result failed the harder test](https://wayne.is-a.dev/blog/rag-groundedness-guardrail/): bilingual N=200 adversarial rerun where the guarded generator hallucinated on 48/100 unanswerable questions; grounded verification catches errors generative judges miss.
+- [FedAvg Under Non-IID Data: What DP-SGD and Secure Aggregation Protect](https://wayne.is-a.dev/blog/notes-federated-learning-dp/): bilingual implementations of FedAvg, FedProx, SCAFFOLD, DP-SGD, and secure aggregation, including measured Non-IID limits.
+- [From Naive GEMM to WMMA: Where Each CUDA Kernel Stalls](https://wayne.is-a.dev/blog/notes-cuda-tensor-core-gemm/): bilingual English/Traditional Chinese notes on shared-memory tiling, WMMA, and matched-shape comparisons with cuBLAS.
 
 ## Public repositories
 
 - [nccl-collectives-bench](https://github.com/waynehacking8/nccl-collectives-bench): NCCL collective benchmarks (all-reduce / all-gather / reduce-scatter) on 4× H100 NVLink, with an analytical roofline that back-validates the measurements.
 - [trtllm-triton-serving](https://github.com/waynehacking8/trtllm-triton-serving): production-style LLM serving on TensorRT-LLM tensor-parallel across 4× H100, benchmarked head-to-head against vLLM with controlled methodology, plus a Triton deployment template.
 - [nim-agent-blueprint](https://github.com/waynehacking8/nim-agent-blueprint): agentic RAG reference architecture on NVIDIA NIM microservices with a plan→retrieve→validate loop and an eval + OpenTelemetry observability harness.
-- [federated-learning-lab](https://github.com/waynehacking8/federated-learning-lab): from-scratch federated learning with DP and secure aggregation, 33/33 tests, literature-cross-validated, with honest Non-IID results.
+- [federated-learning-lab](https://github.com/waynehacking8/federated-learning-lab): from-scratch federated learning with DP and secure aggregation, 33/33 tests, literature-cross-validated, including measured Non-IID limits.
 
 ## Contact
 

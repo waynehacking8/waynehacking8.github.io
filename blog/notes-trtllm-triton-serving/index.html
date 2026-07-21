@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover.">
+        <meta name="description" content="TensorRT-LLM vs vLLM on 4x H100, with paragraph-by-paragraph Traditional Chinese and the measured low/mid- versus high-concurrency crossover.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -29,7 +29,7 @@
     
     
       
-        <title>Notes — TensorRT-LLM + Triton serving - Wei-Cheng Chiu</title>
+        <title>TensorRT-LLM vs vLLM - Wei-Cheng Chiu</title>
       
     
     
@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.26">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260721.27">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -81,8 +81,8 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover.">
+  <meta property="og:title" content="TensorRT-LLM vs vLLM — Wei Cheng (Wayne) Chiu">
+  <meta property="og:description" content="TensorRT-LLM vs vLLM on 4x H100, with paragraph-by-paragraph Traditional Chinese and the measured low/mid- versus high-concurrency crossover.">
   <meta property="og:url" content="https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/trtllm-triton.webp">
   <meta property="profile:first_name" content="Wei Cheng">
@@ -91,8 +91,8 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="Notes — TensorRT-LLM + Triton serving — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM — including the measured low/mid vs high concurrency crossover.">
+  <meta name="twitter:title" content="TensorRT-LLM vs vLLM — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:description" content="TensorRT-LLM vs vLLM on 4x H100, with paragraph-by-paragraph Traditional Chinese and the measured low/mid- versus high-concurrency crossover.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/trtllm-triton.webp">
   
   <meta property="article:tag" content="Serving"><meta property="article:tag" content="TensorRT-LLM"><meta property="article:tag" content="Triton">
@@ -163,14 +163,14 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Notes \u2014 TensorRT-LLM + Triton serving",
+    "headline": "TensorRT-LLM vs vLLM",
     "url": "https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/notes-trtllm-triton-serving/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "en",
+    "inLanguage": ["en", "zh-Hant"],
     "keywords": ["Serving", "TensorRT-LLM", "Triton"],
-    "description": "Taking an LLM from a Hugging Face checkpoint to a production TensorRT-LLM + Triton endpoint on 4x H100, benchmarked against vLLM \u2014 including the measured low/mid vs high concurrency crossover.",
+    "description": "TensorRT-LLM vs vLLM on 4x H100, with paragraph-by-paragraph Traditional Chinese and the measured low/mid- versus high-concurrency crossover.",
     "image": "https://wayne.is-a.dev/assets/blog/trtllm-triton.webp",
     "datePublished": "2026-05-31",
     "dateModified": "2026-07-21"
@@ -197,7 +197,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#notes-on-serving-llms-with-tensorrt-llm-and-triton" class="md-skip">
+        <a href="#tensorrt-llm-vs-vllm-on-4h100-the-concurrency-crossover4h100-tensorrt-llm-vllmconcurrency-crossover" class="md-skip">
           Skip to content
         </a>
       
@@ -231,7 +231,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Notes — TensorRT-LLM + Triton serving
+              TensorRT-LLM vs vLLM
             
           </span>
         </div>
@@ -526,7 +526,7 @@
   <span class="md-ellipsis">
     
   
-    Inkling 975B architecture
+    Inkling 975B — 5:1 attention
   
 
     
@@ -554,7 +554,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 2.8T architecture
+    Kimi K3 — KDA, AttnRes, MoE
   
 
     
@@ -591,7 +591,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — TensorRT-LLM + Triton serving
+    TensorRT-LLM vs vLLM
   
 
     
@@ -609,7 +609,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — TensorRT-LLM + Triton serving
+    TensorRT-LLM vs vLLM
   
 
     
@@ -635,10 +635,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-the-serving-pipeline" class="md-nav__link">
+  <a href="#1-the-serving-pipelineserving-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. The serving pipeline
+        1. The serving pipeline｜Serving pipeline
       
     </span>
   </a>
@@ -646,10 +646,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-tensor-parallelism-tp" class="md-nav__link">
+  <a href="#2-tensor-parallelism-tptensor-parallelismtp" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Tensor parallelism (TP)
+        2. Tensor parallelism (TP)｜Tensor parallelism（TP）
       
     </span>
   </a>
@@ -657,10 +657,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-precision-fp16-vs-fp8" class="md-nav__link">
+  <a href="#3-precision-fp16-vs-fp8precisionfp16-fp8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Precision: FP16 vs FP8
+        3. Precision: FP16 vs FP8｜Precision：FP16 與 FP8
       
     </span>
   </a>
@@ -668,10 +668,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-the-batching-policy-that-actually-matters" class="md-nav__link">
+  <a href="#4-continuous-batching-and-paged-kv-cachecontinuous-batching-paged-kv-cache" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. The batching policy that actually matters
+        4. Continuous batching and paged KV cache｜Continuous batching 與 paged KV cache
       
     </span>
   </a>
@@ -679,10 +679,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-the-benchmark-trap-comparing-the-same-work" class="md-nav__link">
+  <a href="#5-match-the-generated-work-stack" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. The benchmark trap: comparing the same work
+        5. Match the generated work｜讓兩套 stack 生成相同工作量
       
     </span>
   </a>
@@ -690,10 +690,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-triton-as-the-production-surface" class="md-nav__link">
+  <a href="#6-triton-as-the-deployment-surface-triton" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Triton as the production surface
+        6. Triton as the deployment surface｜以 Triton 作為部署介面
       
     </span>
   </a>
@@ -701,21 +701,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-when-does-tensorrt-llm-win-the-measured-answer" class="md-nav__link">
+  <a href="#7-measured-crossover-on-4h1004h100-crossover" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. When does TensorRT-LLM win? (the measured answer)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
+        7. Measured crossover on 4×H100｜4×H100 上的實測 crossover
       
     </span>
   </a>
@@ -773,7 +762,7 @@
   <span class="md-ellipsis">
     
   
-    RAG groundedness (0% vs 50%)
+    The 0% RAG result failed the harder test
   
 
     
@@ -801,7 +790,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — Federated Learning + DP
+    FedAvg, DP-SGD & secure aggregation
   
 
     
@@ -829,7 +818,7 @@
   <span class="md-ellipsis">
     
   
-    Notes — CUDA Tensor Core GEMM (WMMA)
+    Naive GEMM to WMMA
   
 
     
@@ -961,10 +950,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-the-serving-pipeline" class="md-nav__link">
+  <a href="#1-the-serving-pipelineserving-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. The serving pipeline
+        1. The serving pipeline｜Serving pipeline
       
     </span>
   </a>
@@ -972,10 +961,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-tensor-parallelism-tp" class="md-nav__link">
+  <a href="#2-tensor-parallelism-tptensor-parallelismtp" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Tensor parallelism (TP)
+        2. Tensor parallelism (TP)｜Tensor parallelism（TP）
       
     </span>
   </a>
@@ -983,10 +972,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-precision-fp16-vs-fp8" class="md-nav__link">
+  <a href="#3-precision-fp16-vs-fp8precisionfp16-fp8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Precision: FP16 vs FP8
+        3. Precision: FP16 vs FP8｜Precision：FP16 與 FP8
       
     </span>
   </a>
@@ -994,10 +983,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-the-batching-policy-that-actually-matters" class="md-nav__link">
+  <a href="#4-continuous-batching-and-paged-kv-cachecontinuous-batching-paged-kv-cache" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. The batching policy that actually matters
+        4. Continuous batching and paged KV cache｜Continuous batching 與 paged KV cache
       
     </span>
   </a>
@@ -1005,10 +994,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-the-benchmark-trap-comparing-the-same-work" class="md-nav__link">
+  <a href="#5-match-the-generated-work-stack" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. The benchmark trap: comparing the same work
+        5. Match the generated work｜讓兩套 stack 生成相同工作量
       
     </span>
   </a>
@@ -1016,10 +1005,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-triton-as-the-production-surface" class="md-nav__link">
+  <a href="#6-triton-as-the-deployment-surface-triton" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Triton as the production surface
+        6. Triton as the deployment surface｜以 Triton 作為部署介面
       
     </span>
   </a>
@@ -1027,21 +1016,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-when-does-tensorrt-llm-win-the-measured-answer" class="md-nav__link">
+  <a href="#7-measured-crossover-on-4h1004h100-crossover" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. When does TensorRT-LLM win? (the measured answer)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Takeaway
+        7. Measured crossover on 4×H100｜4×H100 上的實測 crossover
       
     </span>
   </a>
@@ -1101,35 +1079,31 @@
     
       
     
-      <li><a href="#1-the-serving-pipeline">1. The serving pipeline</a></li>
+      <li><a href="#1-the-serving-pipelineserving-pipeline">1. The serving pipeline｜Serving pipeline</a></li>
     
   
     
-      <li><a href="#2-tensor-parallelism-tp">2. Tensor parallelism (TP)</a></li>
+      <li><a href="#2-tensor-parallelism-tptensor-parallelismtp">2. Tensor parallelism (TP)｜Tensor parallelism（TP）</a></li>
     
   
     
-      <li><a href="#3-precision-fp16-vs-fp8">3. Precision: FP16 vs FP8</a></li>
+      <li><a href="#3-precision-fp16-vs-fp8precisionfp16-fp8">3. Precision: FP16 vs FP8｜Precision：FP16 與 FP8</a></li>
     
   
     
-      <li><a href="#4-the-batching-policy-that-actually-matters">4. The batching policy that actually matters</a></li>
+      <li><a href="#4-continuous-batching-and-paged-kv-cachecontinuous-batching-paged-kv-cache">4. Continuous batching and paged KV cache｜Continuous batching 與 paged KV cache</a></li>
     
   
     
-      <li><a href="#5-the-benchmark-trap-comparing-the-same-work">5. The benchmark trap: comparing the same work</a></li>
+      <li><a href="#5-match-the-generated-work-stack">5. Match the generated work｜讓兩套 stack 生成相同工作量</a></li>
     
   
     
-      <li><a href="#6-triton-as-the-production-surface">6. Triton as the production surface</a></li>
+      <li><a href="#6-triton-as-the-deployment-surface-triton">6. Triton as the deployment surface｜以 Triton 作為部署介面</a></li>
     
   
     
-      <li><a href="#7-when-does-tensorrt-llm-win-the-measured-answer">7. When does TensorRT-LLM win? (the measured answer)</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#7-measured-crossover-on-4h1004h100-crossover">7. Measured crossover on 4×H100｜4×H100 上的實測 crossover</a></li>
     
   
     
@@ -1170,7 +1144,7 @@
   </nav>
 </div>
 
-<h1 class="pb-post-title">Notes — TensorRT-LLM + Triton serving</h1>
+<h1 class="pb-post-title">TensorRT-LLM vs vLLM</h1>
 
 
 <template class="pb-article-toc-template">
@@ -1181,35 +1155,31 @@
     
       
     
-      <li><a href="#1-the-serving-pipeline">1. The serving pipeline</a></li>
+      <li><a href="#1-the-serving-pipelineserving-pipeline">1. The serving pipeline｜Serving pipeline</a></li>
     
   
     
-      <li><a href="#2-tensor-parallelism-tp">2. Tensor parallelism (TP)</a></li>
+      <li><a href="#2-tensor-parallelism-tptensor-parallelismtp">2. Tensor parallelism (TP)｜Tensor parallelism（TP）</a></li>
     
   
     
-      <li><a href="#3-precision-fp16-vs-fp8">3. Precision: FP16 vs FP8</a></li>
+      <li><a href="#3-precision-fp16-vs-fp8precisionfp16-fp8">3. Precision: FP16 vs FP8｜Precision：FP16 與 FP8</a></li>
     
   
     
-      <li><a href="#4-the-batching-policy-that-actually-matters">4. The batching policy that actually matters</a></li>
+      <li><a href="#4-continuous-batching-and-paged-kv-cachecontinuous-batching-paged-kv-cache">4. Continuous batching and paged KV cache｜Continuous batching 與 paged KV cache</a></li>
     
   
     
-      <li><a href="#5-the-benchmark-trap-comparing-the-same-work">5. The benchmark trap: comparing the same work</a></li>
+      <li><a href="#5-match-the-generated-work-stack">5. Match the generated work｜讓兩套 stack 生成相同工作量</a></li>
     
   
     
-      <li><a href="#6-triton-as-the-production-surface">6. Triton as the production surface</a></li>
+      <li><a href="#6-triton-as-the-deployment-surface-triton">6. Triton as the deployment surface｜以 Triton 作為部署介面</a></li>
     
   
     
-      <li><a href="#7-when-does-tensorrt-llm-win-the-measured-answer">7. When does TensorRT-LLM win? (the measured answer)</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#7-measured-crossover-on-4h1004h100-crossover">7. Measured crossover on 4×H100｜4×H100 上的實測 crossover</a></li>
     
   
     
@@ -1224,35 +1194,31 @@
     
       
     
-      <li><a href="#1-the-serving-pipeline">1. The serving pipeline</a></li>
+      <li><a href="#1-the-serving-pipelineserving-pipeline">1. The serving pipeline｜Serving pipeline</a></li>
     
   
     
-      <li><a href="#2-tensor-parallelism-tp">2. Tensor parallelism (TP)</a></li>
+      <li><a href="#2-tensor-parallelism-tptensor-parallelismtp">2. Tensor parallelism (TP)｜Tensor parallelism（TP）</a></li>
     
   
     
-      <li><a href="#3-precision-fp16-vs-fp8">3. Precision: FP16 vs FP8</a></li>
+      <li><a href="#3-precision-fp16-vs-fp8precisionfp16-fp8">3. Precision: FP16 vs FP8｜Precision：FP16 與 FP8</a></li>
     
   
     
-      <li><a href="#4-the-batching-policy-that-actually-matters">4. The batching policy that actually matters</a></li>
+      <li><a href="#4-continuous-batching-and-paged-kv-cachecontinuous-batching-paged-kv-cache">4. Continuous batching and paged KV cache｜Continuous batching 與 paged KV cache</a></li>
     
   
     
-      <li><a href="#5-the-benchmark-trap-comparing-the-same-work">5. The benchmark trap: comparing the same work</a></li>
+      <li><a href="#5-match-the-generated-work-stack">5. Match the generated work｜讓兩套 stack 生成相同工作量</a></li>
     
   
     
-      <li><a href="#6-triton-as-the-production-surface">6. Triton as the production surface</a></li>
+      <li><a href="#6-triton-as-the-deployment-surface-triton">6. Triton as the deployment surface｜以 Triton 作為部署介面</a></li>
     
   
     
-      <li><a href="#7-when-does-tensorrt-llm-win-the-measured-answer">7. When does TensorRT-LLM win? (the measured answer)</a></li>
-    
-  
-    
-      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#7-measured-crossover-on-4h1004h100-crossover">7. Measured crossover on 4×H100｜4×H100 上的實測 crossover</a></li>
     
   
     
@@ -1265,151 +1231,114 @@
 
 
 
-<h1 id="notes-on-serving-llms-with-tensorrt-llm-and-triton">Notes on Serving LLMs with TensorRT-LLM and Triton<a class="headerlink" href="#notes-on-serving-llms-with-tensorrt-llm-and-triton" title="Permanent link">&para;</a></h1>
-<p><em>2026-05-31 · LLM serving / NVIDIA stack</em></p>
+<h1 id="tensorrt-llm-vs-vllm-on-4h100-the-concurrency-crossover4h100-tensorrt-llm-vllmconcurrency-crossover">TensorRT-LLM vs vLLM on 4×H100: The Concurrency Crossover｜4×H100 上的 TensorRT-LLM 與 vLLM：Concurrency crossover<a class="headerlink" href="#tensorrt-llm-vs-vllm-on-4h100-the-concurrency-crossover4h100-tensorrt-llm-vllmconcurrency-crossover" title="Permanent link">&para;</a></h1>
+<p><em>2026-05-31 · updated 2026-07-21 · LLM serving / NVIDIA stack</em></p>
 <figure class="pb-article-hero">
   <img src="/assets/blog/trtllm-triton.webp" alt="NVIDIA TensorRT-LLM 與 Triton 推論服務架構視覺" loading="eager" decoding="async">
-  <figcaption>TensorRT-LLM production serving · <a href="https://developer.nvidia.com/blog/scaling-llms-with-nvidia-triton-and-nvidia-tensorrt-llm-using-kubernetes/">Source: NVIDIA Developer</a></figcaption>
+  <figcaption>TensorRT-LLM production serving · TensorRT-LLM production serving 架構 · <a href="https://developer.nvidia.com/blog/scaling-llms-with-nvidia-triton-and-nvidia-tensorrt-llm-using-kubernetes/">Source: NVIDIA Developer</a></figcaption>
 </figure>
 
-<p>These are working notes on taking an open-weights LLM from a Hugging Face checkpoint to a
-production-style serving endpoint on the NVIDIA stack — <strong>TensorRT-LLM</strong> for the engine,
-<strong>Triton Inference Server</strong> for the deployment surface — and benchmarking it honestly against
-<strong>vLLM</strong> on multi-GPU hardware. They follow the harness in
-<a href="https://github.com/waynehacking8/trtllm-triton-serving"><strong>trtllm-triton-serving</strong></a>
-(4× H100, NVLink).<sup id="fnref:serving-repo"><a class="footnote-ref" href="#fn:serving-repo">1</a></sup></p>
-<p>The goal is to move from "I use vLLM" to "I can stand up the NVIDIA inference stack on real
-multi-GPU hardware and reason about the trade-offs."</p>
-<h2 id="1-the-serving-pipeline">1. The serving pipeline<a class="headerlink" href="#1-the-serving-pipeline" title="Permanent link">&para;</a></h2>
-<p>The path from checkpoint to endpoint has four stages. Each one is a place where a decision
-affects latency, throughput, or accuracy:</p>
+<p>The <a href="https://github.com/waynehacking8/trtllm-triton-serving"><strong>trtllm-triton-serving</strong></a> harness takes an open-weights Hugging Face checkpoint through a TensorRT-LLM engine build and exposes it with <code>trtllm-serve</code> or Triton. The matched-work benchmark compares that stack with vLLM on 4× H100 connected by NVLink.<sup id="fnref:serving-repo"><a class="footnote-ref" href="#fn:serving-repo">1</a></sup></p>
+<p class="pb-translation" lang="zh-Hant"><a href="https://github.com/waynehacking8/trtllm-triton-serving"><strong>trtllm-triton-serving</strong></a> harness 會把 Hugging Face 的開放權重 checkpoint 建成 TensorRT-LLM engine，再透過 <code>trtllm-serve</code> 或 Triton 對外服務。Matched-work benchmark 則在 NVLink 連接的 4× H100 上，拿這套 stack 和 vLLM 比較。<sup id="fnref2:serving-repo"><a class="footnote-ref" href="#fn:serving-repo">1</a></sup></p>
+<h2 id="1-the-serving-pipelineserving-pipeline">1. The serving pipeline｜Serving pipeline<a class="headerlink" href="#1-the-serving-pipelineserving-pipeline" title="Permanent link">&para;</a></h2>
+<p>The path from checkpoint to endpoint has four stages. A choice at any stage can change latency, throughput, or accuracy:</p>
+<p class="pb-translation" lang="zh-Hant">Checkpoint 到 endpoint 分成四個階段；任何一階段的設定都可能改變 latency、throughput 或 accuracy：</p>
 <ol>
-<li><strong>Checkpoint</strong> — a Hugging Face model.</li>
-<li><strong>Engine build</strong> — compile to a TensorRT-LLM engine for a <em>fixed</em> tensor-parallel degree,
-   precision, and batching policy.</li>
-<li><strong>Model repository</strong> — wrap the engine in a Triton <code>tensorrt_llm</code>-backend model repo.</li>
-<li><strong>Serving + load test</strong> — <code>trtllm-serve</code> (or Triton) exposes an OpenAI-compatible endpoint;
-   a load generator drives it under controlled concurrency.</li>
+<li><strong>Checkpoint</strong>: a Hugging Face model.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Checkpoint</strong>：Hugging Face model。</span></li>
+<li><strong>Engine build</strong>: compile a TensorRT-LLM engine for a selected tensor-parallel degree, precision, and batching policy.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Engine build</strong>：依指定的 tensor-parallel degree、precision 與 batching policy 編譯 TensorRT-LLM engine。</span></li>
+<li><strong>Model repository</strong>: wrap the engine in a Triton <code>tensorrt_llm</code> backend repository.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Model repository</strong>：把 engine 包進 Triton <code>tensorrt_llm</code> backend repository。</span></li>
+<li><strong>Serving and load test</strong>: expose an OpenAI-compatible endpoint and drive it with controlled concurrency.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Serving 與 load test</strong>：提供 OpenAI-compatible endpoint，再用受控 concurrency 施加負載。</span></li>
 </ol>
-<p>The key mental shift from vLLM: TensorRT-LLM does <strong>ahead-of-time compilation</strong>. vLLM is a
-runtime that takes the model and serves it; TensorRT-LLM <em>builds an engine</em> specialized to your
-GPU, TP degree, and precision first. That build is where the performance comes from, and also
-where the rigidity comes from.<sup id="fnref:trt-docs"><a class="footnote-ref" href="#fn:trt-docs">2</a></sup></p>
-<h2 id="2-tensor-parallelism-tp">2. Tensor parallelism (TP)<a class="headerlink" href="#2-tensor-parallelism-tp" title="Permanent link">&para;</a></h2>
-<p>For a model that doesn't fit on one GPU — or to cut latency — TensorRT-LLM shards each layer
-across GPUs. On a 4× H100 NVLink box, <code>TP=4</code> means every forward pass does an <strong>all-reduce</strong>
-across the four GPUs over NVLink.</p>
+<p>TensorRT-LLM builds an engine for a selected GPU architecture, TP degree, precision, and batching configuration. vLLM makes more of those decisions at runtime, so the two stacks trade build-time specialization for runtime flexibility.<sup id="fnref:trt-docs"><a class="footnote-ref" href="#fn:trt-docs">2</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">TensorRT-LLM 會針對指定的 GPU architecture、TP degree、precision 與 batching configuration 建立 engine。vLLM 則在 runtime 做更多決策；兩套 stack 的差別，是 build-time specialization 與 runtime flexibility 的取捨。<sup id="fnref2:trt-docs"><a class="footnote-ref" href="#fn:trt-docs">2</a></sup></p>
+<h2 id="2-tensor-parallelism-tptensor-parallelismtp">2. Tensor parallelism (TP)｜Tensor parallelism（TP）<a class="headerlink" href="#2-tensor-parallelism-tptensor-parallelismtp" title="Permanent link">&para;</a></h2>
+<p>When a model does not fit on one GPU—or when the target is lower latency—TensorRT-LLM can shard each layer across GPUs. On a 4× H100 NVLink host, <code>TP=4</code> introduces all-reduce communication across all four GPUs during each forward pass.</p>
+<p class="pb-translation" lang="zh-Hant">模型放不進單張 GPU，或目標是降低 latency 時，TensorRT-LLM 可以把每一層切到多張 GPU。4× H100 NVLink 主機使用 <code>TP=4</code> 時，每次 forward pass 都會在四張 GPU 間執行 all-reduce。</p>
 <blockquote>
-<p>The all-reduce is not free. On this fabric it tops out around 77 % of the NVLink budget
-(see the separate <a href="../nccl-nvlink-bandwidth/">NVLink-wall notes</a>). For <strong>prefill</strong> (large
-tensors) you're bandwidth-bound and TP helps. For <strong>decode</strong> (one token at a time) you're
-pinned against the small-message latency floor, and past a point more TP makes decode
-<em>slower</em>. Pick TP for the regime you actually serve.</p>
+<p>On this fabric, all-reduce reaches about 77% of the NVLink budget (see the separate <a href="../nccl-nvlink-bandwidth/">NVLink-wall notes</a>). Prefill uses large tensors and benefits from bandwidth. Decode communicates one token at a time and can hit the small-message latency floor; adding TP beyond that point can make decode slower.</p>
+<p><span class="pb-inline-translation" lang="zh-Hant">在這組 fabric 上，all-reduce 約達 NVLink budget 的 77%（見另一篇 <a href="../nccl-nvlink-bandwidth/">NVLink-wall 筆記</a>）。Prefill 使用大 tensor，能受益於頻寬；decode 一次只處理一個 token，可能撞上小訊息 latency 下限。超過該點後再增加 TP，反而可能讓 decode 變慢。</span></p>
 </blockquote>
-<h2 id="3-precision-fp16-vs-fp8">3. Precision: FP16 vs FP8<a class="headerlink" href="#3-precision-fp16-vs-fp8" title="Permanent link">&para;</a></h2>
-<p>The engine is built for a specific precision. The two that matter most on Hopper:</p>
+<p>Choose TP for the message sizes and latency regime of the deployed workload.</p>
+<p class="pb-translation" lang="zh-Hant">TP 應依部署 workload 的 message sizes 與 latency regime 選擇。</p>
+<h2 id="3-precision-fp16-vs-fp8precisionfp16-fp8">3. Precision: FP16 vs FP8｜Precision：FP16 與 FP8<a class="headerlink" href="#3-precision-fp16-vs-fp8precisionfp16-fp8" title="Permanent link">&para;</a></h2>
+<p>This benchmark compares FP16 and FP8 on Hopper:</p>
+<p class="pb-translation" lang="zh-Hant">這份 benchmark 比較 Hopper 上的 FP16 與 FP8：</p>
 <table>
 <thead>
 <tr>
 <th>Precision</th>
-<th>Memory</th>
-<th>Throughput</th>
-<th>Accuracy risk</th>
+<th>Memory／記憶體</th>
+<th>Throughput／吞吐量</th>
+<th>Accuracy risk／準確度風險</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>FP16</strong></td>
-<td>baseline</td>
-<td>baseline</td>
-<td>none (reference)</td>
+<td>baseline／基準</td>
+<td>baseline／基準</td>
+<td>reference／參考值</td>
 </tr>
 <tr>
 <td><strong>FP8</strong></td>
-<td>~½ weights + KV-cache</td>
-<td>higher</td>
-<td>small, model-dependent</td>
+<td>~½ weights + KV cache／約一半的 weights 與 KV cache</td>
+<td>higher／較高</td>
+<td>small, model-dependent／幅度小但依模型而異</td>
 </tr>
 </tbody>
 </table>
-<p>FP8 uses the Hopper Transformer Engine and shrinks both weights and the KV-cache, which is
-often the real bottleneck for long contexts. The honest move is to <strong>measure</strong> the accuracy
-delta on your task rather than assume FP8 is free — a quantization study belongs in the same
-harness as the throughput numbers.</p>
-<h2 id="4-the-batching-policy-that-actually-matters">4. The batching policy that actually matters<a class="headerlink" href="#4-the-batching-policy-that-actually-matters" title="Permanent link">&para;</a></h2>
-<p>Two features dominate real serving throughput:</p>
+<p>FP8 uses Hopper Transformer Engine and reduces weight and KV-cache storage. The accuracy delta must be measured on the target workload, under the same harness as the throughput result.</p>
+<p class="pb-translation" lang="zh-Hant">FP8 使用 Hopper Transformer Engine，並減少 weight 與 KV-cache storage。Accuracy delta 必須在目標 workload 上量測，而且要和 throughput 使用同一套 harness。</p>
+<h2 id="4-continuous-batching-and-paged-kv-cachecontinuous-batching-paged-kv-cache">4. Continuous batching and paged KV cache｜Continuous batching 與 paged KV cache<a class="headerlink" href="#4-continuous-batching-and-paged-kv-cachecontinuous-batching-paged-kv-cache" title="Permanent link">&para;</a></h2>
+<p>Two features shape the production configurations compared here:</p>
+<p class="pb-translation" lang="zh-Hant">本文比較的 production configurations 都包含兩項功能：</p>
 <ul>
-<li><strong>In-flight (continuous) batching</strong> — new requests join the running batch at the next
-  iteration instead of waiting for the current batch to drain. This is what keeps GPUs busy
-  under bursty traffic; vLLM and TensorRT-LLM both do it.</li>
-<li><strong>Paged KV-cache</strong> — the KV-cache is allocated in pages, so memory isn't reserved for the
-  worst-case sequence length per request. This is what lets you fit more concurrent sequences.</li>
+<li><strong>In-flight (continuous) batching</strong> lets new requests join a running batch at the next iteration instead of waiting for it to drain. Both vLLM and TensorRT-LLM support it.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>In-flight（continuous）batching</strong> 允許新 request 在下一個 iteration 加入目前 batch，不必等整批清空；vLLM 與 TensorRT-LLM 都支援。</span></li>
+<li><strong>Paged KV cache</strong> allocates cache in pages rather than reserving the worst-case sequence length for each request, allowing more concurrent sequences to fit.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Paged KV cache</strong> 以 pages 分配 cache，不會為每個 request 預留 worst-case sequence length，因此能容納更多 concurrent sequences。</span></li>
 </ul>
-<p>If a "benchmark" doesn't enable these, it isn't measuring production serving — it's measuring a
-toy.</p>
-<h2 id="5-the-benchmark-trap-comparing-the-same-work">5. The benchmark trap: comparing the same work<a class="headerlink" href="#5-the-benchmark-trap-comparing-the-same-work" title="Permanent link">&para;</a></h2>
-<p>The single most common mistake in "X vs Y" LLM benchmarks is <strong>not decoding the same number of
-tokens</strong>. If stack A happens to emit shorter completions, it looks faster while doing less work.</p>
-<p>The fix used in the harness is a <strong>controlled methodology</strong>: every request decodes <em>exactly</em>
-256 tokens by setting <code>ignore_eos=True</code> and <code>min_tokens=max_tokens</code>. Now throughput and
-latency compare identical work across TensorRT-LLM, Triton, and vLLM. Without this, the numbers
-are noise.</p>
-<p>Metrics worth reporting, all under <em>matched concurrency</em>:</p>
+<p>Results without these features describe static batching rather than the production configurations measured here.</p>
+<p class="pb-translation" lang="zh-Hant">未啟用這兩項功能的結果描述的是 static batching，不能和本文的 production configurations 直接比較。</p>
+<h2 id="5-match-the-generated-work-stack">5. Match the generated work｜讓兩套 stack 生成相同工作量<a class="headerlink" href="#5-match-the-generated-work-stack" title="Permanent link">&para;</a></h2>
+<p>Completion length is a confounder: a stack that emits fewer tokens can appear faster while doing less work. The harness therefore forces every request to decode exactly 256 tokens with <code>ignore_eos=True</code> and matched minimum and maximum token limits.</p>
+<p class="pb-translation" lang="zh-Hant">Completion length 是一個 confounder：某套 stack 產生較少 tokens 時，即使只是少做工作，看起來也會比較快。因此，harness 使用 <code>ignore_eos=True</code> 和一致的最小／最大 token limits，強制每個 request 都 decode 256 tokens。</p>
+<p>Report all metrics at matched concurrency:</p>
+<p class="pb-translation" lang="zh-Hant">所有指標都必須在相同 concurrency 下回報：</p>
 <ul>
-<li><strong>Throughput</strong> (tokens/s, total) — the headline.</li>
-<li><strong>TTFT</strong> (time to first token) — dominated by prefill; what the user feels first.</li>
-<li><strong>Inter-token latency</strong> — dominated by decode; what the user feels while reading.</li>
+<li><strong>Throughput</strong> in total tokens/s.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Throughput</strong>：總 tokens/s。</span></li>
+<li><strong>TTFT (time to first token)</strong>, dominated by prefill.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>TTFT（time to first token）</strong>：主要受 prefill 影響。</span></li>
+<li><strong>Inter-token latency</strong>, dominated by decode.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Inter-token latency</strong>：主要受 decode 影響。</span></li>
 </ul>
-<h2 id="6-triton-as-the-production-surface">6. Triton as the production surface<a class="headerlink" href="#6-triton-as-the-production-surface" title="Permanent link">&para;</a></h2>
-<p>The measured runs can use TensorRT-LLM's own OpenAI server (<code>trtllm-serve</code>), but the
-<strong>production path</strong> is the Triton <code>tensorrt_llm</code>-backend model repository (<code>triton_model_repo/</code>):</p>
+<h2 id="6-triton-as-the-deployment-surface-triton">6. Triton as the deployment surface｜以 Triton 作為部署介面<a class="headerlink" href="#6-triton-as-the-deployment-surface-triton" title="Permanent link">&para;</a></h2>
+<p>The benchmark uses TensorRT-LLM’s OpenAI server, <code>trtllm-serve</code>. The repository also includes a Triton <code>tensorrt_llm</code> backend model repository for deployments that need Triton metrics, health checks, ensembles, or multi-model hosting.<sup id="fnref:triton-docs"><a class="footnote-ref" href="#fn:triton-docs">3</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">Benchmark 使用 TensorRT-LLM 的 OpenAI server，也就是 <code>trtllm-serve</code>。Repository 另附 Triton <code>tensorrt_llm</code> backend model repository，供需要 Triton metrics、health checks、ensembles 或 multi-model hosting 的部署使用。<sup id="fnref2:triton-docs"><a class="footnote-ref" href="#fn:triton-docs">3</a></sup></p>
+<p>The Triton path can place tokenizer, engine, and detokenizer stages in one ensemble and expose them through a shared control plane.</p>
+<p class="pb-translation" lang="zh-Hant">Triton path 可以把 tokenizer、engine 與 detokenizer 放進同一個 ensemble，再透過共用 control plane 對外服務。</p>
+<h2 id="7-measured-crossover-on-4h1004h100-crossover">7. Measured crossover on 4×H100｜4×H100 上的實測 crossover<a class="headerlink" href="#7-measured-crossover-on-4h1004h100-crossover" title="Permanent link">&para;</a></h2>
+<p>On the matched-work sweep, TensorRT-LLM led at low-to-mid concurrency and vLLM led at high concurrency:</p>
+<p class="pb-translation" lang="zh-Hant">Matched-work sweep 顯示 TensorRT-LLM 在 low-to-mid concurrency 領先，vLLM 則在 high concurrency 領先：</p>
 <ul>
-<li>It exposes the engine over a hardened, observable server (metrics, health, dynamic batching
-  config) instead of a script.</li>
-<li>It's the same control plane you'd use for an ensemble (tokenizer → engine → de-tokenizer) and
-  for multi-model hosting.</li>
-</ul>
-<p>Treat <code>trtllm-serve</code> as the fast path for benchmarking and Triton as the path you'd actually
-ship behind a gateway.<sup id="fnref:triton-docs"><a class="footnote-ref" href="#fn:triton-docs">3</a></sup></p>
-<h2 id="7-when-does-tensorrt-llm-win-the-measured-answer">7. When does TensorRT-LLM win? (the measured answer)<a class="headerlink" href="#7-when-does-tensorrt-llm-win-the-measured-answer" title="Permanent link">&para;</a></h2>
-<p>Not always — and the measurement says <em>which</em> regime, not a vibe. Across a matched-work sweep on
-4× H100, the result lands on a <strong>concurrency crossover</strong>:</p>
-<ul>
-<li><strong>TensorRT-LLM (with CUDA graphs) wins at low-to-mid concurrency</strong> — the latency-sensitive
-  regime. The ahead-of-time engine plus CUDA-graph capture removes per-iteration launch overhead
-  that dominates when the batch is small, so TTFT and inter-token latency are lower.</li>
-<li><strong>vLLM wins at high concurrency</strong> — the throughput-saturated regime, where its scheduler keeps
-  the GPU packed and the launch-overhead advantage no longer matters.</li>
+<li><strong>TensorRT-LLM with CUDA Graphs leads at low-to-mid concurrency.</strong> Ahead-of-time specialization and graph capture reduce per-iteration launch overhead when batches are small, lowering TTFT and inter-token latency.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>TensorRT-LLM 加 CUDA Graphs 在 low-to-mid concurrency 領先。</strong> Batch 較小時，ahead-of-time specialization 與 graph capture 會降低每個 iteration 的 launch overhead，進而降低 TTFT 與 inter-token latency。</span></li>
+<li><strong>vLLM leads at high concurrency.</strong> In the throughput-saturated regime, its scheduler keeps the GPU packed and the launch-overhead advantage no longer determines the result.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>vLLM 在 high concurrency 領先。</strong> 進入 throughput-saturated regime 後，它的 scheduler 能維持 GPU 飽和，launch-overhead 優勢也不再主導結果。</span></li>
 </ul>
 <blockquote>
-<p>One caveat that cost a real bug: <strong>CUDA graphs only help if the config actually enables them.</strong>
-A run that looks like "TensorRT-LLM is barely faster" can be a mis-set graph config; fixing it
-moved the low-concurrency number substantially. Always confirm the optimisation you're
-crediting is switched on before drawing the curve.</p>
+<p>One configuration bug changed this curve: CUDA Graphs only help when the graph setting is actually enabled. A misconfigured run made TensorRT-LLM look only slightly faster; fixing the setting moved the low-concurrency result substantially.</p>
+<p><span class="pb-inline-translation" lang="zh-Hant">一個 configuration bug 曾經改變整條曲線：只有真正啟用 graph setting 時，CUDA Graphs 才有效。設定錯誤的 run 讓 TensorRT-LLM 看起來只快一點；修正後，low-concurrency 結果明顯移動。</span></p>
 </blockquote>
-<p>So the decision rule is about your <strong>load</strong>, not brand loyalty: latency-bound, low/mid
-concurrency → TensorRT-LLM + CUDA graphs; throughput-bound, high concurrency → vLLM. The honest
-deliverable is a reproducible <strong>serve → benchmark</strong> loop with documented methodology that draws
-that crossover for <em>your</em> hardware.</p>
-<h2 id="takeaway">Takeaway<a class="headerlink" href="#takeaway" title="Permanent link">&para;</a></h2>
-<p>Serving an LLM well is mostly about three things: putting tensor parallelism in the regime that
-helps, enabling continuous batching + paged KV-cache, and <strong>measuring the same work</strong> across
-stacks. The measured crossover: TensorRT-LLM + CUDA graphs win <strong>low/mid concurrency</strong> (latency),
-vLLM wins <strong>high concurrency</strong> (throughput) — and a Triton control plane is what you'd actually
-put in production.</p>
-<p>→ Full pipeline, Triton model repo, and the matched-work harness:
+<p>Choose from the measured load regime: TensorRT-LLM with CUDA Graphs for the latency-sensitive low/mid-concurrency range, and vLLM for the tested high-concurrency throughput range. Rerun the sweep on the target hardware before carrying over the crossover.</p>
+<p class="pb-translation" lang="zh-Hant">選擇要依實測 load regime：latency-sensitive 的 low／mid-concurrency 範圍使用 TensorRT-LLM 加 CUDA Graphs；本文測試的 high-concurrency throughput 範圍則由 vLLM 領先。把 crossover 套到其他系統前，應先在目標硬體上重跑 sweep。</p>
+<p>→ Full pipeline, Triton model repository, and matched-work harness:<br><span class="pb-inline-translation" lang="zh-Hant">完整 pipeline、Triton model repository 與 matched-work harness：</span>
 <a href="https://github.com/waynehacking8/trtllm-triton-serving">github.com/waynehacking8/trtllm-triton-serving</a></p>
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:serving-repo">
-<p><a href="https://github.com/waynehacking8/trtllm-triton-serving">TensorRT-LLM + Triton serving benchmark</a>, the primary artifact for engine configs, matched-work harness, and measured crossover.&#160;<a class="footnote-backref" href="#fnref:serving-repo" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p><a href="https://github.com/waynehacking8/trtllm-triton-serving">TensorRT-LLM + Triton serving benchmark</a>, the primary artifact for engine configs, the matched-work harness, and the measured crossover.／Engine configs、matched-work harness 與實測 crossover 的主要來源。&#160;<a class="footnote-backref" href="#fnref:serving-repo" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:serving-repo" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:trt-docs">
-<p><a href="https://nvidia.github.io/TensorRT-LLM/">TensorRT-LLM documentation</a>, NVIDIA’s engine-build and runtime reference.&#160;<a class="footnote-backref" href="#fnref:trt-docs" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p><a href="https://nvidia.github.io/TensorRT-LLM/">TensorRT-LLM documentation</a>, NVIDIA’s engine-build and runtime reference.／NVIDIA 的 engine-build 與 runtime 文件。&#160;<a class="footnote-backref" href="#fnref:trt-docs" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:trt-docs" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:triton-docs">
-<p><a href="https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/">Triton Inference Server documentation</a>, NVIDIA’s model-repository, scheduling, metrics, and protocol reference.&#160;<a class="footnote-backref" href="#fnref:triton-docs" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p><a href="https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/">Triton Inference Server documentation</a>, NVIDIA’s model-repository, scheduling, metrics, and protocol reference.／NVIDIA 的 model repository、scheduling、metrics 與 protocol 文件。&#160;<a class="footnote-backref" href="#fnref:triton-docs" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:triton-docs" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
