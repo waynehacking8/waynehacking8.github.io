@@ -38,7 +38,7 @@ for (const width of [320, 390, 768, 1023]) {
     await page.goto(`${base}${article}`, { waitUntil: 'networkidle' });
 
     await expect(page.locator('.pb-page-title')).toHaveText('Blog');
-    await expect(page.locator('.pb-post-title')).toHaveText('RAG groundedness (0% vs 50%)');
+    await expect(page.locator('.pb-post-title')).toHaveText('The 0% RAG result failed the harder test');
     await expect(page.locator('.pb-nav-row')).toContainText('About');
     await expect(page.locator('.pb-nav-row')).not.toContainText('RAG groundedness');
 

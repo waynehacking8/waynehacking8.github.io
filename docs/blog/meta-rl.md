@@ -24,10 +24,9 @@ tags:
 什麼」，再用 episode 內的經驗改變行為。權重可以不更新，但 policy 的有效狀態必須
 更新。這就是把學習演算法本身塞進 agent。
 
-這個視角比「learning to learn」更可操作，因為它立即帶出三個問題：任務資訊存在哪
-裡、適應靠什麼更新、探索如何專門為辨識任務服務。
+接下來要回答三件事：任務資訊存在哪裡、適應如何更新，以及探索怎麼協助辨識任務。
 
-## 問題設定：最佳化的不是單一任務
+## 問題設定：在任務分布上最佳化
 
 令任務 $\mathcal{T}$ 從分布 $p(\mathcal{T})$ 取樣。Agent 先收集 context
 $c_{1:k}=(s,a,r,s')_{1:k}$，再透過適應機制 $A_\phi$ 產生任務條件 policy：
@@ -45,7 +44,7 @@ Meta-training 調整的是 $\phi$：它可能是一組容易 fine-tune 的初始
 state update，或一個從 context 推斷 latent task 的 encoder。Meta-test 則把新任務保留
 在訓練分布之外，否則看到的只是記憶，不是適應。
 
-## 三條主要路線，其實在選擇「task belief 放哪裡」
+## 三條路線把 task belief 放在不同位置
 
 | 路線 | 適應發生的位置 | 優點 | 主要風險 |
 | --- | --- | --- | --- |
@@ -63,8 +62,8 @@ $$
 \tag{2}
 $$
 
-外層再讓更新後的 $\theta'_{\mathcal{T}}$ 在各任務上都好。MAML 的重點不是「共用一
-個 policy」，而是學到一個適合快速移動的參數位置。RL 裡的難點是 inner/outer loop
+外層再讓更新後的 $\theta'_{\mathcal{T}}$ 在各任務上都好。MAML 要學的是一組只需少量
+gradient steps 就能適應新任務的初始參數。RL 裡的難點是 inner/outer loop
 都帶 sampling noise，二階項也昂貴；first-order MAML 和 Reptile 用較便宜的近似換掉
 部分精確度。[^maml]
 
@@ -74,7 +73,7 @@ RL² 把前一步 action、reward、termination 與 observation 一起餵進 RNN
 meta-test 不變，但 hidden state 隨 trajectory 更新；對外看起來就像 agent 在 episode
 內執行一個自己學會的 RL algorithm。[^rl2]
 
-它的優點也是缺點：任何有效的更新規則都能被表示，卻很難知道網路是在推斷任務、
+RNN 能表示多種更新規則，但 hidden state 很難解釋，實驗也難以分辨網路是在推斷任務、
 記住 task ID，還是利用 benchmark 的固定順序。任務 permutation、held-out dynamics
 與 counterfactual reward tests 因此比平均 return 更重要。
 
@@ -88,14 +87,14 @@ posterior sampling 式探索。[^pearl] VariBAD 則把 Bayes-adaptive MDP 的 be
 敏感。Offline meta-RL 若只在行為 policy 收集的 context 上訓練，部署時由新 policy
 產生的 context 可能落在 encoder 沒看過的區域。
 
-## Meta-RL 的探索不是找 reward，而是找出任務
+## Meta-RL 的探索要辨識任務
 
-普通 exploration 關心「哪個 state 可能有高 reward」。Meta-RL 還要問「哪個 action
-最能區分目前可能的任務」。兩個 action 的即時 reward 相同，其中一個卻可能讓 posterior
-快速收斂，後續回報因此更高。
+普通 exploration 尋找可能帶來高 reward 的 state。Meta-RL 還要選出最能區分候選任務的
+action；即使兩個 action 的即時 reward 相同，其中一個仍可能讓 posterior 更快收斂，進而
+提高後續回報。
 
-MAESN 把這件事具體化：它在 latent space 注入 episode-consistent structured noise，
-而不是每一步獨立抖動 action。整段 trajectory 因此像一個可辨識的探索策略。[^maesn]
+MAESN 在 latent space 注入 episode-consistent structured noise，讓整段 trajectory 形成
+一致的探索策略。[^maesn]
 更一般地，可以把探索價值寫成 task information gain：
 
 $$
@@ -109,7 +108,7 @@ p(\mathcal{T}\mid c_{1:t})
 \tag{3}
 $$
 
-真正的演算法通常不直接最佳化這個式子，但它提供了很好的診斷：如果 agent 只在
+實作通常不會直接最佳化這個式子，但可用它檢查探索是否能泛化：如果 agent 只在
 training tasks 上知道該試什麼，換掉 reward mapping 後探索就會崩。
 
 ## 評估時最容易藏住的四個問題
@@ -135,9 +134,8 @@ interaction budget、與從頭訓練／domain randomization／oracle task-ID pol
 - 只有離線資料：先處理 context shift；沒有 coverage，meta-learning 不會憑空創造新
   任務的證據。
 
-Meta-RL 最值得保留的問題意識不是某個演算法名稱，而是：**agent 在新任務的前幾次
-互動中，究竟學到了什麼？** 如果實驗不能回答這句話，再高的最終 return 也可能只是
-任務分布被記熟了。
+評估最後仍要回到一件事：agent 在新任務的前幾次互動中更新了哪些判斷。若實驗無法
+回答，再高的 final return 仍可能只是記住了任務分布。
 
 [^maml]: [Finn et al., “Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks”](https://proceedings.mlr.press/v70/finn17a.html).
 [^rl2]: [Duan et al., “RL²: Fast Reinforcement Learning via Slow Reinforcement Learning”](https://arxiv.org/abs/1611.02779).

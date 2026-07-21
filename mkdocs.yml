@@ -11,13 +11,13 @@ nav:
   - Patches: patches.md
   - Blog:
       - blog/index.md
-      - Inkling 975B architecture: blog/inkling-975b-architecture.md
-      - Kimi K3 2.8T architecture: blog/kimi-k3-architecture.md
-      - Notes — TensorRT-LLM + Triton serving: blog/notes-trtllm-triton-serving.md
+      - Inkling 975B — 5:1 attention: blog/inkling-975b-architecture.md
+      - Kimi K3 — KDA, AttnRes, MoE: blog/kimi-k3-architecture.md
+      - TensorRT-LLM vs vLLM: blog/notes-trtllm-triton-serving.md
       - Tensor-parallel & the NVLink wall: blog/nccl-nvlink-bandwidth.md
-      - RAG groundedness (0% vs 50%): blog/rag-groundedness-guardrail.md
-      - Notes — Federated Learning + DP: blog/notes-federated-learning-dp.md
-      - Notes — CUDA Tensor Core GEMM (WMMA): blog/notes-cuda-tensor-core-gemm.md
+      - The 0% RAG result failed the harder test: blog/rag-groundedness-guardrail.md
+      - FedAvg, DP-SGD & secure aggregation: blog/notes-federated-learning-dp.md
+      - Naive GEMM to WMMA: blog/notes-cuda-tensor-core-gemm.md
       - Meta-Reinforcement Learning: blog/meta-rl.md
       - CUDA Programming 入門: blog/pp-intro.md
       - 滲透測試入門技術: blog/pentest-intro.md
@@ -60,7 +60,7 @@ theme:
 # bump ?v= on every extra.css change — GitHub Pages caches assets for
 # 10 minutes and browsers honor it, so an unversioned URL shows stale CSS
 extra_css:
-  - stylesheets/extra.css?v=20260721.26
+  - stylesheets/extra.css?v=20260721.27
 
 # same 10-minute GitHub Pages cache applies to JS — bump this ?v= on every
 # pb-filter.js change, exactly as for extra.css above. Without it a shipped

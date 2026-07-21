@@ -757,6 +757,18 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 }
 .pb-article-hero figcaption a { color: var(--pb-link); }
 
+.md-typeset .pb-translation {
+  margin-top: -.55rem;
+  padding: .15rem 0 .15rem .75rem;
+  border-left: 2px solid color-mix(in srgb, var(--pb-link) 38%, transparent);
+  color: var(--pb-muted);
+}
+.md-typeset .pb-inline-translation {
+  display: block;
+  margin-top: .15rem;
+  color: var(--pb-muted);
+}
+
 /* MathJax mirrors pbb's readable inline symbols while display equations get
    their own quiet reading surface and remain scrollable on narrow screens. */
 .md-typeset .arithmatex { max-width: 100%; }

@@ -19,51 +19,50 @@ tags:
   <figcaption>CUDA accelerated computing platform · <a href="https://developer.nvidia.com/cuda-zone">Source: NVIDIA Developer</a></figcaption>
 </figure>
 
-這份指南從 CUDA 的執行模型一路走到 profiling 與 kernel 最佳化。重點不是列出
-API，而是把每一層抽象連回硬體成本：哪些存取會合併、哪些同步會停住 warp，以及
-如何用量測結果判斷下一個值得改的瓶頸。本文的 execution model、memory hierarchy
+這份指南從 execution model、memory hierarchy 和 synchronization 說明 CUDA 的硬體
+成本，再用 profiling 判斷該改資料存取、同步還是 kernel 組態。本文的 execution model、memory hierarchy
 與 synchronization 語意以 NVIDIA CUDA C++ Programming Guide 為準；範例刻意縮短，
 production kernel 仍需補齊 bounds check 與 error handling。[^cuda-guide]
 
 ## 1. CUDA 基礎架構
 
-### 1.1 CUDA程式設計模型
+### 1.1 CUDA 程式設計模型
 
 #### 1.1.1 運算架構
-CUDA (Compute Unified Device Architecture) 是NVIDIA開發的平行運算平台與程式設計模型。其架構包含：
+CUDA（Compute Unified Device Architecture）是 NVIDIA 開發的平行運算平台與程式設計模型。其架構包含：
 
-- **主機 (Host)**：CPU及其記憶體
-- **設備 (Device)**：GPU及其記憶體
-- **執行單元**：包含多個串流多處理器 (Streaming Multiprocessors, SMs)
+- **主機（Host）**：CPU 及其記憶體
+- **裝置（Device）**：GPU 及其記憶體
+- **執行單元**：包含多個串流多處理器（Streaming Multiprocessors，SMs）
 
 #### 1.1.2 程式執行流程
-CUDA程式的典型執行流程：
+CUDA 程式的典型執行流程：
 
-1. 配置主機和設備記憶體
-2. 將資料從主機複製到設備
+1. 分配主機和裝置記憶體
+2. 將資料從主機複製到裝置
 3. 呼叫CUDA核心進行運算
-4. 將結果從設備複製回主機
+4. 將結果從裝置複製回主機
 5. 釋放記憶體
 
 ### 1.2 核心函數開發
 
 #### 1.2.1 函數類型限定詞
-CUDA提供三種函數類型限定詞：
+CUDA 提供三種函式類型限定詞：
 
 1. **__global__**
-   - 在設備端執行
-   - 可從主機端或設備端呼叫
-   - 必須返回void
+   - 在裝置端執行
+   - 可從主機端或裝置端呼叫
+   - 必須回傳 `void`
    ```cpp
    __global__ void kernelFunction(float* data)
    {
-       // 設備端程式碼
+       // 裝置端程式碼
    }
    ```
 
 2. **__device__**
-   - 在設備端執行
-   - 只能從設備端呼叫
+   - 在裝置端執行
+   - 只能從裝置端呼叫
    ```cpp
    __device__ float deviceFunction(float x)
    {
@@ -83,7 +82,7 @@ CUDA提供三種函數類型限定詞：
 
 #### 1.2.2 核心函數呼叫語法
 
-完整的核心函數呼叫語法：
+Kernel 的呼叫語法如下：
 ```cpp
 kernelFunction<<<gridDim, blockDim, sharedMemBytes, stream>>>(parameters);
 ```
@@ -92,15 +91,15 @@ kernelFunction<<<gridDim, blockDim, sharedMemBytes, stream>>>(parameters);
 - `gridDim`：網格維度，指定區塊數量
 - `blockDim`：區塊維度，指定每個區塊的執行緒數量
 - `sharedMemBytes`：動態共享記憶體大小（可選）
-- `stream`：CUDA串流（可選）
+- `stream`：CUDA 串流（可選）
 
-### 1.3 NVCC編譯器
+### 1.3 NVCC 編譯器
 
 #### 1.3.1 編譯流程
-NVCC編譯器的工作流程：
+NVCC 編譯器的工作流程：
 
-1. 分離主機和設備程式碼
-2. 編譯設備程式碼生成PTX或cubin
+1. 分離主機和裝置程式碼
+2. 編譯裝置程式碼，產生 PTX 或 cubin
 3. 編譯主機程式碼
 4. 連結所有目標檔案
 
@@ -116,9 +115,9 @@ nvcc -arch=sm_70        # 指定目標架構
 ```
 
 重要編譯選項說明：
-- `-arch`：指定GPU架構版本
-- `-code`：指定實際產生的GPU程式碼版本
-- `-Xptxas`：傳遞選項給PTX彙編器
+- `-arch`：指定 GPU 架構版本
+- `-code`：指定實際產生的 GPU 程式碼版本
+- `-Xptxas`：傳遞選項給 PTX 組譯器
 - `-maxrregcount`：限制每個執行緒使用的暫存器數量
 
 ## 2. 記憶體管理與最佳化
@@ -175,13 +174,11 @@ __global__ void registerKernel()
 ### 2.2 統一記憶體管理
 
 #### 2.2.1 基本概念
-統一記憶體提供單一記憶體空間視圖：
-- 自動管理資料遷移
-- 支援過量配置
-- 頁面錯誤機制
+Unified Memory 提供 CPU 與 GPU 共用的虛擬位址空間。Runtime 會按需遷移頁面，也允許
+分配超過單張 GPU 實體記憶體的資料，但 page fault 可能成為效能瓶頸。
 
 #### 2.2.2 記憶體預取
-使用預取優化效能：
+先把頁面預取到目前的 GPU：
 
 ```cpp
 // 基本預取
@@ -205,7 +202,7 @@ void optimizedPrefetch(float* data, size_t size)
 ```
 
 #### 2.2.3 記憶體存取模式
-最佳化記憶體存取模式：
+相鄰執行緒應讀取相鄰位址：
 
 1. **合併存取**
 ```cpp
@@ -228,7 +225,7 @@ __global__ void strideAccess(float* data, int stride)
 ### 2.3 記憶體最佳化技巧
 
 #### 2.3.1 記憶體對齊
-確保資料對齊以提高存取效率：
+對齊資料，減少拆分的記憶體交易：
 
 ```cpp
 // 結構體對齊
@@ -248,7 +245,7 @@ void* alignedMalloc(size_t size, size_t alignment)
 ```
 
 #### 2.3.2 記憶體覆蓋
-使用記憶體覆蓋減少記憶體使用：
+載入 stencil 所需的 halo 區域：
 
 ```cpp
 __global__ void overlappedKernel(float* in, float* out)
@@ -277,7 +274,7 @@ __global__ void overlappedKernel(float* in, float* out)
 ### 3.1 執行緒層次結構
 
 #### 3.1.1 網格、區塊與執行緒
-完整的執行緒層次配置：
+`dim3` 可建立一維、二維或三維的 grid 與 block：
 
 ```cpp
 // 1D 配置
@@ -340,7 +337,7 @@ __global__ void syncKernel(float* data)
 ```
 
 #### 3.2.2 合作群組
-使用合作群組進行更靈活的同步：
+Cooperative Groups 可把同步範圍明確寫進程式：
 
 ```cpp
 #include <cooperative_groups.h>
@@ -364,30 +361,22 @@ __global__ void coopKernel(float* data)
 
 ### 3.3 執行組態優化
 
-#### 3.3.1 佔用率計算
-計算最佳執行組態：
+#### 3.3.1 估算 block size 與 occupancy
+
+CUDA occupancy API 可先給一組候選 block size；最終仍要用實測決定：
 
 ```cpp
-void calculateOptimalConfig()
+__global__ void computeKernel(float* data, int N);
+
+void calculateCandidateConfig(float* data, int N)
 {
-    int deviceId;
-    cudaGetDevice(&deviceId);
-    
-    cudaDeviceProp prop;
-    cudaGetDeviceProperties(&prop, deviceId);
-    
-    int maxThreadsPerSM = prop.maxThreadsPerMultiProcessor;
-    int maxBlocksPerSM = prop.maxBlocksPerMultiProcessor;
-    int warpSize = prop.warpSize;
-    
-    // 計算最佳區塊大小
-    int blockSize = warpSize * 8;  // 通常是 warp size 的倍數
-    if (blockSize > prop.maxThreadsPerBlock)
-        blockSize = prop.maxThreadsPerBlock;
-        
-    // 計算網格大小
-    int numSMs = prop.multiProcessorCount;
-    int numBlocks = numSMs * maxBlocksPerSM;
+    int minGridSize;
+    int blockSize;
+    cudaOccupancyMaxPotentialBlockSize(
+        &minGridSize, &blockSize, computeKernel, 0, 0);
+
+    int gridSize = (N + blockSize - 1) / blockSize;
+    computeKernel<<<gridSize, blockSize>>>(data, N);
 }
 ```
 
@@ -415,7 +404,7 @@ __global__ void dynamicParallelKernel(float* data, int depth)
 ### 4.1 使用 nsys 進行效能分析
 
 #### 4.1.1 基本分析
-使用 nsys 收集效能資料：
+用 `nsys` 收集 timeline 與 CUDA API 統計：
 
 ```bash
 # 基本效能分析
@@ -428,6 +417,7 @@ nsys profile --trace=cuda,nvtx,osrt,cublas ./myapp
 nsys profile --trace=cuda --force-overwrite true \
              --delay=0 --duration=0 \
              --output=timeline ./myapp
+```
 
 #### 4.1.2 分析報告解讀
 
@@ -458,7 +448,7 @@ nsys 產生的報告包含以下重要資訊：
 ### 4.2 效能瓶頸分析
 
 #### 4.2.1 記憶體瓶頸分析
-識別和解決記憶體瓶頸：
+先量測 host-to-device 複製時間：
 
 ```cpp
 // 使用事件來測量記憶體操作時間
@@ -477,7 +467,7 @@ printf("Memory transfer took %f ms\n", milliseconds);
 ```
 
 #### 4.2.2 計算瓶頸分析
-分析計算密集度：
+用 FLOPs／byte 粗估算術強度：
 
 ```cpp
 // 計算算術密度
@@ -514,7 +504,7 @@ __global__ void computeKernel(float* data, int N)
 ### 4.3 效能最佳化策略
 
 #### 4.3.1 記憶體最佳化
-實作記憶體最佳化策略：
+把會重複使用的值放進 shared memory：
 
 ```cpp
 __global__ void optimizedMemoryKernel(float* data, int N)
@@ -540,7 +530,7 @@ __global__ void optimizedMemoryKernel(float* data, int N)
 ```
 
 #### 4.3.2 計算最佳化
-實作計算最佳化策略：
+固定迴圈長度時，可讓編譯器展開迴圈：
 
 ```cpp
 __global__ void optimizedComputeKernel(float* data, int N)
@@ -594,8 +584,9 @@ for(int i = 0; i < 4; i++)
 }
 ```
 
-#### 5.1.2 串流回調函數
-實作串流回調：
+#### 5.1.2 串流回呼函式
+
+串流完成後執行 host 端回呼：
 
 ```cpp
 void CUDART_CB callbackFunc(cudaStream_t stream, cudaError_t status, void* userData)
@@ -603,14 +594,14 @@ void CUDART_CB callbackFunc(cudaStream_t stream, cudaError_t status, void* userD
     printf("Stream %p completed with status %d\n", stream, status);
 }
 
-// 設定回調
+// 設定回呼
 cudaStreamAddCallback(stream, callbackFunc, nullptr, 0);
 ```
 
 ### 5.2 串流同步機制
 
 #### 5.2.1 事件同步
-使用事件進行串流同步：
+事件可建立跨 stream 的相依關係：
 
 ```cpp
 // 建立事件
@@ -645,7 +636,7 @@ cudaStreamCreateWithPriority(&highPriorityStream,
 
 ### 6.1 動態平行處理
 
-實作動態平行處理：
+由 device 端 kernel 啟動子 kernel：
 
 ```cpp
 __global__ void recursiveKernel(int* data, int depth)
@@ -667,7 +658,7 @@ __global__ void recursiveKernel(int* data, int depth)
 
 ### 6.2 原子操作最佳化
 
-實作高效率的原子操作：
+多個執行緒更新同一位置時，可使用原子操作：
 
 ```cpp
 __global__ void atomicKernel(int* counter, int* data, int N)
@@ -688,7 +679,7 @@ __global__ void atomicKernel(int* counter, int* data, int N)
 
 ### 7.1 N體模擬最佳化
 
-完整的 N體模擬實作：
+以下範例計算 N 體問題的作用力：
 
 ```cpp
 #define SOFTENING 1e-9f
@@ -761,7 +752,7 @@ int main()
 
 ### 7.2 矩陣乘法最佳化
 
-使用共享記憶體的矩陣乘法實作：
+以下矩陣乘法先把 tile 搬進 shared memory：
 
 ```cpp
 #define TILE_SIZE 16
@@ -800,4 +791,3 @@ void matrixMul(float* A, float* B, float* C, int N)
 ```
 
 [^cuda-guide]: [NVIDIA CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/), 本文執行模型、記憶體階層、同步與 kernel launch 語意的主要規格來源。
-

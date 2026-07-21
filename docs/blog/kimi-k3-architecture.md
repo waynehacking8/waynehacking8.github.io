@@ -9,7 +9,7 @@ tags:
   - MoE
 ---
 
-# Kimi K3 2.8T：用 KDA 與 AttnRes 推進 3T 級開放模型
+# Kimi K3 2.8T：KDA、AttnRes 與 896 選 16 的 MoE
 
 *2026-07-20 · LLM Architecture / Linear Attention / Agentic Coding*
 
@@ -32,15 +32,15 @@ Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token co
 - 官方稱相較 K2 約有 **2.5× overall scaling efficiency**；這是廠商數據，完整技術報告仍待發布。
 - API 已上線；完整權重截至本文日期仍是預告狀態。
 
-## 1. KDA：把長序列狀態更新做得更細
+## 1. KDA：用 channel-wise gating 更新長序列狀態
 
 標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。[^kda-paper]
 
-這種設計的核心不是「完全不需要 attention」，而是把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。
+KDA 把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。
 
 目前 K3 的完整 layer ratio、kernel 細節與消融實驗要等 technical report；因此，網路流傳的精確 6.3× 解碼速度不能在缺乏同硬體、同 batch 與同輸出設定下直接泛化到所有部署。
 
-### Linear attention 真正改變的是哪個狀態
+### Linear attention 維護的狀態
 
 標準 causal attention 在第 $t$ 個 token 需要讀取先前所有 key/value；線性或 recurrent-style attention 則維護一個固定形狀的狀態 $S_t$，概念上可寫成：
 
@@ -55,18 +55,18 @@ $G_t$ 是遺忘／保留門，$U_t$ 是當前 token 寫入的更新。KDA 的 ch
 
 傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。[^attnres-paper]
 
-可以把它理解成兩種不同維度的記憶：
+KDA 與 AttnRes 分別處理兩個方向的資訊流：
 
 - KDA 處理**序列方向**的長距離資訊流。
 - AttnRes 處理**網路深度方向**的跨層資訊流。
 
-官方稱 KDA、AttnRes、訓練與資料 recipe 合計，讓 K3 相較 K2 的 overall scaling efficiency 約提升 2.5×。這是整體結果，不能只歸因於 AttnRes，也不能直接解讀為訓練時間必然縮短 60%。
+官方公布的 2.5× overall scaling efficiency 是 KDA、AttnRes、訓練與資料 recipe 的合計結果，不能單獨歸因於 AttnRes，也不等同於訓練時間縮短 60%。
 
 ## 3. Stable LatentMoE：896 選 16
 
 K3 將 MoE 稀疏度推到 **896 experts、每次啟用 16 個**，搭配 Stable LatentMoE。超大總參數提供更大的模型容量，稀疏啟用則控制每個 token 實際執行的計算量。
 
-但 active FLOPs 低，不代表部署免費。完整權重仍需要龐大儲存與記憶體容量，跨 GPU／跨節點的 expert routing 也可能受通訊、memory bandwidth 與負載平衡限制。真正的 serving 成本要等權重、量化方案與 vLLM 等 runtime 的實測，而不能只從「16/896」推導。
+16/896 只描述 active experts。部署仍需儲存完整權重，並負擔跨 GPU／節點 routing、memory bandwidth 與負載平衡成本。完整 serving 成本要等權重、量化方案與 vLLM 等 runtime 的實測。
 
 ### 三個不能混為一談的 MoE 數字
 
@@ -76,7 +76,7 @@ K3 將 MoE 稀疏度推到 **896 experts、每次啟用 16 個**，搭配 Stable
 2. **Active compute**：每 token 啟用 16 個 experts，決定主要矩陣乘法量，但還要加 attention、router 與 shared components。
 3. **Communication**：token dispatch/all-to-all 取決於 expert placement、batch 組成與負載平衡；它可能在 FLOPs 尚未飽和前先受網路與 HBM bandwidth 限制。
 
-因此「稀疏度更高」不是免費的 scaling law。若 token 分布偏向少數 experts，capacity factor 會造成 padding 或 dropped/rerouted tokens；若 experts 橫跨節點，all-to-all latency 也會成為 decode 的尾延遲來源。
+提高稀疏度也會增加 routing 與負載平衡壓力。若 token 分布偏向少數 experts，capacity factor 會造成 padding 或 dropped／rerouted tokens；若 experts 橫跨節點，all-to-all latency 也會成為 decode 的尾延遲來源。
 
 ## 4. 與 Inkling 975B 的路線差異
 
@@ -95,21 +95,21 @@ K3 將 MoE 稀疏度推到 **896 experts、每次啟用 16 個**，搭配 Stable
 
 K3 API 提供固定 1M context，官方文件表示不因 context 長度採階梯式單價；cache hit、cache miss 與 output 仍分別計價。它也提供 automatic context caching、tool calls、structured output、dynamic tool loading，以及 low/high/max 的 reasoning effort 設定。[^k3-pricing]
 
-這裡也要區分兩件事：API 能用，不等於開放權重部署已成熟。截至 7 月 20 日，權重與完整 technical report 尚未公開；任何 vLLM 吞吐、量化品質或多節點 routing 結論，都應在實際 artifact 發布後再驗證。
+截至 7 月 20 日，只有 API 已上線；權重與完整 technical report 尚未公開，因此還沒有可驗證的 vLLM 吞吐、量化品質或多節點 routing 結果。
 
-## 6. 核心場景：長鏈條系統工程
+## 6. Moonshot 主打 long-horizon coding
 
-Moonshot 把 K3 的核心戰場放在 long-horizon coding：理解大型 repository、協調 terminal tools，並在視覺回饋下處理 frontend、game development 與 CAD。官方 kernel optimization case study 甚至讓模型在最多 24 小時的 sandbox 內反覆 profile、改寫與 benchmark GPU kernels。
+Moonshot 展示的 long-horizon coding 任務包括理解大型 repository、協調 terminal tools，以及用視覺回饋處理 frontend、game development 與 CAD。官方 kernel optimization case study 讓模型在最多 24 小時的 sandbox 內反覆 profile、改寫與 benchmark GPU kernels。
 
-這和 Inkling 的差異很鮮明：Inkling 強調可控制的推理成本與文字／圖片／音訊通用底座；K3 更像是為長工作流與大型工程任務設計的 agentic model。兩者不是單純用一張 benchmark 表就能互相取代。
+Inkling 主打可控制的推理成本與文字／圖片／音訊通用底座；K3 的產品展示則集中在長工作流與大型工程任務。兩者的輸入模態與服務場景不同，單張 benchmark 表不足以比較部署取捨。
 
-## 如何理性閱讀目前的榜單
+## 榜單的比較限制
 
 官方自己承認 K3 整體能力仍落後最強 proprietary models。Arena、GDPval 或 kernel benchmark 各自測量不同能力，而且 vendor-reported 結果可能使用不同 harness、thinking budget 與工具權限。Frontend Arena 的單項名次、Artificial Analysis 指標或 hallucination rate，都應附上測試版本與方法，不能拼成一個「全面勝過某模型」的結論。
 
-## 結語
+## 權重發布後還缺哪些資料
 
-K3 的技術訊號比 2.8T 這個 headline 更重要：KDA 解序列長度、AttnRes 解模型深度、極稀疏 MoE 解容量與 active compute 的分離。如果完整權重與 technical report 如期釋出，真正值得看的將是系統層數據——精度格式、單節點／多節點吞吐、expert communication、長 context 品質與量化後退化，而不只是參數量。
+權重與 technical report 發布後，仍需補上精度格式、單節點／多節點吞吐、expert communication、長 context 品質和量化退化，才能判斷 2.8T 架構的實際部署成本。
 
 [^k3-overview]: [Moonshot AI, “Kimi K3”](https://www.kimi.com/blog/kimi-k3). Used for the announced architecture and product positioning.
 [^k3-quickstart]: [Kimi K3 Quickstart & Specifications](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart). Used for availability, context length, and release-state claims.

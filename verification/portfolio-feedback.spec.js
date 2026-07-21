@@ -5,11 +5,11 @@ const base = process.env.PB_BASE_URL || 'http://127.0.0.1:8765';
 const articles = [
   { slug: 'inkling-975b-architecture', language: 'zh-Hant', tags: ['Architecture', 'MoE', 'Multimodal'], math: true },
   { slug: 'kimi-k3-architecture', language: 'zh-Hant', tags: ['Architecture', 'Linear Attention', 'MoE'], math: true },
-  { slug: 'notes-trtllm-triton-serving', language: 'en', tags: ['Serving', 'TensorRT-LLM', 'Triton'] },
-  { slug: 'nccl-nvlink-bandwidth', language: 'en', tags: ['NCCL', 'Distributed', 'NVLink', 'LLM Serving'], math: true },
-  { slug: 'rag-groundedness-guardrail', language: 'en', tags: ['RAG', 'Evaluation', 'Grounding', 'LLM'], math: true },
-  { slug: 'notes-federated-learning-dp', language: 'en', tags: ['Privacy', 'Federated Learning', 'Differential Privacy'] },
-  { slug: 'notes-cuda-tensor-core-gemm', language: 'en', tags: ['CUDA', 'Tensor Cores', 'Performance'] },
+  { slug: 'notes-trtllm-triton-serving', language: ['en', 'zh-Hant'], tags: ['Serving', 'TensorRT-LLM', 'Triton'] },
+  { slug: 'nccl-nvlink-bandwidth', language: ['en', 'zh-Hant'], tags: ['NCCL', 'Distributed', 'NVLink', 'LLM Serving'], math: true },
+  { slug: 'rag-groundedness-guardrail', language: ['en', 'zh-Hant'], tags: ['RAG', 'Evaluation', 'Grounding', 'LLM'], math: true },
+  { slug: 'notes-federated-learning-dp', language: ['en', 'zh-Hant'], tags: ['Privacy', 'Federated Learning', 'Differential Privacy'] },
+  { slug: 'notes-cuda-tensor-core-gemm', language: ['en', 'zh-Hant'], tags: ['CUDA', 'Tensor Cores', 'Performance'] },
   { slug: 'meta-rl', language: 'zh-Hant', tags: ['Machine Learning', 'Reinforcement Learning', 'Survey'], math: true },
   { slug: 'pp-intro', language: 'zh-Hant', tags: ['CUDA', 'Parallel Programming', 'Performance'] },
   { slug: 'pentest-intro', language: 'zh-Hant', tags: ['Security', 'Penetration Testing', 'Methodology'], math: true },
@@ -103,7 +103,7 @@ for (const article of articles) {
     expect(articleTags).toEqual(article.tags);
     const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').last().textContent());
     expect(schema['@type']).toBe('BlogPosting');
-    expect(schema.inLanguage).toBe(article.language);
+    expect(schema.inLanguage).toEqual(article.language);
     expect(schema.keywords).toEqual(article.tags);
     expect(schema.datePublished).toMatch(/^20\d\d-\d\d-\d\d$/);
     expect(schema.image).toMatch(/^https:\/\//);
