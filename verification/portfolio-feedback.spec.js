@@ -128,12 +128,12 @@ for (const width of [320, 390, 768, 1440]) {
       await expectDecodedImages(page, '.pb-article-hero img');
       if (width < 1024) {
         const order = await page.evaluate(() => {
-          const nav = document.querySelector('.pb-nav-row--article .pb-nav-tabs').getBoundingClientRect();
-          const title = document.querySelector('.pb-nav-row--article .pb-page-title-link').getBoundingClientRect();
+          const nav = document.querySelector('.pb-nav-row--article').getBoundingClientRect();
+          const title = document.querySelector('.pb-post-title').getBoundingClientRect();
           return { navBottom: nav.bottom, titleTop: title.top, navWidth: nav.width };
         });
         expect(order.navBottom).toBeLessThanOrEqual(order.titleTop + 1);
-        expect(order.navWidth).toBeGreaterThanOrEqual(width - 55);
+        expect(order.navWidth).toBeGreaterThanOrEqual(width - 13);
         const links = page.locator('.pb-nav-row--article .pb-nav-link');
         for (let index = 0; index < await links.count(); index += 1) {
           await links.nth(index).scrollIntoViewIfNeeded();

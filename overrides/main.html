@@ -182,11 +182,13 @@
   </div>
 </section>
 <div class="pb-main">
-<!-- pbb.sh page-nav-row: page title left, nav pills right, on one sticky
-     row inside the content pane; the markdown h1 is hidden by CSS and the
-     title is rendered here instead so both live on the same row -->
+<!-- pbb.sh page-nav-row: the current section label sits at left and the
+     remaining primary destinations sit at right. An article keeps "Blog" in
+     this sticky row while its own title remains part of the scrolling body. -->
 <div class="pb-nav-row{% if is_post %} pb-nav-row--article{% endif %}">
-  <a class="pb-page-title-link" href="{{ page.url | url }}"><h1 class="pb-page-title">{{ page.title if page and page.title else config.site_name }}</h1></a>
+  {% set label_title = "Blog" if is_post else (page.title if page and page.title else config.site_name) %}
+  {% set label_url = "blog/" if is_post else page.url %}
+  <a class="pb-page-title-link" href="{{ label_url | url }}"><h1 class="pb-page-title">{{ label_title }}</h1></a>
   <nav class="pb-nav-tabs" aria-label="Primary navigation">
     {# pbb.sh behavior: the current page leaves the tab list and becomes the
        title at the far left; the remaining pages keep canonical order. Each
@@ -200,6 +202,9 @@
     {% endfor %}
   </nav>
 </div>
+{% if is_post %}
+<h1 class="pb-post-title">{{ page.title }}</h1>
+{% endif %}
 {% if is_post and page.toc %}
 <template class="pb-article-toc-template">
 {{ render_desktop_article_toc(page.toc) }}
