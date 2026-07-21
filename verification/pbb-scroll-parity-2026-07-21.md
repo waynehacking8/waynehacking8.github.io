@@ -32,7 +32,7 @@
 - [x] Soft navigation and history preserve one scroll listener and correct geometry.
 - [x] Reduced motion removes animation without disabling retraction.
 - [x] Strict build, focused Playwright, and full applicable local suite pass.
-- [ ] Production deployment and production browser suite pass.
+- [x] Production deployment and production browser suite pass.
 
 ## Local verification evidence
 
@@ -42,3 +42,11 @@
 - Measured local 390 x 844 geometry: 129 px profile and 74.39 px label bar; label-bar `top` transitions from 129 px to 0 and back to 129 px.
 - Corrected top, downward-scroll, and upward-scroll screenshots inspected in `test-results/pbb-scroll-parity-final/`.
 - `node --check` and `git diff --check`: passed.
+
+## Production verification evidence
+
+- Deployment workflow `29793227669`: completed successfully.
+- Production assets: `extra.css?v=20260721.26` and `pb-filter.js?v=20260721.9`.
+- Production browser suite: 12/12 passed across 320, 390, 768, 1023, and 1440 px, including reduced motion, soft navigation, article ordering, and TOC hash positioning.
+- Measured production 390 x 844 geometry matches local and reference values: 129 px profile and 74.39 px label bar, with restored/hidden label-bar tops of 129/0 px.
+- Production top, downward-scroll, and upward-scroll screenshots inspected in `test-results/pbb-scroll-parity-production/`; no overlap or horizontal overflow was present.
