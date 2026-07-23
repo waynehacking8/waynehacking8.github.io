@@ -8,7 +8,7 @@ hide:
 
 Hi, I'm **Wayne** 👋 — a GPU performance engineer, happiest when an upstream kernel
 fix lands. Currently, I'm a Field Application Engineer at
-<a href="https://ailabs.tw/zh/home/"><span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" width="64" height="64" />Taiwan AILabs</span></a>,
+<a href="https://ailabs.tw/"><span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" width="64" height="64" />Taiwan AILabs</span></a>,
 deploying on-premises LLM systems (FedGPT) into customer environments — Linux/Kubernetes
 operations, GPU serving, and customer-facing troubleshooting.
 
@@ -51,7 +51,7 @@ compute the right answer. Three threads:
 <div class="pb-news">
 <dl>
   <dt>Jul 2026</dt>
-  <dd>💼 Joined <a href="https://ailabs.tw/zh/home/"><strong>Taiwan AILabs</strong></a> as a Field Application Engineer —
+  <dd>💼 Joined <a href="https://ailabs.tw/"><strong>Taiwan AILabs</strong></a> as a Field Application Engineer —
       on-prem LLM deployments (FedGPT).</dd>
   <dt>Jul 2026</dt>
   <dd>🧱 The <a href="https://prs.wayne.is-a.dev">live PR wall</a> went up — every
