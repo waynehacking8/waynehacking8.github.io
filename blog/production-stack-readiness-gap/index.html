@@ -6,19 +6,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.">
+        <meta name="description" content="A measured vLLM Production Stack failure where 177/177 health probes passed but only 3/12 LLM requests completed, separating event-loop health from service readiness.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
       
       
-        <link rel="canonical" href="https://wayne.is-a.dev/blog/meta-rl/">
+        <link rel="canonical" href="https://wayne.is-a.dev/blog/production-stack-readiness-gap/">
       
       
-        <link rel="prev" href="../notes-cuda-tensor-core-gemm/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../pp-intro/">
+        <link rel="next" href="../inkling-975b-architecture/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Meta-Reinforcement Learning - Wei-Cheng Chiu</title>
+        <title>177/177 healthy, 3/12 complete - Wei-Cheng Chiu</title>
       
     
     
@@ -77,25 +77,25 @@
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="google-site-verification" content="pN4RB1iqwSojWvWtpmDesMXHlDIpM-DswD1Wtt_rWIU">
-  <link rel="canonical" href="https://wayne.is-a.dev/blog/meta-rl/">
+  <link rel="canonical" href="https://wayne.is-a.dev/blog/production-stack-readiness-gap/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Meta-Reinforcement Learning — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.">
-  <meta property="og:url" content="https://wayne.is-a.dev/blog/meta-rl/">
-  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/meta-rl.webp">
+  <meta property="og:title" content="177/177 healthy, 3/12 complete — Wei Cheng (Wayne) Chiu">
+  <meta property="og:description" content="A measured vLLM Production Stack failure where 177/177 health probes passed but only 3/12 LLM requests completed, separating event-loop health from service readiness.">
+  <meta property="og:url" content="https://wayne.is-a.dev/blog/production-stack-readiness-gap/">
+  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/production-stack-readiness.svg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="Meta-Reinforcement Learning — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.">
-  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/meta-rl.webp">
+  <meta name="twitter:title" content="177/177 healthy, 3/12 complete — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:description" content="A measured vLLM Production Stack failure where 177/177 health probes passed but only 3/12 LLM requests completed, separating event-loop health from service readiness.">
+  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/production-stack-readiness.svg">
   
-  <meta property="article:tag" content="Machine Learning"><meta property="article:tag" content="Reinforcement Learning"><meta property="article:tag" content="Survey">
+  <meta property="article:tag" content="Serving"><meta property="article:tag" content="Kubernetes"><meta property="article:tag" content="vLLM"><meta property="article:tag" content="LMCache"><meta property="article:tag" content="Reliability">
   
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
@@ -158,17 +158,16 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Meta-Reinforcement Learning",
-    "url": "https://wayne.is-a.dev/blog/meta-rl/",
-    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/meta-rl/" },
+    "headline": "177/177 healthy, 3/12 complete",
+    "url": "https://wayne.is-a.dev/blog/production-stack-readiness-gap/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/production-stack-readiness-gap/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
-    "inLanguage": "zh-Hant",
-    "keywords": ["Machine Learning", "Reinforcement Learning", "Survey"],
-    "description": "Meta-RL as inference over tasks: recurrent policies, gradient adaptation, latent context, structured exploration, and the evaluation mistakes that hide memorization.",
-    "image": "https://wayne.is-a.dev/assets/blog/meta-rl.webp",
-    "datePublished": "2025-01-11",
-    "dateModified": "2026-07-21"
+    "inLanguage": ["en", "zh-Hant"],
+    "keywords": ["Serving", "Kubernetes", "vLLM", "LMCache", "Reliability"],
+    "description": "A measured vLLM Production Stack failure where 177/177 health probes passed but only 3/12 LLM requests completed, separating event-loop health from service readiness.",
+    "image": "https://wayne.is-a.dev/assets/blog/production-stack-readiness.svg",
+    "datePublished": "2026-07-29"
   }
   </script>
   
@@ -192,7 +191,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#meta-rl-policy-episode" class="md-skip">
+        <a href="#177177-healthy-312-complete-the-llm-readiness-gap177-312" class="md-skip">
           Skip to content
         </a>
       
@@ -226,7 +225,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Meta-Reinforcement Learning
+              177/177 healthy, 3/12 complete
             
           </span>
         </div>
@@ -511,10 +510,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../production-stack-readiness-gap/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    177/177 healthy, 3/12 complete
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -530,6 +556,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-failure-under-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The failure under test｜這次測的是什麼故障
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-main-failed-at-the-health-planemain-health-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Main failed at the health plane｜Main 在 health plane 失敗
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-pr-1025-changedpr-1025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What PR #1025 changed｜PR #1025 改了什麼
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-only-312-requests-completed-312-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Why only 3/12 requests completed｜為什麼只有 3／12 requests 完成
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-stronger-acceptance-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. A stronger acceptance gate｜更完整的驗收條件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-boundary-of-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Boundary of the result｜結果適用範圍
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -735,37 +847,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Meta-Reinforcement Learning
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../meta-rl/" class="md-nav__link">
         
   
   
@@ -781,120 +866,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        問題設定：在任務分布上最佳化
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#task-belief" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        三條路線把 task belief 放在不同位置
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="三條路線把 task belief 放在不同位置">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#maml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MAML：找一個「幾步就能改好」的起點
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rl2-recurrent-state" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RL²：把更新規則藏進 recurrent state
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pearl-varibad-task-belief" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PEARL / VariBAD：顯式維護 task belief
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#meta-rl" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Meta-RL 的探索要辨識任務
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        評估時最容易藏住的四個問題
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        我會怎麼選方法
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -990,10 +961,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#1-the-failure-under-test" class="md-nav__link">
     <span class="md-ellipsis">
       
-        問題設定：在任務分布上最佳化
+        1. The failure under test｜這次測的是什麼故障
       
     </span>
   </a>
@@ -1001,60 +972,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#task-belief" class="md-nav__link">
+  <a href="#2-main-failed-at-the-health-planemain-health-plane" class="md-nav__link">
     <span class="md-ellipsis">
       
-        三條路線把 task belief 放在不同位置
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="三條路線把 task belief 放在不同位置">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#maml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MAML：找一個「幾步就能改好」的起點
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rl2-recurrent-state" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RL²：把更新規則藏進 recurrent state
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pearl-varibad-task-belief" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PEARL / VariBAD：顯式維護 task belief
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#meta-rl" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Meta-RL 的探索要辨識任務
+        2. Main failed at the health plane｜Main 在 health plane 失敗
       
     </span>
   </a>
@@ -1062,10 +983,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#3-what-pr-1025-changedpr-1025" class="md-nav__link">
     <span class="md-ellipsis">
       
-        評估時最容易藏住的四個問題
+        3. What PR #1025 changed｜PR #1025 改了什麼
       
     </span>
   </a>
@@ -1073,10 +994,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#4-why-only-312-requests-completed-312-requests" class="md-nav__link">
     <span class="md-ellipsis">
       
-        我會怎麼選方法
+        4. Why only 3/12 requests completed｜為什麼只有 3／12 requests 完成
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-stronger-acceptance-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. A stronger acceptance gate｜更完整的驗收條件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-boundary-of-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Boundary of the result｜結果適用範圍
       
     </span>
   </a>
@@ -1136,35 +1079,27 @@
     
       
     
-      <li><a href="#_1">問題設定：在任務分布上最佳化</a></li>
+      <li><a href="#1-the-failure-under-test">1. The failure under test｜這次測的是什麼故障</a></li>
     
   
     
-      <li><a href="#task-belief">三條路線把 task belief 放在不同位置</a><ol>
-    
-      <li><a href="#maml">MAML：找一個「幾步就能改好」的起點</a></li>
+      <li><a href="#2-main-failed-at-the-health-planemain-health-plane">2. Main failed at the health plane｜Main 在 health plane 失敗</a></li>
     
   
     
-      <li><a href="#rl2-recurrent-state">RL²：把更新規則藏進 recurrent state</a></li>
+      <li><a href="#3-what-pr-1025-changedpr-1025">3. What PR #1025 changed｜PR #1025 改了什麼</a></li>
     
   
     
-      <li><a href="#pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief</a></li>
-    
-  </ol></li>
+      <li><a href="#4-why-only-312-requests-completed-312-requests">4. Why only 3/12 requests completed｜為什麼只有 3／12 requests 完成</a></li>
     
   
     
-      <li><a href="#meta-rl">Meta-RL 的探索要辨識任務</a></li>
+      <li><a href="#5-a-stronger-acceptance-gate">5. A stronger acceptance gate｜更完整的驗收條件</a></li>
     
   
     
-      <li><a href="#_2">評估時最容易藏住的四個問題</a></li>
-    
-  
-    
-      <li><a href="#_3">我會怎麼選方法</a></li>
+      <li><a href="#6-boundary-of-the-result">6. Boundary of the result｜結果適用範圍</a></li>
     
   
     
@@ -1205,7 +1140,7 @@
   </nav>
 </div>
 
-<h1 class="pb-post-title">Meta-Reinforcement Learning</h1>
+<h1 class="pb-post-title">177/177 healthy, 3/12 complete</h1>
 
 
 <template class="pb-article-toc-template">
@@ -1216,35 +1151,27 @@
     
       
     
-      <li><a href="#_1">問題設定：在任務分布上最佳化</a></li>
+      <li><a href="#1-the-failure-under-test">1. The failure under test｜這次測的是什麼故障</a></li>
     
   
     
-      <li><a href="#task-belief">三條路線把 task belief 放在不同位置</a><ol>
-    
-      <li><a href="#maml">MAML：找一個「幾步就能改好」的起點</a></li>
+      <li><a href="#2-main-failed-at-the-health-planemain-health-plane">2. Main failed at the health plane｜Main 在 health plane 失敗</a></li>
     
   
     
-      <li><a href="#rl2-recurrent-state">RL²：把更新規則藏進 recurrent state</a></li>
+      <li><a href="#3-what-pr-1025-changedpr-1025">3. What PR #1025 changed｜PR #1025 改了什麼</a></li>
     
   
     
-      <li><a href="#pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief</a></li>
-    
-  </ol></li>
+      <li><a href="#4-why-only-312-requests-completed-312-requests">4. Why only 3/12 requests completed｜為什麼只有 3／12 requests 完成</a></li>
     
   
     
-      <li><a href="#meta-rl">Meta-RL 的探索要辨識任務</a></li>
+      <li><a href="#5-a-stronger-acceptance-gate">5. A stronger acceptance gate｜更完整的驗收條件</a></li>
     
   
     
-      <li><a href="#_2">評估時最容易藏住的四個問題</a></li>
-    
-  
-    
-      <li><a href="#_3">我會怎麼選方法</a></li>
+      <li><a href="#6-boundary-of-the-result">6. Boundary of the result｜結果適用範圍</a></li>
     
   
     
@@ -1259,35 +1186,27 @@
     
       
     
-      <li><a href="#_1">問題設定：在任務分布上最佳化</a></li>
+      <li><a href="#1-the-failure-under-test">1. The failure under test｜這次測的是什麼故障</a></li>
     
   
     
-      <li><a href="#task-belief">三條路線把 task belief 放在不同位置</a><ol>
-    
-      <li><a href="#maml">MAML：找一個「幾步就能改好」的起點</a></li>
+      <li><a href="#2-main-failed-at-the-health-planemain-health-plane">2. Main failed at the health plane｜Main 在 health plane 失敗</a></li>
     
   
     
-      <li><a href="#rl2-recurrent-state">RL²：把更新規則藏進 recurrent state</a></li>
+      <li><a href="#3-what-pr-1025-changedpr-1025">3. What PR #1025 changed｜PR #1025 改了什麼</a></li>
     
   
     
-      <li><a href="#pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief</a></li>
-    
-  </ol></li>
+      <li><a href="#4-why-only-312-requests-completed-312-requests">4. Why only 3/12 requests completed｜為什麼只有 3／12 requests 完成</a></li>
     
   
     
-      <li><a href="#meta-rl">Meta-RL 的探索要辨識任務</a></li>
+      <li><a href="#5-a-stronger-acceptance-gate">5. A stronger acceptance gate｜更完整的驗收條件</a></li>
     
   
     
-      <li><a href="#_2">評估時最容易藏住的四個問題</a></li>
-    
-  
-    
-      <li><a href="#_3">我會怎麼選方法</a></li>
+      <li><a href="#6-boundary-of-the-result">6. Boundary of the result｜結果適用範圍</a></li>
     
   
     
@@ -1300,148 +1219,196 @@
 
 
 
-<h1 id="meta-rl-policy-episode">Meta-RL：讓 policy 在 episode 內學會更新自己<a class="headerlink" href="#meta-rl-policy-episode" title="Permanent link">&para;</a></h1>
-<p><em>2025-01-11 · updated 2026-07-21 · reinforcement learning / adaptation</em></p>
+<h1 id="177177-healthy-312-complete-the-llm-readiness-gap177-312">177/177 Healthy, 3/12 Complete: The LLM Readiness Gap｜177 次健康檢查全綠，只有 3/12 請求完成<a class="headerlink" href="#177177-healthy-312-complete-the-llm-readiness-gap177-312" title="Permanent link">&para;</a></h1>
+<p><em>2026-07-29 · LLM serving / Kubernetes reliability</em></p>
 <figure class="pb-article-hero">
-  <img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement-learning experiment visualization" loading="eager" decoding="async">
-  <figcaption>Prefrontal cortex as a meta-RL system · <a href="https://deepmind.google/blog/prefrontal-cortex-as-a-meta-reinforcement-learning-system/">Source: Google DeepMind</a></figcaption>
+  <img src="/assets/blog/production-stack-readiness.svg" alt="Kubernetes probes and LLM requests sharing a KV-aware router while tokenizer and backend work run on separate paths" loading="eager" decoding="async">
+  <figcaption>Probe health and request completion travel through different dependencies.／健康檢查與請求完成會經過不同的相依元件。</figcaption>
 </figure>
 
-<p>一般的強化學習在固定 MDP 裡找一個 policy。Meta-RL 多了一層：訓練資料是一個<strong>任務
-分布</strong>，agent 要從新任務的少量 trajectory 推斷「這次的 dynamics／reward 到底是
-什麼」，再用 episode 內的經驗改變行為。權重可以不更新，但 policy 的有效狀態必須
-更新。這就是把學習演算法本身塞進 agent。</p>
-<p>接下來要回答三件事：任務資訊存在哪裡、適應如何更新，以及探索怎麼協助辨識任務。</p>
-<h2 id="_1">問題設定：在任務分布上最佳化<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>令任務 <span class="arithmatex">\(\mathcal{T}\)</span> 從分布 <span class="arithmatex">\(p(\mathcal{T})\)</span> 取樣。Agent 先收集 context
-<span class="arithmatex">\(c_{1:k}=(s,a,r,s')_{1:k}\)</span>，再透過適應機制 <span class="arithmatex">\(A_\phi\)</span> 產生任務條件 policy：</p>
-<div class="arithmatex">\[
-\pi_{\mathcal{T}} = A_\phi(c_{1:k}),
-\qquad
-\max_\phi\;
-\mathbb{E}_{\mathcal{T}\sim p(\mathcal{T})}
-\left[J_{\mathcal{T}}\!\left(A_\phi(c_{1:k})\right)\right].
-\tag{1}
-\]</div>
-<p>Meta-training 調整的是 <span class="arithmatex">\(\phi\)</span>：它可能是一組容易 fine-tune 的初始權重、一個 recurrent
-state update，或一個從 context 推斷 latent task 的 encoder。Meta-test 則把新任務保留
-在訓練分布之外，否則看到的只是記憶，不是適應。</p>
-<h2 id="task-belief">三條路線把 task belief 放在不同位置<a class="headerlink" href="#task-belief" title="Permanent link">&para;</a></h2>
+<p>The router passed <strong>177 out of 177 health checks</strong>. Its health latency stayed below 15 ms, and Kubernetes recorded no probe failure or restart. Under the same test, only <strong>3 out of 12 LLM requests completed</strong> within the 14-second client timeout.</p>
+<p class="pb-translation" lang="zh-Hant">Router 通過了 <strong>177／177 次健康檢查</strong>，健康檢查延遲都低於 15 ms，Kubernetes 也沒有記錄任何 probe failure 或 restart。但在同一輪測試裡，12 個 LLM request 只有 <strong>3 個在 14 秒的 client timeout 內完成</strong>。</p>
+<p>Both results were correct. The event loop was responsive, while the request path was still waiting on tokenizer initialization and backend warm-up. A green <code>/health</code> endpoint proved one layer had recovered; it did not prove the service could complete traffic.</p>
+<p class="pb-translation" lang="zh-Hant">兩個結果都沒錯。Event loop 已經能正常回應，但 request path 仍卡在 tokenizer 初始化與 backend warm-up。<code>/health</code> 全綠只能證明其中一層恢復，不能證明服務已經能完成請求。</p>
+<h2 id="1-the-failure-under-test">1. The failure under test｜這次測的是什麼故障<a class="headerlink" href="#1-the-failure-under-test" title="Permanent link">&para;</a></h2>
+<p>The experiment reproduced <a href="https://github.com/vllm-project/production-stack/issues/1016">vLLM Production Stack issue #1016</a>, where the KV-aware router could block its uvicorn event loop during tokenization. When external access to the Hugging Face Hub was unavailable, <code>AutoTokenizer.from_pretrained</code> could take long enough to starve <code>/health</code>. Kubernetes then treated the router as unhealthy and restarted it even though the vLLM backend remained Ready.<sup id="fnref:repro"><a class="footnote-ref" href="#fn:repro">1</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">這次實驗重現的是 <a href="https://github.com/vllm-project/production-stack/issues/1016">vLLM Production Stack issue #1016</a>。KV-aware router 進行 tokenization 時，可能阻塞 uvicorn event loop。當 router 無法連到 Hugging Face Hub，<code>AutoTokenizer.from_pretrained</code> 可能拖到 <code>/health</code> 無法回應。此時 vLLM backend 仍是 Ready，Kubernetes 卻會把 router 判定為 unhealthy 並重新啟動。<sup id="fnref2:repro"><a class="footnote-ref" href="#fn:repro">1</a></sup></p>
+<p>The bounded lab used:</p>
+<p class="pb-translation" lang="zh-Hant">測試環境如下：</p>
+<ul>
+<li><strong>Hardware:</strong> NVIDIA RTX PRO 6000 Blackwell, SM120, 96 GB.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>硬體：</strong> NVIDIA RTX PRO 6000 Blackwell，SM120，96 GB。</span></li>
+<li><strong>Model:</strong> <code>Qwen/Qwen2.5-0.5B-Instruct</code>, pinned revision <code>7ae55760</code>, served as alias <code>default</code>.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>模型：</strong> <code>Qwen/Qwen2.5-0.5B-Instruct</code>，固定 revision <code>7ae55760</code>，對外 alias 為 <code>default</code>。</span></li>
+<li><strong>Serving path:</strong> KV-aware routing, vLLM backend, LMCache controller and storage.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Serving path：</strong> KV-aware routing、vLLM backend、LMCache controller 與 storage。</span></li>
+<li><strong>Traffic:</strong> an exactly 30,000-token prompt every 15 seconds, with eight output tokens.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>流量：</strong> 每 15 秒送出一個正好 30,000 tokens 的 prompt，並生成 8 個 tokens。</span></li>
+<li><strong>Probe budget:</strong> two seconds for startup, readiness, and liveness probes.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Probe 預算：</strong> startup、readiness 與 liveness probes 都是 2 秒。</span></li>
+</ul>
+<p>Kubernetes uses readiness probes to decide whether a Pod should receive traffic and liveness probes to decide whether it should be restarted.<sup id="fnref:probes"><a class="footnote-ref" href="#fn:probes">4</a></sup> The two-second budget made event-loop starvation visible as an operational failure rather than a slow log line.</p>
+<p class="pb-translation" lang="zh-Hant">Kubernetes 透過 readiness probe 決定 Pod 是否應繼續接收流量，透過 liveness probe 決定是否重新啟動 Pod。<sup id="fnref2:probes"><a class="footnote-ref" href="#fn:probes">4</a></sup> 兩秒的 probe budget 讓 event-loop starvation 直接表現在維運結果上，而不只是一行「比較慢」的 log。</p>
+<h2 id="2-main-failed-at-the-health-planemain-health-plane">2. Main failed at the health plane｜Main 在 health plane 失敗<a class="headerlink" href="#2-main-failed-at-the-health-planemain-health-plane" title="Permanent link">&para;</a></h2>
+<p>With normal router egress, the control run completed all 12 requests and all 177 one-second health samples returned HTTP 200. Health latency peaked at 0.221 seconds, and the router had no restart.</p>
+<p class="pb-translation" lang="zh-Hant">Router 能正常連外時，control run 的 12 個 requests 全部完成，177 次每秒健康檢查也全部回傳 HTTP 200。Health latency 最高為 0.221 秒，router 沒有 restart。</p>
+<p>I then blocked external router egress while keeping DNS, backend <code>/tokenize</code>, the LMCache controller, and worker reachability available. On Production Stack main at <code>a0f4980a</code>, the first long request stalled before the backend fallback:</p>
+<p class="pb-translation" lang="zh-Hant">接著只封鎖 router 對外連線，DNS、backend <code>/tokenize</code>、LMCache controller 與 worker 仍保持可達。Production Stack main <code>a0f4980a</code> 上的第一個 long request，在進入 backend fallback 前就卡住：</p>
 <table>
 <thead>
 <tr>
-<th>路線</th>
-<th>適應發生的位置</th>
-<th>優點</th>
-<th>主要風險</th>
+<th>Result／結果</th>
+<th style="text-align: right;">Normal egress／正常連外</th>
+<th style="text-align: right;">Restricted egress on main／Main 封鎖連外</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Gradient-based（MAML）</td>
-<td>對 policy 參數做少量 gradient steps</td>
-<td>更新規則明確，可套在不同模型</td>
-<td>二階梯度成本、RL gradient variance</td>
+<td>Completed requests／完成請求</td>
+<td style="text-align: right;">12/12</td>
+<td style="text-align: right;">failed during trial／測試期間失敗</td>
 </tr>
 <tr>
-<td>Recurrent（RL²）</td>
-<td>RNN hidden state 吸收 reward/action history</td>
-<td>測試時不用更新權重</td>
-<td>hidden state 難解釋，容易記住訓練任務</td>
+<td>Health samples over 2 s／超過 2 秒的健康檢查</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">81</td>
 </tr>
 <tr>
-<td>Latent-context（PEARL / VariBAD）</td>
-<td>從 trajectory 推斷 latent task <span class="arithmatex">\(z\)</span></td>
-<td>能表示不確定性，適合 belief-space reasoning</td>
-<td>posterior collapse、offline context shift</td>
+<td>Readiness failures</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr>
+<td>Liveness failures</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td>Router restarts</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>Backend restarts</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
-<h3 id="maml">MAML：找一個「幾步就能改好」的起點<a class="headerlink" href="#maml" title="Permanent link">&para;</a></h3>
-<p>對每個任務先做 inner-loop 更新</p>
-<div class="arithmatex">\[
-\theta'_{\mathcal{T}} =
-\theta-\alpha\nabla_\theta\mathcal{L}_{\mathcal{T}}(\theta),
-\tag{2}
-\]</div>
-<p>外層再讓更新後的 <span class="arithmatex">\(\theta'_{\mathcal{T}}\)</span> 在各任務上都好。MAML 要學的是一組只需少量
-gradient steps 就能適應新任務的初始參數。RL 裡的難點是 inner/outer loop
-都帶 sampling noise，二階項也昂貴；first-order MAML 和 Reptile 用較便宜的近似換掉
-部分精確度。<sup id="fnref:maml"><a class="footnote-ref" href="#fn:maml">1</a></sup></p>
-<h3 id="rl2-recurrent-state">RL²：把更新規則藏進 recurrent state<a class="headerlink" href="#rl2-recurrent-state" title="Permanent link">&para;</a></h3>
-<p>RL² 把前一步 action、reward、termination 與 observation 一起餵進 RNN。權重在
-meta-test 不變，但 hidden state 隨 trajectory 更新；對外看起來就像 agent 在 episode
-內執行一個自己學會的 RL algorithm。<sup id="fnref:rl2"><a class="footnote-ref" href="#fn:rl2">2</a></sup></p>
-<p>RNN 能表示多種更新規則，但 hidden state 很難解釋，實驗也難以分辨網路是在推斷任務、
-記住 task ID，還是利用 benchmark 的固定順序。任務 permutation、held-out dynamics
-與 counterfactual reward tests 因此比平均 return 更重要。</p>
-<h3 id="pearl-varibad-task-belief">PEARL / VariBAD：顯式維護 task belief<a class="headerlink" href="#pearl-varibad-task-belief" title="Permanent link">&para;</a></h3>
-<p>PEARL 從 context 推斷 latent <span class="arithmatex">\(z\)</span>，policy 以 <span class="arithmatex">\((s,z)\)</span> 決策；採樣不同 <span class="arithmatex">\(z\)</span> 也提供一種
-posterior sampling 式探索。<sup id="fnref:pearl"><a class="footnote-ref" href="#fn:pearl">3</a></sup> VariBAD 則把 Bayes-adaptive MDP 的 belief update
-寫成 variational inference 問題，讓 agent 同時學 task inference 與 control。<sup id="fnref:varibad"><a class="footnote-ref" href="#fn:varibad">4</a></sup></p>
-<p>這類方法讓「我還不確定是哪個任務」成為模型的一部分，但 context distribution 很
-敏感。Offline meta-RL 若只在行為 policy 收集的 context 上訓練，部署時由新 policy
-產生的 context 可能落在 encoder 沒看過的區域。</p>
-<h2 id="meta-rl">Meta-RL 的探索要辨識任務<a class="headerlink" href="#meta-rl" title="Permanent link">&para;</a></h2>
-<p>普通 exploration 尋找可能帶來高 reward 的 state。Meta-RL 還要選出最能區分候選任務的
-action；即使兩個 action 的即時 reward 相同，其中一個仍可能讓 posterior 更快收斂，進而
-提高後續回報。</p>
-<p>MAESN 在 latent space 注入 episode-consistent structured noise，讓整段 trajectory 形成
-一致的探索策略。<sup id="fnref:maesn"><a class="footnote-ref" href="#fn:maesn">5</a></sup>
-更一般地，可以把探索價值寫成 task information gain：</p>
-<div class="arithmatex">\[
-\text{IG}(a_t)=
-\mathbb{E}\left[
-D_{\mathrm{KL}}\!\left(
-p(\mathcal{T}\mid c_{1:t+1})\,\|\,
-p(\mathcal{T}\mid c_{1:t})
-\right)
-\right].
-\tag{3}
-\]</div>
-<p>實作通常不會直接最佳化這個式子，但可用它檢查探索是否能泛化：如果 agent 只在
-training tasks 上知道該試什麼，換掉 reward mapping 後探索就會崩。</p>
-<h2 id="_2">評估時最容易藏住的四個問題<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>The backend never became unhealthy. The router restarted because tokenization work occupied the same event loop that had to answer <code>/health</code>.<sup id="fnref3:repro"><a class="footnote-ref" href="#fn:repro">1</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">Backend 從未變成 unhealthy。Router 會 restart，是因為 tokenization 工作占用了原本也要回應 <code>/health</code> 的 event loop。<sup id="fnref4:repro"><a class="footnote-ref" href="#fn:repro">1</a></sup></p>
+<h2 id="3-what-pr-1025-changedpr-1025">3. What PR #1025 changed｜PR #1025 改了什麼<a class="headerlink" href="#3-what-pr-1025-changedpr-1025" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/vllm-project/production-stack/pull/1025">Production Stack PR #1025</a> moved the two blocking operations off the event loop with <code>asyncio.to_thread</code>:</p>
+<p class="pb-translation" lang="zh-Hant"><a href="https://github.com/vllm-project/production-stack/pull/1025">Production Stack PR #1025</a> 使用 <code>asyncio.to_thread</code>，把兩個 blocking operations 移出 event loop：</p>
 <ol>
-<li><strong>Task leakage</strong>：observation、episode length 或 reset pattern 暗示 task ID。</li>
-<li><strong>只報 adaptation 後的 return</strong>：沒有畫第 0、1、2 次 trial 的曲線，看不到適應
-   速度與前期探索成本。</li>
-<li><strong>Train/test 任務太相似</strong>：只換連續參數的小範圍，無法區分 interpolation 與真正
-   的結構泛化。</li>
-<li><strong>平均值掩蓋 tail tasks</strong>：mean return 很高，但少數 dynamics shift 完全失敗；至少
-   應同時報 quantile、worst-group 與 seed variation。</li>
+<li><code>AutoTokenizer.from_pretrained</code> for local tokenizer loading.</li>
+<li>
+<p>The synchronous <code>requests.post</code> call to the backend <code>/tokenize</code> fallback.</p>
+</li>
+<li>
+<p>用來載入 local tokenizer 的 <code>AutoTokenizer.from_pretrained</code>。</p>
+</li>
+<li class="pb-translation" lang="zh-Hant">呼叫 backend <code>/tokenize</code> fallback 的 synchronous <code>requests.post</code>。</li>
 </ol>
-<p>一個可信的報告至少包含：held-out task construction、每個 trial 的 return、適應所用
-interaction budget、與從頭訓練／domain randomization／oracle task-ID policy 的對照。</p>
-<h2 id="_3">我會怎麼選方法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>It also cached a failed tokenizer load so later requests could go directly to the backend fallback instead of repeating the same doomed attempt. The PR deliberately left the LMCache controller lookup unchanged because that path is an in-memory registry read in the tested version.<sup id="fnref:pr"><a class="footnote-ref" href="#fn:pr">2</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">PR 也會記住 tokenizer load 已經失敗，讓後續 requests 直接走 backend fallback，不必重複同一個注定失敗的嘗試。測試版本中的 LMCache controller lookup 是 in-memory registry read，因此這次沒有更動那條路徑。<sup id="fnref2:pr"><a class="footnote-ref" href="#fn:pr">2</a></sup></p>
+<p>At exact head <code>e104ed573</code>, the original health failure disappeared:</p>
+<p class="pb-translation" lang="zh-Hant">使用確切的 PR head <code>e104ed573</code> 後，原本的 health failure 消失了：</p>
+<table>
+<thead>
+<tr>
+<th>Metric／指標</th>
+<th style="text-align: right;">PR #1025 head <code>e104ed573</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Health HTTP 200</td>
+<td style="text-align: right;">177/177</td>
+</tr>
+<tr>
+<td>Health p95</td>
+<td style="text-align: right;">0.007987 s</td>
+</tr>
+<tr>
+<td>Health maximum</td>
+<td style="text-align: right;">0.014888 s</td>
+</tr>
+<tr>
+<td>Probe failures</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Router restarts</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Backend <code>/tokenize</code>, controller lookup, KV-aware routing, generation, and LMCache hits all executed during the trial. This confirmed the patch fixed the event-loop health failure without bypassing the serving path.<sup id="fnref:validation"><a class="footnote-ref" href="#fn:validation">3</a></sup></p>
+<p class="pb-translation" lang="zh-Hant">測試期間，backend <code>/tokenize</code>、controller lookup、KV-aware routing、generation 與 LMCache hits 都有實際執行。這證明 patch 修復 event-loop health failure 時，沒有直接繞過 serving path。<sup id="fnref2:validation"><a class="footnote-ref" href="#fn:validation">3</a></sup></p>
+<h2 id="4-why-only-312-requests-completed-312-requests">4. Why only 3/12 requests completed｜為什麼只有 3／12 requests 完成<a class="headerlink" href="#4-why-only-312-requests-completed-312-requests" title="Permanent link">&para;</a></h2>
+<p>Moving work to threads protected the event loop, but it did not serialize tokenizer initialization. Six requests arrived before the first roughly 80-second <code>from_pretrained</code> failure completed. Each request started another tokenizer load. The router stayed healthy while those client deadlines expired.</p>
+<p class="pb-translation" lang="zh-Hant">把工作移到 threads 之後，event loop 不再被拖住，但 tokenizer initialization 仍沒有被序列化。第一個約 80 秒的 <code>from_pretrained</code> failure 結束前，又有 6 個 requests 抵達；每個 request 都另外啟動一次 tokenizer load。Router 一直保持 healthy，client deadline 卻已經到期。</p>
+<p>The next three requests reached <code>/tokenize</code> fallback quickly because the failed-load flag was now set. They still timed out during the backend's first-request LMCache post-initialization. Three later clients completed after the backend became warm.</p>
+<p class="pb-translation" lang="zh-Hant">接下來 3 個 requests 因為 failed-load flag 已經設定，很快就進入 <code>/tokenize</code> fallback，但又遇上 backend 第一次使用 LMCache 的 post-initialization，最後仍然 timeout。Backend warm 起來後，最後 3 個 clients 才順利完成。</p>
+<p>This exposed two separate readiness gaps:</p>
+<p class="pb-translation" lang="zh-Hant">這次測試拆出了兩個不同的 readiness gap：</p>
 <ul>
-<li>已有可微分 policy、每個新任務允許幾步更新：先從 first-order MAML 類 baseline 開始。</li>
-<li>任務資訊天然存在長 trajectory，而且線上更新權重不方便：用 recurrent policy，但加
-  強力的 leakage tests。</li>
-<li>需要不確定性與 information-seeking exploration：選 latent-context / belief-based
-  方法，並把 posterior calibration 納入評估。</li>
-<li>只有離線資料：先處理 context shift；沒有 coverage，meta-learning 不會憑空創造新
-  任務的證據。</li>
+<li><strong>Router initialization:</strong> concurrent requests could launch duplicate tokenizer loads before the first failure was cached.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Router initialization：</strong> 第一個失敗被記錄前，多個 concurrent requests 可能重複啟動 tokenizer load。</span></li>
+<li><strong>Backend initialization:</strong> the backend was Kubernetes-Ready before its first LMCache request path had finished warming.<br><span class="pb-inline-translation" lang="zh-Hant"><strong>Backend initialization：</strong> 第一次 LMCache request path 完成 warm-up 前，backend 就已經被 Kubernetes 判定為 Ready。</span></li>
 </ul>
-<p>評估最後仍要回到一件事：agent 在新任務的前幾次互動中更新了哪些判斷。若實驗無法
-回答，再高的 final return 仍可能只是記住了任務分布。</p>
+<p>The first gap belongs to single-flight initialization or another form of load deduplication. The second belongs to deployment readiness: pre-warm the path, extend the initial request budget, or expose a readiness condition that includes the required initialization.</p>
+<p class="pb-translation" lang="zh-Hant">第一個 gap 需要 single-flight initialization 或其他 load deduplication。第二個則是 deployment readiness 問題：可以預先 warm-up、放寬首次 request budget，或讓 readiness condition 納入必要的初始化狀態。</p>
+<h2 id="5-a-stronger-acceptance-gate">5. A stronger acceptance gate｜更完整的驗收條件<a class="headerlink" href="#5-a-stronger-acceptance-gate" title="Permanent link">&para;</a></h2>
+<p>For this serving path, <code>/health == 200</code> is necessary but incomplete. I would keep four independent gates:</p>
+<p class="pb-translation" lang="zh-Hant">對這條 serving path 而言，<code>/health == 200</code> 是必要條件，但還不完整。驗收時應分開保留四道 gates：</p>
+<table>
+<thead>
+<tr>
+<th>Gate／驗收層</th>
+<th>What it proves／能證明什麼</th>
+<th>Example criterion／範例條件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event-loop health</td>
+<td>Router can answer probes under load／Router 在負載下仍能回 probe</td>
+<td>177/177 HTTP 200, no sample over 2 s</td>
+</tr>
+<tr>
+<td>Request completion</td>
+<td>Clients receive usable responses／Client 能拿到可用 response</td>
+<td>12/12 complete within the declared timeout</td>
+</tr>
+<tr>
+<td>Dependency path</td>
+<td>Fallback and KV components actually run／Fallback 與 KV 元件真的有執行</td>
+<td><code>/tokenize</code>, controller lookup, generation, LMCache activity observed</td>
+</tr>
+<tr>
+<td>Day-2 recovery</td>
+<td>Cold Pod or dependency failure recovers safely／Cold Pod 或相依元件故障後能安全恢復</td>
+<td>no restart loop, bounded warm-up, repeatable second request</td>
+</tr>
+</tbody>
+</table>
+<p>These gates stop a partial repair from being reported as full service recovery. They also show who owns the next change: router concurrency, backend initialization, Kubernetes readiness, or the client timeout contract.</p>
+<p class="pb-translation" lang="zh-Hant">這四道 gates 可以避免把局部修復誤報成完整服務恢復，也能看出下一步該由誰處理：router concurrency、backend initialization、Kubernetes readiness，還是 client timeout contract。</p>
+<h2 id="6-boundary-of-the-result">6. Boundary of the result｜結果適用範圍<a class="headerlink" href="#6-boundary-of-the-result" title="Permanent link">&para;</a></h2>
+<p>This was a single-node, single-GPU, restricted-egress experiment with one small model and a deliberately long prompt. It does not establish production throughput, an SLA, or behavior on a multi-node deployment. PR #1025 remains open and review-gated as of 2026-07-29.</p>
+<p class="pb-translation" lang="zh-Hant">這是 single-node、single-GPU、restricted-egress 的實驗，只使用一個小模型與刻意拉長的 prompt。結果不能直接代表 production throughput、SLA 或 multi-node deployment；截至 2026-07-29，PR #1025 仍是 open 且等待 review。</p>
+<p>The next meaningful rerun requires a new PR head that prevents duplicate concurrent tokenizer loads. The completion gate is explicit: 12/12 clients, 177/177 healthy samples, no sample over two seconds, no probe event, and no router restart. Until the code changes, repeating the same trial would only reproduce the same boundary.</p>
+<p class="pb-translation" lang="zh-Hant">下一次有意義的重跑，必須等新 PR head 解決 duplicate concurrent tokenizer loads。Completion gate 已經寫清楚：12／12 clients 完成、177／177 health samples 成功、沒有任何 sample 超過 2 秒、沒有 probe event，也沒有 router restart。程式碼沒變之前，重跑只會再次得到相同邊界。</p>
 <div class="footnote">
 <hr />
 <ol>
-<li id="fn:maml">
-<p><a href="https://proceedings.mlr.press/v70/finn17a.html">Finn et al., “Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks”</a>.&#160;<a class="footnote-backref" href="#fnref:maml" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:repro">
+<p><a href="https://github.com/vllm-project/production-stack/issues/1016#issuecomment-5101605222">Bounded reproduction on Production Stack main</a>, including the exact workload, control arm, restricted-egress failure, probe events, and restart counts.／Production Stack main 上的 bounded reproduction，包含 workload、control arm、restricted-egress failure、probe events 與 restart counts。&#160;<a class="footnote-backref" href="#fnref:repro" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:repro" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:repro" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:repro" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn:rl2">
-<p><a href="https://arxiv.org/abs/1611.02779">Duan et al., “RL²: Fast Reinforcement Learning via Slow Reinforcement Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:rl2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn:pr">
+<p><a href="https://github.com/vllm-project/production-stack/pull/1025">Production Stack PR #1025</a>, including the event-loop fix, failed-load cache, focused tests, and stated non-goals.／包含 event-loop fix、failed-load cache、focused tests 與明確 non-goals。&#160;<a class="footnote-backref" href="#fnref:pr" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:pr" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
-<li id="fn:pearl">
-<p><a href="https://proceedings.mlr.press/v97/rakelly19a.html">Rakelly et al., “Efficient Off-Policy Meta-Reinforcement Learning via Probabilistic Context Variables”</a>.&#160;<a class="footnote-backref" href="#fnref:pearl" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<li id="fn:validation">
+<p><a href="https://github.com/vllm-project/production-stack/pull/1025#issuecomment-5113671870">Validation of PR #1025 head <code>e104ed573</code></a>, with health, request-completion, and dependency-path results.／PR #1025 head <code>e104ed573</code> 的 health、request completion 與 dependency path 結果。&#160;<a class="footnote-backref" href="#fnref:validation" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:validation" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
-<li id="fn:varibad">
-<p><a href="https://jmlr.org/papers/v22/21-0657.html">Zintgraf et al., “VariBAD: A Very Good Method for Bayes-Adaptive Deep RL via Meta-Learning”</a>.&#160;<a class="footnote-backref" href="#fnref:varibad" title="Jump back to footnote 4 in the text">&#8617;</a></p>
-</li>
-<li id="fn:maesn">
-<p><a href="https://proceedings.neurips.cc/paper/2018/hash/4de754248c196c85ee4fbdcee89179bd-Abstract.html">Gupta et al., “Meta-Reinforcement Learning of Structured Exploration Strategies”</a>.&#160;<a class="footnote-backref" href="#fnref:maesn" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<li id="fn:probes">
+<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/">Kubernetes documentation: Configure Liveness, Readiness and Startup Probes</a>.／Kubernetes 官方 probe 行為說明。&#160;<a class="footnote-backref" href="#fnref:probes" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:probes" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
