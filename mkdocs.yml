@@ -67,8 +67,6 @@ extra_css:
 # pb-filter.js change, exactly as for extra.css above. Without it a shipped
 # behaviour fix silently keeps running the old script in visitors' browsers.
 extra_javascript:
-  - javascripts/mathjax.js?v=20260721.1
-  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
   - javascripts/pb-filter.js?v=20260721.9
 
 extra:

@@ -38,6 +38,20 @@
   {% for tag in page.meta.tags %}<meta property="article:tag" content="{{ tag }}">{% endfor %}
   {% endif %}
 
+  {# MathJax is intentionally limited to pages that contain formulas. #}
+  {% set math_pages = [
+    "blog/inkling-975b-architecture/",
+    "blog/kimi-k3-architecture/",
+    "blog/meta-rl/",
+    "blog/nccl-nvlink-bandwidth/",
+    "blog/pentest-intro/",
+    "blog/rag-groundedness-guardrail/"
+  ] %}
+  {% if page and page.url in math_pages %}
+  <script defer src="/javascripts/mathjax.js?v=20260721.1"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+  {% endif %}
+
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
   <script type="application/ld+json">
   {
