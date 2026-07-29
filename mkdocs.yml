@@ -2,9 +2,9 @@ site_name: Wei-Cheng Chiu
 site_url: https://wayne.is-a.dev/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
-  Personal website of Wei Cheng (Wayne) Chiu — Field Application Engineer
-  focused on on-premises LLM deployment and GPU inference. Experience,
-  upstream patches, and technical writing.
+  Wei Cheng (Wayne) Chiu is a Field Application Engineer focused on AI
+  solutions architecture, production Generative AI and LLM systems, NVIDIA
+  GPU computing, CUDA, PyTorch, Kubernetes, and inference.
 
 nav:
   - About: index.md

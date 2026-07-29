@@ -6,10 +6,11 @@ hide:
 
 # About
 
-Hi, I'm **Wayne** 👋 — a Field Application Engineer who deploys on-premises LLM
-systems and contributes fixes across the GPU-inference stack. At
+Hi, I'm **Wayne** 👋 — a Field Application Engineer working across **AI solutions
+architecture** for on-premises Generative AI and LLM systems. At
 <a href="https://ailabs.tw/"><span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" width="64" height="64" />Taiwan AILabs</span></a>,
-I work across Linux/Kubernetes operations, GPU serving, customer-facing
+I turn customer requirements into production-ready deployments across
+Linux/Kubernetes operations, NVIDIA GPU serving, customer-facing
 troubleshooting, and the path from PoC to production.
 
 Previously, I was the sole developer of an enterprise multi-agent AI platform at
