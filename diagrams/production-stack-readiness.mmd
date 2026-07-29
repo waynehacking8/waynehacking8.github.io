@@ -1,0 +1,18 @@
+%%{init: {"theme": "neutral", "flowchart": {"curve": "basis"}}}%%
+flowchart TD
+  P["Kubernetes<br/>probes"]
+  C["LLM clients"]
+  R["KV-aware router<br/>event loop"]
+  W["Worker threads<br/>blocking I/O"]
+  T["Local tokenizer<br/>load"]
+  B["vLLM backend<br/>/tokenize + generation"]
+  L["LMCache<br/>controller + storage"]
+
+  P -->|"/health"| R
+  C -->|"requests"| R
+  R -->|"offload"| W
+  W -->|"from_pretrained"| T
+  T -.->|"failure / fallback"| W
+  W -->|"/tokenize"| B
+  R -->|"KV lookup"| L
+  B -->|"cache hits"| L

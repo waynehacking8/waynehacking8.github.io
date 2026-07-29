@@ -12,6 +12,7 @@ nav:
   - Patches: patches.md
   - Blog:
       - blog/index.md
+      - 177/177 healthy, 3/12 complete: blog/production-stack-readiness-gap.md
       - Inkling 975B — 5:1 attention: blog/inkling-975b-architecture.md
       - Kimi K3 — KDA, AttnRes, MoE: blog/kimi-k3-architecture.md
       - TensorRT-LLM vs vLLM: blog/notes-trtllm-triton-serving.md
