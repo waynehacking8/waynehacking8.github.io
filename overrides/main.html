@@ -2,6 +2,10 @@
 
 <!-- SEO: structured data + social meta. The JSON-LD Person `sameAs` links unify
      Wayne's identity across platforms so a name search surfaces every profile. -->
+{% block htmltitle %}
+  <title>{% if page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wei Cheng (Wayne) Chiu — AI Solutions Architecture &amp; NVIDIA GPU Systems{% endif %}</title>
+{% endblock %}
+
 {% block extrahead %}
   {{ super() }}
 
