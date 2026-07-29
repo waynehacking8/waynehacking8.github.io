@@ -48,13 +48,13 @@
 
 % ---------- summary ----------
 \section*{\scshape Summary}
-Machine learning engineer working the whole depth of the LLM inference stack ---
-hand-written CUDA / Tensor-Core kernels underneath, TensorRT-LLM / vLLM / SGLang serving
-above, and customer deployments on top. Currently a \textbf{Field Application Engineer} at
-Taiwan AILabs, putting on-premises LLM systems (FedGPT) into customer environments.
+Field Application Engineer working across customer-facing on-premises LLM deployment
+and the GPU inference stack --- Linux / Kubernetes operations and troubleshooting on
+top, TensorRT-LLM / vLLM / SGLang serving in the middle, and CUDA / Tensor-Core kernels
+underneath. At Taiwan AILabs, I put on-premises LLM systems (FedGPT) into customer environments.
 Previously \textbf{sole developer} of an enterprise multi-agent AI platform on DGX-class
 hardware, taken from PoC to production at \textbf{two enterprise customers}. Active
-upstream --- \textbf{17 merged/landed patches, 60 in review} across FlashInfer, vLLM,
+upstream --- \textbf{17 merged/landed patches} across FlashInfer, vLLM,
 SGLang, PyTorch, Dynamo, CUTLASS, TensorRT-LLM and LMDeploy, concentrated on early
 consumer-Blackwell (\textbf{SM120}) and \textbf{NVFP4} enablement. Research background in
 AI/LLM security and privacy-preserving ML.
@@ -76,7 +76,8 @@ AI/LLM security and privacy-preserving ML.
 
 \entry{Taiwan AILabs}{Jul 2026 -- Present}{Field Application Engineer}{Taipei, Taiwan}
 \begin{tight}
-  \item Field deployment of on-premises LLM systems (\textbf{FedGPT}) into customer environments --- Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting
+  \item Deploy on-premises LLM systems (\textbf{FedGPT}) into customer environments; translate site constraints into Linux / Kubernetes / GPU-serving plans, preflight checks, and acceptance criteria
+  \item Troubleshoot cross-layer failures spanning containers, GPU runtime, storage, networking, certificates, and model-serving endpoints; explain performance, reliability, and operational trade-offs through handover
 \end{tight}
 \vspace{0.25em}
 
@@ -103,7 +104,7 @@ AI/LLM security and privacy-preserving ML.
 
 % ---------- open source ----------
 \section*{\scshape Open Source}
-\textbf{SM120 / NVFP4 enablement across the LLM-inference stack}\hfill 17 merged/landed, 60 in review\\
+\textbf{SM120 / NVFP4 enablement across the LLM-inference stack}\hfill 17 merged/landed\\
 \textit{FlashInfer $\cdot$ vLLM $\cdot$ SGLang $\cdot$ PyTorch $\cdot$ Dynamo $\cdot$ CUTLASS $\cdot$ TensorRT-LLM $\cdot$ LMDeploy}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
 \begin{tight}
   \item Kernel-level support for consumer Blackwell (\textbf{SM120}) and \textbf{NVFP4} carried upward through kernels $\rightarrow$ engines $\rightarrow$ disaggregated serving

@@ -2,8 +2,9 @@ site_name: Wei-Cheng Chiu
 site_url: https://wayne.is-a.dev/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
-  Personal website of Wei Cheng (Wayne) Chiu — Machine Learning Engineer
-  (LLM inference & GPU performance). Experience, upstream patches, and technical writing.
+  Personal website of Wei Cheng (Wayne) Chiu — Field Application Engineer
+  focused on on-premises LLM deployment and GPU inference. Experience,
+  upstream patches, and technical writing.
 
 nav:
   - About: index.md

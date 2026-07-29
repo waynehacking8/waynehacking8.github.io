@@ -6,11 +6,11 @@ hide:
 
 # About
 
-Hi, I'm **Wayne** 👋 — a GPU performance engineer, happiest when an upstream kernel
-fix lands. Currently, I'm a Field Application Engineer at
+Hi, I'm **Wayne** 👋 — a Field Application Engineer who deploys on-premises LLM
+systems and contributes fixes across the GPU-inference stack. At
 <a href="https://ailabs.tw/"><span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" width="64" height="64" />Taiwan AILabs</span></a>,
-deploying on-premises LLM systems (FedGPT) into customer environments — Linux/Kubernetes
-operations, GPU serving, and customer-facing troubleshooting.
+I work across Linux/Kubernetes operations, GPU serving, customer-facing
+troubleshooting, and the path from PoC to production.
 
 Previously, I was the sole developer of an enterprise multi-agent AI platform at
 <a href="https://syncrobotic.ai/"><span class="chip chip-navy"><img src="assets/logos/syncrobotic.png" alt="" width="64" height="64" />SYNCROBOTIC</span></a>, built internal coding agents at
@@ -21,8 +21,8 @@ under the national R&D program. I hold an M.S. in Computer Science from
 (GPA 4.09), where I researched **LLM safety alignment** and **privacy-preserving ML**
 in Prof. Shao-Jui Wang's lab.
 
-Outside work I live in the upstream LLM-inference stack — **17 merged/landed patches ·
-60 in review** across
+Outside work I contribute upstream across the LLM-inference stack, with **17
+merged/landed changes** spanning
 <a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
 <a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" width="64" height="64" />vLLM</span></a>,
 <a href="https://github.com/sgl-project/sglang"><span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" width="64" height="64" />SGLang</span></a>,
@@ -31,7 +31,9 @@ Outside work I live in the upstream LLM-inference stack — **17 merged/landed p
 <a href="https://github.com/NVIDIA"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" width="64" height="64" />NVIDIA</span></a>
 <a href="https://github.com/NVIDIA/cutlass">CUTLASS</a> / <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a>, and
 <a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" width="64" height="64" />LMDeploy</span></a> —
-see the auto-updating [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
+including SM120/NVFP4 correctness fixes in FlashInfer and an NCCL broadcast fix
+landed in PyTorch. See the auto-updating [PR wall](https://prs.wayne.is-a.dev)
+and [Patches](patches.md) for the complete record.
 
 ## Focus
 
@@ -56,9 +58,6 @@ compute the right answer. Three threads:
   <dt>Jul 2026</dt>
   <dd>🧱 The <a href="https://prs.wayne.is-a.dev">live PR wall</a> went up — every
       upstream patch, auto-updating.</dd>
-  <dt>Jul 2026</dt>
-  <dd>📈 Upstream tally: <strong>17 merged/landed · 60 in review</strong> across the
-      LLM-inference stack.</dd>
   <dt>Apr 2026</dt>
   <dd>🎓 M.S. in Computer Science from <a href="https://www.ntust.edu.tw/"><strong>NTUST</strong></a>, GPA 4.09.</dd>
   <dt>Sep 2025</dt>
@@ -88,7 +87,7 @@ compute the right answer. Three threads:
 <div markdown>
 <p class="pb-pub-title"><a href="https://prs.wayne.is-a.dev">Live PR wall — prs.wayne.is-a.dev</a></p>
 <p class="pb-pub-meta">Auto-updating feed of every upstream contribution, with <a href="https://prs.wayne.is-a.dev/feed.xml">RSS</a></p>
-<span class="pb-tag pb-tag-blue">Open Source</span><span class="pb-tag pb-tag-green">17 merged</span><span class="pb-tag pb-tag-red">60 in review</span>
+<span class="pb-tag pb-tag-blue">Open Source</span><span class="pb-tag pb-tag-green">Live status</span>
 </div>
 <img src="assets/previews/pr-wall-preview.png" alt="PR wall preview" width="1378" height="874" loading="lazy" decoding="async" />
 </div>

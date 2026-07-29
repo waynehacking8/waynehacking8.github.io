@@ -15,4 +15,4 @@ mkdocs serve            # http://127.0.0.1:8000
 ## Deploy
 A push to `main` triggers `.github/workflows/deploy.yml`, which runs `mkdocs gh-deploy`
 to build the site to the `gh-pages` branch. GitHub Pages is configured to serve from
-`gh-pages`. The published site is https://waynehacking8.github.io/.
+`gh-pages`. The published site is https://wayne.is-a.dev/.

@@ -13,6 +13,10 @@
 
 Field deployment of on-premises LLM systems (FedGPT) into customer environments —
 Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting.
+
+- Translate site constraints into deployment plans, preflight checks, and acceptance criteria across Linux, Kubernetes, and GPU serving.
+- Troubleshoot cross-layer failures spanning containers, GPU runtime, storage, networking, certificates, and model-serving endpoints.
+- Explain performance, reliability, and operational trade-offs to customer engineers and internal product teams from PoC through handover.
 </div>
 </div>
 
