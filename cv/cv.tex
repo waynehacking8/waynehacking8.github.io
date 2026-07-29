@@ -1,4 +1,4 @@
-% Wei Cheng (Wayne) Chiu --- CV
+% Wei Cheng Chiu --- CV
 % Build:  tectonic cv.tex     Output: cv.pdf -> copied to docs/cv.pdf
 % Layout follows the original one-page CV: centred name, rule-under-smallcaps
 % section headings, org/date and role/location on facing margins.
@@ -38,20 +38,24 @@
 
 % ---------- header ----------
 \begin{center}
-  {\LARGE Wei Cheng (Wayne) Chiu}\\[0.4em]
+  {\LARGE Wei Cheng Chiu}\\[0.3em]
+  \textbf{AI Solutions Architecture $|$ Generative AI / LLM Systems $|$ NVIDIA GPU Computing}\\[0.25em]
   \link{mailto:waynehacking8@gmail.com}{waynehacking8@gmail.com} $|$
-  \link{https://www.linkedin.com/in/wei-cheng-chiu/}{LinkedIn} $|$
-  \link{https://github.com/waynehacking8}{GitHub} $|$
-  \link{https://wayne.is-a.dev}{Website} $|$
-  \link{https://prs.wayne.is-a.dev}{PR Wall}
+  \link{https://www.linkedin.com/in/wei-cheng-chiu/}{linkedin.com/in/wei-cheng-chiu} $|$
+  \link{https://github.com/waynehacking8}{github.com/waynehacking8}\\
+  \link{https://wayne.is-a.dev}{wayne.is-a.dev} $|$
+  \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}
 \end{center}
 
 % ---------- summary ----------
-\section*{\scshape Summary}
-Field Application Engineer working across customer-facing on-premises LLM deployment
-and the GPU inference stack --- Linux / Kubernetes operations and troubleshooting on
-top, TensorRT-LLM / vLLM / SGLang serving in the middle, and CUDA / Tensor-Core kernels
-underneath. At Taiwan AILabs, I put on-premises LLM systems (FedGPT) into customer environments.
+\section*{\scshape SUMMARY}
+Field Application Engineer pursuing customer-facing \textbf{AI Solutions Architect} roles,
+with hands-on experience translating requirements into production-ready, on-premises
+\textbf{Generative AI (GenAI) / LLM} deployments on NVIDIA GPU platforms. Work spans
+proof of concept (PoC), Linux / Kubernetes operations, model deployment and evaluation,
+CUDA / TensorRT-LLM / vLLM / Triton inference, performance optimization, troubleshooting,
+acceptance, and handover. At Taiwan AILabs, I put on-premises LLM systems (FedGPT) into
+customer environments.
 Previously \textbf{sole developer} of an enterprise multi-agent AI platform on DGX-class
 hardware, taken from PoC to production at \textbf{two enterprise customers}. Active
 upstream --- \textbf{17 merged/landed patches} across FlashInfer, vLLM,
@@ -60,23 +64,23 @@ consumer-Blackwell (\textbf{SM120}) and \textbf{NVFP4} enablement. Research back
 AI/LLM security and privacy-preserving ML.
 
 % ---------- skills ----------
-\section*{\scshape Technical Skills}
+\section*{\scshape TECHNICAL SKILLS}
 % 1.55in keeps every label on one line — narrower columns hyphenated
 % "Privacy & Secu-rity ML" and wrapped "LLM Serving & GPU"
 \begin{tabular}{@{}p{1.55in}p{5.9in}@{}}
-\textbf{LLM Serving \& GPU} & vLLM, TensorRT-LLM, SGLang, Triton, NVIDIA NIM, Dynamo, FlashInfer, NCCL, Flash Attention, KV-cache, Quantization (FP8 / INT4 / NVFP4); CUDA C/C++, WMMA \& \texttt{mma.sync} Tensor Cores, CUTLASS, Nsight Systems \& Compute \\[0.15em]
-\textbf{LLM Apps \& Agents} & Multi-Agent Orchestration (LangChain, LangGraph), Hybrid RAG (Vector + Keyword + Knowledge Graph), LLM Evaluation \& Guardrails, Function Calling / Tool Use, MCP, Coding Agents \\[0.15em]
+\textbf{LLM Serving \& GPU} & vLLM, TensorRT-LLM, SGLang, Triton, NVIDIA NIM, Dynamo, FlashInfer, NCCL, \mbox{FlashAttention}, KV-cache, Quantization (FP8 / INT4 / NVFP4); CUDA C/C++, WMMA \& \texttt{mma.sync} Tensor Cores, CUTLASS, Nsight Systems \& Compute \\[0.15em]
+\textbf{GenAI Apps \& Agents} & Generative AI, Deep Learning, Model Fine-Tuning, Deployment \& Evaluation, Multi-Agent Orchestration (LangChain, LangGraph), Hybrid RAG (Vector + Keyword + Knowledge Graph), LLM Guardrails, Function Calling / Tool Use, MCP, Coding Agents \\[0.15em]
 \textbf{Infrastructure \& Ops} & Linux, Kubernetes, Docker, On-prem GPU Serving, Distributed Tracing; H100, DGX Spark (GB10), Blackwell workstation hardware \\[0.15em]
 \textbf{Privacy \& Security ML} & Federated Learning, Differential Privacy, Secure Multi-Party Computation (MP-SPDZ), Safety Alignment \\[0.15em]
-\textbf{Languages} & Python, TypeScript, Rust, C/C++; PyTorch, FastAPI, NestJS; PostgreSQL, Milvus, Redis \\
+\textbf{Programming \& Frameworks} & Python, TypeScript, Rust, C/C++; PyTorch, FastAPI, NestJS; PostgreSQL, Milvus, Redis \\
 \end{tabular}
 
 % ---------- experience ----------
-\section*{\scshape Experience}
+\section*{\scshape EXPERIENCE}
 
 \entry{Taiwan AILabs}{Jul 2026 -- Present}{Field Application Engineer}{Taipei, Taiwan}
 \begin{tight}
-  \item Deploy on-premises LLM systems (\textbf{FedGPT}) into customer environments; translate site constraints into Linux / Kubernetes / GPU-serving plans, preflight checks, and acceptance criteria
+  \item Deploy production-ready, on-premises LLM systems (\textbf{FedGPT}) into customer environments; translate customer requirements and site constraints into Linux / Kubernetes / GPU-serving plans, preflight checks, and acceptance criteria
   \item Troubleshoot cross-layer failures spanning containers, GPU runtime, storage, networking, certificates, and model-serving endpoints; explain performance, reliability, and operational trade-offs through handover
 \end{tight}
 \vspace{0.25em}
@@ -103,32 +107,32 @@ AI/LLM security and privacy-preserving ML.
 \end{tight}
 
 % ---------- open source ----------
-\section*{\scshape Open Source}
+\section*{\scshape OPEN SOURCE}
 \textbf{SM120 / NVFP4 enablement across the LLM-inference stack}\hfill 17 merged/landed\\
 \textit{FlashInfer $\cdot$ vLLM $\cdot$ SGLang $\cdot$ PyTorch $\cdot$ Dynamo $\cdot$ CUTLASS $\cdot$ TensorRT-LLM $\cdot$ LMDeploy}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
 \begin{tight}
-  \item Kernel-level support for consumer Blackwell (\textbf{SM120}) and \textbf{NVFP4} carried upward through kernels $\rightarrow$ engines $\rightarrow$ disaggregated serving
+  \item Kernel-level support for consumer Blackwell (\textbf{SM120}) and \textbf{NVFP4} carried upward through kernels $\rightarrow$ engines $\rightarrow$ \mbox{disaggregated} serving
   \item Focus on \textit{silent-correctness} bugs --- the ones where tests pass and the answers are still wrong
 \end{tight}
 
 % ---------- research ----------
-\section*{\scshape Research \& Publications}
+\section*{\scshape RESEARCH \& PUBLICATIONS}
 \textbf{SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning}
 --- first author, with Shao-Jui Wang. \textit{IEEE Transactions on Dependable and Secure Computing
 (TDSC)}, under review, 2026. Preserves LLM safety alignment under harmful/adversarial fine-tuning at
 lower compute than full re-alignment.\\[0.15em]
-Research at NTUST (advised by Prof.\ Shao-Jui Wang) in \textbf{AI/LLM security} and
-\textbf{privacy-enhancing ML} --- federated learning, differential privacy, and secure
-multi-party computation.
+Research at NTUST (advised by Prof.\ Shao-Jui Wang) in model fine-tuning, experiment design,
+and evaluation for \textbf{AI/LLM security} and \textbf{privacy-enhancing ML} --- federated
+learning, differential privacy, and secure multi-party computation.
 
 % ---------- education ----------
-\section*{\scshape Education}
+\section*{\scshape EDUCATION}
 \entry{National Taiwan University of Science and Technology (NTUST)}{Aug 2024 -- Apr 2026}{M.S.\ in Computer Science and Information Engineering --- GPA 4.09}{Taipei, Taiwan}
 \vspace{0.2em}
 \entry{National Taiwan University (NTU)}{Sep 2014 -- Jun 2020}{M.S.\ in Structural Engineering (2020) $|$ B.S.\ in Civil Engineering (2018)}{Taipei, Taiwan}
 
 % ---------- awards ----------
-\section*{\scshape Certifications \& Awards}
+\section*{\scshape CERTIFICATIONS \& AWARDS}
 NVIDIA DLI --- Accelerated Computing with CUDA C/C++ and CUDA Python (5 certificates)
 $\cdot$ NICS Privacy-Enhancing Technologies (PETs) Competition --- Rank 3/11 (DP synthetic
 data via MP-SPDZ) $\cdot$ International ICT Innovative Services Awards, 2024
