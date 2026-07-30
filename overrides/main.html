@@ -3,13 +3,13 @@
 <!-- SEO: structured data + social meta. The JSON-LD Person `sameAs` links unify
      Wayne's identity across platforms so a name search surfaces every profile. -->
 {% block htmltitle %}
-  <title>{% if page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wayne Chiu — AI Solutions Architect Portfolio | NVIDIA GPU{% endif %}</title>
+  <title>{% if page and page.meta and page.meta.seo_title %}{{ page.meta.seo_title }}{% elif page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wayne Chiu — AI Solutions Architect Portfolio | NVIDIA GPU{% endif %}</title>
 {% endblock %}
 
 {% block extrahead %}
   {{ super() }}
 
-  {% set title = page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu — AI Solutions Architect Portfolio | NVIDIA GPU" %}
+  {% set title = page.meta.seo_title if page and page.meta and page.meta.seo_title else (page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu — AI Solutions Architect Portfolio | NVIDIA GPU") %}
   {% set desc = page.meta.description if page and page.meta and page.meta.description else config.site_description %}
   {% set image = page.meta.image if page and page.meta and page.meta.image else "https://wayne.is-a.dev/assets/profile.jpg" %}
   {% set is_post = page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
