@@ -13,6 +13,9 @@ I turn customer requirements into production-ready deployments across
 Linux/Kubernetes operations, NVIDIA GPU serving, customer-facing
 troubleshooting, and the path from PoC to production.
 
+I'm open to **Solutions Architect** opportunities at the intersection of
+customer-facing AI infrastructure and production Generative AI.
+
 Previously, I was the sole developer of an enterprise multi-agent AI platform at
 <a href="https://syncrobotic.ai/"><span class="chip chip-navy"><img src="assets/logos/syncrobotic.png" alt="" width="64" height="64" />SYNCROBOTIC</span></a>, built internal coding agents at
 <a href="https://www.advantech.com/en"><span class="chip chip-blue"><img src="assets/logos/advantech.png" alt="" width="64" height="64" />Advantech</span></a>,
