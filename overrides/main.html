@@ -3,13 +3,13 @@
 <!-- SEO: structured data + social meta. The JSON-LD Person `sameAs` links unify
      Wayne's identity across platforms so a name search surfaces every profile. -->
 {% block htmltitle %}
-  <title>{% if page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wei Cheng (Wayne) Chiu — AI Solutions Architecture &amp; NVIDIA GPU Systems{% endif %}</title>
+  <title>{% if page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wayne Chiu — Field Application Engineer | LLM &amp; NVIDIA GPU{% endif %}</title>
 {% endblock %}
 
 {% block extrahead %}
   {{ super() }}
 
-  {% set title = page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wei Cheng (Wayne) Chiu — AI Solutions Architecture & NVIDIA GPU Systems" %}
+  {% set title = page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu — Field Application Engineer | LLM & NVIDIA GPU" %}
   {% set desc = page.meta.description if page and page.meta and page.meta.description else config.site_description %}
   {% set image = page.meta.image if page and page.meta and page.meta.image else "https://wayne.is-a.dev/assets/profile.jpg" %}
   {% set is_post = page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
@@ -17,8 +17,6 @@
   <meta name="author" content="Wei Cheng (Wayne) Chiu">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="google-site-verification" content="pN4RB1iqwSojWvWtpmDesMXHlDIpM-DswD1Wtt_rWIU">
-  <link rel="canonical" href="{{ page.canonical_url }}">
-
   <!-- Open Graph -->
   <meta property="og:type" content="{{ 'article' if is_post else 'profile' }}">
   <meta property="og:title" content="{{ title }}">
@@ -69,7 +67,7 @@
         "@type": "ProfilePage",
         "@id": "https://wayne.is-a.dev/#profilepage",
         "url": "https://wayne.is-a.dev/",
-        "name": "Wei Cheng (Wayne) Chiu — AI Solutions Architecture & NVIDIA GPU Systems",
+        "name": "Wayne Chiu — Field Application Engineer | LLM & NVIDIA GPU",
         "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
         "about": { "@id": "https://wayne.is-a.dev/#person" },
         "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
