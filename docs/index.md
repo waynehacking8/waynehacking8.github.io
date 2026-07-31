@@ -25,7 +25,7 @@ under the national R&D program. I hold an M.S. in Computer Science from
 (GPA 4.09), where I researched **LLM safety alignment** and **privacy-preserving ML**
 in Prof. Shao-Jui Wang's lab.
 
-Outside work I contribute upstream across the LLM-inference stack, with **17
+Outside work I contribute upstream across the LLM-inference stack, with **18
 merged/landed changes** spanning
 <a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
 <a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" width="64" height="64" />vLLM</span></a>,

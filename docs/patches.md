@@ -1,7 +1,7 @@
 # Patches
 
-Upstream open-source contributions to the LLM-inference stack — **17 merged/landed ·
-60 in review** as of 2026-07-18.
+Upstream open-source contributions to the LLM-inference stack — **18 merged/landed ·
+56 in review** as of 2026-07-31.
 
 <p class="pb-pr-wall">
 <a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><strong>Live PR wall</strong><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
@@ -24,7 +24,7 @@ tests but computes the wrong answer.
 | **vLLM** | 3 | [Tokenizer survives pickling](https://github.com/vllm-project/vllm/pull/45460) · [streaming `message_start` sets `type`/`role`](https://github.com/vllm-project/vllm/pull/45376) · [clear error for structured outputs on diffusion decoders](https://github.com/vllm-project/vllm/pull/45468) |
 | **LMDeploy** | 3 | [InternVL LoRA loading TypeError](https://github.com/InternLM/lmdeploy/pull/4684) · [double-counted `max_q_seqlen` in decode delta](https://github.com/InternLM/lmdeploy/pull/4685) · [builtin chat-template ImportError](https://github.com/InternLM/lmdeploy/pull/4690) |
 | **PyTorch** | 1 | [`nccl.broadcast` was dropping its `root` argument](https://github.com/pytorch/pytorch/pull/187216) — landed in `main` (`c3c33fd`) |
-| **Dynamo** | 1 | [KV-router cancels in-flight recovery on worker removal](https://github.com/ai-dynamo/dynamo/pull/10616) |
+| **Dynamo** | 2 | [KV-router cancels in-flight recovery on worker removal](https://github.com/ai-dynamo/dynamo/pull/10616) · [resolve aggregate planner workers by DGD component type](https://github.com/ai-dynamo/dynamo/pull/11578) |
 | **compressed-tensors** | 1 | [Skip device-map entries with no local module in dispatch](https://github.com/vllm-project/compressed-tensors/pull/737) |
 | **torchao** | 1 | [PT2E/X86 plain-linear annotation fallback for reused `nn.Linear`](https://github.com/pytorch/ao/pull/4480) |
 
@@ -34,10 +34,10 @@ tests but computes the wrong answer.
 | --- | :-: | --- |
 | **SGLang** | 17 | SM120/SM121 dispatch for `int8_scaled_mm` & `fp8_blockwise_scaled_grouped_mm` · SM120 shared-mem-safe attention block size |
 | **vLLM** | 15 | NVFP4 MoE per-expert scale validation · FP8 MoE+LoRA routed to Marlin · async-KV-load scheduling fix |
-| **FlashInfer** | 13 | NVFP4 global-scale threading through the unified MoE API · cuDNN full-sequence Q batch stride in batch prefill |
-| **Dynamo** | 5 | Blackwell workstation GPU SKU support · KV-router hardening follow-ups |
+| **FlashInfer** | 11 | NVFP4 global-scale threading through the unified MoE API · cuDNN full-sequence Q batch stride in batch prefill |
+| **Dynamo** | 4 | Blackwell workstation GPU SKU support · KV-router hardening follow-ups |
 | **NVIDIA TensorRT-LLM** | 4 | CuteDSL MoE ghost-token & global-index fixes · DeepSeek-V2-Lite `e_score_correction_bias` guard |
-| **NVIDIA CUTLASS** | 4 | SM120 grouped NVFP4 block-scaled GEMM in `cutlass_library` · CuTeDSL sub-byte `make_ptr` / `is_major` / uint-lowering fixes |
+| **NVIDIA CUTLASS** | 3 | SM120 grouped NVFP4 block-scaled GEMM in `cutlass_library` · CuTeDSL sub-byte `make_ptr` / `is_major` / uint-lowering fixes |
 | **torchao** | 1 | Reused-module fallback extended to `nn.Conv2d` (follow-up to merged #4480) |
 | **LMCache** | 1 | Clear `reqs_status` on async-lookup timeout to prevent recall KeyError |
 
