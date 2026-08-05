@@ -1,8 +1,3 @@
----
-seo_title: Wei-Cheng Chiu — LLM Infrastructure | Solutions Architecture
-description: LLM infrastructure and solutions architecture in Taipei: on-premises GenAI deployment, Kubernetes, model serving, validation, and production handover.
----
-
 # Experiences
 
 ## Industry
