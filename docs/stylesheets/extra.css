@@ -721,15 +721,17 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .pb-image-sources summary { cursor: pointer; font: 600 .5rem/1.5 var(--pb-mono); }
 .pb-image-sources p { margin: .4rem 0 0; line-height: 1.55; }
 
-/* Patches: a plain editorial note using the same typography as the prose. */
-.md-typeset .pb-pr-wall { margin: .85rem 0 1.05rem; color: var(--pb-muted); line-height: 1.65; }
-.md-typeset .pb-pr-wall-main { color: var(--pb-ink); font-weight: 400; text-decoration: none; }
+/* Patches: a compact CTA for the live upstream record. */
+.md-typeset .pb-pr-wall { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: 1rem 0 1.25rem; color: var(--pb-muted); line-height: 1.2; }
+.md-typeset .pb-pr-wall-main { display: inline-flex; align-items: center; gap: .35rem; padding: .56rem .72rem; border: 1px solid #7251f5; border-radius: .55rem; background: linear-gradient(135deg, #6747e8, #8a5cf6); box-shadow: 0 5px 14px rgba(103, 71, 232, .25); color: #fff; font-weight: 400; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
 .md-typeset .pb-pr-wall-main strong { font-weight: 700; }
-.pb-pr-wall-domain { margin-left: .35rem; color: var(--pb-muted); font-family: var(--pb-mono); font-size: .9em; overflow-wrap: anywhere; }
-.pb-pr-wall-arrow { margin-left: .22rem; color: var(--pb-link); }
-.md-typeset .pb-pr-wall-main:hover { color: var(--pb-link); text-decoration: underline; text-underline-offset: 3px; }
-.pb-pr-wall-note { display: block; margin-top: .08rem; font-size: .9em; }
-.md-typeset .pb-pr-wall-rss { color: var(--pb-link); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.pb-pr-wall-domain { color: rgba(255,255,255,.75); font-family: var(--pb-mono); font-size: .78em; overflow-wrap: anywhere; }
+.pb-pr-wall-arrow { color: #fff; font-weight: 700; }
+.md-typeset .pb-pr-wall-main:hover { color: #fff; text-decoration: none; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(103, 71, 232, .36); }
+.pb-pr-wall-note { display: inline-flex; align-items: center; gap: .35rem; font-size: .78em; }
+.pb-pr-wall-note::before { width: .45rem; height: .45rem; border-radius: 50%; background: #48b885; box-shadow: 0 0 0 3px rgba(72,184,133,.14); content: ""; }
+.md-typeset .pb-pr-wall-rss { padding: .35rem .5rem; border: 1px solid var(--pb-line); border-radius: .42rem; color: var(--pb-link); font-weight: 700; text-decoration: none; }
+.md-typeset .pb-pr-wall-rss:hover { border-color: var(--pb-link); background: rgba(103,71,232,.08); text-decoration: none; }
 .pb-pr-wall a:focus-visible { outline: 2px solid var(--pb-link); outline-offset: 3px; }
 
 /* Article lead artwork uses the same contained editorial frame as pbb.sh. */
