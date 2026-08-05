@@ -4,7 +4,7 @@ Upstream open-source contributions to the LLM-inference stack — **18 merged/la
 56 in review** as of 2026-07-31.
 
 <p class="pb-pr-wall">
-<a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><strong>Live PR wall</strong><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
+<a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><span class="pb-pr-wall-live"><span aria-hidden="true"></span>LIVE</span><span class="pb-pr-wall-copy"><strong>Live PR wall</strong><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span></span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
 <span class="pb-pr-wall-note">Updated every few minutes <span aria-hidden="true">·</span> <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a></span>
 </p>
 
