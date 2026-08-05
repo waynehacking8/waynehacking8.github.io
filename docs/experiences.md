@@ -1,6 +1,6 @@
 ---
-seo_title: Wei-Cheng Chiu — Field Application Engineer | AI Solutions Architecture
-description: Customer-facing Field Application Engineer in Taipei delivering on-premises Generative AI and LLM systems on NVIDIA GPUs, CUDA, PyTorch, and Kubernetes from PoC to production.
+seo_title: Wei-Cheng Chiu — LLM Infrastructure | Solutions Architecture
+description: LLM infrastructure and solutions architecture in Taipei: on-premises GenAI deployment, Kubernetes, model serving, validation, and production handover.
 ---
 
 # Experiences
@@ -12,7 +12,7 @@ description: Customer-facing Field Application Engineer in Taipei delivering on-
 <div class="pb-tl-item" markdown>
 <div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
-<p class="pb-tl-title">Field Application Engineer</p>
+<p class="pb-tl-title">LLM Infrastructure &amp; Solutions Architecture</p>
 <p class="pb-tl-org"><a href="https://ailabs.tw/">Taiwan AILabs</a></p>
 <p class="pb-tl-date">Jul 2026 – Present · Taipei City, Taiwan</p>
 

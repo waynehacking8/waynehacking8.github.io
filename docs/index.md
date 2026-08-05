@@ -6,27 +6,7 @@ hide:
 
 # About
 
-Hi, I'm **Wayne** 👋 — a Field Application Engineer working across **AI solutions
-architecture** for on-premises Generative AI and LLM systems. At
-<a href="https://ailabs.tw/"><span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" width="64" height="64" />Taiwan AILabs</span></a>,
-I turn customer requirements into production-ready deployments across
-Linux/Kubernetes operations, NVIDIA GPU serving, customer-facing
-troubleshooting, and the path from PoC to production.
-
-I'm open to **Solutions Architect** opportunities at the intersection of
-customer-facing AI infrastructure and production Generative AI.
-
-Previously, I was the sole developer of an enterprise multi-agent AI platform at
-<a href="https://syncrobotic.ai/"><span class="chip chip-navy"><img src="assets/logos/syncrobotic.png" alt="" width="64" height="64" />SYNCROBOTIC</span></a>, built internal coding agents at
-<a href="https://www.advantech.com/en"><span class="chip chip-blue"><img src="assets/logos/advantech.png" alt="" width="64" height="64" />Advantech</span></a>,
-and served at <a href="https://www.tsmc.com/english"><span class="chip chip-red"><img src="assets/logos/tsmc.png" alt="" width="64" height="64" />TSMC</span></a>
-under the national R&D program. I hold an M.S. in Computer Science from
-<a href="https://www.ntust.edu.tw/"><span class="chip chip-red"><img src="assets/logos/ntust.png" alt="" width="64" height="64" />NTUST</span></a>
-(GPA 4.09), where I researched **LLM safety alignment** and **privacy-preserving ML**
-in Prof. Shao-Jui Wang's lab.
-
-Outside work I contribute upstream across the LLM-inference stack, with **18
-merged/landed changes** spanning
+Upstream contributions across the LLM-inference stack span
 <a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
 <a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" width="64" height="64" />vLLM</span></a>,
 <a href="https://github.com/sgl-project/sglang"><span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" width="64" height="64" />SGLang</span></a>,
@@ -35,9 +15,15 @@ merged/landed changes** spanning
 <a href="https://github.com/NVIDIA"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" width="64" height="64" />NVIDIA</span></a>
 <a href="https://github.com/NVIDIA/cutlass">CUTLASS</a> / <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a>, and
 <a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" width="64" height="64" />LMDeploy</span></a> —
-including SM120/NVFP4 correctness fixes in FlashInfer and an NCCL broadcast fix
-landed in PyTorch. See the auto-updating [PR wall](https://prs.wayne.is-a.dev)
-and [Patches](patches.md) for the complete record.
+with work on correctness, distributed inference, and serving performance. See the
+auto-updating [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
+
+Production LLM infrastructure for real customer environments, from site constraints
+and preflight validation to acceptance and handover. Work spans Kubernetes, GPU runtime,
+networking, storage, certificates, and model-serving endpoints.
+
+Experience taking an enterprise multi-agent platform from PoC to production, with a
+focus on model serving, performance evaluation, and solution architecture.
 
 ## Focus
 
@@ -57,7 +43,7 @@ compute the right answer. Three threads:
 <div class="pb-news">
 <dl>
   <dt>Jul 2026</dt>
-  <dd>💼 Joined <a href="https://ailabs.tw/"><strong>Taiwan AILabs</strong></a> as a Field Application Engineer —
+  <dd>💼 Joined <a href="https://ailabs.tw/"><strong>Taiwan AILabs</strong></a> —
       on-prem LLM deployments (FedGPT).</dd>
   <dt>Jul 2026</dt>
   <dd>🧱 The <a href="https://prs.wayne.is-a.dev">live PR wall</a> went up — every

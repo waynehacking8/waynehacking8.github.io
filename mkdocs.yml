@@ -2,9 +2,9 @@ site_name: Wei-Cheng Chiu
 site_url: https://wayne.is-a.dev/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
-  Field Application Engineer in Taipei building production GenAI and LLM
-  systems on NVIDIA GPUs, CUDA, PyTorch, and Kubernetes; open to Solutions
-  Architect roles.
+  LLM infrastructure and solutions architecture in Taipei: production GenAI
+  deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream
+  LLM-inference contributions.
 
 nav:
   - About: index.md
