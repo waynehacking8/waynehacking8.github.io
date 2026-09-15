@@ -3,7 +3,7 @@ description: "從 Prime 的 persistent Python、Hermes 的 personal agent servic
 date: "2026-09-15"
 updated: "2026-09-15"
 language: "zh-Hant"
-image: "/assets/blog/agent-harness-boundaries.svg"
+image: "/assets/blog/agent-runtime/overview.png"
 tags:
   - Architecture
   - Agents
@@ -14,152 +14,134 @@ tags:
 
 *2026-09-15 · Agent Systems / Runtime / Security*
 
-<figure id="agent-runtime-architecture" class="pb-article-hero pb-article-contain">
-  <img src="/assets/blog/agent-harness-boundaries.svg" width="1200" height="630" alt="Prime、Hermes 與 OpenClaw 的 agent runtime 架構比較" loading="eager" decoding="async">
-  <figcaption><strong>圖 1.</strong> 自製架構圖。三個 project 都把模型接到工具和持久化 state，但 control、state 和 trust 落在不同的層。</figcaption>
+<figure id="agent-runtime-overview" class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/overview.png" width="1300" height="680" alt="Prime Agent、Hermes Agent 與 OpenClaw 2.0 的手繪 runtime 架構比較" loading="eager" decoding="async">
+  <figcaption><strong>圖 1.</strong> 三個 runtime 的 model-facing control surface、工具路徑和 durable state。手繪圖整理自 <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>、<a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a> 和 <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>。</figcaption>
 </figure>
 
-一個聊天模型只需要完成一次推理。
+一個聊天模型通常完成一次 completion。
 
 它收到 prompt，生成 token，再把文字交回呼叫端。
 
-Agent 要處理的是另一種工作：模型完成一輪推理之後，系統還要把工具結果、session state、權限和下一輪 context 接回來。
+Agent 的工作會繼續往下走。
 
-模型外部的程式碼、設定和執行環境承擔這些工作。
+模型產生 action 之後，系統要執行工具，把結果放回下一輪 context，保存 session，處理失敗，還要決定某個 action 能不能真的碰到檔案、網路或 credential。
 
-這一層通常叫做 agent harness。`harness` 描述模型如何接到外部世界；`runtime` 描述實際運作的服務，以及它如何管理 request、process、state 和 policy。
+模型周圍負責這些工作的程式、設定和執行環境，通常稱為 agent harness。
 
-Prime Agent、Hermes Agent 和 OpenClaw 2.0 都在做這一層，但三個 project 面對的工作並不相同。
+harness 描述模型如何接到外部世界。
 
-Prime 從長時間的 coding 和 research session 出發。
+runtime 描述這套 harness 如何長時間運作：request 從哪裡進來，哪一層持有 loop，state 寫到哪裡，工具在哪個 process 裡執行，以及 policy 在什麼位置攔截 action。
 
-Hermes 從每天使用的 self-hosted personal assistant 出發。
+Prime Agent、Hermes Agent 和 OpenClaw 2.0 都處理這一層。
 
-OpenClaw 則從多個 chat channel、device、plugin 和 automation 的整合出發。
+三個 project 的來源和目標不同。
 
-因此，三個 runtime 對同一個問題給了三個答案：模型產生下一個 action 之後，哪一層接手？工作狀態放在哪裡？工具和外部元件最後承擔誰的權限？
+Prime Agent 由 Prime Intellect 開發，README 從 coding、research 和 long-running work 談起。[^prime-readme]
 
-比較版本固定為 Prime Agent commit `1fc1adb6`、Hermes Agent commit `afe06f2`，以及 OpenClaw `v2026.8.1` release。「OpenClaw 2.0」僅指這個 release，`current main` 不在比較範圍內。
+Hermes Agent 由 Nous Research 開發，定位是可以自行部署的 personal agent，從 CLI、Telegram、Discord 或 ACP 接收工作。[^hermes-readme]
 
-## Agent runtime 的比較單位
+OpenClaw 由 OpenClaw Foundation 和社群維護，<code>v2026.8.1</code> 把 assistant 放在 chat channels、devices、plugins 和 automation 旁邊，由 Gateway 接住整個系統。[^openclaw-release]
 
-聊天模型和 agent runtime 的責任不同。
+版本固定為 Prime Agent commit <code>1fc1adb6</code>、Hermes Agent commit <code>afe06f2</code>，以及 OpenClaw <code>v2026.8.1</code> release。
 
-| 層 | 一次 completion | Agent runtime |
-| --- | --- | --- |
-| 控制流 | 模型產生輸出後結束 | runtime 可能把工具結果送回模型，繼續下一輪 |
-| 工具 | 呼叫端自行處理工具 | runtime 宣告工具、執行 action，並把結果放回 session |
-| 狀態 | 通常由呼叫端保存對話 | runtime 保存工作資料、session、memory 或 workspace |
-| 權限 | 由外部應用程式決定 | runtime 需要處理 approval、policy、process 和 isolation |
-| 失敗處理 | 呼叫端自行重試 | runtime 可以恢復 session、重跑工具或等待 child task |
+文中所說的 OpenClaw 2.0 指這個 release。
 
-模型仍然負責產生 token 和選擇下一個 action。
+## 一張表放在同一個座標系
 
-模型負責產生 token 和選擇 action；檔案、process 和跨 session state 由模型外部的執行層管理。
+三個 project 都有 model、tools、memory 和 loop。
 
-比較軸是三個 project 如何把模型接成可以持續工作的系統。
+差異集中在這些元件由哪一層持有，以及它們服務的工作單位。
 
-## 三個 project 的工作單位
+| 比較面向 | Prime Agent | Hermes Agent | OpenClaw 2.0 |
+| --- | --- | --- | --- |
+| 作者／來源 | Prime Intellect | Nous Research | OpenClaw Foundation 和社群 |
+| pinned version | <code>1fc1adb6</code> | <code>afe06f2</code> | <code>v2026.8.1</code> release |
+| 原始工作負載 | coding、research、long-running work | self-hosted personal assistant | 多 channel、device、plugin、automation 的 self-hosted system |
+| 工作單位 | 可以持續操作的 coding／research session | 一個人每天使用的 personal agent service | 由 Gateway 管理的多入口 agent system |
+| request 入口 | coding／research request | CLI、Telegram、Discord、ACP、gateway | channel、CLI、paired node |
+| model-facing control surface | persistent Python REPL／RLM | AIAgent core | Gateway session loop |
+| loop owner | parent session 和 Python workspace | AIAgent core、prompt builder、provider resolver、tool registry | Gateway 的 session routing、agent loop 和 policy |
+| tool execution | Python worker／kernel、files、shell、skills、MCP | terminal、web、MCP backend | native tools、plugins、nodes |
+| child／background work | <code>rlm.spawn(...)</code>、child agent | delegation、cron、background task | automation、node、plugin path |
+| durable state | Python namespace、workspace、Continual Harness state、session artifacts | session DB、SQLite／FTS5、<code>MEMORY.md</code>、<code>USER.md</code>、skills | workspace Markdown、SQLite／FTS5、retrieval、Gateway state |
+| state 如何回到模型 | 同一個 persistent workspace 或下一次 session resume | session search、memory loading、prompt builder | session routing、workspace context、Gateway context assembly |
+| action admission | parent／worker path、host bridge | approval pattern、service policy、terminal backend | pairing、Gateway policy、approval、plugin／node registration |
+| isolation boundary | worker、kernel、host process 和部署設定 | local、container、remote terminal backend | Gateway、plugin、node 的 process 與 sandbox 設定 |
+| task-level parallelism | <code>rlm.spawn(...)</code> | delegation、background work | automation、node、plugin |
+| 主要架構貢獻 | 把模型放進可程式化、可持續的工作面 | 把 model loop、memory、skills 和多入口服務放在一起 | 把 session routing、policy 和外部元件收進 Gateway control plane |
+| 主要成本 | workspace stale state、child lifecycle、host permission | memory retrieval、terminal scope、background job | cross-channel scope、plugin trust、Gateway 成為高價值 process |
+| 適合的工作 | 長時間讀資料、寫程式、跑驗證 | 每天從不同入口使用同一個 assistant | 同時管理多入口、device、plugin 和 automation |
 
-三個 project 都有 model、tools、memory 和 agent loop，功能名稱相同，工作單位卻不同。
+表中的 control surface 是比較核心。
 
-從 README 的開場來看，它們的工作單位其實不同。
+它指模型產生下一個 action 時，實際面對的程式介面。
 
-| Project | 作者／來源 | 主要工作 | 工作單位 | 架構中心 |
-| --- | --- | --- | --- | --- |
-| Prime Agent | Prime Intellect | coding、research、long-running work | 可以持續操作的 session | persistent Python／RLM workspace |
-| Hermes Agent | Nous Research | self-hosted personal assistant | 一個人每天使用的 agent service | AIAgent core、gateway、memory、skills |
-| OpenClaw 2.0 | OpenClaw Foundation 和社群 | 多 channel、device、plugin、automation | 多入口的 self-hosted system | Gateway control plane |
+Prime 把這個介面做成 persistent Python／RLM。
 
-Prime Agent 的 README 把 coding、research 和 long-running work 放在一起談。[^prime-readme]
+Hermes 把它收在 AIAgent core 的 service loop。
 
-它以可以留在工作環境裡繼續做事的 session 為核心抽象。
+OpenClaw 把它放進 Gateway 管理的 session loop。
 
-Hermes Agent 把自己定位成可以自行部署的 personal agent，從 CLI、Telegram、Discord 等入口接收工作，再由同一個服務處理 provider、memory、skills、session search、delegation 和 cron。[^hermes-readme]
-
-OpenClaw 把 assistant 放在使用者的 devices 和 chat channels 旁邊，Gateway 再把 channels、nodes、plugins、automation 和 agent session 接起來。[^openclaw-release]
-
-三個起點直接決定架構。
-
-Prime 先解決「一段工作怎麼留在同一個可操作的環境裡」。
-
-Hermes 先解決「一個人怎麼每天從不同入口使用同一個 assistant」。
-
-OpenClaw 先解決「多個入口和外部元件怎麼由一個 self-hosted control plane 統一管理」。
-
-比較從工作負載和架構 owner 開始。
+同一個「呼叫工具」動作，落在三個位置之後，能看到的 state、能取得的 credential 和失敗後的恢復方式都會改變。
 
 ## 三條 request path
 
-圖 1 以三欄表示三個 runtime。
+Prime 的入口進入 parent model，再往下進 persistent Python REPL／RLM。
 
-每一欄都沿著同一條路徑閱讀：request 從哪裡進來，哪一層呼叫模型，模型產生的 action 由誰執行，結果和長期 state 最後放在哪裡。
+Python 工作面可以讀檔案、跑 shell、載入 skills 或 MCP，也可以用 <code>rlm.spawn(...)</code> 拆出 child agent。
 
-| Request path | Prime Agent | Hermes Agent | OpenClaw 2.0 |
-| --- | --- | --- | --- |
-| 入口 | coding／research request | CLI、messaging gateway、ACP | channel、CLI、node |
-| Model-facing control surface | persistent Python／RLM REPL | AIAgent core | Gateway session loop |
-| 工具路徑 | files、shell、skills、MCP、child agent | terminal、web、MCP | native tools、plugins、nodes |
-| 長期 state | Python workspace、harness state、session artifacts | SQLite／FTS5、`MEMORY.md`、`USER.md`、skills | workspace Markdown、SQLite／FTS5、retrieval |
-| request 完成後 | 留在可重新接上的工作環境 | 回到可搜尋的 personal service | 回到 channel、node 或 automation path |
+工作產物和 durable session state 留在同一個可重新接上的環境裡。
 
-左邊的 Prime 把工作面放在模型旁邊。
+Hermes 的入口先進 gateway，再進 AIAgent core。
 
-模型進入 persistent Python／RLM REPL，再從這個 programming surface 連到 files、shell、skills、MCP 和 child agent。
+core 會組 prompt、解析 provider、查 tool registry，接著把 action 交給 terminal、web 或 MCP backend。
 
-中間的 Hermes 把模型放進 AIAgent core。
+session database、FTS5、Markdown memory 和 skills 會在後續 request 被重新載入。
 
-入口、provider、tool registry 和 service state 都由 personal agent service 統一管理。
+OpenClaw 的 channel、CLI 或 paired node 先進 Gateway WebSocket。
 
-右邊的 OpenClaw 把 Gateway 放在更高的位置。
+Gateway 做 session routing，再把 context、model、native tools、plugins 和 policy 串成一次 agent run。
 
-channels、nodes 和 plugins 先進入 Gateway，Gateway 再負責 session routing、policy、agent loop 和 persistence。
-
-圖 1 把三個 ownership 差異放在同一張圖裡：Prime 的控制面接近 model-facing workspace，Hermes 的控制面接近 personal agent service，OpenClaw 的控制面接近 Gateway control plane。
-
-## Agent runtime 的四個責任
-
-Agent runtime 的抽象 loop：
+結果寫回 workspace、SQLite／FTS5 或 retrieval layer，必要時再送回原本的 channel、node 或 automation。
 
 ~~~text
-request
-  -> load session and context
-  -> call the model with the available tools
-  -> inspect the model's next action
-  -> execute a tool or return a final answer
-  -> persist the result
-  -> continue, pause, or stop
+Prime:
+request -> parent model -> persistent Python / RLM
+       -> files / shell / skills / MCP / rlm.spawn(...)
+       -> workspace / durable session
+
+Hermes:
+CLI / gateway / ACP -> AIAgent core
+       -> prompt builder -> provider resolver -> tool registry
+       -> terminal / web / MCP
+       -> session DB / memory / skills
+
+OpenClaw:
+channel / CLI / node -> Gateway WebSocket
+       -> session routing -> policy -> agent loop
+       -> context -> model -> native tools / plugins / nodes
+       -> workspace / SQLite / retrieval
 ~~~
 
-三個 project 都要處理同一組責任，但放置位置不同。
+這三條 path 的分界，決定 runtime 對「下一步」的解釋。
 
-| Runtime 責任 | 要回答的問題 | Prime | Hermes | OpenClaw |
-| --- | --- | --- | --- | --- |
-| Control flow | tool result 回來後是否繼續？誰結束 session？ | REPL／RLM 和 parent session | AIAgent core | Gateway session loop |
-| Tool execution | action 在哪裡變成 process 或 request？ | worker／kernel、host bridge | terminal backend、web、MCP | native tools、plugin、node |
-| State lifecycle | 哪些內容寫回、索引、取回、注入？ | workspace、durable harness state | database、Markdown memory、skills | workspace、SQLite／retrieval |
-| Admission and trust | 誰能讓 action 進入執行路徑？ | worker、kernel、host process | approval、backend、deployment | pairing、policy、Gateway、plugin |
+Prime 把下一步寫成 Python 工作流。
 
-四個責任構成三個 runtime 的比較軸。
+Hermes 把下一步當成 service loop 裡的一次 tool call。
 
-同一個 tool，如果由 persistent REPL、AIAgent service 或 Gateway policy 管理，能看到的 state、能使用的 credential 和失敗後的 recovery 都可能不同。
+OpenClaw 把下一步放在 Gateway 所有的 routing、session 和 policy 決策之後。
 
-## Prime：persistent Python workspace
+## Prime：persistent Python 是工作面
 
-Prime 的主要設計選擇，是讓模型在一個持續存在的 Python control environment 裡組織工作。
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/prime.png" width="1300" height="680" alt="Prime Agent 的 persistent Python RLM、工具和 child agent 手繪架構圖" loading="lazy" decoding="async">
+  <figcaption><strong>圖 2.</strong> Prime 的 model-facing surface 是 persistent Python／RLM；files、shell、skills、MCP 和 child agent 都從這個工作面接出去。來源：<a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>。</figcaption>
+</figure>
 
-Prime Agent 的 RLM 文件直接把 context 放進可由 Python 操作的資料結構。模型可以讀取資料，將中間結果保留在變數裡，再呼叫工具或建立 child agent。[^prime-rlm]
+Prime 的 RLM 文件把 context 放進可以由 Python 操作的資料結構。
 
-Prime 的 request path 分成四層：
-
-| Prime component | 在 request path 裡做什麼 | 產生的 state | 主要代價 |
-| --- | --- | --- | --- |
-| Parent model | 讀取目前 context，選擇下一個程式或 action | model output、task plan | 仍受 autoregressive generation 限制 |
-| Persistent Python／RLM | 提供可持續操作的 programming surface | 變數、中間結果、控制流 | stateful failure 比一次性 tool call 複雜 |
-| Files、shell、skills、MCP | 把程式碼或 action 接到外部世界 | 檔案、命令結果、外部回應 | 實際權限取決於 host bridge |
-| `rlm.spawn(...)` 和 child agent | 把獨立子問題拆出去執行 | child handle、結果、工作產物 | 需要處理 lifecycle、merge 和副作用 |
-
-Prime request path：
+模型可以讀資料，把中間結果留在變數裡，再決定下一段程式、工具呼叫或 child-agent 工作。[^prime-rlm]
 
 ~~~text
 request
@@ -167,75 +149,53 @@ request
   -> persistent Python REPL / RLM
        -> files / shell / skills / MCP
        -> rlm.spawn(...)
-       -> workspace and durable harness state
+       -> workspace / durable harness state
 ~~~
 
-Prime 的差異在於 Python 變成模型可以持續操作的 control surface。
+一般 tool-calling loop 把一次工具呼叫拆成幾個 host 端步驟：模型產生工具名稱和參數，host 執行工具，再把結果包回下一輪訊息。
 
-在一般 tool-calling loop 裡，模型產生一個工具名稱和參數，host 執行工具，再把結果包成下一輪訊息。
+RLM 將這些步驟放進可持續操作的 programming surface。
 
-在 RLM programming model 裡，模型可以把資料處理、工具呼叫和 child-agent 管理寫進同一個工作流程。
+一個 research session 可以先讀一批文件，把解析結果留在 Python state，再把不同子問題交給 <code>rlm.spawn(...)</code>，最後把 child 結果合併成報告。
 
-一個研究任務可能先讀取一批文件，把解析結果放在 workspace，再把不同子問題交給 `rlm.spawn(...)`，最後把 child 的結果合併成一份報告。
+這個模型讓「下一步」具有程式結構。
 
-這種寫法把「下一步要叫哪個工具」改成「下一段程式要怎麼繼續跑」。
+條件分支、迴圈、暫存資料和子任務都可以留在工作面裡。
 
-| 工作需求 | 一般 tool-calling loop | Prime 的 RLM workspace |
-| --- | --- | --- |
-| 讀取大量資料 | 每輪把需要的結果回填 context | 可把資料處理結果留在 Python state |
-| 反覆修改程式 | 多次呼叫工具，再由 host 組合訊息 | 在同一個 programming surface 裡繼續執行 |
-| 拆分子任務 | 由外部 orchestration code 管理 | 可由 `rlm.spawn(...)` 接到 parent workflow |
-| session resume | 依賴外部保存與重新注入 | workspace 和 durable state 成為工作的一部分 |
-| 失敗恢復 | 通常從最近一次 request 重試 | 要處理變數、檔案副作用和 child lifecycle |
+長任務因此少了幾次 context 重建，但 runtime 要負責更多 state。
 
-對長任務而言，這會減少每一輪重新建立 context 的成本。
+變數可能指向過期檔案。
 
-模型可以留下文字、變數、檔案、子任務結果、生成的程式碼和驗證記錄。
+工具可能已經寫入檔案，parent 卻在收到結果前中斷。
+
+child agent 可能只完成一半。
+
+session resume 需要知道哪些 Python state、檔案副作用和 child result 已經成立。
 
 ### Prime 的 execution boundary
 
-persistent Python 讓模型有更強的 programming surface，也把 runtime state 帶進了模型的控制流程。
+persistent Python 是執行介面。
 
-Python REPL 是執行介面；sandbox 需要另外配置。
+sandbox 是否存在，取決於 worker、kernel、host bridge 和部署設定。
 
-| Prime 的層 | 它可能隔離什麼 | 仍需另外確認的邊界 |
-| --- | --- | --- |
-| worker／kernel lifecycle | process 的啟動、停止、重新連接 | 最小 host permission |
-| Python／shell bridge | 模型如何觸發外部 action | credential 不會被看到 |
-| workspace | 工作資料與中間結果 | workspace 不會包含敏感檔案 |
-| child agent | 子問題的工作流程 | child 沒有額外副作用 |
+如果 Python process 能直接讀到使用者檔案、環境變數或 credential，模型寫出的程式也可能沿用同一組權限。
 
-如果 Python process 能直接看到使用者的檔案、環境變數或 credential，模型寫出的程式就可能沿用同一組權限。
+因此 Prime 的架構貢獻集中在 programming model。
 
-Prime 的主要進步在 programming model；isolation model 仍取決於 worker、host bridge 和部署設定。
+權限邊界仍要沿著最後執行 action 的 process 追下去。
 
-### Prime 的 state management
+## Hermes：personal agent service 是控制中心
 
-persistent workspace 會保留 useful state，也會保留 stale state。
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/hermes.png" width="1300" height="680" alt="Hermes Agent 的 AIAgent loop、provider resolver、tool registry 和 memory 手繪架構圖" loading="lazy" decoding="async">
+  <figcaption><strong>圖 3.</strong> Hermes 把多個入口接到同一個 AIAgent loop，loop 再連到 provider、tool registry、terminal、web、MCP 和長期 state。來源：<a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>。</figcaption>
+</figure>
 
-變數可能指向過期檔案，child agent 可能只完成一半，某次工具呼叫可能已經寫入檔案但沒有把結果正確回報給 parent。
+Hermes 的中心是長時間運作的 personal agent service。
 
-Prime runtime 需要處理 workspace checkpoint、child 回報、session resume，以及 failure 後的副作用重做。
+CLI、Telegram、Discord、ACP 和其他 gateway 入口，把工作送進同一個 AIAgent core。
 
-這些問題在一次性問答裡不明顯，在數十分鐘或數小時的 coding／research session 裡會變成主要的可靠性成本。
-
-## Hermes：personal agent service
-
-Hermes 的出發點是把模型放進一個長期運作的 personal agent service。
-
-Hermes 先建立長期運作的 personal agent service，再把入口、provider、memory、skills、terminal backend 和 cron 接到服務上。
-
-Hermes 的核心 component：
-
-| Hermes component | 在 request path 裡做什麼 | 對使用者的意義 | 主要代價 |
-| --- | --- | --- | --- |
-| CLI、Telegram、Discord、ACP | 接收不同入口的工作 | 入口可以換，assistant service 不必換 | identity 和 session 要一致 |
-| Gateway | 把入口送進同一個服務 | channel 不必各自實作 agent loop | gateway 本身成為長期運作的 process |
-| AIAgent core | 組 prompt、解析 provider、管理 tool registry | model loop 集中在一個地方 | loop state 和 provider failure 集中到 core |
-| terminal、web、MCP | 執行模型選出的 action | assistant 可以真的操作外部系統 | backend 決定實際權限 |
-| memory、skills、cron | 保存 context、提供能力、定時啟動 | service 可以每天持續使用 | state scope 和 background job 要管理 |
-
-Hermes request path：
+core 內的 prompt builder、provider resolver 和 tool registry 負責準備一次 model call。
 
 ~~~text
 CLI / Telegram / Discord / ACP
@@ -248,85 +208,48 @@ CLI / Telegram / Discord / ACP
   -> session and memory
 ~~~
 
-入口和模型回合因此脫鉤。CLI 和 messaging channel 的 request 都由同一個 AIAgent core 組 context、選 provider、載入工具並執行 loop。
+這個位置讓 Hermes 可以把 provider switching、session search、memory、skills 和 cron 放在同一個 service 裡。
 
-這和 Prime 的 model-facing REPL 是不同的取捨。
+模型不必知道 request 來自哪個 channel。
 
-Prime 讓模型在工作面裡組合控制流。
+channel 也不必各自複製一套 agent loop。
 
-Hermes 把控制流收在 service 裡，模型在 service 提供的 tool registry 內選擇下一個 action。
-
-這種設計比較適合「每天都要用」的 assistant。
-
-服務可以集中處理 provider switching、session search、memory、skills 和 cron。
-
-模型不必知道訊息是從哪個 channel 進來，也不必為每次互動重新建立整套個人設定。
-
-### Hermes 的 service state path
-
-Hermes 的 memory 由 session、搜尋索引、Markdown context、skills 和 scheduled task 組成。
-
-| State component | 保存什麼 | 何時會被用到 | 如果設計錯誤會怎樣 |
-| --- | --- | --- | --- |
-| session history | 過去的互動和工具結果 | 恢復或搜尋舊 session | 對話接不起來 |
-| SQLite／FTS5 | 可搜尋的索引 | 找回相關訊息 | 資料存在但查不到 |
-| `MEMORY.md`、`USER.md` | 個人偏好和長期 context | 新 session 的 prompt 建構 | 偏好遺失或跨使用者混用 |
-| skills | 可重複使用的操作規則 | tool 或 workflow 載入 | 每次都重新描述同一個流程 |
-| cron | 沒有即時訊息時啟動的工作 | scheduled task | background action 缺少清楚的 scope |
-
-Hermes memory path：
+Hermes 的長期狀態由幾條路徑組成：
 
 ~~~text
 write -> index -> retrieve -> inject into the next model call
 ~~~
 
-每一步都有自己的 failure mode。
+寫入失敗時，使用者以為已經保存的內容根本不存在。
 
-寫入失敗，模型以為已經記住的內容其實不存在。
+索引沒有更新時，內容存在卻找不到。
 
-索引沒有更新，內容存在但搜尋不到。
+取回結果太寬時，過期或不相關的記憶會進入 prompt。
 
-取回結果不對，下一輪 context 會混入錯誤或過期資料。
+注入過多時，歷史資料會吃掉當前任務的 context budget。
 
-注入過多，模型的 context budget 會被歷史內容吃掉。
+<code>MEMORY.md</code>、<code>USER.md</code> 和 skills 也有 scope 問題。
 
-「有 memory」只表示系統保存了某種資料；可靠性取決於誰寫入、誰能讀取、搜尋怎麼建立，以及不同 session 是否共享同一份資料。
+同一份個人設定要能跨 session 重用，又要避免不同 user、channel 或 deployment 互相污染。
 
-### Hermes 的 terminal boundary
+Hermes 的 terminal execution 可以接 local process、container 或 remote backend。
 
-Hermes 可以把 terminal execution 放在 local process、container 或 remote backend。
+approval pattern 控制 action 能否進入執行路徑。
 
-approval pattern 可以要求某些指令先取得允許。它管理 action 是否進入執行路徑；process isolation 仍取決於 terminal backend。
+真正的 process isolation 仍由 terminal backend 和部署環境決定。
 
-| 問題 | Hermes 要看哪一層 |
-| --- | --- |
-| shell action 在哪裡執行？ | terminal backend |
-| 哪些 action 需要確認？ | approval pattern 和 agent policy |
-| process 能看到什麼？ | local、container 或 remote deployment 的設定 |
-| credential 從哪裡來？ | backend、環境變數、mounted secret 和 provider 設定 |
+同一個 AIAgent core 接上本機 shell 和受限 container，信任邊界完全不同。
 
-同一個 AIAgent core，如果接的是使用者本機 shell，和接的是受限 container，風險模型並不相同。
+## OpenClaw：Gateway 管理整個 control plane
 
-## OpenClaw：Gateway control plane
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/openclaw.png" width="1300" height="680" alt="OpenClaw 2.0 的 Gateway WebSocket、session routing、policy、plugins、automation 和 workspace 手繪架構圖" loading="lazy" decoding="async">
+  <figcaption><strong>圖 4.</strong> OpenClaw 把 channels、CLI、nodes、plugins 和 automation 接到 Gateway；workspace、SQLite／FTS5 和 retrieval 由 Gateway path 保存與取回。來源：<a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">Gateway docs</a> 和 <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1">v2026.8.1 source</a>。</figcaption>
+</figure>
 
-OpenClaw 面對的是系統整合問題。
+OpenClaw 的 request 先處理入口和 session，再進 model loop。
 
-request 可能來自不同 channel、CLI 或 paired node。
-
-Gateway 必須先找到對應的 session，再處理 routing、context、policy、model、native tool 和結果保存。[^openclaw-security]
-
-OpenClaw request path components：
-
-| OpenClaw component | 在 request path 裡做什麼 | Gateway 的作用 | 主要代價 |
-| --- | --- | --- | --- |
-| channel、CLI、node | 帶入訊息或外部事件 | 所有入口可以使用同一套 session 邏輯 | identity 和 pairing 變複雜 |
-| Gateway WebSocket | 接收、轉送、維持連線 | 讓入口和 agent runtime 解耦 | Gateway 成為高價值 process |
-| session routing | 找到正確的 agent 和 session | 不同入口可以共享或隔離 context | scope 錯誤會跨入口傳播 |
-| policy、approval、pairing | 決定誰能觸發哪些 action | 管理 system-level admission | isolation 仍取決於 execution boundary |
-| plugins、nodes、automation | 接入外部能力和背景工作 | agent 可以跨 channel 和 device 做事 | 外部元件擴大 trust boundary |
-| workspace、SQLite、retrieval | 保存和取回 context | assistant 可以長期運作 | state scope 要和 session scope 對齊 |
-
-OpenClaw request path：
+Gateway 要先知道 request 屬於哪個 session、哪個 user、哪個 node，以及這次 action 能使用哪些 policy。
 
 ~~~text
 channel / CLI / node
@@ -339,122 +262,112 @@ channel / CLI / node
   -> workspace / SQLite / retrieval
 ~~~
 
-Gateway 同時負責 session ownership、routing、channel coordination、policy enforcement 和 plugin／node 的接入。
+這個 control plane 把 channel coordination、session ownership、policy enforcement 和 plugin／node 接入放在一起。
 
 cron 和 automation 可以在沒有即時聊天的情況下啟動工作。
 
-plugin 和 node 則把外部能力帶進這個 control plane。
+plugin 和 node 則把外部能力帶進 Gateway。
 
-Gateway 還要處理多入口 identity、session sharing、node action 和 plugin result routing：不同入口是否屬於同一個使用者、哪些入口可以共用 session、哪一個 node 能執行 native action，以及 plugin 的結果應該回到哪個 channel。
+多入口系統的困難在 scope。
 
-### OpenClaw 的 routing 與 policy
+Telegram、Web UI 和 paired device 可以共用一個 assistant，也可以各自擁有獨立 session。
 
-多入口系統最難維持的是 identity、session 和 permission 的一致性。
+共用 session 時，Gateway 要限制哪些 context 可以跨入口流動，哪些 action 只能由特定 node 或使用者核准。
 
-如果 Telegram、Web UI 和 paired device 各自維護一套 session，使用者會得到三個互相不認識的 assistant。
+plugin 和 node 的結果也要回到正確的 channel。
 
-共用 session 時，Gateway 必須知道哪些 context 可以跨入口流動，哪些 action 只能由特定 node 或使用者核准。
+pairing 能確認來源和身份。
 
-OpenClaw 把這些決定集中在 Gateway，換來一個比較清楚的 control plane。
+approval 能控制某個 action 是否進入執行路徑。
 
-代價是 Gateway 變成高價值的信任邊界。
+這兩件事都不能單獨描述 plugin 是否隔離，或 node 最後能碰到哪些檔案、網路和 credential。
 
-| 信任對象 | Gateway 要控制什麼 | 仍需另外驗證的邊界 |
-| --- | --- | --- |
-| channel | 來源、identity、session mapping | 來源已驗證就代表 action 安全 |
-| node | pairing、可用能力、回傳路徑 | node 只會執行低風險工作 |
-| plugin | 載入方式、執行位置、可見資料 | plugin 一定與 Gateway 隔離 |
-| automation | 觸發條件、context、重試 | background job 沒有使用者就不需要 policy |
-| workspace／retrieval | 可讀範圍、寫入範圍、session scope | 所有 assistant context 都可以共享 |
+在固定的 <code>v2026.8.1</code> release 裡，plugin execution、sandbox 設定和 node 權限仍要分開檢查。[^openclaw-security]
 
-pairing 和 approval 控制進入路徑；native plugin 是否隔離，仍要看它的 process boundary。
+## Control surface：三個 loop 序列化不同的東西
 
-在固定的 `v2026.8.1` release 裡，plugin 的執行位置、sandbox 設定和 node 權限需要分開檢查。[^openclaw-security]
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/control-surface.png" width="1300" height="680" alt="Prime、Hermes、OpenClaw 三種 per-session control loop 的手繪比較圖" loading="lazy" decoding="async">
+  <figcaption><strong>圖 5.</strong> 三個 project 的 per-session loop：Prime 序列化 Python cell、host request 和 child session；Hermes 序列化 tool call、delegation 和 summary；OpenClaw 序列化 intake、context、native tools 和 persist。來源：<a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>、<a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>、<a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>。</figcaption>
+</figure>
 
-## Control、State 與 Trust
+Prime 的一個 session 以 Python cell 為起點。
 
-Control、State、Trust 三軸如下。
+Python cell 觸發 host request，host request 可能建立 child session。
 
-| 軸 | Prime Agent | Hermes Agent | OpenClaw 2.0 |
-| --- | --- | --- | --- |
-| Control owner | persistent Python／RLM 和 parent session | AIAgent core、provider resolver、tool registry | Gateway session loop、routing、policy |
-| State owner | Python workspace、Continual Harness、工作產物 | session database、FTS5、Markdown memory、skills | workspace、SQLite／FTS5、hybrid retrieval |
-| Trust owner | worker／kernel、host bridge、使用者 process | terminal backend、approval、部署環境 | Gateway、plugin、node、pairing、policy |
-| 主要工作尺度 | 一段可持續的 coding／research session | 一個人每天使用的 service | 多 channel、多 node 的 system |
-| 主要 failure mode | stale state、child lifecycle、host permission | backend scope、memory retrieval、background job | session scope、plugin trust、cross-channel policy |
+這條線把模型可編程的工作面和外部 process 接在一起。
 
-### Control
+Hermes 的一個 session 從 tool call 開始。
 
-Prime 把 model-facing control surface 放在 persistent Python／RLM。
+<code>delegate_task</code> 把工作交給另一個 agent 或 background path，結果再以 summary 回到主要對話。
 
-模型可以在這個工作面裡保存資料、呼叫工具、管理 child agent，控制流更接近模型本身。
+這條線把 delegation 收在 personal service 的 loop 裡。
 
-Hermes 把 loop 收在 AIAgent core。
+OpenClaw 的一個 session 從 intake 開始。
 
-模型提出 action，service 再透過 provider resolver、tool registry 和 terminal backend 把 action 變成執行。
+Gateway 組合 context 和 model，再執行 native tools，最後把結果 persist。
 
-OpenClaw 把更高層的控制權放在 Gateway。
+這條線把每個入口的工作收進 Gateway-owned run。
 
-Gateway 先處理 session、routing 和 policy，模型回合只是 Gateway 管理的一段執行流程。
+三者的「session」都可以長時間存在，session 內部實際被序列化的物件不同。
 
-### State
+Prime 序列化 programming state。
 
-Prime 的 state 以 workspace 和 durable harness state 為中心。
+Hermes 序列化 tool／product loop 和 personal memory。
 
-Hermes 的 state 以 service database、search index、Markdown memory、skills 和 scheduled task 為中心。
+OpenClaw 序列化 Gateway 管理的 request、policy、plugin 和 persistence。
 
-OpenClaw 的 state 以 Gateway 管理的 workspace、session store 和 retrieval layer 為中心。
+## State：持久化資料決定工作會留下什麼
 
-三者都會把資料保存到模型外面，但 state 的 scope 不同。
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/state.png" width="1300" height="680" alt="Prime、Hermes、OpenClaw 的 persistent state 和 memory 手繪比較圖" loading="lazy" decoding="async">
+  <figcaption><strong>圖 6.</strong> 三種 state path：Prime 以 persistent Python namespace 和 Continual Harness 為中心；Hermes 以 session DB、Markdown memory 和 skills 為中心；OpenClaw 以 workspace、retrieval 和 plugin／context engine 為中心。來源：<a href="https://arxiv.org/abs/2605.09998">Continual Harness</a>、<a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>、<a href="https://github.com/openclaw/openclaw/tree/v2026.8.1">OpenClaw source</a>。</figcaption>
+</figure>
 
-| State scope | Prime | Hermes | OpenClaw |
-| --- | --- | --- | --- |
-| 當前工作 | 變數、檔案、工具結果 | session history 和當前 prompt | current session context |
-| 跨 session | durable prompt、memory、skills、subagent spec | `MEMORY.md`、`USER.md`、搜尋 index | workspace Markdown、retrieval state |
-| 背景工作 | child agent | delegation、cron | automation、node、plugin |
-| 最需要驗證的事 | 能否 resume 並避免 stale state | 能否正確 retrieve 和 inject | context 是否跨入口誤共享 |
+三個 runtime 都把有用資料保存到 model weights 之外。
 
-Prime 的 state scope 對應 session resume。
+Prime 保存 Python workspace、prompts、memories、skill descriptions、child specs 和工作產物。
 
-Hermes 的 state scope 對應個人長期使用。
+Continual Harness 將 supplemental prompt、memory、skill description 和可重用的 subagent specification 保存成 durable state，讓工作規則跨過一次 chat window。[^continual-harness]
 
-OpenClaw 的 state scope 對應跨入口 context sharing。
+Hermes 保存 session history、SQLite／FTS5 index、<code>MEMORY.md</code>、<code>USER.md</code> 和 skills。
 
-### Trust
+OpenClaw 保存 workspace Markdown、SQLite／FTS5 和 retrieval state。
 
-Prime 要檢查 Python worker、kernel、host bridge 和使用者 process 的關係。
+這些資料會影響下一輪輸入，模型參數維持原狀。
 
-Hermes 要檢查 terminal backend、approval path 和部署環境。
+三個 state lifecycle 都可以寫成：
 
-OpenClaw 要檢查 Gateway、plugin、node、pairing 和 policy 的關係。
+~~~text
+write -> index or organize -> retrieve -> inject
+~~~
 
-| 層 | 判斷問題 | Prime | Hermes | OpenClaw |
-| --- | --- | --- | --- | --- |
-| Execution | action 實際在哪個 process、container 或 remote worker 執行？ | Python worker／kernel、shell bridge | terminal backend | native tool、plugin、node |
-| Admission | 哪個 component 可以讓 action 通過 approval 或 policy？ | parent／worker path | approval pattern、service policy | Gateway policy、pairing、approval |
-| Isolation | process 能看到哪些檔案、credential、網路和 session？ | host process 與 worker 的設定 | local、container、remote deployment | Gateway、plugin、node 的部署設定 |
+Prime 的 retrieve 多半發生在同一個 persistent workspace，或下一次 session resume。
 
-approval 開關只能證明 action 進入了某種 admission path；isolation 要看實際 process。
+Hermes 需要 session search、personal context 和 skill loading。
 
-worker 或 container 的名稱不足以描述 host bridge，必須檢查部署設定。
+OpenClaw 需要 session routing、workspace context 和 hybrid retrieval。
 
-要判斷一個 agent 的實際風險，必須把 action 從 model output 一路追到最後的 process 和 credential。
+真正需要驗證的是 state scope。
 
-## Task-level 與 decoder-level parallelism
+Prime 要確認 workspace resume 時不會帶入 stale variable 或重做已完成的副作用。
 
-Agent project 常常同時出現 child agent、delegation、background task 和 automation。
+Hermes 要確認個人 memory、session index 和 channel scope 能正確對齊。
 
-這些功能增加 task-level parallelism；同一個 autoregressive sequence 仍使用 token-level 的序列生成。
+OpenClaw 要確認跨入口共享的 context 沒有把不該流動的資料送到另一個 channel 或 node。
 
-| Parallelism 層級 | 它平行化什麼 | Prime | Hermes | OpenClaw | decoder 狀態 |
-| --- | --- | --- | --- | --- | --- |
-| Task-level | 獨立的 research、coding、maintenance 或 background task | `rlm.spawn(...)` | delegation、background work | automation、node、plugin path | 單一回答的 token dependency |
-| Service-level | 不同入口或 session 的工作 | session／child runtime | 多入口 personal service | 多 channel、多 node Gateway | 單一模型回合的 decoder |
-| Decoder-level | 同一個 sequence 的 token generation | autoregressive | autoregressive | autoregressive | 第 $t+1$ 個 token 仍依賴第 $t$ 個 token |
+## Task-level parallelism 和 decoder-level dependency
 
-對一個必須依序產生 token 的回答來說，第 $t+1$ 個 token 仍然依賴第 $t$ 個 token。
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/parallelism.png" width="1300" height="680" alt="Agent task-level parallelism 與 autoregressive decoder dependency 的手繪比較圖" loading="lazy" decoding="async">
+  <figcaption><strong>圖 7.</strong> parent 可以把獨立工作 fan-out 給 child A、B、C，再收集結果；單一回答的 token path 仍沿著 t1、t2、t3、t4、t5 依序生成。來源：Prime 的 <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">RLM</a>、Hermes 的 <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">delegation</a>、OpenClaw 的 <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">automation path</a>。</figcaption>
+</figure>
 
-把工作拆成多個 child，改變的是工作分派；decoder dependency 仍然存在。
+Agent project 裡的 <code>rlm.spawn(...)</code>、delegation、background task 和 automation 都會增加 task-level parallelism。
+
+它們把獨立的 research、coding、maintenance 或 scheduled work 分派給不同 worker、child session 或 node。
+
+單一 autoregressive sequence 的 token dependency 仍然存在。
 
 如果有 $n$ 個彼此獨立的子任務，理想化的順序執行時間接近：
 
@@ -462,109 +375,74 @@ $$
 T_{serial} = \sum_{i=1}^{n} T_i
 $$
 
-在資源足夠、子任務真的獨立，而且 merge 成本可接受時，平行執行才可能接近：
+資源足夠、子任務真的獨立，而且 merge 成本可接受時，平行執行才可能接近：
 
 $$
 T_{parallel} \approx \max_i(T_i) + T_{dispatch} + T_{merge}
 $$
 
-`child agent` 主要改善工作分派和 wall-clock time。
+Prime 的 <code>rlm.spawn(...)</code> 把 fan-out 接到 persistent Python workspace。
 
-Prime 的 `rlm.spawn(...)`、Hermes 的 delegation，以及 OpenClaw 的 automation 都屬於工作層的拆分。
+Hermes 的 delegation 把子任務接到 personal agent service。
 
-它們改善的是工作分派、背景執行或整體 wall-clock time。
+OpenClaw 的 automation、node 和 plugin 把背景工作接到 Gateway control plane。
 
-單一回答沿著原本的 decoder path 生成 token，autoregressive dependency 維持。
+三者都能縮短多任務的 wall-clock time。
 
-## State lifecycle
+單一回答的第 $t+1$ 個 token 仍依賴第 $t$ 個 token。
 
-Agent memory 來自 runtime 對外部資料的寫入和取回。
+## Execution、Admission、Isolation
 
-這和更新 model weights 是兩件事。
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-runtime/security.png" width="1300" height="680" alt="Prime、Hermes、OpenClaw 的 execution、approval 和 isolation 邊界手繪比較圖" loading="lazy" decoding="async">
+  <figcaption><strong>圖 8.</strong> execution、approval／admission 和 child／plugin boundary 分開檢查。三個 project 的 lifecycle、policy 和 process isolation 落在不同位置。來源：<a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>、<a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>、<a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>。</figcaption>
+</figure>
 
-| State lifecycle | Prime Agent | Hermes Agent | OpenClaw 2.0 |
-| --- | --- | --- | --- |
-| Write | workspace、prompt、memory、skill、child result、工作產物 | session、`MEMORY.md`、`USER.md`、skills | workspace Markdown、session、automation result |
-| Index | workspace／harness 可重用 state | SQLite／FTS5 | SQLite／FTS5、retrieval layer |
-| Retrieve | 同一個工作環境、session resume、child result | session search、personal context、skill loading | session routing、workspace context、hybrid retrieval |
-| Inject | Python state、下一段 RLM control flow | prompt builder、AIAgent core | Gateway context assembly、model call |
-| 最大風險 | stale variable、partial side effect | 找錯記憶、context 過長 | session scope 錯誤、跨入口資料外洩 |
+安全分析要沿著 action 的實際路徑走。
 
-Prime 保存 Python workspace、Continual Harness 的 prompts、memories、skill descriptions、child specs 和工作產物。
+model output 只表示模型提出了一個 action。
 
-Continual Harness 將 supplemental prompt、memory、skill description 和可重用的 subagent specification 保存成 durable state，讓工作規則可以跨過一次 chat window。這些資料屬於 runtime state；model weights 維持不變。[^continual-harness]
+接下來要確認三件事：
 
-Hermes 保存 session history、SQLite／FTS5 index、`MEMORY.md`、`USER.md` 和 skills。
+1. action 最後在哪個 process、container 或 remote worker 執行。
+2. 哪個 component 允許它通過 approval、pairing 或 policy。
+3. 執行 process 能看到哪些檔案、credential、網路和 session。
 
-OpenClaw 保存 workspace Markdown、SQLite／FTS5 和 retrieval state。
+Prime 要追 Python worker／kernel、shell bridge、host process 和 user environment。
 
-這些資料都可能影響下一輪輸入，模型參數則維持原狀。
+Hermes 要追 terminal backend、approval path、mounted secret、provider config 和 deployment。
 
-比較 memory feature 時，要追的是寫入權、搜尋範圍、session scope、context budget 和資料刪除方式。
+OpenClaw 要追 Gateway、plugin、node、channel identity、pairing 和 policy。
 
-## Execution、Admission 與 Isolation
+worker 名稱不能直接代表 sandbox。
 
-三個 project 都讓模型接觸外部工具，安全分析要沿著 tool execution path 展開。
+container 名稱也不能直接代表 credential 已經隔離。
 
-同一個 `shell` 名稱，在本機 process、container、遠端 worker 和受 policy 控制的 node 上，代表的風險完全不同。
+pairing 名稱則不能直接代表 plugin 擁有獨立 process。
 
-| Security 問題 | Prime Agent | Hermes Agent | OpenClaw 2.0 |
-| --- | --- | --- | --- |
-| Action 在哪裡執行？ | Python worker／kernel、host bridge、shell | local、container 或 remote terminal backend | native tool、plugin、node、Gateway path |
-| 執行允許 | parent／worker 的執行路徑 | approval pattern、service policy | Gateway policy、pairing、approval |
-| 哪裡保存權限？ | user process、worker、host environment | backend、deployment、mounted secret、provider config | Gateway、plugin、node、channel identity |
-| isolation 的主要未知數 | REPL 是否可碰 host | backend 是否真的受限 | plugin／node 是否獨立隔離 |
-| 單一訊號不足以證明的事情 | worker 自動形成 sandbox | approval 自動形成 isolation | pairing 自動形成 plugin sandbox |
+這些元件需要沿著 process boundary 和 credential path 實際驗證。
 
-部署時，我會沿著四條線追一次：process、credential、plugin 和 host permission。
+## 三個 project 各自改變了哪一層
 
-先確認 action 的實際 process。
+Prime 改變的是模型操作電腦的 programming surface。
 
-再確認 process 如何取得 credential。
+它把長時間工作需要的 context、暫存資料、工具組合和 child task 放進 persistent Python／RLM。
 
-接著確認 plugin 或 node 能呼叫哪些外部能力。
+Hermes 改變的是 personal assistant 的 service boundary。
 
-最後才判斷 policy 和 isolation 是否真的形成邊界。
+它把多入口、provider、memory、skills、terminal backend、delegation 和 cron 收進同一個可長期運作的服務。
 
-這四步能定位 security boundary。
+OpenClaw 改變的是多入口 agent system 的 control plane。
 
-## 系統層貢獻
+它把 session routing、channels、nodes、plugins、automation 和 policy 放在 Gateway path 內。
 
-這三個 project 的改變發生在模型和外部世界之間，涵蓋 programming model、personal service 和 system control plane。
+評估部署時，固定標出三個 owner：model action 交給哪個 loop，state 由哪個 component 寫入、索引、取回和注入，以及 tool action 最後在哪個 process、credential scope 和 policy 下執行。
 
-| Project | 系統層抽象 | 對使用者的直接影響 | 仍需另外處理的問題 |
-| --- | --- | --- | --- |
-| Prime | programming model | 模型可以在 persistent Python workspace 裡組織 context、工具和 child task | host permission、state recovery、decoder dependency |
-| Hermes | personal agent service | 一個人可以從多入口長期使用同一個 assistant | terminal isolation、memory correctness、background scope |
-| OpenClaw | system control plane | 多 channel、node、plugin 和 automation 可以由 Gateway 統一管理 | plugin isolation、session scope、cross-channel policy |
+這三條線會直接指出 session resume、memory scope 和 credential isolation 的測試位置。
 
-Prime 重新安排模型操作電腦的介面。
-
-Hermes 重新安排一個人每天使用 assistant 的服務邊界。
-
-OpenClaw 重新安排多入口 agent system 的控制與整合邊界。
-
-三者各自改變不同的系統抽象。
-
-decoder benchmark 和單輪回答品質無法涵蓋這些 runtime 差異。
-
-## Workload fit
-
-| 工作負載 | 較接近的設計 | 適配原因 | 需要承擔的代價 |
-| --- | --- | --- | --- |
-| 長時間讀資料、寫程式、跑驗證 | Prime | persistent Python／RLM 可以把工作環境和中間結果留在同一個 session | workspace state、child lifecycle 和 host permission 必須自己管好 |
-| 從 CLI 或聊天入口每天使用 personal assistant | Hermes | service 統一管理 provider、memory、skills、search 和 cron | terminal backend 和 deployment 決定實際隔離程度 |
-| 同時接多個 channel、device、plugin 和 automation | OpenClaw | Gateway 統一管理 session routing、policy 和外部元件 | Gateway 變成高價值 trust boundary，scope 錯誤會跨入口傳播 |
-
-工作負載和 runtime 的架構中心需要一起評估。
-
-評估時確認三件事：模型位於哪個 loop，session state 寫到哪裡，以及 tool action 最後在哪個 process 和權限下執行。
-
-這三個位置比工具數量更能描述系統架構。
-
-[^prime-readme]: [Prime Agent README at commit `1fc1adb6`](https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/README.md). Used for the project scope, long-running work, and coding／research positioning.
-[^prime-rlm]: [Prime Agent RLM programming model at commit `1fc1adb6`](https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md). Used for the persistent Python surface, context variables, child-agent lifecycle, and host bridge.
-[^continual-harness]: [Continual Harness](https://arxiv.org/abs/2605.09998). Used for the durable prompt, memory, skill, and subagent-state framing; it separates that runtime state from model-weight updates.
-[^hermes-readme]: [Hermes Agent README at commit `afe06f2`](https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md). Used for the personal-agent scope, gateways, memory/search, skills, cron, delegation, and terminal backends.
-[^openclaw-release]: [OpenClaw `v2026.8.1`](https://github.com/openclaw/openclaw/tree/v2026.8.1). This is the pinned release called OpenClaw 2.0 in this comparison.
-[^openclaw-security]: [OpenClaw gateway documentation at `v2026.8.1`](https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway). Used for Gateway routing, policy, pairing, approval, and deployment-bound security observations.
+[^prime-readme]: [Prime Agent README at commit 1fc1adb6](https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/README.md). 用於 project scope、long-running work、coding 和 research 定位。
+[^prime-rlm]: [Prime Agent RLM programming model at commit 1fc1adb6](https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md). 用於 persistent Python surface、context variables、child-agent lifecycle 和 host bridge。
+[^continual-harness]: [Continual Harness](https://arxiv.org/abs/2605.09998). 用於 durable prompt、memory、skill 和 subagent state 的 runtime framing；這些資料與 model-weight update 分開。
+[^hermes-readme]: [Hermes Agent README at commit afe06f2](https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md). 用於 personal-agent scope、gateway、memory/search、skills、cron、delegation 和 terminal backend。
+[^openclaw-release]: [OpenClaw v2026.8.1](https://github.com/openclaw/openclaw/tree/v2026.8.1). 此比較把這個 pinned release 稱為 OpenClaw 2.0。
+[^openclaw-security]: [OpenClaw gateway documentation at v2026.8.1](https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway). 用於 Gateway routing、policy、pairing、approval 和 deployment-bound security observations。
