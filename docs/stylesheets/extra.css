@@ -155,16 +155,14 @@
    inside the content pane's title row (.pb-nav-row) instead */
 .md-tabs { display: none; }
 
-/* pbb page-nav-row: title left, pills right, one sticky row that stays
-   below the site header while the page scrolls */
+/* Page nav row: title left, pills right. It stays at the top of the document
+   and scrolls away with the page instead of following the reader. */
 .pb-nav-row {
   display: flex;
   flex-wrap: nowrap;
   align-items: baseline;
   gap: 0;
-  position: sticky;
-  top: 48px;
-  z-index: 40;
+  position: static;
   background: var(--pb-card);
   padding: 20px 40px 20px 24px;
   margin: 0 -40px 40px -24px;
@@ -1038,7 +1036,7 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   }
   .pb-quote::before, .pb-quote::after { font-size: 14px; }
   body.pb-strip-hidden .pb-side { transform: translateY(-100%); }
-  body.pb-strip-hidden .pb-nav-row { top: 0; }
+  body.pb-strip-hidden .pb-nav-row { top: auto; }
   /* Reduced motion drops the 0.3s slide, not the retract itself — pbb has no
      guard here at all, and cancelling the transform stopped the strip from
      ever hiding for anyone with the OS setting on (which is how Wayne's own
@@ -1065,12 +1063,13 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 
   .pb-main { padding: 20px 24px 24px; }
   .pb-nav-row {
-    top: var(--pb-mobile-profile-height, 129px);
+    position: static;
+    top: auto;
     margin: 0 -24px 40px;
     padding: 20px 24px;
     background: var(--pb-card);
-    box-shadow: 0 -10px 0 0 var(--pb-card);
-    transition: top 0.25s ease;
+    box-shadow: none;
+    transition: none;
   }
 
   /* pbb's phone type scale: 15px body, 22.4px page title, and pills
