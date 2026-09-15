@@ -6,17 +6,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="滲透測試不是掃描器：從書面授權、Rules of Engagement、證據鏈、最小化驗證到修復複測。">
+        <meta name="description" content="把 Prime Agent、Hermes Agent 和 OpenClaw 2.0 放到同一個問題上比較：模型外面的 harness 由誰持有控制流、狀態與信任邊界。">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
       
       
-        <link rel="canonical" href="https://wayne.is-a.dev/blog/pentest-intro/">
+        <link rel="canonical" href="https://wayne.is-a.dev/blog/agent-harness-boundaries/">
       
       
-        <link rel="prev" href="../pp-intro/">
+        <link rel="prev" href="../">
       
+      
+        <link rel="next" href="../inkling-975b-architecture/">
       
       
         
@@ -26,7 +28,7 @@
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
-  <title>滲透測試入門技術 — Wei Cheng (Wayne) Chiu</title>
+  <title>Agent Harness 的三種邊界 — Wei Cheng (Wayne) Chiu</title>
 
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
@@ -76,28 +78,25 @@
   <meta name="google-site-verification" content="oelC3cV7qpQ4oVhNlKaLFGK6yIXWO9d7_IQN_5w8duw">
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="滲透測試入門技術 — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="滲透測試不是掃描器：從書面授權、Rules of Engagement、證據鏈、最小化驗證到修復複測。">
-  <meta property="og:url" content="https://wayne.is-a.dev/blog/pentest-intro/">
-  <meta property="og:image" content="https://wayne.is-a.dev/assets/blog/kali-2026-2.webp">
+  <meta property="og:title" content="Agent Harness 的三種邊界 — Wei Cheng (Wayne) Chiu">
+  <meta property="og:description" content="把 Prime Agent、Hermes Agent 和 OpenClaw 2.0 放到同一個問題上比較：模型外面的 harness 由誰持有控制流、狀態與信任邊界。">
+  <meta property="og:url" content="https://wayne.is-a.dev/blog/agent-harness-boundaries/">
+  <meta property="og:image" content="/assets/blog/agent-harness-boundaries.svg">
   <meta property="profile:first_name" content="Wei Cheng">
   <meta property="profile:last_name" content="Chiu">
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="滲透測試入門技術 — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="滲透測試不是掃描器：從書面授權、Rules of Engagement、證據鏈、最小化驗證到修復複測。">
-  <meta name="twitter:image" content="https://wayne.is-a.dev/assets/blog/kali-2026-2.webp">
+  <meta name="twitter:title" content="Agent Harness 的三種邊界 — Wei Cheng (Wayne) Chiu">
+  <meta name="twitter:description" content="把 Prime Agent、Hermes Agent 和 OpenClaw 2.0 放到同一個問題上比較：模型外面的 harness 由誰持有控制流、狀態與信任邊界。">
+  <meta name="twitter:image" content="/assets/blog/agent-harness-boundaries.svg">
   
-  <meta property="article:tag" content="Security"><meta property="article:tag" content="Penetration Testing"><meta property="article:tag" content="Methodology">
+  <meta property="article:tag" content="Architecture"><meta property="article:tag" content="Agents"><meta property="article:tag" content="Security">
   
 
   
   
-  
-  <script defer src="/javascripts/mathjax.js?v=20260721.1"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
   
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
@@ -159,17 +158,16 @@
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "\u6ef2\u900f\u6e2c\u8a66\u5165\u9580\u6280\u8853",
-    "url": "https://wayne.is-a.dev/blog/pentest-intro/",
-    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/pentest-intro/" },
+    "headline": "Agent Harness \u7684\u4e09\u7a2e\u908a\u754c",
+    "url": "https://wayne.is-a.dev/blog/agent-harness-boundaries/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://wayne.is-a.dev/blog/agent-harness-boundaries/" },
     "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
     "inLanguage": "zh-Hant",
-    "keywords": ["Security", "Penetration Testing", "Methodology"],
-    "description": "\u6ef2\u900f\u6e2c\u8a66\u4e0d\u662f\u6383\u63cf\u5668\uff1a\u5f9e\u66f8\u9762\u6388\u6b0a\u3001Rules of Engagement\u3001\u8b49\u64da\u93c8\u3001\u6700\u5c0f\u5316\u9a57\u8b49\u5230\u4fee\u5fa9\u8907\u6e2c\u3002",
-    "image": "https://wayne.is-a.dev/assets/blog/kali-2026-2.webp",
-    "datePublished": "2025-01-10",
-    "dateModified": "2026-07-21"
+    "keywords": ["Architecture", "Agents", "Security"],
+    "description": "\u628a Prime Agent\u3001Hermes Agent \u548c OpenClaw 2.0 \u653e\u5230\u540c\u4e00\u500b\u554f\u984c\u4e0a\u6bd4\u8f03\uff1a\u6a21\u578b\u5916\u9762\u7684 harness \u7531\u8ab0\u6301\u6709\u63a7\u5236\u6d41\u3001\u72c0\u614b\u8207\u4fe1\u4efb\u908a\u754c\u3002",
+    "image": "/assets/blog/agent-harness-boundaries.svg",
+    "datePublished": "2026-09-15"
   }
   </script>
   
@@ -193,7 +191,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#agent-harness-primehermes-openclaw-20" class="md-skip">
           Skip to content
         </a>
       
@@ -227,7 +225,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              滲透測試入門技術
+              Agent Harness 的三種邊界
             
           </span>
         </div>
@@ -512,10 +510,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../agent-harness-boundaries/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Harness 的三種邊界
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -531,6 +556,158 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tldr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TL;DR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Harness 到底補了哪一層
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三個 project 原本要服務的工作
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三個控制面的差別
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prime-persistent-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prime：把工作面做成 persistent Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hermes-loop-personal-agent-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hermes：把 loop 收進 personal agent service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openclawgateway-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenClaw：Gateway 是 control plane
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelismtask-level-decoder-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallelism：task-level，不是 decoder-level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-model-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State 不是 model weights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executionapproval-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        安全性要拆成 execution、approval 和 isolation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        這算不算本質進步
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        怎麼選
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -792,37 +969,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    滲透測試入門技術
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../pentest-intro/" class="md-nav__link">
         
   
   
@@ -838,164 +988,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rules-of-engagement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        先寫 Rules of Engagement
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#black-boxgray-boxwhite-box" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Black box、gray box、white box 的差別在已知資訊量
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        一條可審核的測試流程
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="一條可審核的測試流程">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-scope-attack-surface-inventory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Scope 與 attack-surface inventory
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-threat-hypothesis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. 先寫 threat hypothesis
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-discovery-triage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Discovery 與人工 triage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-exploitation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. 最小化 exploitation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-evidence-chain-cleanup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Evidence chain 與 cleanup
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. 修復複測
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        風險分數要連回業務影響
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        按測試問題選工具
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#finding" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        一份 finding 至少要讓修復者回答六件事
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1035,10 +1027,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#rules-of-engagement" class="md-nav__link">
+  <a href="#tldr" class="md-nav__link">
     <span class="md-ellipsis">
       
-        先寫 Rules of Engagement
+        TL;DR
       
     </span>
   </a>
@@ -1046,10 +1038,98 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#black-boxgray-boxwhite-box" class="md-nav__link">
+  <a href="#harness" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Black box、gray box、white box 的差別在已知資訊量
+        Harness 到底補了哪一層
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三個 project 原本要服務的工作
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三個控制面的差別
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prime-persistent-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prime：把工作面做成 persistent Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hermes-loop-personal-agent-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hermes：把 loop 收進 personal agent service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openclawgateway-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenClaw：Gateway 是 control plane
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelismtask-level-decoder-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallelism：task-level，不是 decoder-level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-model-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State 不是 model weights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executionapproval-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        安全性要拆成 execution、approval 和 isolation
       
     </span>
   </a>
@@ -1060,82 +1140,10 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        一條可審核的測試流程
+        這算不算本質進步
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="一條可審核的測試流程">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-scope-attack-surface-inventory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Scope 與 attack-surface inventory
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-threat-hypothesis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. 先寫 threat hypothesis
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-discovery-triage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Discovery 與人工 triage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-exploitation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. 最小化 exploitation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-evidence-chain-cleanup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Evidence chain 與 cleanup
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. 修復複測
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1143,29 +1151,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        風險分數要連回業務影響
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        按測試問題選工具
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#finding" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        一份 finding 至少要讓修復者回答六件事
+        怎麼選
       
     </span>
   </a>
@@ -1225,51 +1211,51 @@
     
       
     
-      <li><a href="#rules-of-engagement">先寫 Rules of Engagement</a></li>
+      <li><a href="#tldr">TL;DR</a></li>
     
   
     
-      <li><a href="#black-boxgray-boxwhite-box">Black box、gray box、white box 的差別在已知資訊量</a></li>
+      <li><a href="#harness">Harness 到底補了哪一層</a></li>
     
   
     
-      <li><a href="#_2">一條可審核的測試流程</a><ol>
-    
-      <li><a href="#1-scope-attack-surface-inventory">1. Scope 與 attack-surface inventory</a></li>
+      <li><a href="#project">三個 project 原本要服務的工作</a></li>
     
   
     
-      <li><a href="#2-threat-hypothesis">2. 先寫 threat hypothesis</a></li>
+      <li><a href="#_1">三個控制面的差別</a></li>
     
   
     
-      <li><a href="#3-discovery-triage">3. Discovery 與人工 triage</a></li>
+      <li><a href="#prime-persistent-python">Prime：把工作面做成 persistent Python</a></li>
     
   
     
-      <li><a href="#4-exploitation">4. 最小化 exploitation</a></li>
+      <li><a href="#hermes-loop-personal-agent-service">Hermes：把 loop 收進 personal agent service</a></li>
     
   
     
-      <li><a href="#5-evidence-chain-cleanup">5. Evidence chain 與 cleanup</a></li>
+      <li><a href="#openclawgateway-control-plane">OpenClaw：Gateway 是 control plane</a></li>
     
   
     
-      <li><a href="#6">6. 修復複測</a></li>
-    
-  </ol></li>
+      <li><a href="#parallelismtask-level-decoder-level">Parallelism：task-level，不是 decoder-level</a></li>
     
   
     
-      <li><a href="#_3">風險分數要連回業務影響</a></li>
+      <li><a href="#state-model-weights">State 不是 model weights</a></li>
     
   
     
-      <li><a href="#_4">按測試問題選工具</a></li>
+      <li><a href="#executionapproval-isolation">安全性要拆成 execution、approval 和 isolation</a></li>
     
   
     
-      <li><a href="#finding">一份 finding 至少要讓修復者回答六件事</a></li>
+      <li><a href="#_2">這算不算本質進步</a></li>
+    
+  
+    
+      <li><a href="#_3">怎麼選</a></li>
     
   
     
@@ -1310,7 +1296,7 @@
   </nav>
 </div>
 
-<h1 class="pb-post-title">滲透測試入門技術</h1>
+<h1 class="pb-post-title">Agent Harness 的三種邊界</h1>
 
 
 <template class="pb-article-toc-template">
@@ -1321,51 +1307,51 @@
     
       
     
-      <li><a href="#rules-of-engagement">先寫 Rules of Engagement</a></li>
+      <li><a href="#tldr">TL;DR</a></li>
     
   
     
-      <li><a href="#black-boxgray-boxwhite-box">Black box、gray box、white box 的差別在已知資訊量</a></li>
+      <li><a href="#harness">Harness 到底補了哪一層</a></li>
     
   
     
-      <li><a href="#_2">一條可審核的測試流程</a><ol>
-    
-      <li><a href="#1-scope-attack-surface-inventory">1. Scope 與 attack-surface inventory</a></li>
+      <li><a href="#project">三個 project 原本要服務的工作</a></li>
     
   
     
-      <li><a href="#2-threat-hypothesis">2. 先寫 threat hypothesis</a></li>
+      <li><a href="#_1">三個控制面的差別</a></li>
     
   
     
-      <li><a href="#3-discovery-triage">3. Discovery 與人工 triage</a></li>
+      <li><a href="#prime-persistent-python">Prime：把工作面做成 persistent Python</a></li>
     
   
     
-      <li><a href="#4-exploitation">4. 最小化 exploitation</a></li>
+      <li><a href="#hermes-loop-personal-agent-service">Hermes：把 loop 收進 personal agent service</a></li>
     
   
     
-      <li><a href="#5-evidence-chain-cleanup">5. Evidence chain 與 cleanup</a></li>
+      <li><a href="#openclawgateway-control-plane">OpenClaw：Gateway 是 control plane</a></li>
     
   
     
-      <li><a href="#6">6. 修復複測</a></li>
-    
-  </ol></li>
+      <li><a href="#parallelismtask-level-decoder-level">Parallelism：task-level，不是 decoder-level</a></li>
     
   
     
-      <li><a href="#_3">風險分數要連回業務影響</a></li>
+      <li><a href="#state-model-weights">State 不是 model weights</a></li>
     
   
     
-      <li><a href="#_4">按測試問題選工具</a></li>
+      <li><a href="#executionapproval-isolation">安全性要拆成 execution、approval 和 isolation</a></li>
     
   
     
-      <li><a href="#finding">一份 finding 至少要讓修復者回答六件事</a></li>
+      <li><a href="#_2">這算不算本質進步</a></li>
+    
+  
+    
+      <li><a href="#_3">怎麼選</a></li>
     
   
     
@@ -1380,51 +1366,51 @@
     
       
     
-      <li><a href="#rules-of-engagement">先寫 Rules of Engagement</a></li>
+      <li><a href="#tldr">TL;DR</a></li>
     
   
     
-      <li><a href="#black-boxgray-boxwhite-box">Black box、gray box、white box 的差別在已知資訊量</a></li>
+      <li><a href="#harness">Harness 到底補了哪一層</a></li>
     
   
     
-      <li><a href="#_2">一條可審核的測試流程</a><ol>
-    
-      <li><a href="#1-scope-attack-surface-inventory">1. Scope 與 attack-surface inventory</a></li>
+      <li><a href="#project">三個 project 原本要服務的工作</a></li>
     
   
     
-      <li><a href="#2-threat-hypothesis">2. 先寫 threat hypothesis</a></li>
+      <li><a href="#_1">三個控制面的差別</a></li>
     
   
     
-      <li><a href="#3-discovery-triage">3. Discovery 與人工 triage</a></li>
+      <li><a href="#prime-persistent-python">Prime：把工作面做成 persistent Python</a></li>
     
   
     
-      <li><a href="#4-exploitation">4. 最小化 exploitation</a></li>
+      <li><a href="#hermes-loop-personal-agent-service">Hermes：把 loop 收進 personal agent service</a></li>
     
   
     
-      <li><a href="#5-evidence-chain-cleanup">5. Evidence chain 與 cleanup</a></li>
+      <li><a href="#openclawgateway-control-plane">OpenClaw：Gateway 是 control plane</a></li>
     
   
     
-      <li><a href="#6">6. 修復複測</a></li>
-    
-  </ol></li>
+      <li><a href="#parallelismtask-level-decoder-level">Parallelism：task-level，不是 decoder-level</a></li>
     
   
     
-      <li><a href="#_3">風險分數要連回業務影響</a></li>
+      <li><a href="#state-model-weights">State 不是 model weights</a></li>
     
   
     
-      <li><a href="#_4">按測試問題選工具</a></li>
+      <li><a href="#executionapproval-isolation">安全性要拆成 execution、approval 和 isolation</a></li>
     
   
     
-      <li><a href="#finding">一份 finding 至少要讓修復者回答六件事</a></li>
+      <li><a href="#_2">這算不算本質進步</a></li>
+    
+  
+    
+      <li><a href="#_3">怎麼選</a></li>
     
   
     
@@ -1437,133 +1423,280 @@
 
 
 
-<h1 id="_1">滲透測試不是掃描器：從授權邊界到可複測證據<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p><em>2025-01-10 · updated 2026-07-21 · cybersecurity / methodology</em></p>
-<figure class="pb-article-hero">
-  <img src="/assets/blog/kali-2026-2.webp" alt="Kali Linux security-testing environment" loading="eager" decoding="async">
-  <figcaption>Kali Linux security testing environment · <a href="https://www.kali.org/blog/kali-linux-2026-2-release/">Source: Kali Linux</a></figcaption>
+<h1 id="agent-harness-primehermes-openclaw-20">Agent Harness 的三種邊界：Prime、Hermes 與 OpenClaw 2.0<a class="headerlink" href="#agent-harness-primehermes-openclaw-20" title="Permanent link">&para;</a></h1>
+<p><em>2026-09-15 · Agent Architecture / Runtime / Security</em></p>
+<figure class="pb-article-hero pb-article-contain">
+  <img src="/assets/blog/agent-harness-boundaries.svg" width="1200" height="630" alt="Prime、Hermes 與 OpenClaw 的 agent harness 架構比較" loading="eager" decoding="async">
+  <figcaption>自製示意圖：比較三個 project 把 control、state 和 trust 放在哪裡。</figcaption>
 </figure>
 
-<p>弱點掃描器告訴你「這個版本可能有問題」。滲透測試要回答更難的問題：在<strong>明確授權
-的範圍</strong>內，攻擊路徑是否真的成立、能造成什麼業務影響、修復後能否用同一份證據
-確認風險消失。</p>
-<p>判斷一份工作是否算滲透測試，要看它有沒有可追溯的假設、最小化驗證和測試風險控制。</p>
-<h2 id="rules-of-engagement">先寫 Rules of Engagement<a class="headerlink" href="#rules-of-engagement" title="Permanent link">&para;</a></h2>
-<p>沒有書面授權，就沒有滲透測試。開始前至少要把以下內容寫進 Rules of Engagement
-（RoE）：<sup id="fnref:nist"><a class="footnote-ref" href="#fn:nist">1</a></sup></p>
+<p>很多人把 agent 簡化成「模型會自己用工具」。</p>
+<p>這個說法沒有錯，但它把最重要的部分藏掉了。</p>
+<p>模型產生一次 tool call 之後，誰把結果送回下一輪，誰保存中間狀態，誰決定這個工具能不能碰到 host，這些都不在模型權重裡。</p>
+<p>這一層通常被叫做 agent harness。</p>
+<p>本文把 Prime Agent、Hermes Agent 和 OpenClaw 2.0 放在同一個問題上比較：模型外面的系統，到底由哪一層接住工作。</p>
+<p>版本固定在 Prime Agent 的 commit <code>1fc1adb6</code>、Hermes Agent 的 commit <code>afe06f2</code>，以及 OpenClaw 的 <code>v2026.8.1</code> release。</p>
+<p>本文中的 OpenClaw 2.0 指這個 release，不把會繼續變動的 current main 混進來。</p>
+<h2 id="tldr">TL;DR<a class="headerlink" href="#tldr" title="Permanent link">&para;</a></h2>
 <ul>
-<li>明確的 IP、domain、API、帳號與環境範圍；第三方 SaaS 是否另有授權。</li>
-<li>允許與禁止的手法，例如 social engineering、DoS、password spraying 或資料外傳。</li>
-<li>測試時段、來源 IP、速率上限、緊急停止條件與 24/7 聯絡窗口。</li>
-<li>敏感資料的處理方式：能否讀取、最多保留多久、如何加密與銷毀。</li>
-<li>成功證明的界線。通常一個無害 marker 或最小資料樣本就足夠，不需要把整個資料庫
-  搬走。</li>
+<li><strong>Prime Agent</strong> 把 model-facing control surface 放在 persistent Python／RLM workspace。它的工作單位是一個可以持續執行、保存變數、呼叫 child agent 的 coding／research session。</li>
+<li><strong>Hermes Agent</strong> 把 loop 收在 AIAgent core 和 personal gateway。它的工作單位是一個每天可以從 CLI 或 messaging channel 使用的 personal assistant service。</li>
+<li><strong>OpenClaw 2.0</strong> 把 routing、session、policy、plugin 和 automation 收到 Gateway。它的工作單位是一個連接多個 channel、device 和外部元件的 self-hosted system。</li>
+<li>三者都有 task-level parallelism，但都沒有改寫 autoregressive decoder。child、background job 和 automation 拆的是工作，不是同一個回答的 token dependency。</li>
+<li>安全性要沿著 execution、approval／admission 和 isolation 分開看。工具名稱本身不能告訴你 host 到底被誰控制。</li>
 </ul>
-<p>RoE 同時決定測試方法。Production 禁止 destructive write 時，要先準備 read-only proof；
-系統承受不了掃描 burst 時，則把 rate limit 寫進測試參數，避免臨場猜測。</p>
-<h2 id="black-boxgray-boxwhite-box">Black box、gray box、white box 的差別在已知資訊量<a class="headerlink" href="#black-boxgray-boxwhite-box" title="Permanent link">&para;</a></h2>
+<h2 id="harness">Harness 到底補了哪一層<a class="headerlink" href="#harness" title="Permanent link">&para;</a></h2>
+<p>單獨呼叫一個模型時，流程很短。</p>
+<p>輸入 prompt，模型產生輸出，這一輪就結束。</p>
+<p>Agent 需要把這個回合接成一個可以繼續工作的 process。</p>
+<p>它要處理 request 從哪裡進來、該用哪個 model、目前有哪些工具、工具結果要回到哪個 session、哪些資料要保存，以及下一輪是否允許繼續執行。</p>
+<p>因此我在這篇文章裡把 harness 拆成三個 owner 問題。</p>
 <table>
 <thead>
 <tr>
-<th>模式</th>
-<th>已知資訊</th>
-<th>適合回答的問題</th>
-<th>盲點</th>
+<th>問題</th>
+<th>看的是什麼</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Black box</td>
-<td>公開入口與極少背景</td>
-<td>外部攻擊面暴露到什麼程度？</td>
-<td>時間大量耗在 discovery，深層 coverage 低</td>
+<td>Control</td>
+<td>模型可以直接操作哪一種工作面，下一步由哪個 loop 決定。</td>
 </tr>
 <tr>
-<td>Gray box</td>
-<td>一般使用者帳號、部分架構</td>
-<td>權限邊界與 authenticated flow 是否安全？</td>
-<td>可能漏掉 source-level 缺陷</td>
+<td>State</td>
+<td>一個 session 結束後，哪些資料還能被下一輪找回來。</td>
 </tr>
 <tr>
-<td>White box</td>
-<td>原始碼、架構、測試帳號與設定</td>
-<td>關鍵路徑能否被系統性覆蓋？</td>
-<td>與真實外部攻擊者的資訊條件不同</td>
+<td>Trust</td>
+<td>tool、child agent 和 plugin 最後承擔的是哪個 process 的權限。</td>
 </tr>
 </tbody>
 </table>
-<p>實務上我偏好用 gray/white box 提高 coverage，再保留一段 black-box validation 檢查
-公開面。把資訊藏起來不會自動讓測試更真實，只會把有限工時換成 enumeration。</p>
-<h2 id="_2">一條可審核的測試流程<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<h3 id="1-scope-attack-surface-inventory">1. Scope 與 attack-surface inventory<a class="headerlink" href="#1-scope-attack-surface-inventory" title="Permanent link">&para;</a></h3>
-<p>先把資產、信任邊界、身份角色、資料流與第三方依賴畫出來。DNS、port、route、API
-schema 與 cloud identity 是 inventory；此時還不是在證明漏洞。</p>
-<h3 id="2-threat-hypothesis">2. 先寫 threat hypothesis<a class="headerlink" href="#2-threat-hypothesis" title="Permanent link">&para;</a></h3>
-<p>每個測試項目應該能寫成一句可否證假設，例如：「tenant A 的 object identifier 能否在
-tenant B 的 session 被讀取？」這比「跑一遍 scanner」更容易知道 coverage 到哪裡，
-也能直接對照 OWASP Web Security Testing Guide 的測試類別。<sup id="fnref:owasp-wstg"><a class="footnote-ref" href="#fn:owasp-wstg">2</a></sup></p>
-<h3 id="3-discovery-triage">3. Discovery 與人工 triage<a class="headerlink" href="#3-discovery-triage" title="Permanent link">&para;</a></h3>
-<p>Scanner、SAST、dependency audit 與 service enumeration 適合找候選點，不適合直接當
-finding。版本 banner 可能是 backport，status code 也可能被 WAF 改寫；每個候選結果都
-要人工驗證 prerequisite、可達性與既有控制。</p>
-<h3 id="4-exploitation">4. 最小化 exploitation<a class="headerlink" href="#4-exploitation" title="Permanent link">&para;</a></h3>
-<p>驗證做到足以證明影響就停。能用讀取一筆 synthetic record 證明 IDOR，就不要批次列舉；
-能用 <code>whoami</code> 類無害命令證明 execution，便不需要建立 persistence。
-任何超出 RoE 的 pivot 都先停下來重新取得授權。</p>
-<h3 id="5-evidence-chain-cleanup">5. Evidence chain 與 cleanup<a class="headerlink" href="#5-evidence-chain-cleanup" title="Permanent link">&para;</a></h3>
-<p>一個可複測 finding 應包含時間、測試來源、前置身份、完整 request/response、受影響資產、
-最小 PoC、觀察到的影響與 cleanup 記錄。Token、cookie、個資與 secret 在報告裡要遮罩，
-原始證據則依約定加密保存。</p>
-<h3 id="6">6. 修復複測<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
-<p>複測不能只看頁面是否回 403。先重播原始 PoC，再測相鄰 bypass（不同 method、encoding、角色、object type），
-最後確認修復沒有破壞合法 flow。結論分成 fixed、partially
-fixed、not fixed 與 cannot retest，避免用模糊的「已處理」。</p>
-<h2 id="_3">風險分數要連回業務影響<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>CVSS 提供可比較的 technical severity，但優先順序仍需結合 exposure、asset value、
-existing controls 與 exploit preconditions。可以把 triage 想成</p>
-<div class="arithmatex">\[
-R = f(\text{technical impact},\text{likelihood},\text{exposure},
-\text{asset value},\text{controls}).
-\tag{1}
-\]</div>
-<p>因此相同的 injection primitive，在隔離的測試工具與公開付款 API 上不應得到相同處理
-順序。報告需要同時保留 CVSS vector 與 organization-specific rationale，不能只留一個
-紅色數字。<sup id="fnref:cvss"><a class="footnote-ref" href="#fn:cvss">4</a></sup></p>
-<h2 id="_4">按測試問題選工具<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>資產與網路面</strong>：DNS/ASN inventory、Nmap 類 service discovery。</li>
-<li><strong>Web/API</strong>：intercepting proxy、schema-driven API tests、OWASP ZAP 類自動化輔助。</li>
-<li><strong>程式與供應鏈</strong>：SAST、secret scan、SBOM/dependency audit。</li>
-<li><strong>Cloud / identity</strong>：IAM policy analysis、role assumption 與 storage exposure checks。</li>
-<li><strong>證據與重現</strong>：可版本控制的 request fixtures、時間戳、hash 與 retest scripts。</li>
-</ul>
-<p>Kali 提供工具，測試流程則由 PTES、NIST SP 800-115 與 OWASP WSTG 定義，包括如何
-規劃、執行、記錄與溝通測試。<sup id="fnref:ptes"><a class="footnote-ref" href="#fn:ptes">3</a></sup><sup id="fnref2:nist"><a class="footnote-ref" href="#fn:nist">1</a></sup><sup id="fnref2:owasp-wstg"><a class="footnote-ref" href="#fn:owasp-wstg">2</a></sup></p>
-<h2 id="finding">一份 finding 至少要讓修復者回答六件事<a class="headerlink" href="#finding" title="Permanent link">&para;</a></h2>
-<ol>
-<li>哪個資產與版本受到影響？</li>
-<li>需要什麼身份與前置條件？</li>
-<li>最短的重現步驟是什麼？</li>
-<li>實際觀察到的技術與業務影響是什麼？</li>
-<li>建議修復的是 root cause 還是暫時 compensating control？</li>
-<li>用什麼 acceptance test 判斷修復完成？</li>
-</ol>
-<p>交付時，團隊應能確認成立的攻擊路徑、重現與修復所需的證據，以及整次測試是否守住
-授權與營運邊界。</p>
+<p>這不是一張 feature checklist。</p>
+<p>同一個功能放在不同 owner 手上，行為就會不一樣。</p>
+<h2 id="project">三個 project 原本要服務的工作<a class="headerlink" href="#project" title="Permanent link">&para;</a></h2>
+<p>Prime Agent 由 Prime Intellect 開發。</p>
+<p>它的 README 從 coding、research 和 long-running work 開始寫，核心概念是 Recursive Language Model，也就是把 context 當成變數，把工具和 recursive subagent 當成 Python 裡的 function call。<sup id="fnref:prime-readme"><a class="footnote-ref" href="#fn:prime-readme">1</a></sup></p>
+<p>Hermes Agent 由 Nous Research 開發。</p>
+<p>它把自己定位成 self-hosted personal agent，入口包含 CLI 和多種 messaging platform，並把 provider、memory、skills、session search 與 cron 放進同一個長期運作的服務。<sup id="fnref:hermes-readme"><a class="footnote-ref" href="#fn:hermes-readme">4</a></sup></p>
+<p>OpenClaw 來自 OpenClaw Foundation 和社群。</p>
+<p>它把 assistant 放在 devices 與 chat channels 旁邊，Gateway 再把 channels、nodes、plugins、automation 和 agent session 接起來。<sup id="fnref:openclaw-release"><a class="footnote-ref" href="#fn:openclaw-release">5</a></sup></p>
+<p>所以三者不是同一種產品的三個版本。</p>
+<p>Prime 先把長任務的工作環境做出來。</p>
+<p>Hermes 先把每天使用的 personal assistant service 做出來。</p>
+<p>OpenClaw 先把多入口、多元件的 self-hosted control plane 做出來。</p>
+<h2 id="_1">三個控制面的差別<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>先把三條 request path 壓成一張表。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Prime Agent</th>
+<th>Hermes Agent</th>
+<th>OpenClaw 2.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model-facing control</td>
+<td>persistent Python／RLM REPL</td>
+<td>AIAgent core 的 agent loop</td>
+<td>Gateway 管理的 session run</td>
+</tr>
+<tr>
+<td>Durable state</td>
+<td>Python workspace、harness state、session artifacts</td>
+<td>SQLite／FTS5、MEMORY.md、USER.md、skills</td>
+<td>workspace Markdown、SQLite／FTS5、hybrid retrieval</td>
+</tr>
+<tr>
+<td>主要工作單位</td>
+<td>長時間 coding／research session</td>
+<td>個人長期使用的 assistant service</td>
+<td>多 channel、多 node 的 self-hosted system</td>
+</tr>
+<tr>
+<td>主要信任邊界</td>
+<td>worker／kernel 與 host process</td>
+<td>terminal backend、approval 和部署設定</td>
+<td>Gateway、plugin、node 與 policy</td>
+</tr>
+</tbody>
+</table>
+<p>這個差異可以用一句話概括。</p>
+<p>Prime 讓 model 往工作環境裡走。</p>
+<p>Hermes 讓 model 進入一個可以長期使用的 personal agent service。</p>
+<p>OpenClaw 讓 model 進入一個由 Gateway 統一管理的 system。</p>
+<h2 id="prime-persistent-python">Prime：把工作面做成 persistent Python<a class="headerlink" href="#prime-persistent-python" title="Permanent link">&para;</a></h2>
+<p>Prime 的主要設計選擇，是讓 model 在一個持續存在的 Python control environment 裡做事。</p>
+<p>請求進入 parent model 之後，model 面對的核心工具不是一排互相獨立的 action，而是一個 persistent Python REPL。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>request
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; parent model
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; persistent Python REPL
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>       -&gt; files / shell / skills / MCP
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>       -&gt; rlm.spawn(...)
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>       -&gt; durable harness state
+</code></pre></div>
+<p>RLM 把 context 放進 Python 變數。</p>
+<p>模型可以先讀資料，把解析結果留在變數裡，再跑 shell、呼叫 skill、建立 child agent，最後把幾個中間結果組成下一步。</p>
+<p><code>rlm.spawn(...)</code> 也不是單純把另一個 prompt 丟出去。</p>
+<p>它在這個 programming model 裡是一個可以被程式控制的 child-agent admission call，parent 可以保留 handle，之後再透過 message 或檔案接收結果。</p>
+<p>Continual Harness 負責另一半。<sup id="fnref:continual-harness"><a class="footnote-ref" href="#fn:continual-harness">3</a></sup></p>
+<p>它把 supplemental prompt、memory、skill description 和可重用的 subagent specification 保存成 durable state，讓這些工作規則可以跨過一次 chat window。</p>
+<p>這個組合真正改變的是工作單位。</p>
+<p>一個 coding／research session 可以反覆讀資料、改程式、跑驗證，再回到同一個 workspace。</p>
+<p>它不需要每一輪都把同一組 context 重新拼回 prompt。</p>
+<p>Prime 的代價也在同一個位置。<sup id="fnref:prime-rlm"><a class="footnote-ref" href="#fn:prime-rlm">2</a></sup></p>
+<p>Python REPL 是 model-facing programming surface，不是安全 sandbox。</p>
+<p>worker 和 kernel 可以改善 lifecycle isolation、recovery 和 reattach，但模型產生的 Python 或 project command 仍可能沿用使用者的 host 權限。</p>
+<p>所以 Prime 的核心進步是 programming model。</p>
+<p>它把模型和電腦之間的介面，從「選一個工具」改成「在持續存在的工作面裡寫控制流」。</p>
+<h2 id="hermes-loop-personal-agent-service">Hermes：把 loop 收進 personal agent service<a class="headerlink" href="#hermes-loop-personal-agent-service" title="Permanent link">&para;</a></h2>
+<p>Hermes 的出發點不同。</p>
+<p>它要處理的是一個人每天反覆使用的 assistant，而不是把每個 session 暴露成一個可程式化的 REPL。</p>
+<p>CLI、messaging gateway、ACP、batch 和 API 都會進同一個 AIAgent core。</p>
+<p>core 組 prompt、解析 provider、維護 tool registry，再把 terminal、web、MCP 等能力接到模型回合裡。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>CLI / Telegram / Discord / ACP
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  -&gt; gateway
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  -&gt; AIAgent core
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>       -&gt; prompt builder
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>       -&gt; provider resolver
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>       -&gt; tool registry
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  -&gt; terminal / web / MCP
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  -&gt; session + memory
+</code></pre></div>
+<p>這種設計讓入口和執行核心分開。</p>
+<p>使用者可以從 CLI 開始，也可以從 Telegram 或 Discord 進來，但工作最後都回到同一個 agent loop。</p>
+<p>長期使用需要的 state 也放在 service 旁邊。</p>
+<p>SQLite／FTS5 保存 session 和搜尋索引，MEMORY.md 與 USER.md 保存個人 context，skills 提供可以重複使用的操作能力，cron 則讓服務在沒有即時互動時啟動工作。</p>
+<p>Hermes 的 tool execution 可以落在 local、container 或 remote terminal backend。</p>
+<p>這個選擇很重要，因為 personal agent 最後還是要碰到檔案、shell 和網路。</p>
+<p>approval pattern 可以限制某些指令，但真正的隔離程度仍然取決於 terminal backend、部署位置和設定。</p>
+<p>Hermes 的工程重點不是讓模型自己持有整個控制流。</p>
+<p>它把模型放在 AIAgent core 裡，再用 gateway、memory、skills、provider switching 和 cron 把一次互動延長成一個每天可用的服務。</p>
+<h2 id="openclawgateway-control-plane">OpenClaw：Gateway 是 control plane<a class="headerlink" href="#openclawgateway-control-plane" title="Permanent link">&para;</a></h2>
+<p>OpenClaw 面對的問題更接近系統整合。</p>
+<p>request 可能從不同 channel、CLI 或 paired node 進來。</p>
+<p>Gateway 要先找到對應的 session，再處理 routing、context、policy、model、native tool 和結果保存。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>channel / CLI / node
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  -&gt; Gateway WebSocket
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  -&gt; session routing + policy
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  -&gt; agent loop
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>       -&gt; context
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>       -&gt; model
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>       -&gt; native tools
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  -&gt; workspace / SQLite / retrieval
+</code></pre></div>
+<p>因此 Gateway 不是單純的訊息轉發層。</p>
+<p>它同時是 session owner、routing layer、channel coordinator 和 plugin host。</p>
+<p>cron、automation、nodes 和 plugins 都掛在這個 control plane 周邊。</p>
+<p>workspace Markdown、SQLite／FTS5 和 hybrid retrieval 則把 assistant 的長期 context 放到模型外面。</p>
+<p>這個架構適合需要跨 channel 維持同一套 assistant 行為的情境。</p>
+<p>同一個 user 可能從不同入口進來，Gateway 仍要決定它們是否屬於同一個 session、使用哪一個 agent、允許哪些工具，以及結果要送回哪裡。</p>
+<p>它也把信任邊界集中到 Gateway 周邊。</p>
+<p>pairing 和 approval 可以限制誰能進入或觸發某些動作，但它們不會自動把 native plugin 變成隔離程序。</p>
+<p>在固定的 <code>v2026.8.1</code> release 裡，plugin 的執行位置、sandbox 設定和 node 權限需要分開檢查。<sup id="fnref:openclaw-security"><a class="footnote-ref" href="#fn:openclaw-security">6</a></sup></p>
+<p>OpenClaw 的主要工程貢獻是 control-plane architecture。</p>
+<p>它處理的是多入口、多 session、多 plugin 和 automation 如何放進同一個 self-hosted runtime。</p>
+<h2 id="parallelismtask-level-decoder-level">Parallelism：task-level，不是 decoder-level<a class="headerlink" href="#parallelismtask-level-decoder-level" title="Permanent link">&para;</a></h2>
+<p>Agent project 很容易讓人誤以為模型本身也變平行了。</p>
+<p>其實要分開看兩種 parallelism。</p>
+<p>第一種是 task-level parallelism。</p>
+<p>Prime 可以用 <code>rlm.spawn(...)</code> 啟動 child agent，Hermes 可以 delegate task，OpenClaw 可以用 automation 或 background path 拆開工作。</p>
+<p>這些做法能讓幾個彼此獨立的 research、coding 或 maintenance 工作同時跑。</p>
+<p>第二種是 decoder-level parallelism。</p>
+<p>同一個 autoregressive sequence 的下一個 token，仍然要依賴前一個 token 的生成結果。</p>
+<p>多開幾個 child 不會消除這個 dependency。</p>
+<p>所以三個 project 的平行化改善的是工作分派、背景執行和整體吞吐。</p>
+<p>它們沒有改變單一回答的 decoder path，也沒有讓 autoregressive generation 變成真正的 token-level parallel generation。</p>
+<p>這是 agent runtime 和模型架構的分界。</p>
+<p>前者決定很多工作怎麼被接起來，後者才會改變 token 怎麼生成。</p>
+<h2 id="state-model-weights">State 不是 model weights<a class="headerlink" href="#state-model-weights" title="Permanent link">&para;</a></h2>
+<p>Agent 看起來有記憶，通常是因為 harness 把資料保存到模型外面。</p>
+<p>Prime 留下的是 Python workspace、Continual Harness 的 prompts、memories、skill descriptions、child specs 和工作產物。</p>
+<p>這些 state 讓同一個 long-running session 接著做。</p>
+<p>Hermes 保存 session history、SQLite／FTS5、MEMORY.md、USER.md 和 skills。</p>
+<p>這些資料服務的是 personal assistant：找回舊對話、保留個人偏好、沿用工具設定，再由 cron 啟動下一次工作。</p>
+<p>OpenClaw 把 workspace Markdown、SQLite／FTS5 和 hybrid retrieval 放在 Gateway 周邊。</p>
+<p>Gateway 再決定哪些 context 進入這次 session，以及結果要保存到哪個外部 state。</p>
+<p>三者都可以讓下一輪工作接續前一輪。</p>
+<p>但它們做的事情是保存、搜尋和重新注入 context，不是更新 model weights。</p>
+<p>如果要判斷一個 agent 的「記憶」有多可靠，應該追 state 的寫入、索引、取回和權限，而不是只看 UI 上有沒有一個 memory feature。</p>
+<h2 id="executionapproval-isolation">安全性要拆成 execution、approval 和 isolation<a class="headerlink" href="#executionapproval-isolation" title="Permanent link">&para;</a></h2>
+<p>這三個詞常被放在同一個 security label 裡，但它們回答不同問題。</p>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>問題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Execution</td>
+<td>指令實際在哪個 process、container 或 remote worker 執行。</td>
+</tr>
+<tr>
+<td>Approval／admission</td>
+<td>誰可以讓這個 action 進入執行路徑。</td>
+</tr>
+<tr>
+<td>Isolation</td>
+<td>這個 process 最後能碰到多少 host 資源、credential 和其他 session。</td>
+</tr>
+</tbody>
+</table>
+<p>Prime 的 persistent workspace 和 daemon 很適合長任務，但 worker／kernel 的 lifecycle management 不等於 sandbox。</p>
+<p>模型生成的 Python 或 shell 仍可能沿用 user process 的權限。</p>
+<p>Hermes 可以把 terminal 放在 local、Docker、SSH、Singularity、Modal、Daytona 或 Vercel Sandbox 等 backend，並用 approval pattern 控制某些指令。</p>
+<p>實際邊界取決於你選了哪一個 backend，以及 deployment 如何配置。</p>
+<p>OpenClaw 的 Gateway 管理 pairing、approval 和 policy。</p>
+<p>plugin、node 和 Gateway process 之間的信任關係，則要另外檢查。</p>
+<p>尤其不能把「使用者已配對」直接解讀成「所有 plugin 都被隔離」。</p>
+<p>部署時我會沿著四條線走一次：process、credential、plugin 和 host permission。</p>
+<p>只看到 approval 開關，還不足以推導出 isolation。</p>
+<h2 id="_2">這算不算本質進步<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>如果把本質進步定義成改變 decoder、training objective 或 token generation complexity，這三個 project 都不屬於那一類。</p>
+<p>它們的改變發生在模型外面。</p>
+<p>Prime 的改變比較接近 programming model。</p>
+<p>它讓模型在 persistent Python workspace 裡組織 context、工具和 child task，這會直接改變 long-running coding／research 的工作方式。</p>
+<p>Hermes 的改變主要在 personal agent service。</p>
+<p>它把入口、provider、memory、skills、search、cron 和 terminal backend 收在同一個每天可用的服務裡，重點是可持續使用和部署彈性。</p>
+<p>OpenClaw 的改變主要在 control plane。</p>
+<p>它把 channel、node、session、plugin、automation 和 policy 放到 Gateway 這個系統邊界裡，重點是多入口和外部元件的整合。</p>
+<p>所以三者的「新」不是同一種新。</p>
+<p>Prime 比較像在重新定義模型如何操作電腦。</p>
+<p>Hermes 比較像把 agent 變成一個可以長期使用的個人服務。</p>
+<p>OpenClaw 比較像在做 agent system 的 control plane。</p>
+<p>把它們排成模型能力排行榜，會漏掉真正的差異。</p>
+<h2 id="_3">怎麼選<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>研究或寫程式時，如果工作需要在同一個 session 裡反覆讀資料、改程式、跑驗證，Prime 的 RLM／persistent Python 對應這個工作。</p>
+<p>如果你要的是每天從 CLI 或聊天入口使用的 personal assistant，還要保留 memory、skills、provider switching 和 cron，Hermes 的 AIAgent service 對應這個工作。</p>
+<p>如果系統要同時接多個 channel、device、plugin 和 automation，再由一個 self-hosted control plane 統一管理，OpenClaw 的 Gateway 對應這個工作。</p>
+<p>這三個 project 都在 agent runtime 上做了完整的工程選擇。</p>
+<p>它們沒有替 decoder 提供一個新的生成機制。</p>
+<p>真正需要比較的是：工作由哪一層持有，state 由哪一層保存，權限又由哪一個 process 承擔。</p>
 <div class="footnote">
 <hr />
 <ol>
-<li id="fn:nist">
-<p><a href="https://csrc.nist.gov/pubs/sp/800/115/final">NIST SP 800-115, Technical Guide to Information Security Testing and Assessment</a>.&#160;<a class="footnote-backref" href="#fnref:nist" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:nist" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:prime-readme">
+<p><a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/README.md">Prime Agent README @ 1fc1adb6</a>. Used for the product scope, RLM, Continual Harness, long-running sessions, and trust warning.&#160;<a class="footnote-backref" href="#fnref:prime-readme" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn:owasp-wstg">
-<p><a href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Web Security Testing Guide</a>.&#160;<a class="footnote-backref" href="#fnref:owasp-wstg" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:owasp-wstg" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn:prime-rlm">
+<p><a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime Agent RLM programming model @ 1fc1adb6</a>. Used for the persistent Python surface, child-agent lifecycle, durable state, and host bridge.&#160;<a class="footnote-backref" href="#fnref:prime-rlm" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
-<li id="fn:ptes">
-<p><a href="http://www.pentest-standard.org/index.php/Main_Page">Penetration Testing Execution Standard</a>.&#160;<a class="footnote-backref" href="#fnref:ptes" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<li id="fn:continual-harness">
+<p><a href="https://arxiv.org/abs/2605.09998">Continual Harness</a>. Used for the harness-state framing; this article does not treat it as a model-weight update.&#160;<a class="footnote-backref" href="#fnref:continual-harness" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
-<li id="fn:cvss">
-<p><a href="https://www.first.org/cvss/v4.0/">FIRST Common Vulnerability Scoring System v4.0</a>.&#160;<a class="footnote-backref" href="#fnref:cvss" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<li id="fn:hermes-readme">
+<p><a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes Agent README @ afe06f2</a>. Used for the personal-agent scope, gateways, memory/search, skills, cron, delegation, and terminal backends.&#160;<a class="footnote-backref" href="#fnref:hermes-readme" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:openclaw-release">
+<p><a href="https://github.com/openclaw/openclaw/tree/v2026.8.1">OpenClaw v2026.8.1</a>. This is the pinned release called OpenClaw 2.0 in this comparison.&#160;<a class="footnote-backref" href="#fnref:openclaw-release" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:openclaw-security">
+<p><a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw gateway and security documentation</a>. Used for Gateway routing, policy, pairing, approval, and deployment-bound security observations.&#160;<a class="footnote-backref" href="#fnref:openclaw-security" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

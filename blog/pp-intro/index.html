@@ -514,6 +514,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../agent-harness-boundaries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Harness 的三種邊界
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../inkling-975b-architecture/" class="md-nav__link">
         
   
@@ -3506,7 +3534,7 @@ production kernel 仍需補齊 bounds check 與 error handling。<sup id="fnref:
 <a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>
 <a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="kt">float</span><span class="w"> </span><span class="n">milliseconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="n">cudaEventElapsedTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">milliseconds</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">stop</span><span class="p">);</span>
-<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Memory transfer took %f ms</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">milliseconds</span><span class="p">);</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="n">printf</span><span class="p">(</span><span class="s">"Memory transfer took %f ms</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">milliseconds</span><span class="p">);</span>
 </code></pre></div>
 <h4 id="422">4.2.2 計算瓶頸分析<a class="headerlink" href="#422" title="Permanent link">&para;</a></h4>
 <p>用 FLOPs／byte 粗估算術強度：</p>
@@ -3616,7 +3644,7 @@ production kernel 仍需補齊 bounds check 與 error handling。<sup id="fnref:
 <p>串流完成後執行 host 端回呼：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kt">void</span><span class="w"> </span><span class="n">CUDART_CB</span><span class="w"> </span><span class="nf">callbackFunc</span><span class="p">(</span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">userData</span><span class="p">)</span>
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="p">{</span>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Stream %p completed with status %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Stream %p completed with status %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
 <a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="p">}</span>
 <a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>
 <a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="c1">// 設定回呼</span>
