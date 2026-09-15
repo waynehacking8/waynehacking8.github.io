@@ -12,7 +12,7 @@ nav:
   - Patches: patches.md
   - Blog:
       - blog/index.md
-      - Agent Harness 的三種邊界: blog/agent-harness-boundaries.md
+      - Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇: blog/agent-harness-boundaries.md
       - Inkling 975B — 5:1 attention: blog/inkling-975b-architecture.md
       - Kimi K3 — KDA, AttnRes, MoE: blog/kimi-k3-architecture.md
       - TensorRT-LLM vs vLLM: blog/notes-trtllm-triton-serving.md

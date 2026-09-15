@@ -19,11 +19,11 @@ next to the claim they qualify.
 
 <div class="pb-posts">
 <a class="pb-post-card" href="agent-harness-boundaries/" data-tags="Architecture,Agents,Security">
-<span class="pb-post-image pb-image-contain"><img src="/assets/blog/agent-harness-boundaries.svg" alt="Prime、Hermes 與 OpenClaw 的 agent harness 架構比較" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Wayne</span></span>
+<span class="pb-post-image pb-image-contain"><img src="/assets/blog/agent-harness-boundaries.svg" alt="Prime、Hermes 與 OpenClaw 的 agent runtime 架構比較" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Wayne</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Agent Harness 的三種邊界：Prime、Hermes 與 OpenClaw 2.0</span>
+<span class="pb-post-title">Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">Architecture</span><span class="pb-tag pb-tag-green">Agents</span><span class="pb-tag pb-tag-red">Security</span></span>
-<span class="pb-post-excerpt">把三個 agent project 放到同一個問題上：control、state 和 trust 到底由哪一層持有。</span>
+<span class="pb-post-excerpt">從 persistent Python、personal agent service 到 Gateway control plane，拆解三個 runtime 如何接住模型的工作。</span>
 <span class="pb-post-date">2026-09-15</span>
 </span>
 </a>
