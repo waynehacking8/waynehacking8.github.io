@@ -19,6 +19,8 @@ tags:
   <figcaption><strong>圖 1.</strong> 三個 runtime 的 model-facing control surface、工具路徑和 durable state。手繪圖整理自 <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>、<a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a> 和 <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>。</figcaption>
 </figure>
 
+## 什麼是 Agent Harness？
+
 聊天模型處理一次 completion：prompt 進來，token 生成，文字回去。Agent 要把這個 completion 接成一段持續工作的流程。
 
 模型產生 action 後，系統要執行工具，把結果放回下一輪 context，保存 session，處理失敗，還要決定它能不能碰到檔案、網路或 credential。
