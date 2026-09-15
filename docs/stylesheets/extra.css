@@ -750,7 +750,11 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   margin: 0;
   object-fit: contain;
 }
-.pb-article-hero.pb-article-contain img { max-height: 21rem; padding: 1rem; }
+.pb-article-hero.pb-article-contain img {
+  height: auto;
+  max-height: none;
+  padding: 0;
+}
 .pb-article-hero figcaption {
   padding: 0.35rem 0.7rem;
   border-top: 1px solid var(--pb-line);
