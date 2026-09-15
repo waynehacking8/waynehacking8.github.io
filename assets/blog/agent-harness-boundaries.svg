@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Agent harness control surfaces</title>
+  <title id="title">Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇</title>
   <desc id="desc">A technical diagram comparing Prime, Hermes, and OpenClaw by where control, state, and trust live.</desc>
   <rect width="1200" height="630" fill="#0d1117"/>
   <rect x="48" y="42" width="1104" height="2" fill="#2b3440"/>
-  <text x="60" y="92" fill="#f2f4f7" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="28" letter-spacing="3">AGENT HARNESS / CONTROL SURFACES</text>
+  <text x="60" y="92" fill="#f2f4f7" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="28" letter-spacing="3">AGENT RUNTIME / CONTROL SURFACES</text>
   <text x="60" y="124" fill="#8d99a8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">same model loop, different owner for control, state, and trust</text>
 
   <g transform="translate(60 178)">
