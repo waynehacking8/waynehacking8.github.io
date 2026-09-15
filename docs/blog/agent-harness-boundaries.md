@@ -70,6 +70,8 @@ OpenClaw 由 OpenClaw Foundation 和社群維護，<code>v2026.8.1</code> 把 as
 | isolation boundary | worker、kernel、host process 和部署設定 | local、container、remote terminal backend | Gateway、plugin、node 的 process 與 sandbox 設定 |
 | task-level parallelism | <code>rlm.spawn(...)</code> | delegation、background work | automation、node、plugin |
 | 主要架構貢獻 | 把模型放進可程式化、可持續的工作面 | 把 model loop、memory、skills 和多入口服務放在一起 | 把 session routing、policy 和外部元件收進 Gateway control plane |
+| 核心優勢 | Python 可以表達條件、迴圈、資料處理和 child workflow；中間結果留在同一個工作面 | 開箱即用的 personal service；入口、provider、memory、skills 和 cron 共用一個 core | 入口、session、node、plugin、automation 和 policy 有同一個 Gateway owner |
+| 核心弱點 | stateful workspace 讓 resume、side effect 和 host permission 變成使用者要承擔的工程問題 | tool registry 和 service policy 收斂了控制流；memory correctness、terminal scope 和 background job 仍要維護 | Gateway、plugin 和 node 形成較大的 trust surface；identity、session scope 和部署隔離需要一起管理 |
 | 主要成本 | workspace stale state、child lifecycle、host permission | memory retrieval、terminal scope、background job | cross-channel scope、plugin trust、Gateway 成為高價值 process |
 | 適合的工作 | 長時間讀資料、寫程式、跑驗證 | 每天從不同入口使用同一個 assistant | 同時管理多入口、device、plugin 和 automation |
 
@@ -84,6 +86,54 @@ Hermes 把它收在 AIAgent core 的 service loop。
 OpenClaw 把它放進 Gateway 管理的 session loop。
 
 同一個「呼叫工具」動作，落在三個位置之後，能看到的 state、能取得的 credential 和失敗後的恢復方式都會改變。
+
+## 優勢和代價放在一起看
+
+Prime 的優勢在 programming surface。
+
+模型可以用 Python 保存中間結果，安排條件、迴圈和資料處理，再把獨立工作交給 child agent。
+
+長時間 coding 或 research session 會因此擁有比較完整的工作記憶和控制流。
+
+代價是工作面也把更多責任交給 runtime 和部署環境。
+
+workspace 可能累積 stale state，工具可能留下部分副作用，child session 需要回報和合併，Python worker 還可能沿用 host 的檔案和 credential。
+
+Hermes 的優勢在 service boundary。
+
+它把 CLI、聊天入口、provider、memory、skills、terminal 和 cron 接到同一個 AIAgent core。
+
+使用者每天可以從不同入口回到同一個 assistant，部署者也能在一個 service 裡處理 provider switching、session search 和 background work。
+
+這種集中化讓日常使用比較直接，控制流也比較容易由 service code 統一觀察。
+
+代價是模型的工作流被收在 tool registry、provider resolver 和 service policy 裡。
+
+需要高度客製的 programming surface 時，Hermes 要靠額外 tool、skill 或 delegation path 補上。
+
+memory 的寫入、索引、取回和注入也成為 service reliability 的主要來源。
+
+OpenClaw 的優勢在 system boundary。
+
+Gateway 可以把 channel、CLI、paired node、plugin、automation、session routing 和 policy 接在同一條 path 上。
+
+當需求包含多入口身份、跨 device 操作或長期 background automation 時，這種集中式 control plane 比單一 agent loop 更能承接系統整合。
+
+代價是 Gateway 變成整個系統的高價值 trust boundary。
+
+channel identity、session scope、plugin process、node capability 和 credential path 要同時正確，任何一層的 scope 錯誤都可能沿著共享的 Gateway state 傳播。
+
+三組直接比較可以這樣讀：
+
+Prime 對 Hermes，前者給模型更大的可編程工作面，後者給使用者更完整的日常服務。
+
+Hermes 對 OpenClaw，前者把重心放在 personal service，後者把重心拉高到多入口 system control plane。
+
+Prime 對 OpenClaw，前者把控制面放在 model-facing workspace，後者把控制面放在 Gateway；一個擅長長任務的工作連續性，一個擅長外部元件和入口的統一管理。
+
+因此，優勢不能脫離工作尺度判斷。
+
+Prime 的價值在工作流可編程性，Hermes 的價值在 personal service 的完整度，OpenClaw 的價值在整合面和 Gateway ownership。
 
 ## 三條 request path
 
