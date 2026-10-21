@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.">
+        <meta name="description" content="LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -79,7 +79,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
   <meta property="og:title" content="Patches — Wei Cheng (Wayne) Chiu">
-  <meta property="og:description" content="LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.">
+  <meta property="og:description" content="LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.">
   <meta property="og:url" content="https://wayne.is-a.dev/patches/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
@@ -89,7 +89,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="Patches — Wei Cheng (Wayne) Chiu">
-  <meta name="twitter:description" content="LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.">
+  <meta name="twitter:description" content="LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   
 
@@ -114,7 +114,7 @@
         "@type": "ProfilePage",
         "@id": "https://wayne.is-a.dev/#profilepage",
         "url": "https://wayne.is-a.dev/",
-        "name": "Wayne Chiu — LLM Infrastructure | Solutions Architecture",
+        "name": "Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery",
         "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
         "about": { "@id": "https://wayne.is-a.dev/#person" },
         "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
@@ -124,8 +124,8 @@
         "@id": "https://wayne.is-a.dev/#person",
         "name": "Wei Cheng (Wayne) Chiu",
         "alternateName": ["Wayne Chiu", "邱偉誠"],
-        "jobTitle": "LLM Infrastructure & Solutions Architecture",
-        "description": "LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.",
+        "jobTitle": "Field Application Engineer — On-prem LLM Infrastructure",
+        "description": "LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, on-prem GenAI deployment readiness, and upstream contributions.",
         "url": "https://wayne.is-a.dev/",
         "image": "https://wayne.is-a.dev/assets/profile.jpg",
         "email": "mailto:waynehacking8@gmail.com",
@@ -136,10 +136,10 @@
         ],
         "hasOccupation": {
           "@type": "Occupation",
-          "name": "LLM Infrastructure & Solutions Architecture",
-          "skills": "LLM infrastructure, solutions architecture, production GenAI, model serving, performance evaluation, TensorRT-LLM, vLLM, Triton, NCCL, PyTorch, CUDA, Kubernetes"
+          "name": "Field Application Engineer — On-prem LLM Infrastructure",
+          "skills": "LLM inference, GPU performance, CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, model serving, performance evaluation, Kubernetes, on-prem GenAI"
         },
-        "knowsAbout": ["LLM Infrastructure", "Solutions Architecture", "Production Generative AI", "Large Language Models", "Model Serving", "LLM Evaluation", "TensorRT-LLM", "vLLM", "Triton Inference Server", "NCCL", "CUDA", "PyTorch", "Kubernetes", "Federated Learning", "Differential Privacy"],
+        "knowsAbout": ["LLM Inference", "GPU Performance", "On-prem Generative AI", "Large Language Models", "Model Serving", "TensorRT-LLM", "vLLM", "SGLang", "FlashInfer", "Triton Inference Server", "CUDA", "PyTorch", "Kubernetes", "Federated Learning", "Differential Privacy"],
         "sameAs": [
           "https://github.com/waynehacking8",
           "https://www.linkedin.com/in/wei-cheng-chiu",
@@ -1000,8 +1000,8 @@
 
 
 <h1 id="patches">Patches<a class="headerlink" href="#patches" title="Permanent link">&para;</a></h1>
-<p>Upstream open-source contributions to the LLM-inference stack — <strong>18 merged/landed ·
-56 in review</strong> as of 2026-07-31.</p>
+<p>Upstream open-source contributions to the LLM-inference stack — <strong>22 merged/landed ·
+26 in review</strong> as of 2026-10-21.</p>
 <p class="pb-pr-wall">
 <a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><span class="pb-pr-wall-live"><span aria-hidden="true"></span>LIVE</span><span class="pb-pr-wall-copy"><strong>Live PR wall</strong><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span></span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
 <span class="pb-pr-wall-note">Updated every few minutes <span aria-hidden="true">·</span> <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a></span>
@@ -1025,13 +1025,13 @@ tests but computes the wrong answer.</p>
 <tbody>
 <tr>
 <td><strong>FlashInfer</strong></td>
-<td style="text-align: center;">7</td>
+<td style="text-align: center;">9</td>
 <td><a href="https://github.com/flashinfer-ai/flashinfer/pull/3615">SM120/121 multi-CTA radix top-k stream hang</a> · <a href="https://github.com/flashinfer-ai/flashinfer/pull/3838">SM120 NVFP4 attention qk-correction layout / row-sum / lse</a> · <a href="https://github.com/flashinfer-ai/flashinfer/pull/3614">MXFP8-aware MoE gemm profiler</a></td>
 </tr>
 <tr>
 <td><strong>vLLM</strong></td>
-<td style="text-align: center;">3</td>
-<td><a href="https://github.com/vllm-project/vllm/pull/45460">Tokenizer survives pickling</a> · <a href="https://github.com/vllm-project/vllm/pull/45376">streaming <code>message_start</code> sets <code>type</code>/<code>role</code></a> · <a href="https://github.com/vllm-project/vllm/pull/45468">clear error for structured outputs on diffusion decoders</a></td>
+<td style="text-align: center;">5</td>
+<td><a href="https://github.com/vllm-project/vllm/pull/49397">Skip Qwen3 deepstack buffers without vision</a> · <a href="https://github.com/vllm-project/vllm/pull/45460">Tokenizer survives pickling</a> · <a href="https://github.com/vllm-project/vllm/pull/45376">streaming <code>message_start</code> sets <code>type</code>/<code>role</code></a> · <a href="https://github.com/vllm-project/vllm/pull/45468">clear error for structured outputs on diffusion decoders</a></td>
 </tr>
 <tr>
 <td><strong>LMDeploy</strong></td>
@@ -1072,33 +1072,33 @@ tests but computes the wrong answer.</p>
 <tbody>
 <tr>
 <td><strong>SGLang</strong></td>
-<td style="text-align: center;">17</td>
-<td>SM120/SM121 dispatch for <code>int8_scaled_mm</code> &amp; <code>fp8_blockwise_scaled_grouped_mm</code> · SM120 shared-mem-safe attention block size</td>
+<td style="text-align: center;">6</td>
+<td><code>trtllm_mla</code> rejects prefill on SM12x · supported MoE runner for ModelOpt NVFP4 on SM110/SM120 · fused FP8 KV stores · PP-stage KV pairing in disaggregation</td>
 </tr>
 <tr>
 <td><strong>vLLM</strong></td>
-<td style="text-align: center;">15</td>
-<td>NVFP4 MoE per-expert scale validation · FP8 MoE+LoRA routed to Marlin · async-KV-load scheduling fix</td>
+<td style="text-align: center;">5</td>
+<td>NVFP4 MoE per-expert scale validation · CUTLASS block FP8 E8M0 upcast on SM12x · Anthropic streaming error events</td>
 </tr>
 <tr>
 <td><strong>FlashInfer</strong></td>
-<td style="text-align: center;">11</td>
-<td>NVFP4 global-scale threading through the unified MoE API · cuDNN full-sequence Q batch stride in batch prefill</td>
+<td style="text-align: center;">4</td>
+<td>b12x MoE workspace bucketing · JIT ninja parallelism capped by memory · combined paged-KV trace fix</td>
 </tr>
 <tr>
 <td><strong>Dynamo</strong></td>
 <td style="text-align: center;">4</td>
-<td>Blackwell workstation GPU SKU support · KV-router hardening follow-ups</td>
+<td>RTX PRO 6000 Blackwell GPU SKU · OTLP traces without logs · NIXL push and pull connectors in PD</td>
 </tr>
 <tr>
 <td><strong>NVIDIA TensorRT-LLM</strong></td>
-<td style="text-align: center;">4</td>
-<td>CuteDSL MoE ghost-token &amp; global-index fixes · DeepSeek-V2-Lite <code>e_score_correction_bias</code> guard</td>
+<td style="text-align: center;">2</td>
+<td>MoE BF16 to FP8 conversion gated on compiler support · MTP routed-expert layout detection</td>
 </tr>
 <tr>
 <td><strong>NVIDIA CUTLASS</strong></td>
 <td style="text-align: center;">3</td>
-<td>SM120 grouped NVFP4 block-scaled GEMM in <code>cutlass_library</code> · CuTeDSL sub-byte <code>make_ptr</code> / <code>is_major</code> / uint-lowering fixes</td>
+<td>SM120 grouped NVFP4 block-scaled GEMM in <code>cutlass_library</code> · CuTeDSL sub-byte <code>make_ptr</code> and <code>is_major</code> fixes</td>
 </tr>
 <tr>
 <td><strong>torchao</strong></td>
@@ -1106,9 +1106,9 @@ tests but computes the wrong answer.</p>
 <td>Reused-module fallback extended to <code>nn.Conv2d</code> (follow-up to merged #4480)</td>
 </tr>
 <tr>
-<td><strong>LMCache</strong></td>
+<td><strong>Triton Inference Server</strong></td>
 <td style="text-align: center;">1</td>
-<td>Clear <code>reqs_status</code> on async-lookup timeout to prevent recall KeyError</td>
+<td>Weight autoscaling queue time by request count</td>
 </tr>
 </tbody>
 </table>

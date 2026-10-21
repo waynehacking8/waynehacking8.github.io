@@ -1,7 +1,7 @@
 # Wei Cheng (Wayne) Chiu
 
-> LLM infrastructure and solutions architecture focused on on-premises deployment,
-> model serving, Linux/Kubernetes operations, customer-facing troubleshooting,
+> LLM inference and GPU performance focused on upstream contributions, on-prem GenAI
+> deployment at customer sites, Linux/Kubernetes operations, CUDA, SGLang, FlashInfer,
 > TensorRT-LLM and vLLM serving, and reproducible inference benchmarks. M.S. Computer
 > Science graduate of NTUST, researching AI/LLM security and privacy-preserving ML.
 

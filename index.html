@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.">
+        <meta name="description" content="LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -26,7 +26,7 @@
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
-  <title>Wayne Chiu — LLM Infrastructure | Solutions Architecture</title>
+  <title>Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery</title>
 
     
       <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
@@ -76,8 +76,8 @@
   <meta name="google-site-verification" content="oelC3cV7qpQ4oVhNlKaLFGK6yIXWO9d7_IQN_5w8duw">
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Wayne Chiu — LLM Infrastructure | Solutions Architecture">
-  <meta property="og:description" content="LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.">
+  <meta property="og:title" content="Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery">
+  <meta property="og:description" content="LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.">
   <meta property="og:url" content="https://wayne.is-a.dev/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
@@ -86,8 +86,8 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="Wayne Chiu — LLM Infrastructure | Solutions Architecture">
-  <meta name="twitter:description" content="LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.">
+  <meta name="twitter:title" content="Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery">
+  <meta name="twitter:description" content="LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   
 
@@ -112,7 +112,7 @@
         "@type": "ProfilePage",
         "@id": "https://wayne.is-a.dev/#profilepage",
         "url": "https://wayne.is-a.dev/",
-        "name": "Wayne Chiu — LLM Infrastructure | Solutions Architecture",
+        "name": "Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery",
         "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
         "about": { "@id": "https://wayne.is-a.dev/#person" },
         "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
@@ -122,8 +122,8 @@
         "@id": "https://wayne.is-a.dev/#person",
         "name": "Wei Cheng (Wayne) Chiu",
         "alternateName": ["Wayne Chiu", "邱偉誠"],
-        "jobTitle": "LLM Infrastructure & Solutions Architecture",
-        "description": "LLM infrastructure and solutions architecture in Taipei: production GenAI deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream LLM-inference contributions.",
+        "jobTitle": "Field Application Engineer — On-prem LLM Infrastructure",
+        "description": "LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, on-prem GenAI deployment readiness, and upstream contributions.",
         "url": "https://wayne.is-a.dev/",
         "image": "https://wayne.is-a.dev/assets/profile.jpg",
         "email": "mailto:waynehacking8@gmail.com",
@@ -134,10 +134,10 @@
         ],
         "hasOccupation": {
           "@type": "Occupation",
-          "name": "LLM Infrastructure & Solutions Architecture",
-          "skills": "LLM infrastructure, solutions architecture, production GenAI, model serving, performance evaluation, TensorRT-LLM, vLLM, Triton, NCCL, PyTorch, CUDA, Kubernetes"
+          "name": "Field Application Engineer — On-prem LLM Infrastructure",
+          "skills": "LLM inference, GPU performance, CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, model serving, performance evaluation, Kubernetes, on-prem GenAI"
         },
-        "knowsAbout": ["LLM Infrastructure", "Solutions Architecture", "Production Generative AI", "Large Language Models", "Model Serving", "LLM Evaluation", "TensorRT-LLM", "vLLM", "Triton Inference Server", "NCCL", "CUDA", "PyTorch", "Kubernetes", "Federated Learning", "Differential Privacy"],
+        "knowsAbout": ["LLM Inference", "GPU Performance", "On-prem Generative AI", "Large Language Models", "Model Serving", "TensorRT-LLM", "vLLM", "SGLang", "FlashInfer", "Triton Inference Server", "CUDA", "PyTorch", "Kubernetes", "Federated Learning", "Differential Privacy"],
         "sameAs": [
           "https://github.com/waynehacking8",
           "https://www.linkedin.com/in/wei-cheng-chiu",
@@ -1059,9 +1059,9 @@
 <a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" width="64" height="64" />LMDeploy</span></a> —
 with work on correctness, distributed inference, and serving performance. See the
 auto-updating <a href="https://prs.wayne.is-a.dev">PR wall</a> and <a href="patches/">Patches</a>.</p>
-<p>Production LLM infrastructure for real customer environments, from site constraints
-and preflight validation to acceptance and handover. Work spans Kubernetes, GPU runtime,
-networking, storage, certificates, and model-serving endpoints.</p>
+<p>Production LLM infrastructure at customer sites, from site constraints and preflight
+validation to acceptance and handover. Work spans Kubernetes, GPU runtime, networking,
+storage, certificates, and model-serving endpoints.</p>
 <p>Experience taking an enterprise multi-agent platform from PoC to production, with a
 focus on model serving, performance evaluation, and solution architecture.</p>
 <h2 id="focus">Focus<a class="headerlink" href="#focus" title="Permanent link">&para;</a></h2>
