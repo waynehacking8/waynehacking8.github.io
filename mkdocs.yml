@@ -2,9 +2,8 @@ site_name: Wei-Cheng Chiu
 site_url: https://wayne.is-a.dev/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
-  LLM infrastructure and solutions architecture in Taipei: production GenAI
-  deployment, model serving, Kubernetes, vLLM, PyTorch, and upstream
-  LLM-inference contributions.
+  LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer,
+  TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.
 
 nav:
   - About: index.md

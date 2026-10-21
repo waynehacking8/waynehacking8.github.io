@@ -7,16 +7,16 @@
 <div class="pb-tl-item" markdown>
 <div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
-<p class="pb-tl-title">LLM Infrastructure &amp; Solutions Architecture</p>
+<p class="pb-tl-title">Field Application Engineer — On-prem LLM Infrastructure</p>
 <p class="pb-tl-org"><a href="https://ailabs.tw/">Taiwan AILabs</a></p>
 <p class="pb-tl-date">Jul 2026 – Present · Taipei City, Taiwan</p>
 
-Field deployment of on-premises LLM systems (FedGPT) into customer environments —
-Linux / Kubernetes operations, GPU serving, and customer-facing troubleshooting.
+Deploying on-premises LLM systems (FedGPT) at customer sites, from bare metal to
+acceptance and handover.
 
-- Translate site constraints into deployment plans, preflight checks, and acceptance criteria across Linux, Kubernetes, and GPU serving.
-- Troubleshoot cross-layer failures spanning containers, GPU runtime, storage, networking, certificates, and model-serving endpoints.
-- Explain performance, reliability, and operational trade-offs to customer engineers and internal product teams from PoC through handover.
+- Bring up HPE servers (iLO, BIOS, RAID), Ubuntu, networking, and NVIDIA GPU runtime, then the model-serving stack on Kubernetes.
+- Debug across containers, GPU runtime, storage, networking, and certificates down to the serving endpoint.
+- Explain performance and reliability trade-offs to customer engineers and the product team.
 </div>
 </div>
 
