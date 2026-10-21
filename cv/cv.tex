@@ -42,7 +42,7 @@
 % ---------- header ----------
 \begin{center}
   {\LARGE Wei Cheng Chiu}\\[0.3em]
-  \textbf{AI Solutions Architecture $|$ Generative AI / LLM Systems $|$ NVIDIA GPU Computing}\\[0.25em]
+  \textbf{LLM Serving \& GPU Systems Engineer $|$ On-prem LLM Deployment}\\[0.25em]
   \link{mailto:waynehacking8@gmail.com}{waynehacking8@gmail.com} $|$
   \link{https://www.linkedin.com/in/wei-cheng-chiu/}{linkedin.com/in/wei-cheng-chiu} $|$
   \link{https://github.com/waynehacking8}{github.com/waynehacking8}\\
@@ -52,18 +52,18 @@
 
 % ---------- summary ----------
 \section*{\scshape SUMMARY}
-Field Application Engineer pursuing customer-facing \textbf{AI Solutions Architect} roles,
-with hands-on experience translating requirements into production-ready, on-premises
-\textbf{Generative AI (GenAI) / LLM} deployments on NVIDIA GPU platforms. Work spans
+Field Application Engineer and upstream \textbf{LLM inference} contributor,
+with hands-on experience in \textbf{LLM inference}, GPU performance, and production,
+on-premises \textbf{Generative AI (GenAI)} deployments on NVIDIA GPU platforms. Work spans
 proof of concept (PoC), Linux / Kubernetes operations, model deployment and evaluation,
 CUDA / TensorRT-LLM / vLLM / Triton inference, performance optimization, troubleshooting,
-acceptance, and handover. At Taiwan AILabs, I put on-premises LLM systems (FedGPT) into
-customer environments.
+acceptance, and handover. At Taiwan AILabs, I deploy on-premises LLM systems (FedGPT)
+at customer sites.
 Previously \textbf{sole developer} of an enterprise multi-agent AI platform on DGX-class
 hardware, taken from PoC to production at \textbf{two enterprise customers}. Active
-upstream --- \textbf{17 merged/landed patches} across FlashInfer, vLLM,
-SGLang, PyTorch, Dynamo, CUTLASS, TensorRT-LLM and LMDeploy, concentrated on early
-consumer-Blackwell (\textbf{SM120}) and \textbf{NVFP4} enablement. Research background in
+upstream --- \textbf{22 merged/landed patches} across FlashInfer, vLLM,
+LMDeploy, Dynamo, PyTorch and torchao, including early consumer-Blackwell
+(\textbf{SM120}) correctness fixes, with further SM120 / \textbf{NVFP4} work in review. Research background in
 AI/LLM security and privacy-preserving ML.
 
 % ---------- skills ----------
@@ -83,8 +83,8 @@ AI/LLM security and privacy-preserving ML.
 
 \entry{Taiwan AILabs}{Jul 2026 -- Present}{Field Application Engineer}{Taipei, Taiwan}
 \begin{tight}
-  \item Deploy production-ready, on-premises LLM systems (\textbf{FedGPT}) into customer environments; translate customer requirements and site constraints into Linux / Kubernetes / GPU-serving plans, preflight checks, and acceptance criteria
-  \item Troubleshoot cross-layer failures spanning containers, GPU runtime, storage, networking, certificates, and model-serving endpoints; explain performance, reliability, and operational trade-offs through handover
+  \item Deploy production-ready, on-premises LLM systems (\textbf{FedGPT}) at customer sites, from bare metal (HPE servers, iLO, BIOS, RAID, Ubuntu, networking, GPU) to handover; translate site constraints into Linux / Kubernetes / GPU-serving plans, preflight checks, and acceptance criteria
+  \item Troubleshoot cross-layer failures spanning containers, GPU runtime, storage, networking, certificates, and model-serving endpoints; explain performance, reliability, and operational trade-offs to customer engineers and product teams
 \end{tight}
 \vspace{0.25em}
 
@@ -111,10 +111,10 @@ AI/LLM security and privacy-preserving ML.
 
 % ---------- open source ----------
 \section*{\scshape OPEN SOURCE}
-\textbf{SM120 / NVFP4 enablement across the LLM-inference stack}\hfill 17 merged/landed\\
-\textit{FlashInfer $\cdot$ vLLM $\cdot$ SGLang $\cdot$ PyTorch $\cdot$ Dynamo $\cdot$ CUTLASS $\cdot$ TensorRT-LLM $\cdot$ LMDeploy}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
+\textbf{Bug fixes across the LLM-inference stack}\hfill 22 merged/landed\\
+\textit{FlashInfer (9) $\cdot$ vLLM (5) $\cdot$ LMDeploy (3) $\cdot$ Dynamo (2) $\cdot$ PyTorch $\cdot$ torchao $\cdot$ compressed-tensors}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
 \begin{tight}
-  \item Kernel-level support for consumer Blackwell (\textbf{SM120}) and \textbf{NVFP4} carried upward through kernels $\rightarrow$ engines $\rightarrow$ \mbox{disaggregated} serving
+  \item Merged: stream-safe multi-CTA top-k scratch buffers in FlashInfer (silent wrong results or GPU hangs under concurrent streams), MXFP4 GEMM test peak memory 10.96 $\rightarrow$ 2.10 GiB, SM120 fixes, vLLM and PyTorch NCCL fixes. In review: SM120 / NVFP4 work in SGLang, vLLM, TensorRT-LLM and CUTLASS
   \item Focus on \textit{silent-correctness} bugs --- the ones where tests pass and the answers are still wrong
 \end{tight}
 
