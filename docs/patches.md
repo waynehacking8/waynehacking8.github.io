@@ -1,3 +1,8 @@
+---
+seo_title: Upstream patches in FlashInfer, vLLM, PyTorch and Dynamo — Wayne Chiu
+description: 22 merged bug fixes in FlashInfer, vLLM, LMDeploy, Dynamo, PyTorch and torchao, with links to each pull request, plus the fixes still in review for SGLang, TensorRT-LLM and CUTLASS.
+---
+
 # Patches
 
 Upstream open-source contributions to the LLM-inference stack — **22 merged/landed ·
