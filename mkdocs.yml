@@ -107,4 +107,4 @@ markdown_extensions:
 plugins:
   - search
 
-copyright: &copy; 2025 Wayne Chiu
+copyright: "&copy; 2025 Wayne Chiu"
