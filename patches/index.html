@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="22 merged bug fixes in FlashInfer, vLLM, LMDeploy, Dynamo, PyTorch and torchao, with links to each pull request, plus the fixes still in review for SGLang, TensorRT-LLM and CUTLASS.">
+        <meta name="description" content="Upstream fixes in FlashInfer, vLLM, PyTorch, Dynamo and more.">
       
       
         <meta name="author" content="Wei Cheng (Wayne) Chiu">
@@ -28,7 +28,7 @@
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
-  <title>Upstream patches in FlashInfer, vLLM, PyTorch and Dynamo — Wayne Chiu</title>
+  <title>Patches | Wayne Chiu</title>
 
     
       <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
@@ -78,8 +78,8 @@
   <meta name="google-site-verification" content="oelC3cV7qpQ4oVhNlKaLFGK6yIXWO9d7_IQN_5w8duw">
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Upstream patches in FlashInfer, vLLM, PyTorch and Dynamo — Wayne Chiu">
-  <meta property="og:description" content="22 merged bug fixes in FlashInfer, vLLM, LMDeploy, Dynamo, PyTorch and torchao, with links to each pull request, plus the fixes still in review for SGLang, TensorRT-LLM and CUTLASS.">
+  <meta property="og:title" content="Patches | Wayne Chiu">
+  <meta property="og:description" content="Upstream fixes in FlashInfer, vLLM, PyTorch, Dynamo and more.">
   <meta property="og:url" content="https://wayne.is-a.dev/patches/">
   <meta property="og:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   <meta property="profile:first_name" content="Wei Cheng">
@@ -88,8 +88,8 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:creator" content="@itswaynechiu">
-  <meta name="twitter:title" content="Upstream patches in FlashInfer, vLLM, PyTorch and Dynamo — Wayne Chiu">
-  <meta name="twitter:description" content="22 merged bug fixes in FlashInfer, vLLM, LMDeploy, Dynamo, PyTorch and torchao, with links to each pull request, plus the fixes still in review for SGLang, TensorRT-LLM and CUTLASS.">
+  <meta name="twitter:title" content="Patches | Wayne Chiu">
+  <meta name="twitter:description" content="Upstream fixes in FlashInfer, vLLM, PyTorch, Dynamo and more.">
   <meta name="twitter:image" content="https://wayne.is-a.dev/assets/profile.jpg">
   
 
@@ -114,7 +114,7 @@
         "@type": "ProfilePage",
         "@id": "https://wayne.is-a.dev/#profilepage",
         "url": "https://wayne.is-a.dev/",
-        "name": "Wayne Chiu — LLM Inference Software Engineer, Taipei | CUDA, TensorRT-LLM, vLLM",
+        "name": "Wayne Chiu",
         "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
         "about": { "@id": "https://wayne.is-a.dev/#person" },
         "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
@@ -1000,7 +1000,7 @@
 
 
 <h1 id="patches">Patches<a class="headerlink" href="#patches" title="Permanent link">&para;</a></h1>
-<p>Upstream open-source contributions to the LLM-inference stack — <strong>22 merged/landed ·
+<p>Upstream open-source contributions to the LLM-inference stack: <strong>22 merged/landed ·
 26 in review</strong> as of 2026-10-21.</p>
 <p class="pb-pr-wall">
 <a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><span class="pb-pr-wall-live"><span aria-hidden="true"></span>LIVE</span><span class="pb-pr-wall-copy"><strong>Live PR wall</strong><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span></span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
@@ -1009,9 +1009,9 @@
 
 <p>The tables below are a curated snapshot of representative work; the live wall is the
 always-current source of truth.</p>
-<p>My focus is <strong>early consumer-Blackwell (SM120 / SM121) enablement</strong> across the stack —
+<p>My focus is <strong>early consumer-Blackwell (SM120 / SM121) enablement</strong> across the stack,
 from CUTLASS / FlashInfer kernels through vLLM / SGLang engines to Dynamo /
-TensorRT-LLM disaggregated serving — plus silent-correctness bugs: code that passes
+TensorRT-LLM disaggregated serving, plus silent-correctness bugs: code that passes
 tests but computes the wrong answer.</p>
 <h2 id="merged-landed-in-main">Merged / landed in main<a class="headerlink" href="#merged-landed-in-main" title="Permanent link">&para;</a></h2>
 <table>
@@ -1041,7 +1041,7 @@ tests but computes the wrong answer.</p>
 <tr>
 <td><strong>PyTorch</strong></td>
 <td style="text-align: center;">1</td>
-<td><a href="https://github.com/pytorch/pytorch/pull/187216"><code>nccl.broadcast</code> was dropping its <code>root</code> argument</a> — landed in <code>main</code> (<code>c3c33fd</code>)</td>
+<td><a href="https://github.com/pytorch/pytorch/pull/187216"><code>nccl.broadcast</code> was dropping its <code>root</code> argument</a>, landed in <code>main</code> (<code>c3c33fd</code>)</td>
 </tr>
 <tr>
 <td><strong>Dynamo</strong></td>
@@ -1114,7 +1114,7 @@ tests but computes the wrong answer.</p>
 </table>
 <div class="admonition note">
 <p class="admonition-title">The pattern behind these</p>
-<p>The most valuable class of bug I hunt: <strong>tests green, answers wrong</strong> — a cuDNN path
+<p>The most valuable class of bug I hunt: <strong>tests green, answers wrong</strong>: a cuDNN path
 computing only the first expert group, an out-of-bounds <code>moe_permute</code> write, an
 attention layout mismatch that silently corrupts logits on new hardware. These come
 from reading kernels, not from stack traces.</p>
