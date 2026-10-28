@@ -551,7 +551,7 @@
   <span class="md-ellipsis">
     
   
-    Inkling 975B — 5:1 attention
+    Inkling 975B · 5:1 attention
   
 
     
@@ -579,7 +579,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 — KDA, AttnRes, MoE
+    Kimi K3 · KDA, AttnRes, MoE
   
 
     
@@ -1275,7 +1275,7 @@
 <p>TensorRT-LLM builds an engine for a selected GPU architecture, TP degree, precision, and batching configuration. vLLM makes more of those decisions at runtime, so the two stacks trade build-time specialization for runtime flexibility.<sup id="fnref:trt-docs"><a class="footnote-ref" href="#fn:trt-docs">2</a></sup></p>
 <p class="pb-translation" lang="zh-Hant">TensorRT-LLM 會針對指定的 GPU architecture、TP degree、precision 與 batching configuration 建立 engine。vLLM 則在 runtime 做更多決策；兩套 stack 的差別，是 build-time specialization 與 runtime flexibility 的取捨。<sup id="fnref2:trt-docs"><a class="footnote-ref" href="#fn:trt-docs">2</a></sup></p>
 <h2 id="2-tensor-parallelism-tptensor-parallelismtp">2. Tensor parallelism (TP)｜Tensor parallelism（TP）<a class="headerlink" href="#2-tensor-parallelism-tptensor-parallelismtp" title="Permanent link">&para;</a></h2>
-<p>When a model does not fit on one GPU—or when the target is lower latency—TensorRT-LLM can shard each layer across GPUs. On a 4× H100 NVLink host, <code>TP=4</code> introduces all-reduce communication across all four GPUs during each forward pass.</p>
+<p>When a model does not fit on one GPU, or when the target is lower latency, TensorRT-LLM can shard each layer across GPUs. On a 4× H100 NVLink host, <code>TP=4</code> introduces all-reduce communication across all four GPUs during each forward pass.</p>
 <p class="pb-translation" lang="zh-Hant">模型放不進單張 GPU，或目標是降低 latency 時，TensorRT-LLM 可以把每一層切到多張 GPU。4× H100 NVLink 主機使用 <code>TP=4</code> 時，每次 forward pass 都會在四張 GPU 間執行 all-reduce。</p>
 <blockquote>
 <p>On this fabric, all-reduce reaches about 77% of the NVLink budget (see the separate <a href="../nccl-nvlink-bandwidth/">NVLink-wall notes</a>). Prefill uses large tensors and benefits from bandwidth. Decode communicates one token at a time and can hit the small-message latency floor; adding TP beyond that point can make decode slower.</p>
@@ -1408,7 +1408,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2025&ndash;PRESENT Wei Cheng (Wayne) Chiu
+      &copy; 2025 Wayne Chiu
     </div>
   
   

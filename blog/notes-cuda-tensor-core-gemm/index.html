@@ -551,7 +551,7 @@
   <span class="md-ellipsis">
     
   
-    Inkling 975B — 5:1 attention
+    Inkling 975B · 5:1 attention
   
 
     
@@ -579,7 +579,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 — KDA, AttnRes, MoE
+    Kimi K3 · KDA, AttnRes, MoE
   
 
     
@@ -1237,7 +1237,7 @@
 <p class="pb-translation" lang="zh-Hant">教科書版本會讓每個 thread 負責一個輸出元素 <code>C[i][j]</code>，再沿著 <code>k</code> 迴圈累加：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>C[i][j] = Σ_k A[i][k] * B[k][j]
 </code></pre></div>
-<p>It is correct and slow. Every thread re-reads entire rows of <code>A</code> and columns of <code>B</code> from global memory, so the same values are fetched from DRAM hundreds of times. The arithmetic units wait on loads because arithmetic intensity—FLOPs per byte—is too low to approach peak compute.</p>
+<p>It is correct and slow. Every thread re-reads entire rows of <code>A</code> and columns of <code>B</code> from global memory, so the same values are fetched from DRAM hundreds of times. The arithmetic units wait on loads because arithmetic intensity (FLOPs per byte) is too low to approach peak compute.</p>
 <p class="pb-translation" lang="zh-Hant">這個版本正確，但很慢。每個 thread 都會從 global memory 重讀 <code>A</code> 的整列與 <code>B</code> 的整欄，同一批值可能從 DRAM 取回數百次。Arithmetic intensity，也就是每 byte 對應的 FLOPs，低到無法接近 peak compute，運算單元大部分時間都在等資料。</p>
 <h2 id="3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory">3. Tiled GEMM: reuse through shared memory｜Tiled GEMM：用 shared memory 重複利用資料<a class="headerlink" href="#3-tiled-gemm-reuse-through-shared-memorytiled-gemm-shared-memory" title="Permanent link">&para;</a></h2>
 <p>Shared-memory tiling changes the data path. Threads in a block cooperatively load a tile of <code>A</code> and <code>B</code> into on-chip shared memory, reuse those values for partial sums, and then advance along <code>k</code>:</p>
@@ -1251,7 +1251,7 @@
 <p>Tiling increases reuse before another global-memory load. Whether the kernel becomes compute-bound depends on tile size, occupancy, layout, and matrix shape; tiling alone does not guarantee that transition.</p>
 <p class="pb-translation" lang="zh-Hant">Tiling 讓資料在下一次 global-memory load 前被重複使用。Kernel 是否會轉成 compute-bound，仍取決於 tile size、occupancy、layout 與 matrix shape；光是加入 tiling 並不保證完成這個轉換。</p>
 <h2 id="4-tensor-cores-through-wmma-wmma-tensor-cores">4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores<a class="headerlink" href="#4-tensor-cores-through-wmma-wmma-tensor-cores" title="Permanent link">&para;</a></h2>
-<p>Tiling can saturate CUDA cores. Tensor Cores are a separate execution unit for matrix-multiply-accumulate instructions—for example, a 16×16×16 <code>D = A·B + C</code> operation per warp with half-precision inputs and FP32 accumulation. CUDA C++ exposes this path through the WMMA (Warp Matrix Multiply-Accumulate) API:</p>
+<p>Tiling can saturate CUDA cores. Tensor Cores are a separate execution unit for matrix-multiply-accumulate instructions, for example a 16×16×16 <code>D = A·B + C</code> operation per warp with half-precision inputs and FP32 accumulation. CUDA C++ exposes this path through the WMMA (Warp Matrix Multiply-Accumulate) API:</p>
 <p class="pb-translation" lang="zh-Hant">Tiling 可以讓 CUDA cores 飽和。Tensor Cores 是另一組執行單元，負責 matrix-multiply-accumulate 指令；例如每個 warp 執行一次 16×16×16 的 <code>D = A·B + C</code>，輸入使用 half precision，累加則使用 FP32。CUDA C++ 透過 WMMA（Warp Matrix Multiply-Accumulate）API 暴露這條路徑：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcuda</span><span class="o">::</span><span class="nn">wmma</span><span class="p">;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">fragment</span><span class="o">&lt;</span><span class="n">matrix_a</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="n">half</span><span class="p">,</span><span class="w"> </span><span class="n">row_major</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a_frag</span><span class="p">;</span>
@@ -1268,7 +1268,7 @@
 </code></pre></div>
 <p>Supported fragment shapes, layouts, and precision combinations depend on the GPU architecture. The CUDA Programming Guide, rather than this shortened kernel, defines the exact requirements.<sup id="fnref:cuda-guide"><a class="footnote-ref" href="#fn:cuda-guide">1</a></sup></p>
 <p class="pb-translation" lang="zh-Hant">支援的 fragment shapes、layouts 與 precision combinations 會隨 GPU 架構改變。上面的 kernel 刻意省略細節，精確限制仍以 CUDA Programming Guide 為準。<sup id="fnref2:cuda-guide"><a class="footnote-ref" href="#fn:cuda-guide">1</a></sup></p>
-<p>WMMA assigns each fragment to a warp. The API exposes fragment load, MMA, and store operations rather than a stable per-thread element mapping. Inputs may use FP16 or BF16—and FP8 or FP4 on newer architectures—while accumulation commonly uses FP32.</p>
+<p>WMMA assigns each fragment to a warp. The API exposes fragment load, MMA, and store operations rather than a stable per-thread element mapping. Inputs may use FP16 or BF16 (and FP8 or FP4 on newer architectures), while accumulation commonly uses FP32.</p>
 <p class="pb-translation" lang="zh-Hant">WMMA 以 warp 為單位分配 fragment。API 暴露的是 fragment load、MMA 與 store，不提供穩定的 per-thread element mapping。輸入可用 FP16 或 BF16；較新的架構也支援 FP8 或 FP4，而 accumulation 通常使用 FP32。</p>
 <h2 id="5-compare-against-cublas-on-the-same-shape-shape-cublas">5. Compare against cuBLAS on the same shape｜用相同 shape 與 cuBLAS 比較<a class="headerlink" href="#5-compare-against-cublas-on-the-same-shape-shape-cublas" title="Permanent link">&para;</a></h2>
 <p>cuBLAS is the production baseline, not a universal upper bound for every shape. It uses register tiling, double buffering, swizzled layouts, and architecture-specific tuning. A specialized hand-written kernel can exceed a selected cuBLAS path on some shapes, so report both absolute throughput and the ratio to cuBLAS under matched conditions.</p>
@@ -1310,7 +1310,7 @@
 <hr />
 <ol>
 <li id="fn:cuda-guide">
-<p><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions">CUDA C++ Programming Guide — Warp Matrix Functions</a>, NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.／NVIDIA 對 WMMA fragments、layouts 與同步需求的規格。&#160;<a class="footnote-backref" href="#fnref:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions">CUDA C++ Programming Guide: Warp Matrix Functions</a>, NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.／NVIDIA 對 WMMA fragments、layouts 與同步需求的規格。&#160;<a class="footnote-backref" href="#fnref:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:cuda-guide" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:blackwell">
 <p><a href="https://resources.nvidia.com/en-us-blackwell-architecture">NVIDIA Blackwell Architecture Technical Brief</a>, used for the generation-level Tensor Core and low-precision capability summary.／本文 Tensor Core 世代差異與低精度能力的來源。&#160;<a class="footnote-backref" href="#fnref:blackwell" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:blackwell" title="Jump back to footnote 2 in the text">&#8617;</a></p>
@@ -1360,7 +1360,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2025&ndash;PRESENT Wei Cheng (Wayne) Chiu
+      &copy; 2025 Wayne Chiu
     </div>
   
   

@@ -554,7 +554,7 @@
   <span class="md-ellipsis">
     
   
-    Inkling 975B — 5:1 attention
+    Inkling 975B · 5:1 attention
   
 
     
@@ -582,7 +582,7 @@
   <span class="md-ellipsis">
     
   
-    Kimi K3 — KDA, AttnRes, MoE
+    Kimi K3 · KDA, AttnRes, MoE
   
 
     
@@ -1196,7 +1196,7 @@
   <figcaption>Grounded RAG reference architecture · Grounded RAG 參考架構 · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag">Source: Microsoft Learn</a></figcaption>
 </figure>
 
-<p>My first evaluation made a tidy claim: a guarded prompt cut hallucination from <strong>4/10 to 0/10</strong> on unanswerable questions. The run was real, reproducible, and almost useless as a headline. Ten questions were too few, and “out of corpus” was the easy failure mode—the model had no relevant passage tempting it toward a plausible answer.<sup id="fnref:repo"><a class="footnote-ref" href="#fn:repo">1</a></sup></p>
+<p>My first evaluation made a tidy claim: a guarded prompt cut hallucination from <strong>4/10 to 0/10</strong> on unanswerable questions. The run was real, reproducible, and almost useless as a headline. Ten questions were too few, and “out of corpus” was the easy failure mode: the model had no relevant passage tempting it toward a plausible answer.<sup id="fnref:repo"><a class="footnote-ref" href="#fn:repo">1</a></sup></p>
 <p class="pb-translation" lang="zh-Hant">第一次評估得到一個很整齊的結論：面對無法回答的問題，加上 guard prompt 後，hallucination 從 <strong>4/10 降到 0/10</strong>。結果是真的，也能重現，但幾乎不能拿來下標題。十題太少，而且「語料庫外」是容易的失敗模式；模型根本找不到相關段落，自然少了被誘導出合理錯答的機會。<sup id="fnref2:repo"><a class="footnote-ref" href="#fn:repo">1</a></sup></p>
 <p>The scaled rerun used 100 answerable and 100 adversarially unanswerable SQuAD 2.0 questions. Each near-miss question retrieves an on-topic passage that does <em>not</em> contain the answer. Here the guarded generator hallucinated on <strong>48/100</strong> questions; without the guard it failed on <strong>78/100</strong>.<sup id="fnref:squad-report"><a class="footnote-ref" href="#fn:squad-report">2</a></sup> The 0% result did not generalize. That reversal is the useful result.</p>
 <p class="pb-translation" lang="zh-Hant">擴大後的重跑使用 100 題可回答、100 題經對抗設計而無法回答的 SQuAD 2.0 問題。每個 near-miss 問題都會取回主題相關、卻不含答案的段落。這次有 guard 的 generator 在 <strong>48/100</strong> 題出現 hallucination，沒有 guard 時是 <strong>78/100</strong>。<sup id="fnref2:squad-report"><a class="footnote-ref" href="#fn:squad-report">2</a></sup> 原本的 0% 無法泛化；這次反轉才是有用的結果。</p>
@@ -1294,14 +1294,14 @@
 </tr>
 </tbody>
 </table>
-<p>The smallest model in that table gives the most interesting signal. MiniCheck is a 770M grounded NLI verifier: it compares the answer against evidence instead of deciding from its parametric memory. It recovered 12 of the 53 errors missed by both 8B judges—more blind spots than any generative-judge variant.<sup id="fnref:minicheck"><a class="footnote-ref" href="#fn:minicheck">5</a></sup><sup id="fnref3:judge-report"><a class="footnote-ref" href="#fn:judge-report">3</a></sup></p>
+<p>The smallest model in that table gives the most interesting signal. MiniCheck is a 770M grounded NLI verifier: it compares the answer against evidence instead of deciding from its parametric memory. It recovered 12 of the 53 errors missed by both 8B judges, more blind spots than any generative-judge variant.<sup id="fnref:minicheck"><a class="footnote-ref" href="#fn:minicheck">5</a></sup><sup id="fnref3:judge-report"><a class="footnote-ref" href="#fn:judge-report">3</a></sup></p>
 <p class="pb-translation" lang="zh-Hant">表中最小的模型反而提供了最有意思的訊號。MiniCheck 是一個 770M grounded NLI verifier，會把答案和證據直接比對，不靠 parametric memory 判斷。兩個 8B judges 都漏掉的 53 個錯誤中，它補抓到 12 個，比任何 generative-judge variant 都多。<sup id="fnref2:minicheck"><a class="footnote-ref" href="#fn:minicheck">5</a></sup><sup id="fnref4:judge-report"><a class="footnote-ref" href="#fn:judge-report">3</a></sup></p>
 <p>This is why “use a bigger judge” is not the default answer. A separate 70B experiment found no meaningful recall advantage over the cross-family 8B judge on its paired set, while the grounded verifier continued to catch errors the large parametric judge missed.<sup id="fnref3:repo"><a class="footnote-ref" href="#fn:repo">1</a></sup></p>
 <p class="pb-translation" lang="zh-Hant">因此，不能預設換成更大的 judge 就會改善結果。另一組 70B 實驗在 paired set 上，recall 並未明顯優於 cross-family 8B judge；grounded verifier 則繼續抓到大型 parametric judge 漏掉的錯誤。<sup id="fnref4:repo"><a class="footnote-ref" href="#fn:repo">1</a></sup></p>
 <h2 id="better-retrieval-did-not-make-abstention-safer-retrieval">Better retrieval did not make abstention safer｜更好的 retrieval 沒有讓拒答更安全<a class="headerlink" href="#better-retrieval-did-not-make-abstention-safer-retrieval" title="Permanent link">&para;</a></h2>
 <p>Adding a cross-encoder reranker improved retrieval recall@3 from <strong>85% to 96%</strong> and substring answer accuracy from <strong>70% to 81%</strong>. Hallucination did not improve: guarded answers moved from 48% to 52%, and unguarded answers from 78% to 86%; neither change was statistically significant.<sup id="fnref:rerank-report"><a class="footnote-ref" href="#fn:rerank-report">4</a></sup></p>
 <p class="pb-translation" lang="zh-Hant">加入 cross-encoder reranker 後，retrieval recall@3 從 <strong>85% 升到 96%</strong>，substring answer accuracy 從 <strong>70% 升到 81%</strong>。Hallucination 沒有改善：guarded answers 從 48% 變成 52%，unguarded answers 從 78% 變成 86%；兩項變化都沒有統計顯著性。<sup id="fnref2:rerank-report"><a class="footnote-ref" href="#fn:rerank-report">4</a></sup></p>
-<p>That result is easy to misread. The reranker worked—it surfaced more relevant passages. On an adversarially unanswerable question, however, a more relevant <em>answerless</em> passage gives the generator a better near-miss. Retrieval quality and abstention safety are different axes.</p>
+<p>That result is easy to misread. The reranker worked: it surfaced more relevant passages. On an adversarially unanswerable question, however, a more relevant <em>answerless</em> passage gives the generator a better near-miss. Retrieval quality and abstention safety are different axes.</p>
 <p class="pb-translation" lang="zh-Hant">這個結果很容易被看反。Reranker 確實找到了更多相關段落；但對經對抗設計且無法回答的問題而言，更相關但沒有答案的段落，會提供更像答案的 near-miss。Retrieval quality 與 abstention safety 是兩條不同的軸。</p>
 <h2 id="what-i-would-deploy-from-these-results">What I would deploy from these results｜根據這些結果，我會怎麼部署<a class="headerlink" href="#what-i-would-deploy-from-these-results" title="Permanent link">&para;</a></h2>
 <p>The measured gate with the best coverage is the union of two different failure detectors: block when either the cross-family judge or MiniCheck flags the answer. It reaches 55% recall on the common Phase-5 run, with 63% precision. That is not a solved system; 29 of 96 hallucinations still escaped every tested gate.</p>
@@ -1382,7 +1382,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2025&ndash;PRESENT Wei Cheng (Wayne) Chiu
+      &copy; 2025 Wayne Chiu
     </div>
   
   
