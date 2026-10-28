@@ -7,16 +7,11 @@
 <div class="pb-tl-item" markdown>
 <div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
-<p class="pb-tl-title">Field Application Engineer — On-prem LLM Infrastructure</p>
+<p class="pb-tl-title">Software Engineer, LLM Infrastructure</p>
 <p class="pb-tl-org"><a href="https://ailabs.tw/">Taiwan AILabs</a></p>
 <p class="pb-tl-date">Jul 2026 – Present · Taipei City, Taiwan</p>
 
-Deploying on-premises LLM systems (FedGPT) at customer sites, from bare metal to
-acceptance and handover.
-
-- Bring up HPE servers (iLO, BIOS, RAID), Ubuntu, networking, and NVIDIA GPU runtime, then the model-serving stack on Kubernetes.
-- Debug across containers, GPU runtime, storage, networking, and certificates down to the serving endpoint.
-- Explain performance and reliability trade-offs to customer engineers and the product team.
+Deploy and operate on-prem LLM systems (FedGPT) on Kubernetes and NVIDIA GPUs, from bare metal to handover.
 </div>
 </div>
 
@@ -27,17 +22,7 @@ acceptance and handover.
 <p class="pb-tl-org">SYNCROBOTIC</p>
 <p class="pb-tl-date">Sep 2025 – Jun 2026 · New Taipei City, Taiwan · On-site</p>
 
-Sole developer of an enterprise multi-agent AI platform on DGX-class hardware — owned
-end-to-end from PoC through production, rolled out at **two enterprise customers**,
-partnering with each through deployment and troubleshooting.
-
-- Scoped ambiguous enterprise requirements into a working multi-agent system, taken from PoC to production rollout.
-- Unified local and commercial LLM backends under one routing layer, removing per-team model wrappers.
-- Designed a planning–execution–validation orchestration with topological scheduling and parallel agent dispatch for multi-step workflows.
-- Built a hybrid retrieval layer on LightRAG (vector + keyword + knowledge graph) with embedding-based semantic caching, cutting redundant LLM calls and keeping answers consistent on repeat queries.
-- Owned production reliability — prompt/pipeline regression tests, output validation across quality and safety dimensions, distributed tracing; added CUDA-accelerated hot paths on critical inference.
-
-*Stack: Python · TypeScript · Rust · vLLM · LightRAG · NestJS · CUDA*
+Sole developer of an enterprise multi-agent RAG platform on DGX hardware, shipped to **two customers**.
 </div>
 </div>
 
@@ -48,12 +33,7 @@ partnering with each through deployment and troubleshooting.
 <p class="pb-tl-org">Advantech</p>
 <p class="pb-tl-date">Jun 2025 – Aug 2025 · Taipei City, Taiwan · On-site</p>
 
-Built internal coding agents for developer tooling — function calling / tool use to
-automate code review, test generation, and static analysis across the SDLC
-(Claude Code-style assistants).
-
-- Benchmarked tool-use reliability across commercial and local LLM backends.
-- Designed reusable prompt templates and skill patterns adopted by the team.
+Built tool-using coding agents for code review, test generation, and static analysis.
 </div>
 </div>
 
@@ -64,8 +44,7 @@ automate code review, test generation, and static analysis across the SDLC
 <p class="pb-tl-org">TSMC (台積電)</p>
 <p class="pb-tl-date">May 2021 – Oct 2022 · Tainan City, Taiwan</p>
 
-Supported R&D fab facility operations at the world's leading semiconductor foundry
-under the national R&D alternative military service program.
+Supported R&D fab facility operations.
 </div>
 </div>
 

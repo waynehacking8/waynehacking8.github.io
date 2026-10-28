@@ -52,61 +52,43 @@
 
 % ---------- summary ----------
 \section*{\scshape SUMMARY}
-Field Application Engineer and upstream \textbf{LLM inference} contributor,
-with hands-on experience in \textbf{LLM inference}, GPU performance, and production,
-on-premises \textbf{Generative AI (GenAI)} deployments on NVIDIA GPU platforms. Work spans
-proof of concept (PoC), Linux / Kubernetes operations, model deployment and evaluation,
-CUDA / TensorRT-LLM / vLLM / Triton inference, performance optimization, troubleshooting,
-acceptance, and handover. At Taiwan AILabs, I deploy on-premises LLM systems (FedGPT)
-at customer sites.
-Previously \textbf{sole developer} of an enterprise multi-agent AI platform on DGX-class
-hardware, taken from PoC to production at \textbf{two enterprise customers}. Active
-upstream --- \textbf{22 merged/landed patches} across FlashInfer, vLLM,
-LMDeploy, Dynamo, PyTorch and torchao, including early consumer-Blackwell
-(\textbf{SM120}) correctness fixes, with further SM120 / \textbf{NVFP4} work in review. Research background in
-AI/LLM security and privacy-preserving ML.
+Software engineer on \textbf{LLM infrastructure} at Taiwan AILabs: LLM inference, GPU performance, and
+on-prem GenAI deployment on NVIDIA GPUs. Upstream contributor with \textbf{22 merged/landed patches}
+across FlashInfer, vLLM, LMDeploy, Dynamo, PyTorch and torchao, including consumer-Blackwell (\textbf{SM120}) fixes.
 
 % ---------- skills ----------
 \section*{\scshape TECHNICAL SKILLS}
-% 1.55in keeps every label on one line — narrower columns hyphenated
-% "Privacy & Secu-rity ML" and wrapped "LLM Serving & GPU"
 \begin{tabular}{@{}p{1.55in}p{5.9in}@{}}
-\textbf{LLM Serving \& GPU} & vLLM, TensorRT-LLM, SGLang, Triton, NVIDIA NIM, Dynamo, FlashInfer, NCCL, \mbox{FlashAttention}, KV-cache, Quantization (FP8 / INT4 / NVFP4); CUDA C/C++, WMMA \& \texttt{mma.sync} Tensor Cores, CUTLASS, Nsight Systems \& Compute \\[0.15em]
-\textbf{GenAI Apps \& Agents} & Generative AI, Deep Learning, Model Fine-Tuning, Deployment \& Evaluation, Multi-Agent Orchestration (LangChain, LangGraph), Hybrid RAG (Vector + Keyword + Knowledge Graph), LLM Guardrails, Function Calling / Tool Use, MCP, Coding Agents \\[0.15em]
-\textbf{Infrastructure \& Ops} & Linux, Kubernetes, Docker, On-prem GPU Serving, Distributed Tracing; H100, DGX Spark (GB10), Blackwell workstation hardware \\[0.15em]
-\textbf{Privacy \& Security ML} & Federated Learning, Differential Privacy, Secure Multi-Party Computation (MP-SPDZ), Safety Alignment \\[0.15em]
-\textbf{Programming \& Frameworks} & Python, TypeScript, Rust, C/C++; PyTorch, FastAPI, NestJS; PostgreSQL, Milvus, Redis \\
+\textbf{LLM Serving \& GPU} & vLLM, SGLang, TensorRT-LLM, Triton, FlashInfer, NCCL, NVFP4; CUDA, CUTLASS, Nsight \\[0.15em]
+\textbf{GenAI \& Agents} & Multi-agent orchestration (LangGraph), hybrid RAG, guardrails, tool use, MCP \\[0.15em]
+\textbf{Infrastructure} & Linux, Kubernetes, Docker; H100, DGX Spark (GB10), Blackwell workstations \\[0.15em]
+\textbf{Languages} & Python, C/C++, TypeScript, Rust; PyTorch, FastAPI \\
 \end{tabular}
 
 % ---------- experience ----------
 \section*{\scshape EXPERIENCE}
 
-\entry{Taiwan AILabs}{Jul 2026 -- Present}{Field Application Engineer}{Taipei, Taiwan}
+\entry{Taiwan AILabs}{Jul 2026 -- Present}{Software Engineer, LLM Infrastructure}{Taipei, Taiwan}
 \begin{tight}
-  \item Deploy production-ready, on-premises LLM systems (\textbf{FedGPT}) at customer sites, from bare metal (HPE servers, iLO, BIOS, RAID, Ubuntu, networking, GPU) to handover; translate site constraints into Linux / Kubernetes / GPU-serving plans, preflight checks, and acceptance criteria
-  \item Troubleshoot cross-layer failures spanning containers, GPU runtime, storage, networking, certificates, and model-serving endpoints; explain performance, reliability, and operational trade-offs to customer engineers and product teams
+  \item Deploy and operate on-prem LLM systems (\textbf{FedGPT}) on Kubernetes and NVIDIA GPUs, from bare metal to handover
 \end{tight}
 \vspace{0.25em}
 
-\entry{SYNCROBOTIC}{Sep 2025 -- Jun 2026}{Machine Learning Engineer --- Multi-Agent AI, RAG, LLM Serving}{New Taipei City, Taiwan}
+\entry{SYNCROBOTIC}{Sep 2025 -- Jun 2026}{Machine Learning Engineer}{New Taipei City, Taiwan}
 \begin{tight}
-  \item \textbf{Sole developer} of an enterprise multi-agent AI platform on DGX-class hardware --- owned end-to-end from PoC through production and rolled out at \textbf{two enterprise customers}, partnering with each through deployment and troubleshooting
-  \item Scoped ambiguous enterprise requirements into a working multi-agent system and \textbf{unified local and commercial LLM backends} under one routing layer, removing per-team model wrappers
-  \item Designed a planning--execution--validation orchestration with topological scheduling and parallel agent dispatch for multi-step workflows
-  \item Built a hybrid retrieval layer on LightRAG (vector + keyword + knowledge graph) with embedding-based semantic caching, cutting redundant LLM calls and keeping answers consistent on repeat queries
-  \item Owned production reliability --- prompt/pipeline regression tests, output validation across quality and safety, distributed tracing; added CUDA-accelerated hot paths on critical inference
+  \item \textbf{Sole developer} of an enterprise multi-agent RAG platform on DGX hardware, shipped to \textbf{two customers}
 \end{tight}
 \vspace{0.25em}
 
 \entry{Advantech}{Jun 2025 -- Aug 2025}{AI Agent Engineer (Intern)}{Taipei, Taiwan}
 \begin{tight}
-  \item Built coding agents for internal developer tooling using \textbf{function calling / tool use} --- automating code review, test generation, and static analysis across the SDLC; benchmarked tool-use reliability across commercial and local LLM backends and designed reusable prompt templates adopted by the team
+  \item Built tool-using coding agents for code review, test generation, and static analysis
 \end{tight}
 \vspace{0.25em}
 
-\entry{TSMC (Taiwan Semiconductor Manufacturing Co.)}{May 2021 -- Oct 2022}{R\&D Alternative Military Service --- Facility Engineer}{Tainan, Taiwan}
+\entry{TSMC (Taiwan Semiconductor Manufacturing Co.)}{May 2021 -- Oct 2022}{Facility Engineer (R\&D Alternative Military Service)}{Tainan, Taiwan}
 \begin{tight}
-  \item Supported R\&D fab facility operations at the world's leading semiconductor foundry under the national R\&D alternative military service program
+  \item Supported R\&D fab facility operations
 \end{tight}
 
 % ---------- open source ----------
@@ -114,19 +96,14 @@ AI/LLM security and privacy-preserving ML.
 \textbf{Bug fixes across the LLM-inference stack}\hfill 22 merged/landed\\
 \textit{FlashInfer (9) $\cdot$ vLLM (5) $\cdot$ LMDeploy (3) $\cdot$ Dynamo (2) $\cdot$ PyTorch $\cdot$ torchao $\cdot$ compressed-tensors}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
 \begin{tight}
-  \item Merged: stream-safe multi-CTA top-k scratch buffers in FlashInfer (silent wrong results or GPU hangs under concurrent streams), MXFP4 GEMM test peak memory 10.96 $\rightarrow$ 2.10 GiB, SM120 fixes, vLLM and PyTorch NCCL fixes. In review: SM120 / NVFP4 work in SGLang, vLLM, TensorRT-LLM and CUTLASS
-  \item Focus on \textit{silent-correctness} bugs --- the ones where tests pass and the answers are still wrong
+  \item Merged: FlashInfer stream-safe top-k, SM120 and NCCL fixes. In review: SM120 / NVFP4 in SGLang and vLLM
 \end{tight}
 
 % ---------- research ----------
 \section*{\scshape RESEARCH \& PUBLICATIONS}
-\textbf{SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning}
---- first author, with Shao-Jui Wang. \textit{IEEE Transactions on Dependable and Secure Computing
-(TDSC)}, under review, 2026. Preserves LLM safety alignment under harmful/adversarial fine-tuning at
-lower compute than full re-alignment.\\[0.15em]
-Research at NTUST (advised by Prof.\ Shao-Jui Wang) in model fine-tuning, experiment design,
-and evaluation for \textbf{AI/LLM security} and \textbf{privacy-enhancing ML} --- federated
-learning, differential privacy, and secure multi-party computation.
+\textbf{SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning},
+first author. \textit{IEEE TDSC}, under review, 2026.\\[0.15em]
+NTUST research in LLM security and privacy-preserving ML (federated learning, differential privacy, MPC).
 
 % ---------- education ----------
 \section*{\scshape EDUCATION}

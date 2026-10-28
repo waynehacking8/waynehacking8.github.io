@@ -18,9 +18,8 @@ Upstream contributions across the LLM-inference stack span
 with work on correctness, distributed inference, and serving performance. See the
 auto-updating [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
 
-Production LLM infrastructure at customer sites, from site constraints and preflight
-validation to acceptance and handover. Work spans Kubernetes, GPU runtime, networking,
-storage, certificates, and model-serving endpoints.
+Software engineer on LLM infrastructure at Taiwan AILabs, building and running on-prem
+LLM systems across Kubernetes, GPU runtime, networking, storage, and model-serving endpoints.
 
 Experience taking an enterprise multi-agent platform from PoC to production, with a
 focus on model serving, performance evaluation, and solution architecture.
