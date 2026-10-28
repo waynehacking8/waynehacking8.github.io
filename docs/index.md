@@ -8,8 +8,13 @@ hide:
 
 Software engineer on LLM infrastructure at [Taiwan AILabs](https://ailabs.tw/).
 I work on LLM inference performance and CUDA kernels, and send fixes upstream to
-TensorRT-LLM, vLLM, SGLang, FlashInfer, PyTorch and Dynamo.
-See the [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
+<a href="https://github.com/NVIDIA/TensorRT-LLM"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" width="64" height="64" />TensorRT-LLM</span></a>,
+<a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" width="64" height="64" />vLLM</span></a>,
+<a href="https://github.com/sgl-project/sglang"><span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" width="64" height="64" />SGLang</span></a>,
+<a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
+<a href="https://github.com/pytorch/pytorch"><span class="chip chip-orange"><img src="assets/logos/pytorch.png" alt="" width="64" height="64" />PyTorch</span></a> and
+<a href="https://github.com/ai-dynamo/dynamo"><span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" width="64" height="64" />Dynamo</span></a>.
+See the [PR wall](https://prs.wayne.is-a.dev).
 
 ## News
 
@@ -24,20 +29,4 @@ See the [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
   <dt>Jun 2025</dt>
   <dd>Summer at <a href="https://www.advantech.com/en">Advantech</a>.</dd>
 </dl>
-</div>
-
-## Selected Work
-
-<div class="pb-pub" markdown>
-<div markdown>
-<p class="pb-pub-title"><a href="patches/">SM120 / NVFP4 enablement across the LLM-inference stack</a></p>
-<p class="pb-pub-meta">FlashInfer · CUTLASS · vLLM · SGLang · TensorRT-LLM · Dynamo</p>
-</div>
-</div>
-
-<div class="pb-pub" markdown>
-<div markdown>
-<p class="pb-pub-title"><a href="https://prs.wayne.is-a.dev">PR wall</a></p>
-<p class="pb-pub-meta">Every upstream pull request, auto-updating</p>
-</div>
 </div>
