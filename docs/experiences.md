@@ -1,5 +1,5 @@
 ---
-description: Wayne Chiu's experience as a software engineer on LLM infrastructure at Taiwan AILabs, previously machine learning engineer at SYNCROBOTIC, plus education at NTUST and NTU.
+description: Wayne Chiu, LLM inference software engineer in Taipei. Software Engineer at Taiwan AILabs, previously Machine Learning Engineer at SYNCROBOTIC; M.S. Computer Science, NTUST.
 ---
 
 # Experiences

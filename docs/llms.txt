@@ -1,9 +1,9 @@
 # Wei Cheng (Wayne) Chiu
 
-> Software engineer on LLM infrastructure at Taiwan AILabs, focused on LLM inference,
-> GPU performance, and upstream bug fixes in FlashInfer, vLLM, SGLang, PyTorch, Dynamo
-> and TensorRT-LLM. M.S. Computer Science, NTUST; research on AI/LLM security and
-> privacy-preserving ML.
+> LLM inference software engineer in Taipei (Software Engineer, Taiwan AILabs):
+> performance analysis and optimization, CUDA kernels, TensorRT-LLM, vLLM, SGLang and
+> FlashInfer, with 20+ merged upstream fixes including Blackwell SM120 and NVFP4 support.
+> M.S. Computer Science, NTUST; research on AI/LLM security and privacy-preserving ML.
 
 Specialties: applied LLM systems on DGX-class hardware; the NVIDIA inference and
 multi-GPU stack (TensorRT-LLM, Triton, NIM, NCCL, CUDA Tensor Cores); and

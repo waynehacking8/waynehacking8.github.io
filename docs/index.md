@@ -7,8 +7,8 @@ hide:
 # About
 
 Software engineer on LLM infrastructure at [Taiwan AILabs](https://ailabs.tw/).
-I work on LLM inference and GPU performance, and send bug fixes upstream to
-FlashInfer, vLLM, SGLang, PyTorch, Dynamo and TensorRT-LLM.
+I work on LLM inference performance and CUDA kernels, and send fixes upstream to
+TensorRT-LLM, vLLM, SGLang, FlashInfer, PyTorch and Dynamo.
 See the [PR wall](https://prs.wayne.is-a.dev) and [Patches](patches.md).
 
 ## News
