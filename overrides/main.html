@@ -166,7 +166,7 @@
 </button>
 <div class="pb-grid">
 <section class="pb-side{% if page and page.is_homepage %} pb-side--home{% endif %}" aria-label="Profile">
-  <img class="pb-avatar" src="/assets/profile.webp" width="512" height="910"
+  <img class="pb-avatar" src="/assets/profile.webp" width="640" height="640"
        alt="Wei-Cheng (Wayne) Chiu" decoding="async" fetchpriority="high" />
   <p class="pb-name">Wei-Cheng <b>Chiu</b></p>
   <p class="pb-cjk">邱偉誠</p>
@@ -183,10 +183,8 @@
     <a href="https://www.linkedin.com/in/wei-cheng-chiu/" aria-label="LinkedIn profile" title="LinkedIn"><span class="twemoji">{% include ".icons/fontawesome/brands/linkedin.svg" %}</span></a>
     <a href="https://x.com/itswaynechiu" aria-label="X profile" title="X"><span class="twemoji">{% include ".icons/fontawesome/brands/x-twitter.svg" %}</span></a>
     <a href="mailto:waynehacking8@gmail.com" aria-label="Send email" title="Email"><span class="twemoji">{% include ".icons/fontawesome/solid/envelope.svg" %}</span></a>
-    <a href="https://prs.wayne.is-a.dev/feed.xml" aria-label="PR feed" title="PR feed"><span class="twemoji">{% include ".icons/fontawesome/solid/square-rss.svg" %}</span></a>
   </p>
   <p class="pb-loc"><span class="twemoji">{% include ".icons/fontawesome/solid/location-dot.svg" %}</span> Taipei, Taiwan · UTC+8</p>
-  <p class="pb-quote">making every FLOP count</p>
   <div class="pb-sidebar-toc-slot">
   {% if is_post and page.toc %}
   {{ render_desktop_article_toc(page.toc) }}

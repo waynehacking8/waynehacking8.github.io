@@ -379,10 +379,8 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   width: 79%;
   height: 180px;
   object-fit: cover;
-  /* the 1536x2730 source is far taller than this 1.39 box, so cover shows only
-     the middle ~40% of its height; 50% lands that slice on head-to-thigh
-     (the subject runs 41%-85% down the frame) instead of empty canopy */
-  object-position: center 50%;
+  /* square source; keep the face (upper third) in frame */
+  object-position: center 8%;
   border-radius: 48px;
   display: block;
   margin: 0.4rem auto 0;
