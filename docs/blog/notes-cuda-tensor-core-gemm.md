@@ -44,7 +44,7 @@ The textbook kernel assigns one thread per output element `C[i][j]` and loops ov
 C[i][j] = Σ_k A[i][k] * B[k][j]
 ```
 
-It is correct and slow. Every thread re-reads entire rows of `A` and columns of `B` from global memory, so the same values are fetched from DRAM hundreds of times. The arithmetic units wait on loads because arithmetic intensity—FLOPs per byte—is too low to approach peak compute.
+It is correct and slow. Every thread re-reads entire rows of `A` and columns of `B` from global memory, so the same values are fetched from DRAM hundreds of times. The arithmetic units wait on loads because arithmetic intensity (FLOPs per byte) is too low to approach peak compute.
 
 這個版本正確，但很慢。每個 thread 都會從 global memory 重讀 `A` 的整列與 `B` 的整欄，同一批值可能從 DRAM 取回數百次。Arithmetic intensity，也就是每 byte 對應的 FLOPs，低到無法接近 peak compute，運算單元大部分時間都在等資料。
 { .pb-translation lang=zh-Hant }
@@ -68,7 +68,7 @@ Tiling 讓資料在下一次 global-memory load 前被重複使用。Kernel 是�
 
 ## 4. Tensor Cores through WMMA｜透過 WMMA 使用 Tensor Cores
 
-Tiling can saturate CUDA cores. Tensor Cores are a separate execution unit for matrix-multiply-accumulate instructions—for example, a 16×16×16 `D = A·B + C` operation per warp with half-precision inputs and FP32 accumulation. CUDA C++ exposes this path through the WMMA (Warp Matrix Multiply-Accumulate) API:
+Tiling can saturate CUDA cores. Tensor Cores are a separate execution unit for matrix-multiply-accumulate instructions, for example a 16×16×16 `D = A·B + C` operation per warp with half-precision inputs and FP32 accumulation. CUDA C++ exposes this path through the WMMA (Warp Matrix Multiply-Accumulate) API:
 
 Tiling 可以讓 CUDA cores 飽和。Tensor Cores 是另一組執行單元，負責 matrix-multiply-accumulate 指令；例如每個 warp 執行一次 16×16×16 的 `D = A·B + C`，輸入使用 half precision，累加則使用 FP32。CUDA C++ 透過 WMMA（Warp Matrix Multiply-Accumulate）API 暴露這條路徑：
 { .pb-translation lang=zh-Hant }
@@ -93,7 +93,7 @@ Supported fragment shapes, layouts, and precision combinations depend on the GPU
 支援的 fragment shapes、layouts 與 precision combinations 會隨 GPU 架構改變。上面的 kernel 刻意省略細節，精確限制仍以 CUDA Programming Guide 為準。[^cuda-guide]
 { .pb-translation lang=zh-Hant }
 
-WMMA assigns each fragment to a warp. The API exposes fragment load, MMA, and store operations rather than a stable per-thread element mapping. Inputs may use FP16 or BF16—and FP8 or FP4 on newer architectures—while accumulation commonly uses FP32.
+WMMA assigns each fragment to a warp. The API exposes fragment load, MMA, and store operations rather than a stable per-thread element mapping. Inputs may use FP16 or BF16 (and FP8 or FP4 on newer architectures), while accumulation commonly uses FP32.
 
 WMMA 以 warp 為單位分配 fragment。API 暴露的是 fragment load、MMA 與 store，不提供穩定的 per-thread element mapping。輸入可用 FP16 或 BF16；較新的架構也支援 FP8 或 FP4，而 accumulation 通常使用 FP32。
 { .pb-translation lang=zh-Hant }
@@ -127,5 +127,5 @@ Each GPU generation changes the precision and tile shapes accepted by the MMA un
 → More field notes on the NVIDIA stack:<br><span class="pb-inline-translation" lang="zh-Hant">更多 NVIDIA stack 實作筆記：</span>
 [wayne.is-a.dev](https://wayne.is-a.dev/)
 
-[^cuda-guide]: [CUDA C++ Programming Guide — Warp Matrix Functions](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions), NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.／NVIDIA 對 WMMA fragments、layouts 與同步需求的規格。
+[^cuda-guide]: [CUDA C++ Programming Guide: Warp Matrix Functions](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#warp-matrix-functions), NVIDIA’s specification for WMMA fragments, layouts, and synchronization requirements.／NVIDIA 對 WMMA fragments、layouts 與同步需求的規格。
 [^blackwell]: [NVIDIA Blackwell Architecture Technical Brief](https://resources.nvidia.com/en-us-blackwell-architecture), used for the generation-level Tensor Core and low-precision capability summary.／本文 Tensor Core 世代差異與低精度能力的來源。

@@ -22,7 +22,7 @@ tags:
   <figcaption>Grounded RAG reference architecture · Grounded RAG 參考架構 · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag">Source: Microsoft Learn</a></figcaption>
 </figure>
 
-My first evaluation made a tidy claim: a guarded prompt cut hallucination from **4/10 to 0/10** on unanswerable questions. The run was real, reproducible, and almost useless as a headline. Ten questions were too few, and “out of corpus” was the easy failure mode—the model had no relevant passage tempting it toward a plausible answer.[^repo]
+My first evaluation made a tidy claim: a guarded prompt cut hallucination from **4/10 to 0/10** on unanswerable questions. The run was real, reproducible, and almost useless as a headline. Ten questions were too few, and “out of corpus” was the easy failure mode: the model had no relevant passage tempting it toward a plausible answer.[^repo]
 
 第一次評估得到一個很整齊的結論：面對無法回答的問題，加上 guard prompt 後，hallucination 從 **4/10 降到 0/10**。結果是真的，也能重現，但幾乎不能拿來下標題。十題太少，而且「語料庫外」是容易的失敗模式；模型根本找不到相關段落，自然少了被誘導出合理錯答的機會。[^repo]
 { .pb-translation lang=zh-Hant }
@@ -84,7 +84,7 @@ The original `validate()` step asked the same 8B model family to judge its own u
 | MiniCheck-FT5 770M | 66% | 36% | 0.47 |
 | Cross-family judge **OR** MiniCheck／跨 family judge **或** MiniCheck | 63% | 55% | 0.59 |
 
-The smallest model in that table gives the most interesting signal. MiniCheck is a 770M grounded NLI verifier: it compares the answer against evidence instead of deciding from its parametric memory. It recovered 12 of the 53 errors missed by both 8B judges—more blind spots than any generative-judge variant.[^minicheck][^judge-report]
+The smallest model in that table gives the most interesting signal. MiniCheck is a 770M grounded NLI verifier: it compares the answer against evidence instead of deciding from its parametric memory. It recovered 12 of the 53 errors missed by both 8B judges, more blind spots than any generative-judge variant.[^minicheck][^judge-report]
 
 表中最小的模型反而提供了最有意思的訊號。MiniCheck 是一個 770M grounded NLI verifier，會把答案和證據直接比對，不靠 parametric memory 判斷。兩個 8B judges 都漏掉的 53 個錯誤中，它補抓到 12 個，比任何 generative-judge variant 都多。[^minicheck][^judge-report]
 { .pb-translation lang=zh-Hant }
@@ -101,7 +101,7 @@ Adding a cross-encoder reranker improved retrieval recall@3 from **85% to 96%** 
 加入 cross-encoder reranker 後，retrieval recall@3 從 **85% 升到 96%**，substring answer accuracy 從 **70% 升到 81%**。Hallucination 沒有改善：guarded answers 從 48% 變成 52%，unguarded answers 從 78% 變成 86%；兩項變化都沒有統計顯著性。[^rerank-report]
 { .pb-translation lang=zh-Hant }
 
-That result is easy to misread. The reranker worked—it surfaced more relevant passages. On an adversarially unanswerable question, however, a more relevant *answerless* passage gives the generator a better near-miss. Retrieval quality and abstention safety are different axes.
+That result is easy to misread. The reranker worked: it surfaced more relevant passages. On an adversarially unanswerable question, however, a more relevant *answerless* passage gives the generator a better near-miss. Retrieval quality and abstention safety are different axes.
 
 這個結果很容易被看反。Reranker 確實找到了更多相關段落；但對經對抗設計且無法回答的問題而言，更相關但沒有答案的段落，會提供更像答案的 near-miss。Retrieval quality 與 abstention safety 是兩條不同的軸。
 { .pb-translation lang=zh-Hant }

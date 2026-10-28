@@ -105,7 +105,7 @@ That conversion describes Ring traffic well. It becomes misleading when the tune
 這個換算適合描述 Ring traffic。Tuner 選用在 NVSwitch 內完成 reduction 的 NVLS 時，數字就可能誤導。Scaling run 顯示的 peak `busbw` 從四張 GPU 的 365 GB/s 升到六張 GPU 的 443 GB/s；tuning logs 顯示 2／4 張 GPU 使用 Ring，六張則使用 NVLS。六張 GPU 的 algorithm bandwidth 是 266 GB/s，實體 per-link traffic 也更接近 266，而不是 443。[^scaling-report]
 { .pb-translation lang=zh-Hant }
 
-NVLS still helped: pinned NVLS delivered **21% more algorithm bandwidth** than pinned Ring at six GPUs (266 vs 220 GB/s). The mechanism was less link traffic through in-switch reduction—not a fabric somehow exceeding its measured budget.
+NVLS still helped: pinned NVLS delivered **21% more algorithm bandwidth** than pinned Ring at six GPUs (266 vs 220 GB/s). The mechanism was less link traffic through in-switch reduction, not a fabric somehow exceeding its measured budget.
 
 NVLS 仍有幫助：六張 GPU 時，固定使用 NVLS 的 algorithm bandwidth 比固定使用 Ring 高 **21%**（266 對 220 GB/s）。原因是 in-switch reduction 減少鏈路流量，不是 fabric 超過了實測預算。
 { .pb-translation lang=zh-Hant }
@@ -142,7 +142,7 @@ NCCL 2.29.2 加入 symmetric buffer registration。在同一組四張 GPU 上，
 | NCCL 2.29.2 graph | 16.3 μs | 238 GB/s |
 | NCCL 2.29.2 graph + symmetric | 19.7 μs | 300 GB/s |
 
-Registration raised large-message bandwidth by 33% (247→329 GB/s) but left the eager floor near 23–25 μs. On this intra-node small-message path, launches dominate; a zero-copy data path cannot remove a kernel launch.
+Registration raised large-message bandwidth by 33% (247→329 GB/s) but left the eager floor near 23 to 25 μs. On this intra-node small-message path, launches dominate; a zero-copy data path cannot remove a kernel launch.
 
 Registration 將大訊息頻寬提高 33%（247→329 GB/s），eager 下限仍落在 23～25 μs。這條 intra-node 小訊息路徑由 launch 成本主導；zero-copy data path 無法消除 kernel launch。
 { .pb-translation lang=zh-Hant }

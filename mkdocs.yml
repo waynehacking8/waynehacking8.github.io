@@ -11,8 +11,8 @@ nav:
   - Blog:
       - blog/index.md
       - Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇: blog/agent-harness-boundaries.md
-      - Inkling 975B — 5:1 attention: blog/inkling-975b-architecture.md
-      - Kimi K3 — KDA, AttnRes, MoE: blog/kimi-k3-architecture.md
+      - Inkling 975B · 5:1 attention: blog/inkling-975b-architecture.md
+      - Kimi K3 · KDA, AttnRes, MoE: blog/kimi-k3-architecture.md
       - TensorRT-LLM vs vLLM: blog/notes-trtllm-triton-serving.md
       - Tensor-parallel & the NVLink wall: blog/nccl-nvlink-bandwidth.md
       - The 0% RAG result failed the harder test: blog/rag-groundedness-guardrail.md
@@ -107,4 +107,4 @@ markdown_extensions:
 plugins:
   - search
 
-copyright: Copyright &copy; 2025&ndash;PRESENT Wei Cheng (Wayne) Chiu
+copyright: &copy; 2025 Wayne Chiu

@@ -45,7 +45,7 @@ TensorRT-LLM 會針對指定的 GPU architecture、TP degree、precision 與 bat
 
 ## 2. Tensor parallelism (TP)｜Tensor parallelism（TP）
 
-When a model does not fit on one GPU—or when the target is lower latency—TensorRT-LLM can shard each layer across GPUs. On a 4× H100 NVLink host, `TP=4` introduces all-reduce communication across all four GPUs during each forward pass.
+When a model does not fit on one GPU, or when the target is lower latency, TensorRT-LLM can shard each layer across GPUs. On a 4× H100 NVLink host, `TP=4` introduces all-reduce communication across all four GPUs during each forward pass.
 
 模型放不進單張 GPU，或目標是降低 latency 時，TensorRT-LLM 可以把每一層切到多張 GPU。4× H100 NVLink 主機使用 `TP=4` 時，每次 forward pass 都會在四張 GPU 間執行 all-reduce。
 { .pb-translation lang=zh-Hant }
