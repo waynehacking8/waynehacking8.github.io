@@ -1,3 +1,7 @@
+---
+description: Wayne Chiu's experience as a software engineer on LLM infrastructure at Taiwan AILabs, previously machine learning engineer at SYNCROBOTIC, plus education at NTUST and NTU.
+---
+
 # Experiences
 
 ## Industry

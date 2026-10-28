@@ -3,13 +3,13 @@
 <!-- SEO: structured data + social meta. The JSON-LD Person `sameAs` links unify
      Wayne's identity across platforms so a name search surfaces every profile. -->
 {% block htmltitle %}
-  <title>{% if page and page.url == "experiences/" %}Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery{% elif page and page.meta and page.meta.seo_title %}{{ page.meta.seo_title }}{% elif page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery{% endif %}</title>
+  <title>{% if page and page.url == "experiences/" %}Experience — Wayne Chiu, Software Engineer (LLM Infrastructure){% elif page and page.meta and page.meta.seo_title %}{{ page.meta.seo_title }}{% elif page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wayne Chiu — Software Engineer, LLM Inference & GPU Performance{% endif %}</title>
 {% endblock %}
 
 {% block extrahead %}
   {{ super() }}
 
-  {% set title = "Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery" if page and page.url == "experiences/" else (page.meta.seo_title if page and page.meta and page.meta.seo_title else (page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery")) %}
+  {% set title = "Experience — Wayne Chiu, Software Engineer (LLM Infrastructure)" if page and page.url == "experiences/" else (page.meta.seo_title if page and page.meta and page.meta.seo_title else (page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu — Software Engineer, LLM Inference & GPU Performance")) %}
   {% set desc = page.meta.description if page and page.meta and page.meta.description else config.site_description %}
   {% set image = page.meta.image if page and page.meta and page.meta.image else "https://wayne.is-a.dev/assets/profile.jpg" %}
   {% set is_post = page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
@@ -28,7 +28,7 @@
   <meta property="profile:last_name" content="Chiu">
 
   <!-- Twitter / X -->
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="{{ 'summary_large_image' if page and page.meta and page.meta.image else 'summary' }}">
   <meta name="twitter:creator" content="@itswaynechiu">
   <meta name="twitter:title" content="{{ title }}">
   <meta name="twitter:description" content="{{ desc }}">
@@ -69,7 +69,7 @@
         "@type": "ProfilePage",
         "@id": "https://wayne.is-a.dev/#profilepage",
         "url": "https://wayne.is-a.dev/",
-        "name": "Wayne Chiu — LLM Inference & GPU Performance | On-prem GenAI Delivery",
+        "name": "Wayne Chiu — Software Engineer, LLM Inference & GPU Performance",
         "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
         "about": { "@id": "https://wayne.is-a.dev/#person" },
         "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
@@ -80,7 +80,7 @@
         "name": "Wei Cheng (Wayne) Chiu",
         "alternateName": ["Wayne Chiu", "邱偉誠"],
         "jobTitle": "Software Engineer, LLM Infrastructure",
-        "description": "LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, Kubernetes, on-prem GenAI deployment readiness, and upstream contributions.",
+        "description": "Software engineer on LLM infrastructure in Taipei: LLM inference, GPU performance, CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, and upstream bug fixes.",
         "url": "https://wayne.is-a.dev/",
         "image": "https://wayne.is-a.dev/assets/profile.jpg",
         "email": "mailto:waynehacking8@gmail.com",

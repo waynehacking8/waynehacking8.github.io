@@ -2,8 +2,8 @@ site_name: Wei-Cheng Chiu
 site_url: https://wayne.is-a.dev/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
-  LLM inference and GPU performance in Taipei: CUDA, vLLM, SGLang, FlashInfer,
-  TensorRT-LLM, Kubernetes, and on-prem GenAI deployment.
+  Software engineer on LLM infrastructure in Taipei: LLM inference, GPU
+  performance, CUDA, vLLM, SGLang, FlashInfer, TensorRT-LLM, and upstream bug fixes.
 
 nav:
   - About: index.md
