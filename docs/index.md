@@ -8,12 +8,14 @@ hide:
 
 Software engineer on LLM infrastructure at [Taiwan AILabs](https://ailabs.tw/).
 I work on LLM inference performance and CUDA kernels, and send fixes upstream to
-<a href="https://github.com/NVIDIA/TensorRT-LLM"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" width="64" height="64" />TensorRT-LLM</span></a>,
+<a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
 <a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" width="64" height="64" />vLLM</span></a>,
 <a href="https://github.com/sgl-project/sglang"><span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" width="64" height="64" />SGLang</span></a>,
-<a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
-<a href="https://github.com/pytorch/pytorch"><span class="chip chip-orange"><img src="assets/logos/pytorch.png" alt="" width="64" height="64" />PyTorch</span></a> and
-<a href="https://github.com/ai-dynamo/dynamo"><span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" width="64" height="64" />Dynamo</span></a>.
+<a href="https://github.com/pytorch/pytorch"><span class="chip chip-orange"><img src="assets/logos/pytorch.png" alt="" width="64" height="64" />PyTorch</span></a>,
+<a href="https://github.com/ai-dynamo/dynamo"><span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" width="64" height="64" />Dynamo</span></a>,
+<a href="https://github.com/NVIDIA"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" width="64" height="64" />NVIDIA</span></a>
+<a href="https://github.com/NVIDIA/cutlass">CUTLASS</a> / <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a> and
+<a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" width="64" height="64" />LMDeploy</span></a>.
 See the [PR wall](https://prs.wayne.is-a.dev).
 
 ## News
