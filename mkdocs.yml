@@ -2,7 +2,7 @@ site_name: Wei-Cheng Chiu
 site_url: https://wayne.is-a.dev/
 site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
-  LLM inference software engineer in Taipei: CUDA kernels, TensorRT-LLM, vLLM, SGLang, FlashInfer. 20+ merged upstream fixes incl. Blackwell SM120 and NVFP4.
+  LLM inference engineer in Taipei. CUDA, TensorRT-LLM, vLLM, SGLang.
 
 nav:
   - About: index.md

@@ -1,11 +1,11 @@
 ---
-seo_title: Upstream patches in FlashInfer, vLLM, PyTorch and Dynamo — Wayne Chiu
-description: 22 merged bug fixes in FlashInfer, vLLM, LMDeploy, Dynamo, PyTorch and torchao, with links to each pull request, plus the fixes still in review for SGLang, TensorRT-LLM and CUTLASS.
+seo_title: Patches | Wayne Chiu
+description: Upstream fixes in FlashInfer, vLLM, PyTorch, Dynamo and more.
 ---
 
 # Patches
 
-Upstream open-source contributions to the LLM-inference stack — **22 merged/landed ·
+Upstream open-source contributions to the LLM-inference stack: **22 merged/landed ·
 26 in review** as of 2026-10-21.
 
 <p class="pb-pr-wall">
@@ -16,9 +16,9 @@ Upstream open-source contributions to the LLM-inference stack — **22 merged/la
 The tables below are a curated snapshot of representative work; the live wall is the
 always-current source of truth.
 
-My focus is **early consumer-Blackwell (SM120 / SM121) enablement** across the stack —
+My focus is **early consumer-Blackwell (SM120 / SM121) enablement** across the stack,
 from CUTLASS / FlashInfer kernels through vLLM / SGLang engines to Dynamo /
-TensorRT-LLM disaggregated serving — plus silent-correctness bugs: code that passes
+TensorRT-LLM disaggregated serving, plus silent-correctness bugs: code that passes
 tests but computes the wrong answer.
 
 ## Merged / landed in main
@@ -28,7 +28,7 @@ tests but computes the wrong answer.
 | **FlashInfer** | 9 | [SM120/121 multi-CTA radix top-k stream hang](https://github.com/flashinfer-ai/flashinfer/pull/3615) · [SM120 NVFP4 attention qk-correction layout / row-sum / lse](https://github.com/flashinfer-ai/flashinfer/pull/3838) · [MXFP8-aware MoE gemm profiler](https://github.com/flashinfer-ai/flashinfer/pull/3614) |
 | **vLLM** | 5 | [Skip Qwen3 deepstack buffers without vision](https://github.com/vllm-project/vllm/pull/49397) · [Tokenizer survives pickling](https://github.com/vllm-project/vllm/pull/45460) · [streaming `message_start` sets `type`/`role`](https://github.com/vllm-project/vllm/pull/45376) · [clear error for structured outputs on diffusion decoders](https://github.com/vllm-project/vllm/pull/45468) |
 | **LMDeploy** | 3 | [InternVL LoRA loading TypeError](https://github.com/InternLM/lmdeploy/pull/4684) · [double-counted `max_q_seqlen` in decode delta](https://github.com/InternLM/lmdeploy/pull/4685) · [builtin chat-template ImportError](https://github.com/InternLM/lmdeploy/pull/4690) |
-| **PyTorch** | 1 | [`nccl.broadcast` was dropping its `root` argument](https://github.com/pytorch/pytorch/pull/187216) — landed in `main` (`c3c33fd`) |
+| **PyTorch** | 1 | [`nccl.broadcast` was dropping its `root` argument](https://github.com/pytorch/pytorch/pull/187216), landed in `main` (`c3c33fd`) |
 | **Dynamo** | 2 | [KV-router cancels in-flight recovery on worker removal](https://github.com/ai-dynamo/dynamo/pull/10616) · [resolve aggregate planner workers by DGD component type](https://github.com/ai-dynamo/dynamo/pull/11578) |
 | **compressed-tensors** | 1 | [Skip device-map entries with no local module in dispatch](https://github.com/vllm-project/compressed-tensors/pull/737) |
 | **torchao** | 1 | [PT2E/X86 plain-linear annotation fallback for reused `nn.Linear`](https://github.com/pytorch/ao/pull/4480) |
@@ -47,7 +47,7 @@ tests but computes the wrong answer.
 | **Triton Inference Server** | 1 | Weight autoscaling queue time by request count |
 
 !!! note "The pattern behind these"
-    The most valuable class of bug I hunt: **tests green, answers wrong** — a cuDNN path
+    The most valuable class of bug I hunt: **tests green, answers wrong**: a cuDNN path
     computing only the first expert group, an out-of-bounds `moe_permute` write, an
     attention layout mismatch that silently corrupts logits on new hardware. These come
     from reading kernels, not from stack traces.

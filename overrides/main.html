@@ -3,13 +3,13 @@
 <!-- SEO: structured data + social meta. The JSON-LD Person `sameAs` links unify
      Wayne's identity across platforms so a name search surfaces every profile. -->
 {% block htmltitle %}
-  <title>{% if page and page.url == "experiences/" %}Experience — Wayne Chiu, Software Engineer (LLM Infrastructure){% elif page and page.meta and page.meta.seo_title %}{{ page.meta.seo_title }}{% elif page and page.title and not page.is_homepage %}{{ page.title }} — Wei Cheng (Wayne) Chiu{% else %}Wayne Chiu — LLM Inference Software Engineer, Taipei | CUDA, TensorRT-LLM, vLLM{% endif %}</title>
+  <title>{% if page and page.url == "experiences/" %}Experience | Wayne Chiu{% elif page and page.meta and page.meta.seo_title %}{{ page.meta.seo_title }}{% elif page and page.title and not page.is_homepage %}{{ page.title }} | Wayne Chiu{% else %}Wayne Chiu{% endif %}</title>
 {% endblock %}
 
 {% block extrahead %}
   {{ super() }}
 
-  {% set title = "Experience — Wayne Chiu, Software Engineer (LLM Infrastructure)" if page and page.url == "experiences/" else (page.meta.seo_title if page and page.meta and page.meta.seo_title else (page.title ~ " — Wei Cheng (Wayne) Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu — LLM Inference Software Engineer, Taipei | CUDA, TensorRT-LLM, vLLM")) %}
+  {% set title = "Experience | Wayne Chiu" if page and page.url == "experiences/" else (page.meta.seo_title if page and page.meta and page.meta.seo_title else (page.title ~ " | Wayne Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu")) %}
   {% set desc = page.meta.description if page and page.meta and page.meta.description else config.site_description %}
   {% set image = page.meta.image if page and page.meta and page.meta.image else "https://wayne.is-a.dev/assets/profile.jpg" %}
   {% set is_post = page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
@@ -69,7 +69,7 @@
         "@type": "ProfilePage",
         "@id": "https://wayne.is-a.dev/#profilepage",
         "url": "https://wayne.is-a.dev/",
-        "name": "Wayne Chiu — LLM Inference Software Engineer, Taipei | CUDA, TensorRT-LLM, vLLM",
+        "name": "Wayne Chiu",
         "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
         "about": { "@id": "https://wayne.is-a.dev/#person" },
         "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
@@ -107,7 +107,7 @@
   }
   </script>
 
-  {# BlogPosting structured data — makes each blog post eligible for rich results
+  {# BlogPosting structured data: makes each blog post eligible for rich results
      and links it to the Person entity, amplifying author search visibility. #}
   {% if page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
   <script type="application/ld+json">
@@ -176,7 +176,7 @@
     {# pbb.sh leads the social row with the CV, before every other profile
        link; the icon is academicons' `ai ai-cv`, vendored under
        overrides/.icons since Material ships only material/fontawesome. #}
-    {# pbb links its CV icon straight at /cv.pdf — no HTML CV page exists there.
+    {# pbb links its CV icon straight at /cv.pdf; no HTML CV page exists there.
        Root-absolute, NOT `| url`: soft navigation swaps only .pb-main, so the
        sidebar keeps the href it was first rendered with, and a relative one
        would resolve against the new path (/experiences/cv.pdf) and 404. #}
