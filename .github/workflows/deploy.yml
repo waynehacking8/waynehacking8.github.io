@@ -18,5 +18,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      # The CV is built from cv/cv.tex on every deploy, so the published PDF
+      # cannot fall behind the source. XeLaTeX matches the xdvipdfmx output
+      # the hand-built copy used.
+      - name: Build the CV
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: cv.tex
+          working_directory: cv
+          latexmk_use_xelatex: true
+      - run: cp cv/cv.pdf docs/cv.pdf
       - run: pip install -r requirements.txt
       - run: mkdocs gh-deploy --force
