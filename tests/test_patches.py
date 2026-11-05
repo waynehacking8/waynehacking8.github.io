@@ -98,5 +98,13 @@ class BuildTest(unittest.TestCase):
         self.assertNotIn("own-lab", self.body)
 
 
+class SourceTest(unittest.TestCase):
+    def test_cv_has_no_control_characters(self):
+        # A "\b" written through a non-raw string once turned \begin into a
+        # backspace and broke the CI LaTeX build.
+        tex = (Path(__file__).resolve().parent.parent / "cv" / "cv.tex").read_text(encoding="utf-8")
+        self.assertEqual([c for c in tex if ord(c) < 32 and c not in "\n\r\t"], [])
+
+
 if __name__ == "__main__":
     unittest.main()
