@@ -1,43 +1,75 @@
 name: Deploy site
 
+# Builds the CV and the MkDocs site, then publishes the build as a Pages
+# artifact (the GitHub-recommended flow for non-Jekyll sites). Nothing is
+# pushed back to the repo, so no job holds contents: write.
 on:
   push:
     branches: [main]
-  # The Patches page reads PR state from the PR wall at build time
-  # (hooks/patches.py), so a scheduled rebuild keeps it current.
+  # The Patches page, About, llms.txt, JSON-LD and the CV read PR state from
+  # the PR wall at build time (hooks/patches.py), so a scheduled rebuild keeps
+  # them current.
   schedule:
     - cron: "17 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
-  group: deploy
+  group: pages
   cancel-in-progress: false
 
-permissions:
-  contents: write
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      # Actions are pinned to commit SHAs (a tag can be moved to other code);
+      # Dependabot proposes the updates.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: "3.x"
-      # The CV is built from cv/cv.tex on every deploy, so the published PDF
-      # cannot fall behind the source. XeLaTeX matches the xdvipdfmx output
-      # the hand-built copy used.
+          python-version: "3.13"
+          cache: pip
       - run: pip install -r requirements.txt
       - run: python -m unittest discover -s tests
       # Upstream counts for the CV come from the same feed as the site.
       - run: python hooks/patches.py cv/stats.tex
+      # The CV is built from cv/cv.tex on every deploy, so the published PDF
+      # cannot fall behind the source.
       - name: Build the CV
-        uses: xu-cheng/latex-action@v4
+        uses: xu-cheng/latex-action@6549dc21effb2730855a1281407ecfcececc6c1b # 4.1.0
         with:
           root_file: cv.tex
           working_directory: cv
           latexmk_use_xelatex: true
       - run: cp cv/cv.pdf docs/cv.pdf
-      - run: mkdocs gh-deploy --force
+      - run: mkdocs build --strict --site-dir site
+        env:
+          NO_MKDOCS_2_WARNING: "1"
+      # Internal links and anchors only: external sites going down must not
+      # block a deploy.
+      - name: Check links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --offline --no-progress --include-fragments --root-dir ${{ github.workspace }}/site site
+          fail: true
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
