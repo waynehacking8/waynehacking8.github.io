@@ -36,7 +36,10 @@
 \newlist{tight}{itemize}{1}
 \setlist[tight]{leftmargin=1.2em,itemsep=0.1em,parsep=0pt,topsep=0.2em,label=\textbullet}
 
-\begin{document}
+% Upstream counts, written from the PR wall feed in CI (hooks/patches.py).
+\input{stats}
+
+egin{document}
 \RaggedRight
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
@@ -56,7 +59,7 @@
 % ---------- summary ----------
 \section*{\scshape SUMMARY}
 Field application engineer on LLM infrastructure at Taiwan AILabs. LLM inference performance analysis and optimization on NVIDIA GPUs;
-\textbf{24 merged/landed patches} upstream in FlashInfer, vLLM, LMDeploy, Dynamo, PyTorch and torchao.
+\textbf{\upstreammerged{} merged/landed patches} upstream in \upstreamwhere.
 
 % ---------- skills ----------
 \section*{\scshape TECHNICAL SKILLS}
@@ -94,8 +97,8 @@ Field application engineer on LLM infrastructure at Taiwan AILabs. LLM inference
 
 % ---------- open source ----------
 \section*{\scshape OPEN SOURCE}
-\textbf{Bug fixes across the LLM-inference stack}\hfill 24 merged/landed\\
-\textit{FlashInfer (10) $\cdot$ vLLM (7) $\cdot$ LMDeploy (3) $\cdot$ Dynamo (2) $\cdot$ PyTorch (2)}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
+\textbf{Bug fixes across the LLM-inference stack}\hfill \upstreammerged{} merged/landed\\
+\textit{\upstreamgroups}\hfill \link{https://prs.wayne.is-a.dev}{prs.wayne.is-a.dev}\\[0.15em]
 % ---------- research ----------
 \section*{\scshape RESEARCH \& PUBLICATIONS}
 \textbf{SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning},

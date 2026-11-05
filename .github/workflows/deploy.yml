@@ -29,6 +29,10 @@ jobs:
       # The CV is built from cv/cv.tex on every deploy, so the published PDF
       # cannot fall behind the source. XeLaTeX matches the xdvipdfmx output
       # the hand-built copy used.
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests
+      # Upstream counts for the CV come from the same feed as the site.
+      - run: python hooks/patches.py cv/stats.tex
       - name: Build the CV
         uses: xu-cheng/latex-action@v4
         with:
@@ -36,6 +40,4 @@ jobs:
           working_directory: cv
           latexmk_use_xelatex: true
       - run: cp cv/cv.pdf docs/cv.pdf
-      - run: pip install -r requirements.txt
-      - run: python -m unittest discover -s tests
       - run: mkdocs gh-deploy --force

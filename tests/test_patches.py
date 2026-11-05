@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "hooks"))
-from patches import build  # noqa: E402
+from patches import build, cv_macros, tally  # noqa: E402
 
 CONFIG = {
     "projects": [
@@ -86,6 +86,13 @@ class BuildTest(unittest.TestCase):
         feed = {**FEED, "prs": FEED["prs"] + [{**pr("a/b", 1, "open"), "title": "Fix <T> in [x]"}]}
         _, body, _ = build(CONFIG, feed)
         self.assertIn("Fix &lt;T&gt; in \\[x\\]", body)
+
+    def test_cv_macros_rank_projects_by_merged_count(self):
+        tex = cv_macros(tally(CONFIG, FEED))
+        self.assertIn(r"\newcommand{\upstreammerged}{3}", tex)
+        # vLLM 2 merged, pytorch/pytorch 1 (landed); NVIDIA has none merged.
+        self.assertIn(r"\newcommand{\upstreamgroups}{vLLM (2) $\cdot$ pytorch/pytorch (1)}", tex)
+        self.assertIn(r"\newcommand{\upstreamwhere}{vLLM and pytorch/pytorch}", tex)
 
     def test_prs_into_my_own_repos_are_not_patches(self):
         self.assertNotIn("own-lab", self.body)

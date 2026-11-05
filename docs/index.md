@@ -20,8 +20,7 @@ I have an M.S. in Computer Science from
 (GPA 4.09), where I worked on LLM safety alignment and privacy-preserving ML
 in Prof. Shao-Jui Wang's lab.
 
-In my own time I send patches upstream to the LLM inference stack. More than 20
-have merged so far, in
+In my own time I send patches upstream to the LLM inference stack:
 <a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
 <a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" width="64" height="64" />vLLM</span></a>,
 <a href="https://github.com/sgl-project/sglang"><span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" width="64" height="64" />SGLang</span></a>,
@@ -29,8 +28,8 @@ have merged so far, in
 <a href="https://github.com/ai-dynamo/dynamo"><span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" width="64" height="64" />Dynamo</span></a>,
 <a href="https://github.com/NVIDIA"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" width="64" height="64" />NVIDIA</span></a>
 <a href="https://github.com/NVIDIA/cutlass">CUTLASS</a> / <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a>, and
-<a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" width="64" height="64" />LMDeploy</span></a>,
-among them SM120 and NVFP4 correctness fixes in FlashInfer and an NCCL broadcast
+<a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" width="64" height="64" />LMDeploy</span></a>.
+<!-- upstream:merged --> have merged so far, among them SM120 and NVFP4 correctness fixes in FlashInfer and an NCCL broadcast
 fix in PyTorch. The [PR wall](https://prs.wayne.is-a.dev) lists every one and
 updates itself from GitHub.
 
