@@ -4,6 +4,10 @@ site_author: Wei Cheng (Wayne) Chiu
 site_description: >-
   LLM inference engineer in Taipei. CUDA, TensorRT-LLM, vLLM, SGLang.
 
+# Maintainer notes live next to the pages but are never published.
+exclude_docs: |
+  HANDOFF.md
+
 nav:
   - About: index.md
   - Experiences: experiences.md
