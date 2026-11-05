@@ -8,8 +8,8 @@
 Specialties: applied LLM systems on DGX-class hardware; the NVIDIA inference and
 multi-GPU stack (TensorRT-LLM, Triton, NIM, NCCL, CUDA Tensor Cores); and
 privacy-preserving ML (federated learning, differential privacy, secure multi-party
-computation). The technical notes below report measurements and trade-offs directly;
-each one links the public benchmark/code repository behind it.
+computation). Each technical note below links the public benchmark or code repository behind
+its numbers.
 
 ## Profile
 
@@ -27,10 +27,10 @@ each one links the public benchmark/code repository behind it.
 
 ## Public repositories
 
-- [nccl-collectives-bench](https://github.com/waynehacking8/nccl-collectives-bench): NCCL collective benchmarks (all-reduce / all-gather / reduce-scatter) on 4× H100 NVLink, with an analytical roofline that back-validates the measurements.
-- [trtllm-triton-serving](https://github.com/waynehacking8/trtllm-triton-serving): production-style LLM serving on TensorRT-LLM tensor-parallel across 4× H100, benchmarked head-to-head against vLLM with controlled methodology, plus a Triton deployment template.
+- [nccl-collectives-bench](https://github.com/waynehacking8/nccl-collectives-bench): NCCL collective benchmarks (all-reduce / all-gather / reduce-scatter) on 4× H100 NVLink, with an analytical roofline checked against the measurements.
+- [trtllm-triton-serving](https://github.com/waynehacking8/trtllm-triton-serving): LLM serving on TensorRT-LLM with tensor parallelism across 4× H100, benchmarked against vLLM on matched work, plus a Triton deployment template.
 - [nim-agent-blueprint](https://github.com/waynehacking8/nim-agent-blueprint): agentic RAG reference architecture on NVIDIA NIM microservices with a plan→retrieve→validate loop and an eval + OpenTelemetry observability harness.
-- [federated-learning-lab](https://github.com/waynehacking8/federated-learning-lab): from-scratch federated learning with DP and secure aggregation, 33/33 tests, literature-cross-validated, including measured Non-IID limits.
+- [federated-learning-lab](https://github.com/waynehacking8/federated-learning-lab): federated learning written from scratch with DP and secure aggregation, 33 passing tests, results checked against published numbers, and measured Non-IID limits.
 
 ## Contact
 

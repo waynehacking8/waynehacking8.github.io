@@ -1,9 +1,8 @@
 # Blog
 
-I use these notes to answer the questions that survive the launch post: where the
-latency comes from, which claim the evidence actually supports, and what breaks when
-an architecture meets a real runtime. Equations, measurements, and source notes stay
-next to the claim they qualify.
+Notes I write while reading model releases and running benchmarks: architecture,
+serving, CUDA, and some privacy and security. When a post makes a claim, the
+measurement or source that backs it sits right beside it.
 
 <div class="pb-filters" aria-label="Filter blog posts by tag">
 <span class="pb-filters-label">Topics:</span>

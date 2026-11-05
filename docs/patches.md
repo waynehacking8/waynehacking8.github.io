@@ -5,20 +5,19 @@ description: Upstream fixes in FlashInfer, vLLM, PyTorch, Dynamo and more.
 
 # Patches
 
-Upstream open-source contributions to the LLM-inference stack: **24 merged and
-26 in review** as of 2026-11-05.
+My upstream patches to the LLM inference stack: **24 merged and 26 in review**
+as of 2026-11-05.
 
 <p class="pb-pr-wall">
 <strong>Every pull request and review, in full, is on the <a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev">PR wall</a>.</strong>
 It rebuilds from GitHub every 10 minutes and is also an <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a>.
 </p>
 
-Below is a curated selection, grouped by project.
-
-My focus is **early consumer-Blackwell (SM120 / SM121) enablement** across the stack,
-from CUTLASS / FlashInfer kernels through vLLM / SGLang engines to Dynamo /
-TensorRT-LLM disaggregated serving, plus silent-correctness bugs: code that passes
-tests but computes the wrong answer.
+This page picks out the ones worth reading, by project. Two themes keep coming
+up. One is getting early consumer Blackwell (SM120 / SM121) to work across the
+stack: CUTLASS and FlashInfer kernels, the vLLM and SGLang engines, and Dynamo and
+TensorRT-LLM disaggregated serving. The other is correctness bugs, where the code
+passes its tests and still computes the wrong answer.
 
 ## By project
 
@@ -154,8 +153,8 @@ tests but computes the wrong answer.
 
 </div>
 
-!!! note "The pattern behind these"
-    The most valuable class of bug I hunt: **tests green, answers wrong**: a cuDNN path
-    computing only the first expert group, an out-of-bounds `moe_permute` write, an
-    attention layout mismatch that silently corrupts logits on new hardware. These come
-    from reading kernels, not from stack traces.
+!!! note "Why I look for these"
+    The bugs I care about most do not crash. A cuDNN path that computed only the
+    first expert group, a `moe_permute` write past the end of its buffer, an attention
+    layout mismatch that corrupted logits on new hardware: each one passed its tests.
+    I found them by reading the kernels, because there was no stack trace to follow.
