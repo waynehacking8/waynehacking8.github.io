@@ -15,7 +15,9 @@ Not published: `exclude_docs` in mkdocs.yml keeps this file out of the site.
 
 - No custom response headers on GitHub Pages: HSTS, CSP and frame headers are missing and cannot be added here. Scanners will flag them.
 - Copy rules: no emoji, no dash punctuation, no AI-template phrasing. Never mention RTX PRO 6000 or 96GB; say "Blackwell workstation".
-- A locally built `site/` must not be committed; gh-deploy builds its own.
+- A locally built `site/` must not be committed; CI builds its own.
+- The TeXLive image is pinned by digest in deploy.yml (`docker_image`); Dependabot does not see it, so bump it by hand when the CV needs a newer TeX. lychee remaps `https://wayne.is-a.dev/...` onto the build, so self-links are checked; directory links need an index.html.
+- requirements.txt was frozen on Windows, so it lists colorama; harmless on Linux. The gh-pages branch is no longer deployed from and can be deleted.
 - GitHub disables scheduled workflows after 60 days without repo activity; a push re-enables them. The PR wall's PR_COUNT must stay above the real open plus merged total, or the Patches page undercounts.
 
 ## Open
