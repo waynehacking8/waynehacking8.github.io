@@ -5,16 +5,15 @@ description: Upstream fixes in FlashInfer, vLLM, PyTorch, Dynamo and more.
 
 # Patches
 
-Upstream open-source contributions to the LLM-inference stack: **22 merged/landed ·
+Upstream open-source contributions to the LLM-inference stack: **22 merged and
 26 in review** as of 2026-10-21.
 
 <p class="pb-pr-wall">
-<a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev"><span class="pb-pr-wall-live"><span aria-hidden="true"></span>LIVE</span><span class="pb-pr-wall-copy"><strong>Live PR wall</strong><span class="pb-pr-wall-domain">prs.wayne.is-a.dev</span></span><span class="pb-pr-wall-arrow" aria-hidden="true">↗</span></a>
-<span class="pb-pr-wall-note">Updated every few minutes <span aria-hidden="true">·</span> <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a></span>
+<strong>Every pull request and review, in full, is on the <a class="pb-pr-wall-main" href="https://prs.wayne.is-a.dev">PR wall</a>.</strong>
+It rebuilds from GitHub every 10 minutes and is also an <a class="pb-pr-wall-rss" href="https://prs.wayne.is-a.dev/feed.xml">RSS feed</a>.
 </p>
 
-The tables below are a curated snapshot of representative work; the live wall is the
-always-current source of truth.
+The tables below are a curated snapshot of representative work.
 
 My focus is **early consumer-Blackwell (SM120 / SM121) enablement** across the stack,
 from CUTLASS / FlashInfer kernels through vLLM / SGLang engines to Dynamo /

@@ -161,7 +161,8 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: baseline;
-  gap: 0;
+  /* 0 let the first pill's hover ground butt against the title's last glyph */
+  column-gap: 12px;
   position: static;
   background: var(--pb-card);
   padding: 20px 40px 20px 24px;
@@ -201,9 +202,19 @@
   transition: background 0.2s, color 0.2s;
   scroll-snap-align: start;
 }
-.pb-nav-link:hover { background: var(--pb-chip-bg); color: var(--pb-ink); text-decoration: none !important; }
+/* Hover only where a pointer can hover: on iOS a tapped pill kept its hover
+   ground after the page swapped, so a neighbour looked selected. */
+@media (hover: hover) {
+  .pb-nav-link:hover { background: var(--pb-chip-bg); color: var(--pb-ink); }
+}
+.pb-nav-link:hover { text-decoration: none !important; }
 .pb-nav-link.active { background: var(--pb-chip-bg); color: var(--pb-link); }
 body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
+
+/* pb-filter.js moves focus to the new page title after a swap so screen
+   readers announce it; Safari drew its default ring around the whole h1. The
+   heading is not a control, so the programmatic focus stays invisible. */
+.pb-page-title:focus { outline: none; }
 
 /* A single, visible keyboard-focus language across the custom chrome. */
 .pb-theme-btn:focus-visible,
@@ -504,6 +515,11 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   scrollbar-width: thin;
   scrollbar-color: var(--pb-line) transparent;
 }
+/* A scroll box inside a scrolling page traps a thumb swipe on phones; there
+   the list simply runs at full length. */
+@media (max-width: 1023px) {
+  .pb-news { max-height: none; overflow-y: visible; padding-right: 0; }
+}
 .pb-news dl {
   display: grid;
   grid-template-columns: 5em minmax(0, 1fr);
@@ -717,20 +733,13 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .pb-image-sources summary { cursor: pointer; font: 600 .5rem/1.5 var(--pb-mono); }
 .pb-image-sources p { margin: .4rem 0 0; line-height: 1.55; }
 
-/* Patches: an engineering-status card for the live upstream record. */
-.md-typeset .pb-pr-wall { display: flex; flex-direction: column; align-items: stretch; gap: .55rem; max-width: 34rem; margin: 1rem 0 1.25rem; padding: .78rem .85rem .7rem; border: 1px solid var(--pb-line); border-radius: .6rem; background: rgba(255,255,255,.018); color: var(--pb-muted); line-height: 1.2; }
-.md-typeset .pb-pr-wall-main { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .68rem; color: var(--pb-ink); text-decoration: none; }
-.pb-pr-wall-live { display: inline-flex; align-items: center; gap: .32rem; color: #55bd8b; font: 700 .64rem/1 var(--pb-mono); letter-spacing: .08em; }
-.pb-pr-wall-live span { width: .42rem; height: .42rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px rgba(85,189,139,.13); }
-.pb-pr-wall-copy { min-width: 0; }
-.md-typeset .pb-pr-wall-main strong { display: block; font-size: 1rem; font-weight: 700; }
-.pb-pr-wall-domain { display: block; margin-top: .12rem; color: var(--pb-muted); font-family: var(--pb-mono); font-size: .76rem; overflow-wrap: anywhere; }
-.pb-pr-wall-arrow { color: var(--pb-link); font-size: 1.1rem; font-weight: 700; transition: transform .15s ease; }
-.md-typeset .pb-pr-wall-main:hover { color: var(--pb-link); text-decoration: none; }
-.md-typeset .pb-pr-wall-main:hover .pb-pr-wall-arrow { transform: translate(2px,-2px); }
-.pb-pr-wall-note { display: flex; align-items: center; gap: .35rem; padding-top: .55rem; border-top: 1px solid var(--pb-line); font-size: .76rem; }
-.md-typeset .pb-pr-wall-rss { color: var(--pb-link); font-weight: 700; text-decoration: none; }
-.md-typeset .pb-pr-wall-rss:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* Patches: one quiet pointer to the complete record. It is a sentence on the
+   chip ground, set like the rest of the page, so it reads as part of the
+   argument instead of a status widget bolted onto it. */
+.md-typeset .pb-pr-wall { max-width: 36rem; margin: 1rem 0 1.25rem; padding: .85rem 1rem; border-radius: .6rem; background: var(--pb-chip-bg); color: var(--pb-muted); line-height: 1.6; }
+.md-typeset .pb-pr-wall strong { display: block; color: var(--pb-ink); font-weight: 600; }
+.md-typeset .pb-pr-wall a { color: var(--pb-link); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.md-typeset .pb-pr-wall a:hover { text-decoration-thickness: 2px; }
 .pb-pr-wall a:focus-visible { outline: 2px solid var(--pb-link); outline-offset: 3px; }
 
 /* Article lead artwork uses the same contained editorial frame as pbb.sh. */
@@ -757,7 +766,8 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   padding: 0.35rem 0.7rem;
   border-top: 1px solid var(--pb-line);
   color: var(--pb-muted);
-  font: 0.5rem/1.4 var(--pb-mono);
+  font-size: 0.6rem;
+  line-height: 1.5;
   text-align: right;
 }
 .pb-article-hero figcaption a { color: var(--pb-link); }
@@ -822,7 +832,8 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   border-top: 1px solid var(--pb-line);
   scrollbar-width: thin;
 }
-.pb-article-toc > p { margin: 0 0 .5rem; color: var(--pb-ink); font: 650 .62rem/1.45 var(--pb-mono); letter-spacing: .035em; text-transform: uppercase; }
+/* sentence case in the body face: a tracked mono caps label read as template chrome */
+.pb-article-toc > p { margin: 0 0 .5rem; color: var(--pb-ink); font-size: .68rem; font-weight: 600; line-height: 1.45; }
 .md-typeset .pb-article-toc ol,
 .md-typeset .pb-article-toc ol ol { margin: 0; padding: 0; list-style: none; }
 .pb-article-toc li { margin: 0; }
@@ -850,14 +861,28 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   padding: .55rem .72rem;
   cursor: pointer;
   color: var(--pb-ink);
-  font: 650 .68rem/1.4 var(--pb-mono);
+  font-size: .7rem;
+  font-weight: 600;
+  line-height: 1.4;
   list-style: none;
 }
 .pb-article-toc--mobile summary::-webkit-details-marker { display: none; }
 .pb-article-toc--mobile summary::marker { content: ""; }
 .pb-article-toc--mobile summary::after { display: none; }
-.pb-article-toc--mobile summary span { transition: transform .16s ease; }
-.pb-article-toc--mobile[open] summary span { transform: rotate(180deg); }
+/* Material styles every <details> as a blue "note" admonition with a pencil
+   icon; this one is navigation, so it takes the page's own card instead. */
+.md-typeset details.pb-article-toc--mobile { border: 1px solid var(--pb-line); border-radius: 8px; background: var(--pb-card); box-shadow: none; }
+.md-typeset details.pb-article-toc--mobile > summary { padding: .55rem .72rem; border: 0; border-radius: 8px; background: transparent; }
+.md-typeset details.pb-article-toc--mobile > summary::before { display: none; }
+/* Material indents every nested ol/li (1.25em + .5em per level), which pushed
+   second-level entries ~67px in, so they read as centred. The link padding
+   already carries the hierarchy. */
+.md-typeset .pb-article-toc ol li,
+.md-typeset .pb-article-toc ol ol { margin-left: 0; }
+.md-typeset .pb-article-toc--mobile a { justify-content: flex-start; }
+/* the glyph rendered as a plain "v" / "^"; a drawn chevron reads as a control */
+.pb-article-toc--mobile summary span { width: .4rem; height: .4rem; margin-right: .2rem; border-right: 2px solid var(--pb-muted); border-bottom: 2px solid var(--pb-muted); font-size: 0; transform: translateY(-2px) rotate(45deg); transition: transform .16s ease; }
+.pb-article-toc--mobile[open] summary span { transform: translateY(2px) rotate(225deg); }
 .pb-article-toc--mobile[open] > ol { max-height: min(52vh, 22rem); padding: .15rem .45rem .55rem; overflow-y: auto; }
 .pb-article-toc--mobile a { display: flex; min-height: 2.2rem; align-items: center; padding-block: .4rem; font-size: .7rem; }
 .pb-article-toc--mobile ol ol a { font-size: .64rem; }
@@ -879,6 +904,9 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 }
 
 /* ---------- pbb-style interactive tag filters ---------- */
+@media (pointer: coarse) {
+  .pb-filters button { min-height: 32px; padding-inline: .7em; }
+}
 .pb-filters {
   position: relative;
   border: 1px solid var(--pb-line);
@@ -1083,6 +1111,14 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   .pb-nav-link { font-size: 14px; padding: 6.4px 12.8px; border-radius: 16px; }
   .chip { font-size: 14px; }
 }
+/* A phone cannot hold the title and three pills on one line: "Experiences"
+   plus About, Patches and Blog needs about 370px against 327px, so the pills
+   either collided with the title or ran off the card edge. They take their own
+   row under the title instead, with the first pill's text on the title's edge. */
+@media (max-width: 479px) {
+  .pb-nav-row { flex-wrap: wrap; row-gap: 14px; }
+  .pb-nav-tabs { flex: 1 0 100%; margin-left: -12.8px; }
+}
 @media (max-width: 579px) {
   .pb-side,
   .pb-side:not(.pb-side--home) {
@@ -1128,4 +1164,23 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   /* nowrap on the ::after keeps 邱偉誠 atomic — without it CJK breaks between
      any two characters and the name split as 邱 / 偉誠 */
   .pb-name::after { font-size: 10px; white-space: nowrap; }
+}
+
+/* Patches tables on phones: three columns left the work column about 90px
+   wide, so code like nccl.broadcast broke mid-identifier. Each row becomes a
+   block: the project and its count on one line, the work below at full width. */
+@media (max-width: 600px) {
+  .pb-main:has(.pb-pr-wall) .md-typeset__table table,
+  .pb-main:has(.pb-pr-wall) .md-typeset__table tbody,
+  .pb-main:has(.pb-pr-wall) .md-typeset__table tr,
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td { display: block; width: 100%; }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table thead { display: none; }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table tr { padding: .7rem .8rem; border-top: 1px solid var(--pb-line); }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td { padding: 0; border: 0; }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(1),
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2) { display: inline; width: auto; }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2) { margin-left: .4rem; color: var(--pb-muted); }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2)::before { content: "("; }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2)::after { content: ")"; }
+  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(3) { margin-top: .3rem; }
 }
