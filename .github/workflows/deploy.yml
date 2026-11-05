@@ -3,7 +3,15 @@ name: Deploy site
 on:
   push:
     branches: [main]
+  # The Patches page reads PR state from the PR wall at build time
+  # (hooks/patches.py), so a scheduled rebuild keeps it current.
+  schedule:
+    - cron: "17 * * * *"
   workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -29,4 +37,5 @@ jobs:
           latexmk_use_xelatex: true
       - run: cp cv/cv.pdf docs/cv.pdf
       - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests
       - run: mkdocs gh-deploy --force

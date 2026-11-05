@@ -1,0 +1,79 @@
+# Source for the Patches page (hooks/patches.py). State, counts and the date
+# come live from the PR wall's feed at build time; this file only says how to
+# group repos and which PRs to feature, with their short titles.
+#
+# A PR that is not listed under `picks` still counts toward its project. A repo
+# that no project claims gets its own group, so new work shows up untouched.
+
+source: https://prs.wayne.is-a.dev/api/contributions.json
+
+projects:
+  - name: FlashInfer
+    url: https://github.com/flashinfer-ai/flashinfer
+    logo: /assets/logos/flashinfer.png
+    repos: { flashinfer-ai/flashinfer: null }
+  - name: vLLM
+    url: https://github.com/vllm-project/vllm
+    logo: /assets/logos/vllm.png
+    repos: { vllm-project/vllm: null, vllm-project/compressed-tensors: compressed-tensors, vllm-project/llm-compressor: llm-compressor }
+  - name: LMDeploy
+    url: https://github.com/InternLM/lmdeploy
+    logo: /assets/logos/internlm.png
+    repos: { InternLM/lmdeploy: null }
+  - name: Dynamo
+    url: https://github.com/ai-dynamo/dynamo
+    logo: /assets/logos/dynamo.png
+    repos: { ai-dynamo/dynamo: null }
+  - name: PyTorch
+    url: https://github.com/pytorch/pytorch
+    logo: /assets/logos/pytorch.png
+    repos: { pytorch/pytorch: null, pytorch/ao: torchao }
+  - name: NVIDIA
+    url: https://github.com/NVIDIA
+    logo: /assets/logos/nvidia.png
+    repos: { NVIDIA/cutlass: CUTLASS, NVIDIA/TensorRT-LLM: TensorRT-LLM, triton-inference-server/server: Triton }
+  - name: SGLang
+    url: https://github.com/sgl-project/sglang
+    logo: /assets/logos/sglang.png
+    repos: { sgl-project/sglang: null }
+
+# PRs that landed outside GitHub's merge button (PyTorch lands through ghstack,
+# so GitHub shows them closed and the feed leaves them out). They count as
+# merged. The value is a note appended to the bullet.
+landed:
+  https://github.com/pytorch/pytorch/pull/187216: landed in `main` as `c3c33fd`
+
+# Featured PRs, in display order within each project. The value is the short title.
+picks:
+  https://github.com/flashinfer-ai/flashinfer/pull/3615: SM120/121 multi-CTA radix top-k stream hang
+  https://github.com/flashinfer-ai/flashinfer/pull/3838: SM120 NVFP4 attention qk-correction layout, row-sum and lse
+  https://github.com/flashinfer-ai/flashinfer/pull/3836: b12x MoE workspace bucketing to stop kernel-cache thrash
+  https://github.com/flashinfer-ai/flashinfer/pull/3614: MXFP8-aware cutlass MoE gemm profiler
+  https://github.com/flashinfer-ai/flashinfer/pull/3636: JIT ninja parallelism capped by available memory
+  https://github.com/flashinfer-ai/flashinfer/pull/3690: Combined paged-KV tensor in the trace path
+  https://github.com/vllm-project/vllm/pull/49397: Skip Qwen3 deepstack buffers without vision
+  https://github.com/vllm-project/vllm/pull/45460: Tokenizer survives pickling
+  https://github.com/vllm-project/compressed-tensors/pull/737: Skip device-map entries with no local module in dispatch
+  https://github.com/vllm-project/llm-compressor/pull/3344: "Research Hub entry: FP8 KV cache on Phi-3's fused QKV"
+  https://github.com/vllm-project/vllm/pull/45320: Reject NVFP4 MoE checkpoints with missing per-expert scales
+  https://github.com/vllm-project/vllm/pull/47988: Upcast E8M0 scales for CUTLASS block FP8 on SM12x
+  https://github.com/vllm-project/vllm/pull/65795: Stop re-queuing waiting requests that `max_loras` blocks
+  https://github.com/InternLM/lmdeploy/pull/4684: InternVL LoRA loading TypeError
+  https://github.com/InternLM/lmdeploy/pull/4685: Double-counted `max_q_seqlen` in decode delta
+  https://github.com/InternLM/lmdeploy/pull/4690: Builtin chat-template ImportError
+  https://github.com/ai-dynamo/dynamo/pull/10616: KV-router cancels in-flight recovery on worker removal
+  https://github.com/ai-dynamo/dynamo/pull/11578: Resolve aggregate planner workers by DGD component type
+  https://github.com/ai-dynamo/dynamo/pull/10579: Blackwell workstation GPU SKU in the operator
+  https://github.com/ai-dynamo/dynamo/pull/10806: OTLP traces without logs
+  https://github.com/ai-dynamo/dynamo/pull/11219: NIXL push and pull connectors in PD
+  https://github.com/pytorch/pytorch/pull/187216: "`nccl.broadcast` was dropping its `root` argument"
+  https://github.com/pytorch/ao/pull/4480: PT2E/X86 plain-linear annotation fallback for reused `nn.Linear`
+  https://github.com/pytorch/ao/pull/4482: Extend the reused-module fallback to `nn.Conv2d`
+  https://github.com/NVIDIA/cutlass/pull/3346: SM120 grouped NVFP4 block-scaled GEMM in `cutlass_library`
+  https://github.com/NVIDIA/cutlass/pull/3334: CuTeDSL `make_ptr` on sub-byte dtypes
+  https://github.com/NVIDIA/TensorRT-LLM/pull/15934: Gate MoE BF16 to FP8 conversion on compiler support
+  https://github.com/NVIDIA/TensorRT-LLM/pull/16276: Detect the MTP routed-expert layout separately
+  https://github.com/triton-inference-server/server/pull/8980: Weight autoscaling queue time by request count
+  https://github.com/sgl-project/sglang/pull/28837: "`trtllm_mla` rejects prefill on SM12x"
+  https://github.com/sgl-project/sglang/pull/45520: Supported MoE runner for ModelOpt NVFP4 on SM110/SM120
+  https://github.com/sgl-project/sglang/pull/31652: Fuse ordinary FP8 KV stores

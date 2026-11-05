@@ -111,4 +111,7 @@ markdown_extensions:
 plugins:
   - search
 
+hooks:
+  - hooks/patches.py
+
 copyright: "&copy; 2025&ndash;2026 Wayne Chiu"
