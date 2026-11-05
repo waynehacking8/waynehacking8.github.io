@@ -626,6 +626,17 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .md-typeset .pb-tl-body .pb-tl-org { margin: 0; font-size: 0.66rem; color: var(--pb-muted); }
 .md-typeset .pb-tl-body .pb-tl-date { margin: 0 0 0.35em; font-size: 0.6rem; color: var(--pb-muted); }
 .md-typeset .pb-tl-body ul { margin: 0.4em 0; }
+/* Patches reuses the Experiences timeline: one item per project, its merged
+   and in-review work as two short lists under a quiet sentence-case label. */
+.md-typeset .pb-patches .pb-tl-title a { color: inherit; }
+.md-typeset .pb-tl-body .pb-patch-group { margin: 0.7em 0 0.1em; color: var(--pb-muted); font-size: 0.62rem; font-weight: 600; }
+.md-typeset .pb-patches .pb-tl-body ul { margin: 0 0 0.3em; }
+.md-typeset .pb-patches .pb-tl-body li { margin-bottom: 0.15em; }
+/* forty purple links in a column read as one block; the work reads in ink
+   and the link colour answers the pointer */
+.md-typeset .pb-patches li a { color: var(--pb-ink); font-weight: 400; text-decoration: underline; text-decoration-color: var(--pb-line); text-underline-offset: 3px; }
+.md-typeset .pb-patches li a:hover { color: var(--pb-link); text-decoration-color: currentColor; }
+.md-typeset .pb-patches .pb-tl-item + .pb-tl-item { margin-top: 0.6rem; }
 
 /* Blog index uses real publisher artwork in a compact 16:9 card grid. */
 .pb-posts {
@@ -1166,21 +1177,3 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   .pb-name::after { font-size: 10px; white-space: nowrap; }
 }
 
-/* Patches tables on phones: three columns left the work column about 90px
-   wide, so code like nccl.broadcast broke mid-identifier. Each row becomes a
-   block: the project and its count on one line, the work below at full width. */
-@media (max-width: 600px) {
-  .pb-main:has(.pb-pr-wall) .md-typeset__table table,
-  .pb-main:has(.pb-pr-wall) .md-typeset__table tbody,
-  .pb-main:has(.pb-pr-wall) .md-typeset__table tr,
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td { display: block; width: 100%; }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table thead { display: none; }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table tr { padding: .7rem .8rem; border-top: 1px solid var(--pb-line); }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td { padding: 0; border: 0; }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(1),
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2) { display: inline; width: auto; }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2) { margin-left: .4rem; color: var(--pb-muted); }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2)::before { content: "("; }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(2)::after { content: ")"; }
-  .pb-main:has(.pb-pr-wall) .md-typeset__table td:nth-child(3) { margin-top: .3rem; }
-}
