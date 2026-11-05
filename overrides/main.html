@@ -49,7 +49,8 @@
   ] %}
   {% if page and page.url in math_pages %}
   <script defer src="/javascripts/mathjax.js?v=20260721.1"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+  {# SRI: the browser refuses the file if the CDN ever serves something other than the npm release (hash checked against the npm tarball). #}
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei" crossorigin="anonymous"></script>
   {% endif %}
 
   <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
