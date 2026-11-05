@@ -78,6 +78,15 @@ class BuildTest(unittest.TestCase):
         self.assertIn("[Raw 7](https://github.com/new-org/new-repo/pull/7)", self.section("new-org/new-repo"))
         self.assertNotIn(">Empty</a>", self.body)
 
+    def test_empty_feed_fails_instead_of_publishing_zeros(self):
+        with self.assertRaises(ValueError):
+            build(CONFIG, {**FEED, "prs": [pr("me/own-lab", 8, "merged")]})
+
+    def test_unclaimed_titles_are_escaped(self):
+        feed = {**FEED, "prs": FEED["prs"] + [{**pr("a/b", 1, "open"), "title": "Fix <T> in [x]"}]}
+        _, body, _ = build(CONFIG, feed)
+        self.assertIn("Fix &lt;T&gt; in \\[x\\]", body)
+
     def test_prs_into_my_own_repos_are_not_patches(self):
         self.assertNotIn("own-lab", self.body)
 

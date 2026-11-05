@@ -12,6 +12,7 @@ which beats publishing a page with no data.
 
 from __future__ import annotations
 
+import html
 import json
 import logging
 import urllib.request
@@ -64,6 +65,10 @@ def build(config: dict, feed: dict) -> tuple[str, str, list[str]]:
         bucket = _bucket(pr["state"])
         if bucket and pr["repo"].split("/")[0].lower() != me:
             prs[pr["url"]] = {"repo": pr["repo"], "title": pr["title"], "bucket": bucket}
+    if not any(pr["bucket"] == "review" or url not in landed for url, pr in prs.items()):
+        # A feed that parses but lists nothing is a broken upstream, not a
+        # fact to publish; fail like a fetch error so the last deploy stays.
+        raise ValueError("PR feed has no open or merged upstream PRs")
     for url in landed:
         repo = "/".join(url.split("/")[3:5])
         prs[url] = {"repo": repo, "title": picks.get(url, url), "bucket": "merged"}
@@ -102,7 +107,8 @@ def build(config: dict, feed: dict) -> tuple[str, str, list[str]]:
             total[pr["bucket"]] += 1
 
         if project.get("unclaimed"):
-            shown = [(url, pr["title"]) for url, pr in mine]
+            # Raw GitHub titles: escape so `<T>` or `[x]` stays text.
+            shown = [(url, html.escape(pr["title"]).replace("[", "\\[").replace("]", "\\]")) for url, pr in mine]
         else:
             shown = [(url, title) for url, title in picks.items() if url in prs and owner[prs[url]["repo"].lower()][0] == i]
 
