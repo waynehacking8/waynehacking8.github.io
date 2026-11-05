@@ -1,5 +1,5 @@
 ---
-description: Software Engineer at Taiwan AILabs, Taipei.
+description: Field Application Engineer at Taiwan AILabs, Taipei.
 ---
 
 # Experiences
@@ -11,7 +11,7 @@ description: Software Engineer at Taiwan AILabs, Taipei.
 <div class="pb-tl-item" markdown>
 <div class="pb-tl-icon"><img src="/assets/logos/tail.png" alt="" width="64" height="64" /></div>
 <div class="pb-tl-body" markdown>
-<p class="pb-tl-title">Software Engineer, LLM Infrastructure</p>
+<p class="pb-tl-title">Field Application Engineer</p>
 <p class="pb-tl-org"><a href="https://ailabs.tw/">Taiwan AILabs</a></p>
 <p class="pb-tl-date">Jul 2026 to Present · Taipei City, Taiwan</p>
 

@@ -6,7 +6,7 @@ hide:
 
 # About
 
-Hi, I'm **Wayne** 👋, a software engineer on LLM infrastructure at
+Hi, I'm **Wayne** 👋, a field application engineer on LLM infrastructure at
 <a href="https://ailabs.tw/"><span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" width="64" height="64" />Taiwan AILabs</span></a>,
 building and running on-prem LLM systems across Kubernetes, GPU runtime,
 networking, storage, and model-serving endpoints.
