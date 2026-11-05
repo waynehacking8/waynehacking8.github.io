@@ -46,16 +46,25 @@ jobs:
           root_file: cv.tex
           working_directory: cv
           latexmk_use_xelatex: true
+          # Pinned by digest: the action's default is the moving :latest tag,
+          # which the SHA pin above does not cover. Bump deliberately.
+          docker_image: ghcr.io/xu-cheng/texlive-alpine@sha256:c06416ebbc69c8e90e07d1f1a6f7a3f9b334e773daa3543ce879ea533317c3a7
       - run: cp cv/cv.pdf docs/cv.pdf
       - run: mkdocs build --strict --site-dir site
         env:
           NO_MKDOCS_2_WARNING: "1"
       # Internal links and anchors only: external sites going down must not
-      # block a deploy.
+      # block a deploy. Absolute links to the site's own domain (canonicals,
+      # sitemap, llms.txt) are remapped onto the build so they are checked too.
       - name: Check links
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
-          args: --offline --no-progress --include-fragments --root-dir ${{ github.workspace }}/site site
+          args: >-
+            --offline --no-progress --include-fragments
+            --root-dir ${{ github.workspace }}/site
+            --index-files index.html
+            --remap 'https://wayne\.is-a\.dev/(.*) file://${{ github.workspace }}/site/$1'
+            site
           fail: true
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
