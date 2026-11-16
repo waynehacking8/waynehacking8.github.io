@@ -16,7 +16,6 @@ import html
 import json
 import logging
 import urllib.request
-from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -54,41 +53,10 @@ def _counts(merged: int, review: int) -> str:
     return ", ".join(parts)
 
 
-def _month(iso: str) -> str:
-    return datetime.strptime(iso[:7], "%Y-%m").strftime("%b %Y")
-
-
-def _search(project: dict, me: str, terms: str) -> str:
+def _search(project: dict, terms: str) -> str:
     """A live GitHub PR search across every repo of a project."""
     repos = "+".join(f"repo%3A{repo}" for repo in project["repos"])
     return f"https://github.com/search?type=pullrequests&q=is%3Apr+{terms}+{repos}"
-
-
-def _links(project: dict, me: str) -> dict:
-    """Merged and review searches. A review link is shown only for projects marked
-    `reviewed` in patches.yml, so no link opens an empty search."""
-    links = {"prs": _search(project, me, f"is%3Amerged+author%3A{me}"), "reviews": None}
-    if project.get("reviewed"):
-        links["reviews"] = _search(project, me, f"reviewed-by%3A{me}+-author%3A{me}")
-    return links
-
-
-def _row(project: dict, me: str, mine: list, merged: int) -> dict:
-    """One OPEN SOURCE row on the home page: a project with merged work."""
-    stamps = [pr["opened"] for _, pr in mine if pr["bucket"] == "merged" and pr.get("opened")]
-    ends = [pr["merged_at"] for _, pr in mine if pr["bucket"] == "merged" and pr.get("merged_at")]
-    first, last = (min(stamps), max(ends)) if stamps and ends else (None, None)
-    # First PR opened to last PR merged, one month when they coincide. No date at all
-    # beats a guessed one when the feed carries none.
-    months = [_month(first), _month(last)] if first else []
-    date = " · ".join(dict.fromkeys(months))
-    return {
-        "name": project["name"].split("/")[-1] if project.get("unclaimed") else project["name"],
-        "logo": project["logo"],
-        "merged": merged,
-        "date": date,
-        **_links(project, me),
-    }
 
 
 def build(config: dict, feed: dict) -> tuple[str, str, list[str]]:
@@ -112,15 +80,14 @@ def _render(config: dict, feed: dict):
     for pr in feed["prs"]:
         bucket = _bucket(pr["state"])
         if bucket and pr["repo"].split("/")[0].lower() != me:
-            prs[pr["url"]] = {"repo": pr["repo"], "title": pr["title"], "bucket": bucket, "opened": pr.get("created_at"), "merged_at": pr.get("merged_at")}
+            prs[pr["url"]] = {"repo": pr["repo"], "title": pr["title"], "bucket": bucket}
     if not any(pr["bucket"] == "review" or url not in landed for url, pr in prs.items()):
         # A feed that parses but lists nothing is a broken upstream, not a
         # fact to publish; fail like a fetch error so the last deploy stays.
         raise ValueError("PR feed has no open or merged upstream PRs")
     for url in landed:
         repo = "/".join(url.split("/")[3:5])
-        # The feed leaves ghstack lands out, so they carry no date.
-        prs[url] = {"repo": repo, "title": picks.get(url, url), "bucket": "merged", "opened": None, "merged_at": None}
+        prs[url] = {"repo": repo, "title": picks.get(url, url), "bucket": "merged"}
 
     owner: dict[str, tuple[int, str | None]] = {}
     projects = []
@@ -147,7 +114,6 @@ def _render(config: dict, feed: dict):
     blocks = []
     total = {"merged": 0, "review": 0}
     merged_by_project: list[tuple[str, int]] = []
-    rows: list[dict] = []
     for i, project in enumerate(projects):
         mine = [(url, pr) for url, pr in prs.items() if owner[pr["repo"].lower()][0] == i]
         if not mine:
@@ -158,7 +124,6 @@ def _render(config: dict, feed: dict):
             total[pr["bucket"]] += 1
         if count["merged"]:
             merged_by_project.append((project["name"], count["merged"]))
-            rows.append(_row(project, me, mine, count["merged"]))
 
         if project.get("unclaimed"):
             # Raw GitHub titles: escape so `<T>` or `[x]` stays text.
@@ -182,11 +147,12 @@ def _render(config: dict, feed: dict):
         ]
         if not project.get("unclaimed"):
             # Live GitHub searches, so a reader can check the counts at the source.
-            links = _links(project, me)
-            html_links = f'<a href="{links["prs"]}">Merged PRs on GitHub</a>'
-            if links["reviews"]:
-                html_links += f' · <a href="{links["reviews"]}">Reviews on GitHub</a>'
-            lines.append(f'<p class="pb-tl-links">{html_links}</p>')
+            # A Reviews link only for projects marked `reviewed` in patches.yml,
+            # so no link opens an empty search.
+            links = f'<a href="{_search(project, f"is%3Amerged+author%3A{me}")}">Merged PRs on GitHub</a>'
+            if project.get("reviewed"):
+                links += f' · <a href="{_search(project, f"reviewed-by%3A{me}+-author%3A{me}")}">Reviews on GitHub</a>'
+            lines.append(f'<p class="pb-tl-links">{links}</p>')
         lines.append("")
         for bucket, heading in (("merged", "Merged"), ("review", "In review")):
             items = [(url, title) for url, title in shown if prs[url]["bucket"] == bucket]
@@ -209,8 +175,7 @@ def _render(config: dict, feed: dict):
     summary = f"**{total['merged']} merged and {total['review']} in review** as of {day}"
     body = '<div class="pb-timeline pb-patches" markdown>\n\n' + "\n\n".join(blocks) + "\n\n</div>"
     merged_by_project.sort(key=lambda item: -item[1])  # stable: config order breaks ties
-    rows.sort(key=lambda row: -row["merged"])  # stable: config order breaks ties
-    return summary, body, warnings, {**total, "merged_by_project": merged_by_project, "rows": rows}
+    return summary, body, warnings, {**total, "merged_by_project": merged_by_project}
 
 
 def cv_macros(stats: dict) -> str:
@@ -241,7 +206,7 @@ def _load() -> None:
 def on_config(config, **_):
     # One fetch per build; templates read config.extra.upstream.
     _load()
-    config["extra"]["upstream"] = {"merged": _state["stats"]["merged"], "rows": _state["stats"]["rows"]}
+    config["extra"]["upstream"] = {"merged": _state["stats"]["merged"]}
     return config
 
 

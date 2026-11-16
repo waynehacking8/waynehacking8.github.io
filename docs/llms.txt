@@ -13,7 +13,7 @@ its numbers.
 
 ## Profile
 
-- [Home](https://wayne.is-a.dev/): role, experience, open source work, education and contact.
+- [About](https://wayne.is-a.dev/): role, focus areas, and contact.
 - [CV (PDF)](https://wayne.is-a.dev/cv.pdf): one-page CV: summary, skills, experience, open source, research, education.
 - [Experience](https://wayne.is-a.dev/experiences/): industry roles, responsibilities, and education.
 

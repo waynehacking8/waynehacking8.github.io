@@ -9,7 +9,7 @@ exclude_docs: |
   HANDOFF.md
 
 nav:
-  - Home: index.md
+  - About: index.md
   - Experiences: experiences.md
   - Patches: patches.md
   - Blog:

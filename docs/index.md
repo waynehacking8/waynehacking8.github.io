@@ -1,88 +1,77 @@
 ---
-title: Wayne Chiu
-template: home.html
-tagline: Field application engineer on LLM infrastructure at Taiwan AILabs. I also send fixes upstream to vLLM and FlashInfer.
-place: Taipei, Taiwan
-school: CSIE NTUST
-
-# Content of the one-page home (overrides/home.html). OPEN SOURCE is not listed
-# here: its rows are built from the PR wall feed by hooks/patches.py.
-experience:
-  - org: Taiwan AILabs
-    url: https://ailabs.tw/
-    logo: /assets/logos/tail.png
-    role: Field Application Engineer
-    date: Jul 2026 · Present
-    note: Deploy and operate on-prem LLM systems (FedGPT) on Kubernetes and NVIDIA GPUs, from bare metal to handover.
-  - org: SYNCROBOTIC
-    url: https://syncrobotic.ai/
-    logo: /assets/logos/syncrobotic.png
-    role: Machine Learning Engineer
-    date: Sep 2025 · Jun 2026
-    note: Sole developer of an enterprise multi-agent RAG platform on DGX hardware, shipped to two customers.
-  - org: Advantech
-    url: https://www.advantech.com/en
-    logo: /assets/logos/advantech.png
-    role: AI Agent Engineer (Intern)
-    date: Jun 2025 · Aug 2025
-    note: Built tool-using coding agents for code review, test generation, and static analysis.
-  - org: TSMC
-    url: https://www.tsmc.com/english
-    logo: /assets/logos/tsmc.png
-    role: Facility Engineer (R&D Alternative Military Service)
-    date: May 2021 · Oct 2022
-
-education:
-  - org: National Taiwan University of Science and Technology
-    url: https://www.ntust.edu.tw/
-    logo: /assets/logos/ntust.png
-    role: M.S. in Computer Science and Information Engineering
-    date: Aug 2024 · Apr 2026
-    bullets:
-      - GPA 4.09.
-      - Research on LLM safety alignment and privacy-preserving ML in Prof. Shao-Jui Wang's lab.
-      - Coursework in Machine Learning, Deep Learning, Parallel Programming and Cybersecurity.
-  - org: National Taiwan University
-    logo: /assets/logos/ntu.png
-    role: M.S. in Structural Engineering
-    date: Sep 2018 · Jun 2020
-  - org: National Taiwan University
-    logo: /assets/logos/ntu.png
-    role: B.S. in Civil Engineering
-    date: Sep 2014 · Jun 2018
-
-publications:
-  - title: "SelGrad: Selective Gradient Projection for Efficient Safety Alignment Against Harmful Fine-Tuning"
-    role: First author. IEEE TDSC, under review.
-    date: "2026"
-
-projects:
-  - name: nccl-collectives-bench
-    url: https://github.com/waynehacking8/nccl-collectives-bench
-    post: /blog/nccl-nvlink-bandwidth/
-    note: NCCL collective benchmarks (all-reduce, all-gather, reduce-scatter) on 4x H100 NVLink, with an analytical roofline checked against the measurements.
-  - name: trtllm-triton-serving
-    url: https://github.com/waynehacking8/trtllm-triton-serving
-    post: /blog/notes-trtllm-triton-serving/
-    note: LLM serving on TensorRT-LLM with tensor parallelism across 4x H100, benchmarked against vLLM at the same model, hardware and request load, plus a Triton deployment template.
-  - name: nim-agent-blueprint
-    url: https://github.com/waynehacking8/nim-agent-blueprint
-    post: /blog/rag-groundedness-guardrail/
-    note: Agentic RAG reference architecture on NVIDIA NIM microservices. The agent plans, retrieves and validates its answer, and an eval harness with OpenTelemetry traces checks it.
-  - name: federated-learning-lab
-    url: https://github.com/waynehacking8/federated-learning-lab
-    post: /blog/notes-federated-learning-dp/
-    note: Federated learning written from scratch with DP and secure aggregation, 33 passing tests, results checked against published numbers.
-
-certifications:
-  - org: NVIDIA Deep Learning Institute
-    url: https://learn.nvidia.com/
-    logo: /assets/logos/nvidia.png
-    role: Fundamentals of Accelerated Computing with CUDA Python
-    date: Dec 2024
-  - org: NVIDIA Deep Learning Institute
-    url: https://learn.nvidia.com/
-    logo: /assets/logos/nvidia.png
-    role: Fundamentals of Accelerated Computing with CUDA C/C++
-    date: Nov 2024
+hide:
+  - navigation
+  - toc
 ---
+
+# About
+
+Hi, I'm **Wayne**, a field application engineer on LLM infrastructure at
+<a href="https://ailabs.tw/"><span class="chip chip-teal"><img src="assets/logos/tail.png" alt="" width="64" height="64" />Taiwan AILabs</span></a>,
+where I deploy and run on-prem LLM systems: Kubernetes, the GPU runtime,
+networking, storage, and the model-serving endpoints on top.
+
+Before that I was the only developer on an enterprise multi-agent AI platform at
+<a href="https://syncrobotic.ai/"><span class="chip chip-navy"><img src="assets/logos/syncrobotic.png" alt="" width="64" height="64" />SYNCROBOTIC</span></a>, built internal coding agents at
+<a href="https://www.advantech.com/en"><span class="chip chip-blue"><img src="assets/logos/advantech.png" alt="" width="64" height="64" />Advantech</span></a>,
+and did my R&D alternative military service at <a href="https://www.tsmc.com/english"><span class="chip chip-red"><img src="assets/logos/tsmc.png" alt="" width="64" height="64" />TSMC</span></a>.
+I have an M.S. in Computer Science from
+<a href="https://www.ntust.edu.tw/"><span class="chip chip-red"><img src="assets/logos/ntust.png" alt="" width="64" height="64" />NTUST</span></a>
+(GPA 4.09), where I worked on LLM safety alignment and privacy-preserving ML
+in Prof. Shao-Jui Wang's lab.
+
+In my own time I send patches upstream to the LLM inference stack:
+<a href="https://github.com/flashinfer-ai/flashinfer"><span class="chip chip-purple"><img src="assets/logos/flashinfer.png" alt="" width="64" height="64" />FlashInfer</span></a>,
+<a href="https://github.com/vllm-project/vllm"><span class="chip chip-blue"><img src="assets/logos/vllm.png" alt="" width="64" height="64" />vLLM</span></a>,
+<a href="https://github.com/sgl-project/sglang"><span class="chip chip-orange"><img src="assets/logos/sglang.png" alt="" width="64" height="64" />SGLang</span></a>,
+<a href="https://github.com/pytorch/pytorch"><span class="chip chip-orange"><img src="assets/logos/pytorch.png" alt="" width="64" height="64" />PyTorch</span></a>,
+<a href="https://github.com/ai-dynamo/dynamo"><span class="chip chip-green"><img src="assets/logos/dynamo.png" alt="" width="64" height="64" />Dynamo</span></a>,
+<a href="https://github.com/NVIDIA"><span class="chip chip-green"><img src="assets/logos/nvidia.png" alt="" width="64" height="64" />NVIDIA</span></a>
+<a href="https://github.com/NVIDIA/cutlass">CUTLASS</a> / <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a>, and
+<a href="https://github.com/InternLM/lmdeploy"><span class="chip chip-navy"><img src="assets/logos/internlm.png" alt="" width="64" height="64" />LMDeploy</span></a>.
+<!-- upstream:merged --> have merged so far, among them Blackwell NVFP4 correctness fixes in FlashInfer and an NCCL broadcast
+fix in PyTorch. The [PR wall](https://prs.wayne.is-a.dev) lists every one and
+updates itself from GitHub.
+
+## Focus
+
+I want inference that is fast and also gives the right answer. In practice that
+covers three areas:
+
+1. **Serving internals**: KV cache, quantization trade-offs and attention kernels,
+   known well enough to estimate cost and latency before anything gets built.
+2. **Upstream enablement**: getting early consumer Blackwell and NVFP4 to
+   work in kernels, engines and disaggregated serving. The bugs I like most are
+   the silent ones, where every test passes and the output is still wrong.
+3. **Trustworthy ML**: safety alignment against harmful fine-tuning, federated
+   learning, differential privacy, and secure multi-party computation.
+
+## News
+
+<div class="pb-news">
+<dl>
+  <dt>Jul 2026</dt>
+  <dd>Joined <a href="https://ailabs.tw/"><strong>Taiwan AILabs</strong></a>, on-prem LLM deployments (FedGPT).</dd>
+  <dt>Jul 2026</dt>
+  <dd>Put up the <a href="https://prs.wayne.is-a.dev">PR wall</a>, a page that
+      lists every upstream patch and updates itself.</dd>
+  <dt>Apr 2026</dt>
+  <dd>M.S. in Computer Science from <a href="https://www.ntust.edu.tw/"><strong>NTUST</strong></a>, GPA 4.09.</dd>
+  <dt>Sep 2025</dt>
+  <dd>Joined <a href="https://syncrobotic.ai/"><strong>SYNCROBOTIC</strong></a> as the only developer of an
+      enterprise multi-agent platform, shipped to two customers.</dd>
+  <dt>Jun 2025</dt>
+  <dd>Summer at <a href="https://www.advantech.com/en"><strong>Advantech</strong></a> building internal coding agents.</dd>
+  <dt>Dec 2024</dt>
+  <dd><a href="https://learn.nvidia.com/">NVIDIA DLI</a> certificates: Accelerated Computing with CUDA (Python &amp; C/C++).</dd>
+  <dt>Aug 2024</dt>
+  <dd>Started graduate research on LLM security &amp; privacy-preserving ML at
+      <a href="https://www.ntust.edu.tw/">NTUST</a>.</dd>
+</dl>
+</div>
+
+## Misc
+
+I'm from Taiwan and live in Taipei. Outside work I spend more time than I should on
+my Obsidian vault. The views on this site are my own and do not represent those of
+my employer or affiliated institutions.

@@ -23,9 +23,8 @@ CONFIG = {
 }
 
 
-def pr(repo, n, state, opened="2026-06-02T08:00:00Z", merged=None):
-    return {"repo": repo, "url": f"https://github.com/{repo}/pull/{n}", "title": f"Raw {n}", "state": state,
-            "created_at": opened, "merged_at": merged}
+def pr(repo, n, state):
+    return {"repo": repo, "url": f"https://github.com/{repo}/pull/{n}", "title": f"Raw {n}", "state": state}
 
 
 FEED = {
@@ -33,12 +32,11 @@ FEED = {
     "user": {"username": "Me"},
     "prs": [
         pr("me/own-lab", 8, "merged"),
-        pr("vllm-project/vllm", 1, "merged", merged="2026-07-03T08:00:00Z"),
+        pr("vllm-project/vllm", 1, "merged"),
         pr("vllm-project/vllm", 2, "open"),
         pr("vllm-project/vllm", 5, "draft"),
         pr("vllm-project/vllm", 9, "closed"),
-        pr("vllm-project/llm-compressor", 3, "merged", opened="2026-09-10T08:00:00Z", merged="2026-10-01T08:00:00Z"),
-        pr("pytorch/pytorch", 1, "closed", opened="2026-08-20T08:00:00Z"),
+        pr("vllm-project/llm-compressor", 3, "merged"),
         pr("NVIDIA/cutlass", 4, "open"),
         pr("new-org/new-repo", 7, "open"),
     ],
@@ -108,29 +106,6 @@ class BuildTest(unittest.TestCase):
 
     def test_prs_into_my_own_repos_are_not_patches(self):
         self.assertNotIn("own-lab", self.body)
-
-
-class RowsTest(unittest.TestCase):
-    def setUp(self):
-        self.rows = tally(CONFIG, FEED)["rows"]
-
-    def test_one_row_per_project_with_merged_work_most_merged_first(self):
-        # NVIDIA only has a PR in review, so it gets no row; vLLM leads with 2.
-        self.assertEqual([(r["name"], r["merged"]) for r in self.rows], [("vLLM", 2), ("pytorch", 1)])
-
-    def test_rows_link_live_github_searches(self):
-        vllm = self.rows[0]
-        both = "repo%3Avllm-project/vllm+repo%3Avllm-project/llm-compressor"
-        self.assertEqual(vllm["prs"], "https://github.com/search?type=pullrequests&q=is%3Apr+is%3Amerged+author%3Ame+" + both)
-        self.assertEqual(vllm["reviews"], "https://github.com/search?type=pullrequests&q=is%3Apr+reviewed-by%3Ame+-author%3Ame+" + both)
-        self.assertIsNone(self.rows[1]["reviews"])
-
-    def test_date_runs_from_first_pr_opened_to_last_pr_merged(self):
-        self.assertEqual(self.rows[0]["date"], "Jun 2026 · Oct 2026")
-
-    def test_no_date_when_the_feed_has_none(self):
-        feed = {**FEED, "prs": [p for p in FEED["prs"] if p["repo"] != "pytorch/pytorch"]}
-        self.assertEqual(tally(CONFIG, feed)["rows"][1]["date"], "")
 
 
 class SourceTest(unittest.TestCase):
