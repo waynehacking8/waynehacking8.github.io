@@ -1,37 +1,6 @@
-/* pbb-style tag filtering + theme toggle.
+/* pbb-style tag filtering and soft navigation.
    Progressive enhancement — all cards are visible without JS. */
 (function () {
-  var themeArmed = false;
-  function updateThemeLabel(btn) {
-    var isDark = document.body.getAttribute("data-md-color-scheme") === "slate";
-    var label = isDark ? "Switch to light mode" : "Switch to dark mode";
-    btn.setAttribute("aria-label", label);
-    btn.title = label;
-  }
-  function initTheme() {
-    var btn = document.querySelector(".pb-theme-btn");
-    if (!btn) return;
-    btn.hidden = false;
-    updateThemeLabel(btn);
-    /* document$ re-emits on every page swap; without this the handler
-       stacks up and an even number of them cancels the toggle out */
-    if (themeArmed) return;
-    themeArmed = true;
-    btn.addEventListener("click", function () {
-      /* Material's palette radios live in the hidden header; a programmatic
-         click still toggles the scheme. Pick the target by the CURRENT
-         scheme rather than by :not(:checked) — with media-query palettes
-         neither radio is checked on first paint, so the old selector
-         matched index 0 and the very first click re-selected the palette
-         that was already active, doing nothing visible. */
-      var inputs = document.querySelectorAll('input[name="__palette"]');
-      if (inputs.length < 2) return;
-      var isDark = document.body.getAttribute("data-md-color-scheme") === "slate";
-      inputs[isDark ? 0 : 1].click();
-      requestAnimationFrame(function () { updateThemeLabel(btn); });
-    });
-  }
-
   /* pbb.sh-style soft navigation (what Astro's ClientRouter does): fetch
      the next page, swap only .pb-main inside document.startViewTransition,
      and name the clicked pill pb-title so it morphs into the incoming
@@ -67,6 +36,27 @@
       var value = node.getAttribute("poster");
       if (!value || /^(?:data:|blob:|javascript:)/i.test(value)) return;
       node.setAttribute("poster", new URL(value, url).href);
+    });
+  }
+
+  /* A soft navigation swaps only .pb-main, so the MathJax <script> tags in the
+     destination's <head> never run when the page we left had no formulas.
+     Load them from the fetched document once; MathJax typesets the page itself
+     when its startup finishes. */
+  var mathLoading = false;
+  function loadMath(doc) {
+    if (mathLoading || window.MathJax) return;
+    var tags = doc.querySelectorAll('head script[src*="mathjax"]');
+    if (!tags.length) return;
+    mathLoading = true;
+    tags.forEach(function (tag) {
+      var script = document.createElement("script");
+      script.src = new URL(tag.getAttribute("src"), location.href).href;
+      ["integrity", "crossorigin"].forEach(function (name) {
+        if (tag.hasAttribute(name)) script.setAttribute(name, tag.getAttribute(name));
+      });
+      script.async = false;  // keep order: the config must run before MathJax itself
+      document.head.appendChild(script);
     });
   }
 
@@ -112,6 +102,7 @@
       var swap = function () {
         if (!updateDocument(doc, url)) { location.href = url.href; return; }
         if (pushState) history.pushState({}, "", url.href);
+        loadMath(doc);
       };
       var transition;
       if (document.startViewTransition &&
@@ -292,7 +283,6 @@
   }
 
   function init() {
-    initTheme();
     initRouter();
     initStrip();
     initArticleTocMedia();

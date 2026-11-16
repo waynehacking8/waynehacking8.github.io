@@ -8,6 +8,8 @@
 
 {% block extrahead %}
   {{ super() }}
+  {# The site has one theme. Drop a dark choice saved before 2026-11-16 so Material does not re-apply it. #}
+  <script>try { localStorage.removeItem(new URL("{{ base_url }}/", location).pathname.replace(/\/+$/, "/") + ".__palette"); } catch (e) {}</script>
 
   {% set title = "Experience | Wayne Chiu" if page and page.url == "experiences/" else (page.meta.seo_title if page and page.meta and page.meta.seo_title else (page.title ~ " | Wayne Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu")) %}
   {% set desc = page.meta.description if page and page.meta and page.meta.description else config.site_description %}
@@ -37,17 +39,8 @@
   {% for tag in page.meta.tags %}<meta property="article:tag" content="{{ tag }}">{% endfor %}
   {% endif %}
 
-  {# MathJax is intentionally limited to pages that contain formulas. #}
-  {% set math_pages = [
-    "blog/agent-harness-boundaries/",
-    "blog/inkling-975b-architecture/",
-    "blog/kimi-k3-architecture/",
-    "blog/meta-rl/",
-    "blog/nccl-nvlink-bandwidth/",
-    "blog/pentest-intro/",
-    "blog/rag-groundedness-guardrail/"
-  ] %}
-  {% if page and page.url in math_pages %}
+  {# MathJax loads only on pages whose rendered body has an arithmatex formula. #}
+  {% if page and page.content and 'class="arithmatex"' in page.content %}
   <script defer src="/javascripts/mathjax.js?v=20260721.1"></script>
   {# SRI: the browser refuses the file if the CDN ever serves something other than the npm release (hash checked against the npm tarball). #}
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei" crossorigin="anonymous"></script>
@@ -160,13 +153,6 @@
     </ol>
   </nav>
 {%- endmacro %}
-<!-- pbb.sh keeps nothing at the top except a small theme toggle; the
-     Material header is hidden in CSS and this button drives its hidden
-     palette inputs instead -->
-<button class="pb-theme-btn" type="button" aria-label="Switch color theme" title="Switch color theme" hidden>
-  <span class="pb-theme-sun twemoji">{% include ".icons/material/weather-sunny.svg" %}</span>
-  <span class="pb-theme-moon twemoji">{% include ".icons/material/weather-night.svg" %}</span>
-</button>
 <div class="pb-grid">
 <section class="pb-side{% if page and page.is_homepage %} pb-side--home{% endif %}" aria-label="Profile">
   <img class="pb-avatar" src="/assets/profile.webp" width="640" height="640"
