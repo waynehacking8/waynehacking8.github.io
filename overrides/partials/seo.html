@@ -1,0 +1,121 @@
+{#- Social meta, MathJax and JSON-LD shared by main.html (every Material page) and home.html. -#}
+  {% set title = "Experience | Wayne Chiu" if page and page.url == "experiences/" else (page.meta.seo_title if page and page.meta and page.meta.seo_title else (page.title ~ " | Wayne Chiu" if page and page.title and not page.is_homepage else "Wayne Chiu")) %}
+  {% set desc = page.meta.description if page and page.meta and page.meta.description else config.site_description %}
+  {% set image = page.meta.image if page and page.meta and page.meta.image else "https://wayne.is-a.dev/assets/profile.jpg" %}
+  {% set is_post = page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
+
+  <meta name="author" content="Wei Cheng (Wayne) Chiu">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="google-site-verification" content="pN4RB1iqwSojWvWtpmDesMXHlDIpM-DswD1Wtt_rWIU">
+  <meta name="google-site-verification" content="oelC3cV7qpQ4oVhNlKaLFGK6yIXWO9d7_IQN_5w8duw">
+  <!-- Open Graph -->
+  <meta property="og:type" content="{{ 'article' if is_post else 'profile' }}">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ desc }}">
+  <meta property="og:url" content="{{ page.canonical_url }}">
+  <meta property="og:image" content="{{ image }}">
+  <meta property="profile:first_name" content="Wei Cheng">
+  <meta property="profile:last_name" content="Chiu">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="{{ 'summary_large_image' if page and page.meta and page.meta.image else 'summary' }}">
+  <meta name="twitter:creator" content="@itswaynechiu">
+  <meta name="twitter:title" content="{{ title }}">
+  <meta name="twitter:description" content="{{ desc }}">
+  <meta name="twitter:image" content="{{ image }}">
+  {% if is_post and page.meta and page.meta.tags %}
+  {% for tag in page.meta.tags %}<meta property="article:tag" content="{{ tag }}">{% endfor %}
+  {% endif %}
+
+  {# MathJax is intentionally limited to pages that contain formulas. #}
+  {% set math_pages = [
+    "blog/agent-harness-boundaries/",
+    "blog/inkling-975b-architecture/",
+    "blog/kimi-k3-architecture/",
+    "blog/meta-rl/",
+    "blog/nccl-nvlink-bandwidth/",
+    "blog/pentest-intro/",
+    "blog/rag-groundedness-guardrail/"
+  ] %}
+  {% if page and page.url in math_pages %}
+  <script defer src="/javascripts/mathjax.js?v=20260721.1"></script>
+  {# SRI: the browser refuses the file if the CDN ever serves something other than the npm release (hash checked against the npm tarball). #}
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei" crossorigin="anonymous"></script>
+  {% endif %}
+
+  <!-- JSON-LD: WebSite + ProfilePage + Person, linked by @id for a clean entity graph -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://wayne.is-a.dev/#website",
+        "url": "https://wayne.is-a.dev/",
+        "name": "Wei Cheng (Wayne) Chiu",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://wayne.is-a.dev/#person" }
+      },
+      {
+        "@type": "ProfilePage",
+        "@id": "https://wayne.is-a.dev/#profilepage",
+        "url": "https://wayne.is-a.dev/",
+        "name": "Wayne Chiu",
+        "isPartOf": { "@id": "https://wayne.is-a.dev/#website" },
+        "about": { "@id": "https://wayne.is-a.dev/#person" },
+        "mainEntity": { "@id": "https://wayne.is-a.dev/#person" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://wayne.is-a.dev/#person",
+        "name": "Wei Cheng (Wayne) Chiu",
+        "alternateName": ["Wayne Chiu", "邱偉誠"],
+        "jobTitle": "Field Application Engineer",
+        "description": "LLM inference software engineer in Taipei: performance analysis and optimization, CUDA kernels, TensorRT-LLM, vLLM, SGLang and FlashInfer. {{ config.extra.upstream.merged }} merged upstream fixes, incl. Blackwell SM120 and NVFP4.",
+        "worksFor": { "@type": "Organization", "name": "Taiwan AILabs", "url": "https://ailabs.tw/" },
+        "homeLocation": { "@type": "Place", "address": { "@type": "PostalAddress", "addressLocality": "Taipei", "addressCountry": "TW" } },
+        "url": "https://wayne.is-a.dev/",
+        "image": "https://wayne.is-a.dev/assets/profile.jpg",
+        "email": "mailto:waynehacking8@gmail.com",
+        "knowsLanguage": ["en", "zh-Hant"],
+        "alumniOf": [
+          { "@type": "CollegeOrUniversity", "name": "National Taiwan University of Science and Technology" },
+          { "@type": "CollegeOrUniversity", "name": "National Taiwan University" }
+        ],
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Field Application Engineer",
+          "skills": "LLM inference, performance analysis and optimization, profiling, CUDA, GPU kernels, C/C++, Python, PyTorch, Hugging Face, TensorRT-LLM, vLLM, SGLang, FlashInfer, CUTLASS, NCCL, Kubernetes"
+        },
+        "knowsAbout": ["LLM Inference", "Inference Performance Optimization", "GPU Kernels", "CUDA", "TensorRT-LLM", "vLLM", "SGLang", "FlashInfer", "CUTLASS", "NVIDIA Dynamo", "Triton Inference Server", "NCCL", "NVFP4", "NVIDIA Blackwell", "Nsight Systems", "PyTorch", "Hugging Face", "Large Language Models", "Kubernetes"],
+        "sameAs": [
+          "https://github.com/waynehacking8",
+          "https://www.linkedin.com/in/wei-cheng-chiu",
+          "https://x.com/itswaynechiu"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  {# BlogPosting structured data: makes each blog post eligible for rich results
+     and links it to the Person entity, amplifying author search visibility. #}
+  {% if page and page.url and page.url.startswith('blog/') and page.title and page.title != 'Blog' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ page.title | tojson }},
+    "url": "{{ page.canonical_url }}",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ page.canonical_url }}" },
+    "author": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "publisher": { "@type": "Person", "@id": "https://wayne.is-a.dev/#person", "name": "Wei Cheng (Wayne) Chiu" },
+    "inLanguage": {{ page.meta.language | default("en") | tojson }}{% if page.meta and page.meta.tags %},
+    "keywords": {{ page.meta.tags | tojson }}{% endif %}{% if page.meta and page.meta.description %},
+    "description": {{ page.meta.description | tojson }}{% endif %}{% if page.meta and page.meta.image %},
+    "image": {{ page.meta.image | tojson }}{% endif %}{% if page.meta and page.meta.date %},
+    "datePublished": {{ page.meta.date | tojson }}{% endif %}{% if page.meta and page.meta.updated %},
+    "dateModified": {{ page.meta.updated | tojson }}{% endif %}
+  }
+  </script>
+  {% endif %}
