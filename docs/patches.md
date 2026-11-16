@@ -13,7 +13,7 @@ It rebuilds from GitHub every 10 minutes and is also an <a class="pb-pr-wall-rss
 </p>
 
 This page picks out the ones worth reading, by project. Two themes keep coming
-up. One is getting early consumer Blackwell (SM120 / SM121) to work across the
+up. One is getting early consumer Blackwell to work across the
 stack: CUTLASS and FlashInfer kernels, the vLLM and SGLang engines, and Dynamo and
 TensorRT-LLM disaggregated serving. The other is correctness bugs, where the code
 passes its tests and still computes the wrong answer.

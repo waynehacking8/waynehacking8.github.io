@@ -22,7 +22,7 @@ measurement or source that backs it sits right beside it.
 <span class="pb-post-body">
 <span class="pb-post-title">Which patch cleared the FlashInfer fault on my card｜是哪個 patch 修掉了 FlashInfer 的錯誤</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-blue">Serving</span><span class="pb-tag pb-tag-red">CUDA</span></span>
-<span class="pb-post-excerpt">一張 RTX PRO 6000 上五個版本各跑 30 個 server，沒修正的 main 錯 8 次，加上 #64165 之後 0 次。</span>
+<span class="pb-post-excerpt">一張 Blackwell 工作站 GPU 上，五個版本各跑 30 個 server，沒修正的 main 錯 8 次，加上 #64165 之後 0 次。</span>
 <span class="pb-post-date">2026-11-16</span>
 </span>
 </a>

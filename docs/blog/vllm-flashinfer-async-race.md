@@ -1,5 +1,5 @@
 ---
-description: "150 vLLM servers across five builds on one RTX PRO 6000 to find which patch clears the FlashInfer illegal memory access in vllm#61239, with paragraph-by-paragraph Traditional Chinese."
+description: "150 vLLM servers across five builds on one Blackwell workstation GPU to find which patch clears the FlashInfer illegal memory access in vllm#61239, with paragraph-by-paragraph Traditional Chinese."
 date: "2026-11-16"
 language:
   - en
@@ -28,9 +28,9 @@ vllm#61239 回報的是在 async scheduling 加 FlashInfer、而且沒開 specul
 
 ## Setup｜測試設定
 
-One RTX PRO 6000 Blackwell Max-Q (sm_120) under WSL2, `openai/gpt-oss-20b` (sliding and full attention, no GDN or linear-attention layers), FlashInfer picked automatically, async scheduling on, no spec decode, no prefix caching, `--max-num-batched-tokens 8192`. Every server starts fresh and runs GSM8K: 1,319 chat requests at 64 concurrent. Five builds, 30 servers each, run interleaved and reshuffled every round, so a bad hour on the box lands on every build alike.
+One Blackwell workstation GPU under WSL2, `openai/gpt-oss-20b` (sliding and full attention, no GDN or linear-attention layers), FlashInfer picked automatically, async scheduling on, no spec decode, no prefix caching, `--max-num-batched-tokens 8192`. Every server starts fresh and runs GSM8K: 1,319 chat requests at 64 concurrent. Five builds, 30 servers each, run interleaved and reshuffled every round, so a bad hour on the box lands on every build alike.
 
-一張 RTX PRO 6000 Blackwell Max-Q (sm_120)，跑在 WSL2 上，模型是 `openai/gpt-oss-20b` (sliding 和 full attention，沒有 GDN 或 linear attention 層)，FlashInfer 讓 vLLM 自己選，開 async scheduling，不開 spec decode 也不開 prefix caching，`--max-num-batched-tokens 8192`。每個 server 都是重新啟動，跑一輪 GSM8K：1,319 個 chat request，64 個同時送。五個版本各跑 30 個 server，交錯執行、每輪重新洗牌，這樣機器狀況不好的那段時間會平均落在每個版本上。
+一張 Blackwell 工作站 GPU，跑在 WSL2 上，模型是 `openai/gpt-oss-20b` (sliding 和 full attention，沒有 GDN 或 linear attention 層)，FlashInfer 讓 vLLM 自己選，開 async scheduling，不開 spec decode 也不開 prefix caching，`--max-num-batched-tokens 8192`。每個 server 都是重新啟動，跑一輪 GSM8K：1,319 個 chat request，64 個同時送。五個版本各跑 30 個 server，交錯執行、每輪重新洗牌，這樣機器狀況不好的那段時間會平均落在每個版本上。
 { .pb-translation lang=zh-Hant }
 
 | vLLM | servers | illegal memory access | GSM8K wall time (median, no fault) |
