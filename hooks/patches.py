@@ -16,6 +16,7 @@ import html
 import json
 import logging
 import urllib.request
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -53,6 +54,31 @@ def _counts(merged: int, review: int) -> str:
     return ", ".join(parts)
 
 
+def _month(iso: str) -> str:
+    return datetime.strptime(iso[:7], "%Y-%m").strftime("%b %Y")
+
+
+def _row(project: dict, me: str, mine: list, merged: int) -> dict:
+    """One OPEN SOURCE row on the home page: a project with merged work."""
+    repo = next(iter(project["repos"]))
+    base = f"https://github.com/{repo}/pulls?q=is%3Apr+"
+    stamps = [pr["opened"] for _, pr in mine if pr["bucket"] == "merged" and pr.get("opened")]
+    ends = [pr["merged_at"] for _, pr in mine if pr["bucket"] == "merged" and pr.get("merged_at")]
+    first, last = (min(stamps), max(ends)) if stamps and ends else (None, None)
+    # First PR opened to last PR merged, one month when they coincide. No date at all
+    # beats a guessed one when the feed carries none.
+    months = [_month(first), _month(last)] if first else []
+    date = " · ".join(dict.fromkeys(months))
+    return {
+        "name": project["name"].split("/")[-1] if project.get("unclaimed") else project["name"],
+        "logo": project["logo"],
+        "merged": merged,
+        "date": date,
+        "prs": f"{base}is%3Amerged+author%3A{me}",
+        "reviews": f"{base}reviewed-by%3A{me}+-author%3A{me}",
+    }
+
+
 def build(config: dict, feed: dict) -> tuple[str, str, list[str]]:
     """Return (summary sentence, projects markdown, warnings). Pure: no I/O."""
     return _render(config, feed)[:3]
@@ -74,14 +100,17 @@ def _render(config: dict, feed: dict):
     for pr in feed["prs"]:
         bucket = _bucket(pr["state"])
         if bucket and pr["repo"].split("/")[0].lower() != me:
-            prs[pr["url"]] = {"repo": pr["repo"], "title": pr["title"], "bucket": bucket}
+            prs[pr["url"]] = {"repo": pr["repo"], "title": pr["title"], "bucket": bucket, "opened": pr.get("created_at"), "merged_at": pr.get("merged_at")}
     if not any(pr["bucket"] == "review" or url not in landed for url, pr in prs.items()):
         # A feed that parses but lists nothing is a broken upstream, not a
         # fact to publish; fail like a fetch error so the last deploy stays.
         raise ValueError("PR feed has no open or merged upstream PRs")
+    seen = {pr["url"]: pr for pr in feed["prs"]}
     for url in landed:
         repo = "/".join(url.split("/")[3:5])
-        prs[url] = {"repo": repo, "title": picks.get(url, url), "bucket": "merged"}
+        # ghstack lands look closed to GitHub: the feed still knows when it was opened.
+        opened = (seen.get(url) or {}).get("created_at")
+        prs[url] = {"repo": repo, "title": picks.get(url, url), "bucket": "merged", "opened": opened, "merged_at": opened}
 
     owner: dict[str, tuple[int, str | None]] = {}
     projects = []
@@ -108,6 +137,7 @@ def _render(config: dict, feed: dict):
     blocks = []
     total = {"merged": 0, "review": 0}
     merged_by_project: list[tuple[str, int]] = []
+    rows: list[dict] = []
     for i, project in enumerate(projects):
         mine = [(url, pr) for url, pr in prs.items() if owner[pr["repo"].lower()][0] == i]
         if not mine:
@@ -118,6 +148,7 @@ def _render(config: dict, feed: dict):
             total[pr["bucket"]] += 1
         if count["merged"]:
             merged_by_project.append((project["name"], count["merged"]))
+            rows.append(_row(project, me, mine, count["merged"]))
 
         if project.get("unclaimed"):
             # Raw GitHub titles: escape so `<T>` or `[x]` stays text.
@@ -169,7 +200,8 @@ def _render(config: dict, feed: dict):
     summary = f"**{total['merged']} merged and {total['review']} in review** as of {day}"
     body = '<div class="pb-timeline pb-patches" markdown>\n\n' + "\n\n".join(blocks) + "\n\n</div>"
     merged_by_project.sort(key=lambda item: -item[1])  # stable: config order breaks ties
-    return summary, body, warnings, {**total, "merged_by_project": merged_by_project}
+    rows.sort(key=lambda row: -row["merged"])  # stable: config order breaks ties
+    return summary, body, warnings, {**total, "merged_by_project": merged_by_project, "rows": rows}
 
 
 def cv_macros(stats: dict) -> str:
@@ -200,7 +232,7 @@ def _load() -> None:
 def on_config(config, **_):
     # One fetch per build; templates read config.extra.upstream.
     _load()
-    config["extra"]["upstream"] = {"merged": _state["stats"]["merged"]}
+    config["extra"]["upstream"] = {"merged": _state["stats"]["merged"], "rows": _state["stats"]["rows"]}
     return config
 
 
