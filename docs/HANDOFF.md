@@ -17,7 +17,7 @@ Not published: `exclude_docs` in mkdocs.yml keeps this file out of the site.
 ## Traps
 
 - No custom response headers on GitHub Pages: HSTS, CSP and frame headers are missing and cannot be added here. Scanners will flag them.
-- Copy rules: no emoji, no dash punctuation, no AI-template phrasing. Never mention RTX PRO 6000 or 96GB; say "Blackwell workstation".
+- Copy rules: no emoji, no dash punctuation, no AI-template phrasing. Blog posts are English only since 2026-11-16 (Wayne: "所有blog改成全英文 把中文都拔掉"): no zh-Hant halves, no Chinese titles or cards. Never mention RTX PRO 6000 or 96GB; say "Blackwell workstation".
 - A locally built `site/` must not be committed; CI builds its own.
 - The TeXLive image is pinned by digest in deploy.yml (`docker_image`); Dependabot does not see it, so bump it by hand when the CV needs a newer TeX. lychee remaps `https://wayne.is-a.dev/...` onto the build, so self-links are checked; directory links need an index.html.
 - requirements.txt was frozen on Windows, so it lists colorama; harmless on Linux. The gh-pages branch is no longer deployed from and can be deleted.
