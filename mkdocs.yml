@@ -14,6 +14,7 @@ nav:
   - Patches: patches.md
   - Blog:
       - blog/index.md
+      - Which patch cleared the FlashInfer fault: blog/vllm-flashinfer-async-race.md
       - Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇: blog/agent-harness-boundaries.md
       - Inkling 975B · 5:1 attention: blog/inkling-975b-architecture.md
       - Kimi K3 · KDA, AttnRes, MoE: blog/kimi-k3-architecture.md
@@ -114,4 +115,4 @@ plugins:
 hooks:
   - hooks/patches.py
 
-copyright: "&copy; 2025&ndash;2026 Wayne Chiu"
+copyright: "&copy; 2025 to 2026 Wayne Chiu"

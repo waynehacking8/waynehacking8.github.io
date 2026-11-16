@@ -17,8 +17,17 @@ measurement or source that backs it sits right beside it.
 </div>
 
 <div class="pb-posts">
+<a class="pb-post-card" href="vllm-flashinfer-async-race/" data-tags="Serving,CUDA">
+<span class="pb-post-image pb-image-contain"><img src="/assets/blog/vllm-61239-faults.png" alt="vllm#61239 每個版本的 illegal memory access 次數" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Wayne</span></span>
+<span class="pb-post-body">
+<span class="pb-post-title">Which patch cleared the FlashInfer fault on my card｜是哪個 patch 修掉了 FlashInfer 的錯誤</span>
+<span class="pb-post-tags"><span class="pb-tag pb-tag-blue">Serving</span><span class="pb-tag pb-tag-red">CUDA</span></span>
+<span class="pb-post-excerpt">一張 RTX PRO 6000 上五個版本各跑 30 個 server，沒修正的 main 錯 8 次，加上 #64165 之後 0 次。</span>
+<span class="pb-post-date">2026-11-16</span>
+</span>
+</a>
 <a class="pb-post-card" href="agent-harness-boundaries/" data-tags="Architecture,Agents,Security">
-<span class="pb-post-image pb-image-contain"><img src="/assets/blog/agent-runtime/overview.png" alt="Prime、Hermes 與 OpenClaw 的 agent runtime 架構比較" width="1300" height="680" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Wayne</span></span>
+<span class="pb-post-image pb-image-contain"><img src="/assets/blog/agent-runtime/overview.png" alt="Prime、Hermes 與 OpenClaw 的 agent runtime 架構比較" width="1300" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Wayne</span></span>
 <span class="pb-post-body">
 <span class="pb-post-title">Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">Architecture</span><span class="pb-tag pb-tag-green">Agents</span><span class="pb-tag pb-tag-red">Security</span></span>

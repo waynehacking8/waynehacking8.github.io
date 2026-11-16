@@ -56,8 +56,6 @@ picks:
   https://github.com/vllm-project/compressed-tensors/pull/737: Skip device-map entries with no local module in dispatch
   https://github.com/vllm-project/llm-compressor/pull/3344: "Research Hub entry: FP8 KV cache on Phi-3's fused QKV"
   https://github.com/vllm-project/vllm/pull/45320: Reject NVFP4 MoE checkpoints with missing per-expert scales
-  https://github.com/vllm-project/vllm/pull/47988: Upcast E8M0 scales for CUTLASS block FP8 on SM12x
-  https://github.com/vllm-project/vllm/pull/65795: Stop re-queuing waiting requests that `max_loras` blocks
   https://github.com/InternLM/lmdeploy/pull/4684: InternVL LoRA loading TypeError
   https://github.com/InternLM/lmdeploy/pull/4685: Double-counted `max_q_seqlen` in decode delta
   https://github.com/InternLM/lmdeploy/pull/4690: Builtin chat-template ImportError
