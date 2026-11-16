@@ -1,7 +1,7 @@
 ---
 title: Wayne Chiu
 template: home.html
-tagline: Field application engineer on LLM infrastructure, sending patches upstream to the LLM inference stack.
+tagline: Field application engineer on LLM infrastructure at Taiwan AILabs. I also send fixes upstream to vLLM and FlashInfer.
 place: Taipei, Taiwan
 school: CSIE NTUST
 
@@ -31,7 +31,6 @@ experience:
     logo: /assets/logos/tsmc.png
     role: Facility Engineer (R&D Alternative Military Service)
     date: May 2021 · Oct 2022
-    note: Supported R&D fab facility operations.
 
 education:
   - org: National Taiwan University of Science and Technology
@@ -65,11 +64,11 @@ projects:
   - name: trtllm-triton-serving
     url: https://github.com/waynehacking8/trtllm-triton-serving
     post: /blog/notes-trtllm-triton-serving/
-    note: LLM serving on TensorRT-LLM with tensor parallelism across 4x H100, benchmarked against vLLM on matched work, plus a Triton deployment template.
+    note: LLM serving on TensorRT-LLM with tensor parallelism across 4x H100, benchmarked against vLLM at the same model, hardware and request load, plus a Triton deployment template.
   - name: nim-agent-blueprint
     url: https://github.com/waynehacking8/nim-agent-blueprint
     post: /blog/rag-groundedness-guardrail/
-    note: Agentic RAG reference architecture on NVIDIA NIM microservices with a plan, retrieve, validate loop and an eval and OpenTelemetry observability harness.
+    note: Agentic RAG reference architecture on NVIDIA NIM microservices. The agent plans, retrieves and validates its answer, and an eval harness with OpenTelemetry traces checks it.
   - name: federated-learning-lab
     url: https://github.com/waynehacking8/federated-learning-lab
     post: /blog/notes-federated-learning-dp/

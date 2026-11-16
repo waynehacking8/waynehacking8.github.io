@@ -7,7 +7,7 @@ from patches import build, cv_macros, tally  # noqa: E402
 
 CONFIG = {
     "projects": [
-        {"name": "vLLM", "url": "u", "logo": "l", "repos": {"vllm-project/vllm": None, "vllm-project/llm-compressor": "llm-compressor"}},
+        {"name": "vLLM", "url": "u", "logo": "l", "reviewed": True, "repos": {"vllm-project/vllm": None, "vllm-project/llm-compressor": "llm-compressor"}},
         {"name": "NVIDIA", "url": "u", "logo": "l", "repos": {"NVIDIA/cutlass": "CUTLASS"}},
         {"name": "Empty", "url": "u", "logo": "l", "repos": {"x/y": None}},
     ],
@@ -71,9 +71,13 @@ class BuildTest(unittest.TestCase):
 
     def test_claimed_project_links_live_github_searches(self):
         vllm = self.section("vLLM")
-        self.assertIn("https://github.com/vllm-project/vllm/pulls?q=is%3Apr+is%3Amerged+author%3Ame", vllm)
+        self.assertIn("https://github.com/search?type=pullrequests&q=is%3Apr+is%3Amerged+author%3Ame+repo%3Avllm-project/vllm+repo%3Avllm-project/llm-compressor", vllm)
         self.assertIn("reviewed-by%3Ame+-author%3Ame", vllm)
         self.assertNotIn("Merged PRs on GitHub", self.section("new-org/new-repo"))
+
+    def test_review_link_only_for_projects_marked_reviewed(self):
+        self.assertIn("Merged PRs on GitHub", self.section("NVIDIA"))
+        self.assertNotIn("Reviews on GitHub", self.section("NVIDIA"))
 
     def test_closed_pick_is_dropped_with_a_warning(self):
         self.assertNotIn("Now closed", self.body)
@@ -116,14 +120,13 @@ class RowsTest(unittest.TestCase):
 
     def test_rows_link_live_github_searches(self):
         vllm = self.rows[0]
-        self.assertEqual(vllm["prs"], "https://github.com/vllm-project/vllm/pulls?q=is%3Apr+is%3Amerged+author%3Ame")
-        self.assertEqual(vllm["reviews"], "https://github.com/vllm-project/vllm/pulls?q=is%3Apr+reviewed-by%3Ame+-author%3Ame")
+        both = "repo%3Avllm-project/vllm+repo%3Avllm-project/llm-compressor"
+        self.assertEqual(vllm["prs"], "https://github.com/search?type=pullrequests&q=is%3Apr+is%3Amerged+author%3Ame+" + both)
+        self.assertEqual(vllm["reviews"], "https://github.com/search?type=pullrequests&q=is%3Apr+reviewed-by%3Ame+-author%3Ame+" + both)
+        self.assertIsNone(self.rows[1]["reviews"])
 
     def test_date_runs_from_first_pr_opened_to_last_pr_merged(self):
         self.assertEqual(self.rows[0]["date"], "Jun 2026 · Oct 2026")
-
-    def test_landed_pr_dates_from_when_it_was_opened(self):
-        self.assertEqual(self.rows[1]["date"], "Aug 2026")
 
     def test_no_date_when_the_feed_has_none(self):
         feed = {**FEED, "prs": [p for p in FEED["prs"] if p["repo"] != "pytorch/pytorch"]}

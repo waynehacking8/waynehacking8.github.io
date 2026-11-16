@@ -13,6 +13,7 @@ projects:
     logo: /assets/logos/flashinfer.png
     repos: { flashinfer-ai/flashinfer: null }
   - name: vLLM
+    reviewed: true
     url: https://github.com/vllm-project/vllm
     logo: /assets/logos/vllm.png
     repos: { vllm-project/vllm: null, vllm-project/compressed-tensors: compressed-tensors, vllm-project/llm-compressor: llm-compressor }
@@ -21,6 +22,7 @@ projects:
     logo: /assets/logos/internlm.png
     repos: { InternLM/lmdeploy: null }
   - name: Dynamo
+    reviewed: true
     url: https://github.com/ai-dynamo/dynamo
     logo: /assets/logos/dynamo.png
     repos: { ai-dynamo/dynamo: null }

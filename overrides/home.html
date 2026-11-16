@@ -6,7 +6,7 @@
   <span class="tile tile--icon" aria-hidden="true">{% include ".icons/material/" ~ icon ~ ".svg" %}</span>
 {%- endmacro -%}
 {% macro section(slug, name, num) -%}
-  <h2 class="sec" id="{{ slug }}"><span class="sec-name">{{ name }}</span><span class="sec-num">{{ num }}</span><span class="sec-rule" aria-hidden="true"></span></h2>
+  <h2 class="sec" id="{{ slug }}"><span class="sec-name">{{ name }}</span><span class="sec-num" aria-hidden="true">{{ num }}</span><span class="sec-rule" aria-hidden="true"></span></h2>
 {%- endmacro -%}
 {% macro row(item) -%}
   <article class="row">
@@ -32,14 +32,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="{{ config.site_description }}">
   <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0a0812" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8f6ff" media="(prefers-color-scheme: light)">
   <link rel="canonical" href="{{ page.canonical_url }}">
   <link rel="icon" href="{{ config.theme.favicon | url }}">
   <title>Wayne Chiu</title>
   <script>
-    /* Set the theme before first paint so a saved light choice never flashes dark. */
-    try { var t = localStorage.getItem("wayne-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+    /* Theme before first paint. Shares Material's saved palette ("/.__palette"),
+       so a choice made here or on any other page carries over; with nothing saved,
+       follow the system setting. */
+    (function () {
+      var t = null;
+      try { var p = JSON.parse(localStorage.getItem("/.__palette")); if (p && p.color) t = p.color.scheme === "slate" ? "dark" : "light"; } catch (e) {}
+      if (!t && window.matchMedia) t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      document.documentElement.dataset.theme = t || "dark";
+    })();
   </script>
-  <link rel="stylesheet" href="{{ 'stylesheets/home.css?v=20261116.2' | url }}">
+  <link rel="stylesheet" href="{{ 'stylesheets/home.css?v=20261116.3' | url }}">
   {% include "partials/seo.html" %}
   {% if config.extra.analytics %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.analytics.property }}"></script>
@@ -59,7 +68,7 @@
         <a class="icon-link" href="mailto:waynehacking8@gmail.com" aria-label="Email" title="Email">{% include ".icons/material/email-outline.svg" %}</a>
         <a class="icon-link" href="https://www.linkedin.com/in/wei-cheng-chiu/" aria-label="LinkedIn" title="LinkedIn">{% include ".icons/fontawesome/brands/linkedin.svg" %}</a>
         <a class="icon-link" href="https://x.com/itswaynechiu" aria-label="X" title="X">{% include ".icons/fontawesome/brands/x-twitter.svg" %}</a>
-        <button class="theme-btn icon-link" type="button" aria-label="Switch color theme" title="Switch color theme">
+        <button class="theme-btn icon-link" type="button" aria-label="Dark theme" aria-pressed="true" title="Switch color theme">
           <span class="ic-sun">{% include ".icons/material/weather-sunny.svg" %}</span>
           <span class="ic-moon">{% include ".icons/material/weather-night.svg" %}</span>
         </button>
@@ -69,13 +78,13 @@
     <main>
       <section class="hero" aria-label="Introduction">
         <div class="hero-main">
-          <h1 class="hero-name"><span>Wayne</span><span>Chiu<i>.</i></span></h1>
+          <h1 class="hero-name"><span>Wayne</span> <span>Chiu<i>.</i></span></h1>
           <p class="hero-line">{{ m.tagline }}</p>
         </div>
         <div class="hero-side">
           <img class="avatar" src="{{ 'assets/profile.webp' | url }}" width="96" height="96" alt="Wei-Cheng (Wayne) Chiu" fetchpriority="high" decoding="async">
           <p class="hero-meta">{{ m.place }}<span class="dot" aria-hidden="true">·</span>{{ m.school }}</p>
-          <a class="hero-down" href="#experience" aria-label="Scroll to experience">{% include ".icons/material/arrow-down.svg" %}</a>
+          <a class="hero-down" href="#experience" aria-label="Jump to experience">{% include ".icons/material/arrow-down.svg" %}</a>
         </div>
       </section>
 
@@ -91,11 +100,11 @@
         <article class="row">
           <img class="tile" src="{{ r.logo }}" alt="" width="44" height="44" loading="lazy" decoding="async">
           <div class="row-head">
-            <h3 class="row-title">{{ r.name }} - Contributor</h3>
+            <h3 class="row-title">{{ r.name }}</h3>
+            <p class="row-role">{{ r.merged }} merged</p>
             <p class="row-links">
-              <a href="{{ r.prs }}">Pull requests <span aria-hidden="true">→</span></a>
-              <a href="{{ r.reviews }}">Reviews <span aria-hidden="true">→</span></a>
-              <span class="row-count">{{ r.merged }} merged</span>
+              <a href="{{ r.prs }}">Merged PRs <span aria-hidden="true">→</span></a>
+              {% if r.reviews %}<a href="{{ r.reviews }}">Reviews <span aria-hidden="true">→</span></a>{% endif %}
             </p>
           </div>
           {% if r.date %}<p class="row-date">{{ r.date }}</p>{% endif %}
@@ -153,6 +162,6 @@
       <p class="foot-links"><a href="{{ 'blog/' | url }}">Articles</a><a href="{{ 'patches/' | url }}">Patches</a><a href="{{ 'experiences/' | url }}">Experiences</a><a href="{{ 'cv.pdf' | url }}">CV</a><a href="https://prs.wayne.is-a.dev/feed.xml">PR feed</a></p>
     </footer>
   </div>
-  <script src="{{ 'javascripts/home.js?v=20261116.1' | url }}" defer></script>
+  <script src="{{ 'javascripts/home.js?v=20261116.2' | url }}" defer></script>
 </body>
 </html>

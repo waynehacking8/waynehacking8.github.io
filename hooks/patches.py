@@ -58,10 +58,23 @@ def _month(iso: str) -> str:
     return datetime.strptime(iso[:7], "%Y-%m").strftime("%b %Y")
 
 
+def _search(project: dict, me: str, terms: str) -> str:
+    """A live GitHub PR search across every repo of a project."""
+    repos = "+".join(f"repo%3A{repo}" for repo in project["repos"])
+    return f"https://github.com/search?type=pullrequests&q=is%3Apr+{terms}+{repos}"
+
+
+def _links(project: dict, me: str) -> dict:
+    """Merged and review searches. A review link is shown only for projects marked
+    `reviewed` in patches.yml, so no link opens an empty search."""
+    links = {"prs": _search(project, me, f"is%3Amerged+author%3A{me}"), "reviews": None}
+    if project.get("reviewed"):
+        links["reviews"] = _search(project, me, f"reviewed-by%3A{me}+-author%3A{me}")
+    return links
+
+
 def _row(project: dict, me: str, mine: list, merged: int) -> dict:
     """One OPEN SOURCE row on the home page: a project with merged work."""
-    repo = next(iter(project["repos"]))
-    base = f"https://github.com/{repo}/pulls?q=is%3Apr+"
     stamps = [pr["opened"] for _, pr in mine if pr["bucket"] == "merged" and pr.get("opened")]
     ends = [pr["merged_at"] for _, pr in mine if pr["bucket"] == "merged" and pr.get("merged_at")]
     first, last = (min(stamps), max(ends)) if stamps and ends else (None, None)
@@ -74,8 +87,7 @@ def _row(project: dict, me: str, mine: list, merged: int) -> dict:
         "logo": project["logo"],
         "merged": merged,
         "date": date,
-        "prs": f"{base}is%3Amerged+author%3A{me}",
-        "reviews": f"{base}reviewed-by%3A{me}+-author%3A{me}",
+        **_links(project, me),
     }
 
 
@@ -105,12 +117,10 @@ def _render(config: dict, feed: dict):
         # A feed that parses but lists nothing is a broken upstream, not a
         # fact to publish; fail like a fetch error so the last deploy stays.
         raise ValueError("PR feed has no open or merged upstream PRs")
-    seen = {pr["url"]: pr for pr in feed["prs"]}
     for url in landed:
         repo = "/".join(url.split("/")[3:5])
-        # ghstack lands look closed to GitHub: the feed still knows when it was opened.
-        opened = (seen.get(url) or {}).get("created_at")
-        prs[url] = {"repo": repo, "title": picks.get(url, url), "bucket": "merged", "opened": opened, "merged_at": opened}
+        # The feed leaves ghstack lands out, so they carry no date.
+        prs[url] = {"repo": repo, "title": picks.get(url, url), "bucket": "merged", "opened": None, "merged_at": None}
 
     owner: dict[str, tuple[int, str | None]] = {}
     projects = []
@@ -172,12 +182,11 @@ def _render(config: dict, feed: dict):
         ]
         if not project.get("unclaimed"):
             # Live GitHub searches, so a reader can check the counts at the source.
-            repo = next(iter(project["repos"]))
-            base = f"https://github.com/{repo}/pulls?q=is%3Apr+"
-            lines.append(
-                f'<p class="pb-tl-links"><a href="{base}is%3Amerged+author%3A{me}">Merged PRs on GitHub</a>'
-                f' · <a href="{base}reviewed-by%3A{me}+-author%3A{me}">Reviews on GitHub</a></p>'
-            )
+            links = _links(project, me)
+            html_links = f'<a href="{links["prs"]}">Merged PRs on GitHub</a>'
+            if links["reviews"]:
+                html_links += f' · <a href="{links["reviews"]}">Reviews on GitHub</a>'
+            lines.append(f'<p class="pb-tl-links">{html_links}</p>')
         lines.append("")
         for bucket, heading in (("merged", "Merged"), ("review", "In review")):
             items = [(url, title) for url, title in shown if prs[url]["bucket"] == bucket]
