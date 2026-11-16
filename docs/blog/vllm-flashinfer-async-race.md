@@ -43,7 +43,7 @@ One RTX PRO 6000 Blackwell Max-Q (sm_120) under WSL2, `openai/gpt-oss-20b` (slid
 
 All 8 faults raised at `copy_event.synchronize()` in `async_utils.py`, 4 to 49 s into the load. 8 of 30 against 0 of 30 gives a one-sided Fisher p of 0.0023. GSM8K accuracy (flexible match) stayed between 0.924 and 0.939 on every build.
 
-8 次錯誤都是在 `async_utils.py` 的 `copy_event.synchronize()` 丟出來的，時間點在開始送 request 後 4 到 49 秒。拿 8/30 跟 0/30 做單尾 Fisher 檢定，p 值是 0.0023。每個版本的 GSM8K 準確率 (flexible match)都在 0.924 到 0.939 之間。
+8 次錯誤都是在 `async_utils.py` 的 `copy_event.synchronize()` 丟出來的，時間點在開始送 request 後 4 到 49 秒。拿 8/30 跟 0/30 做單尾 Fisher 檢定，p 值是 0.0023。每個版本的 GSM8K 準確率 (flexible match) 都在 0.924 到 0.939 之間。
 { .pb-translation lang=zh-Hant }
 
 ## What I take from it｜我的解讀
