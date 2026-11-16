@@ -2,7 +2,7 @@
 description: "CUDA C/C++ guide covering the execution model, memory hierarchy, occupancy, profiling, streams, synchronization, and kernel optimization."
 date: "2025-01-11"
 updated: "2026-07-21"
-language: "zh-Hant"
+language: "en"
 image: "https://wayne.is-a.dev/assets/blog/cuda-platform.webp"
 tags:
   - CUDA
@@ -10,59 +10,56 @@ tags:
   - Performance
 ---
 
-# CUDA Programming 入門
+# Intro to CUDA Programming
 
 *2025-01-11 · GPU / parallel programming*
 
 <figure class="pb-article-hero">
-  <img src="/assets/blog/cuda-platform.webp" alt="NVIDIA CUDA accelerated computing 官方視覺" loading="eager" decoding="async">
+  <img src="/assets/blog/cuda-platform.webp" alt="NVIDIA CUDA accelerated computing official visual" loading="eager" decoding="async">
   <figcaption>CUDA accelerated computing platform · <a href="https://developer.nvidia.com/cuda-zone">Source: NVIDIA Developer</a></figcaption>
 </figure>
 
-這份指南從 execution model、memory hierarchy 和 synchronization 說明 CUDA 的硬體
-成本，再用 profiling 判斷該改資料存取、同步還是 kernel 組態。本文的 execution model、memory hierarchy
-與 synchronization 語意以 NVIDIA CUDA C++ Programming Guide 為準；範例刻意縮短，
-production kernel 仍需補齊 bounds check 與 error handling。[^cuda-guide]
+This guide starts from the execution model, memory hierarchy and synchronization to explain what CUDA costs in hardware, then uses profiling to decide whether to change data access, synchronization or the kernel configuration. The semantics of the execution model, memory hierarchy and synchronization follow the NVIDIA CUDA C++ Programming Guide. The examples are deliberately shortened, and a production kernel still needs bounds checks and error handling.[^cuda-guide]
 
-## 1. CUDA 基礎架構
+## 1. CUDA Basics
 
-### 1.1 CUDA 程式設計模型
+### 1.1 The CUDA Programming Model
 
-#### 1.1.1 運算架構
-CUDA（Compute Unified Device Architecture）是 NVIDIA 開發的平行運算平台與程式設計模型。其架構包含：
+#### 1.1.1 Compute Architecture
+CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model developed by NVIDIA. Its architecture has these parts:
 
-- **主機（Host）**：CPU 及其記憶體
-- **裝置（Device）**：GPU 及其記憶體
-- **執行單元**：包含多個串流多處理器（Streaming Multiprocessors，SMs）
+- **Host**: the CPU and its memory
+- **Device**: the GPU and its memory
+- **Execution units**: multiple Streaming Multiprocessors (SMs)
 
-#### 1.1.2 程式執行流程
-CUDA 程式的典型執行流程：
+#### 1.1.2 Program Flow
+A typical CUDA program runs like this:
 
-1. 分配主機和裝置記憶體
-2. 將資料從主機複製到裝置
-3. 呼叫CUDA核心進行運算
-4. 將結果從裝置複製回主機
-5. 釋放記憶體
+1. Allocate host and device memory
+2. Copy data from host to device
+3. Launch the CUDA kernel to compute
+4. Copy the results from device back to host
+5. Free memory
 
-### 1.2 核心函數開發
+### 1.2 Writing Kernel Functions
 
-#### 1.2.1 函數類型限定詞
-CUDA 提供三種函式類型限定詞：
+#### 1.2.1 Function Type Qualifiers
+CUDA provides three function type qualifiers:
 
 1. **__global__**
-   - 在裝置端執行
-   - 可從主機端或裝置端呼叫
-   - 必須回傳 `void`
+   - Runs on the device
+   - Callable from the host or the device
+   - Must return `void`
    ```cpp
    __global__ void kernelFunction(float* data)
    {
-       // 裝置端程式碼
+       // device code
    }
    ```
 
 2. **__device__**
-   - 在裝置端執行
-   - 只能從裝置端呼叫
+   - Runs on the device
+   - Callable from the device only
    ```cpp
    __device__ float deviceFunction(float x)
    {
@@ -71,169 +68,168 @@ CUDA 提供三種函式類型限定詞：
    ```
 
 3. **__host__**
-   - 在主機端執行
-   - 只能從主機端呼叫
+   - Runs on the host
+   - Callable from the host only
    ```cpp
    __host__ void hostFunction(float* data)
    {
-       // 主機端程式碼
+       // host code
    }
    ```
 
-#### 1.2.2 核心函數呼叫語法
+#### 1.2.2 Kernel Launch Syntax
 
-Kernel 的呼叫語法如下：
+A kernel is launched like this:
 ```cpp
 kernelFunction<<<gridDim, blockDim, sharedMemBytes, stream>>>(parameters);
 ```
 
-參數說明：
-- `gridDim`：網格維度，指定區塊數量
-- `blockDim`：區塊維度，指定每個區塊的執行緒數量
-- `sharedMemBytes`：動態共享記憶體大小（可選）
-- `stream`：CUDA 串流（可選）
+Parameters:
+- `gridDim`: grid dimensions, the number of blocks
+- `blockDim`: block dimensions, the number of threads per block
+- `sharedMemBytes`: dynamic shared memory size (optional)
+- `stream`: the CUDA stream (optional)
 
-### 1.3 NVCC 編譯器
+### 1.3 The NVCC Compiler
 
-#### 1.3.1 編譯流程
-NVCC 編譯器的工作流程：
+#### 1.3.1 Compilation Flow
+What NVCC does:
 
-1. 分離主機和裝置程式碼
-2. 編譯裝置程式碼，產生 PTX 或 cubin
-3. 編譯主機程式碼
-4. 連結所有目標檔案
+1. Separate host and device code
+2. Compile the device code into PTX or cubin
+3. Compile the host code
+4. Link all object files
 
-#### 1.3.2 常用編譯選項
+#### 1.3.2 Common Compiler Options
 
 ```bash
-nvcc -arch=sm_70        # 指定目標架構
-     -O3                # 優化等級
-     -G                # 加入除錯資訊
-     -lineinfo         # 加入行號資訊
-     -o output.exe     # 指定輸出檔案
-     source.cu         # 來源檔案
+nvcc -arch=sm_70        # target architecture
+     -O3                # optimization level
+     -G                # add debug info
+     -lineinfo         # add line number info
+     -o output.exe     # output file
+     source.cu         # source file
 ```
 
-重要編譯選項說明：
-- `-arch`：指定 GPU 架構版本
-- `-code`：指定實際產生的 GPU 程式碼版本
-- `-Xptxas`：傳遞選項給 PTX 組譯器
-- `-maxrregcount`：限制每個執行緒使用的暫存器數量
+Notes on the important options:
+- `-arch`: the GPU architecture version
+- `-code`: the GPU code version actually generated
+- `-Xptxas`: pass options to the PTX assembler
+- `-maxrregcount`: limit the number of registers per thread
 
-## 2. 記憶體管理與最佳化
+## 2. Memory Management and Optimization
 
-### 2.1 記憶體類型
+### 2.1 Memory Types
 
-#### 2.1.1 全域記憶體
-- 最大容量的記憶體空間
-- 所有執行緒都可存取
-- 存取延遲較高
+#### 2.1.1 Global Memory
+- The largest memory space
+- Accessible by all threads
+- Higher access latency
 
-配置與使用：
+Allocation and use:
 ```cpp
-// 使用傳統方式
+// the traditional way
 float *d_data;
 cudaMalloc(&d_data, size);
 cudaMemcpy(d_data, h_data, size, cudaMemcpyHostToDevice);
 
-// 使用統一記憶體
+// with unified memory
 float *u_data;
 cudaMallocManaged(&u_data, size);
 ```
 
-#### 2.1.2 共享記憶體
-- 區塊內的執行緒共享
-- 存取速度接近暫存器
-- 容量有限
+#### 2.1.2 Shared Memory
+- Shared by the threads in a block
+- Access speed close to registers
+- Limited capacity
 
-宣告與使用：
+Declaration and use:
 ```cpp
 __global__ void sharedMemKernel()
 {
     __shared__ float sharedData[256];
     sharedData[threadIdx.x] = someData;
     __syncthreads();
-    // 使用共享資料
+    // use the shared data
 }
 ```
 
-#### 2.1.3 暫存器記憶體
-- 每個執行緒私有
-- 最快的記憶體類型
-- 數量有限
+#### 2.1.3 Register Memory
+- Private to each thread
+- The fastest memory type
+- Limited in number
 
-使用範例：
+Example:
 ```cpp
 __global__ void registerKernel()
 {
-    float localData = 0;  // 自動分配到暫存器
-    // 執行運算
+    float localData = 0;  // allocated to a register automatically
+    // do the computation
 }
 ```
 
-### 2.2 統一記憶體管理
+### 2.2 Unified Memory
 
-#### 2.2.1 基本概念
-Unified Memory 提供 CPU 與 GPU 共用的虛擬位址空間。Runtime 會按需遷移頁面，也允許
-分配超過單張 GPU 實體記憶體的資料，但 page fault 可能成為效能瓶頸。
+#### 2.2.1 Basics
+Unified Memory gives the CPU and GPU one shared virtual address space. The runtime migrates pages on demand and allows allocating more data than a single GPU's physical memory, but page faults can become a performance bottleneck.
 
-#### 2.2.2 記憶體預取
-先把頁面預取到目前的 GPU：
+#### 2.2.2 Prefetching
+Prefetch the pages to the current GPU first:
 
 ```cpp
-// 基本預取
+// basic prefetch
 cudaMemPrefetchAsync(data, size, deviceId);
 
-// 進階預取策略
+// a more complete prefetch strategy
 void optimizedPrefetch(float* data, size_t size)
 {
     int deviceId;
     cudaGetDevice(&deviceId);
     
-    // 預取資料到GPU
+    // prefetch data to the GPU
     cudaMemPrefetchAsync(data, size, deviceId);
     
-    // 執行核心
+    // run the kernel
     computeKernel<<<blocks, threads>>>(data);
     
-    // 預取結果回CPU
+    // prefetch the result back to the CPU
     cudaMemPrefetchAsync(data, size, cudaCpuDeviceId);
 }
 ```
 
-#### 2.2.3 記憶體存取模式
-相鄰執行緒應讀取相鄰位址：
+#### 2.2.3 Access Patterns
+Adjacent threads should read adjacent addresses:
 
-1. **合併存取**
+1. **Coalesced access**
 ```cpp
 __global__ void coalescedAccess(float* data)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    float value = data[idx];  // 合併存取
+    float value = data[idx];  // coalesced access
 }
 ```
 
-2. **避免分歧存取**
+2. **Avoid divergent access**
 ```cpp
 __global__ void strideAccess(float* data, int stride)
 {
     int idx = (blockIdx.x * blockDim.x + threadIdx.x) * stride;
-    float value = data[idx];  // 可能造成非合併存取
+    float value = data[idx];  // may cause uncoalesced access
 }
 ```
 
-### 2.3 記憶體最佳化技巧
+### 2.3 Memory Optimization Tips
 
-#### 2.3.1 記憶體對齊
-對齊資料，減少拆分的記憶體交易：
+#### 2.3.1 Alignment
+Align the data to reduce split memory transactions:
 
 ```cpp
-// 結構體對齊
+// struct alignment
 struct __align__(16) AlignedStruct {
     float x, y, z, w;
 };
 
-// 動態配置對齊記憶體
+// allocate aligned memory dynamically
 void* alignedMalloc(size_t size, size_t alignment)
 {
     size_t mask = alignment - 1;
@@ -244,19 +240,19 @@ void* alignedMalloc(size_t size, size_t alignment)
 }
 ```
 
-#### 2.3.2 記憶體覆蓋
-載入 stencil 所需的 halo 區域：
+#### 2.3.2 Overlapping Tiles
+Load the halo region a stencil needs:
 
 ```cpp
 __global__ void overlappedKernel(float* in, float* out)
 {
-    __shared__ float tile[TILE_SIZE + 2];  // 包含重疊區域
+    __shared__ float tile[TILE_SIZE + 2];  // includes the overlap region
     
-    // 載入資料包含邊界
+    // load the data, boundaries included
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     tile[threadIdx.x + 1] = in[idx];
     
-    // 載入邊界元素
+    // load the boundary elements
     if (threadIdx.x == 0)
         tile[0] = in[idx - 1];
     if (threadIdx.x == blockDim.x - 1)
@@ -264,80 +260,80 @@ __global__ void overlappedKernel(float* in, float* out)
         
     __syncthreads();
     
-    // 使用重疊區域進行計算
+    // compute with the overlap region
     out[idx] = tile[threadIdx.x + 1] + tile[threadIdx.x] + tile[threadIdx.x + 2];
 }
 ```
 
-## 3. 執行緒組織與管理
+## 3. Thread Organization and Management
 
-### 3.1 執行緒層次結構
+### 3.1 Thread Hierarchy
 
-#### 3.1.1 網格、區塊與執行緒
-`dim3` 可建立一維、二維或三維的 grid 與 block：
+#### 3.1.1 Grids, Blocks and Threads
+`dim3` builds 1D, 2D or 3D grids and blocks:
 
 ```cpp
-// 1D 配置
+// 1D configuration
 dim3 grid(numBlocks);
 dim3 block(numThreads);
 
-// 2D 配置
+// 2D configuration
 dim3 grid(numBlocksX, numBlocksY);
 dim3 block(numThreadsX, numThreadsY);
 
-// 3D 配置
+// 3D configuration
 dim3 grid(numBlocksX, numBlocksY, numBlocksZ);
 dim3 block(numThreadsX, numThreadsY, numThreadsZ);
 
-// 啟動核心
+// launch the kernel
 kernel<<<grid, block>>>(parameters);
 ```
 
-#### 3.1.2 索引計算
+#### 3.1.2 Index Calculation
 
-多維度索引計算：
+Multi-dimensional index calculation:
 
 ```cpp
 __global__ void multiDimKernel(float* data)
 {
-    // 1D 索引
+    // 1D index
     int idx1D = blockIdx.x * blockDim.x + threadIdx.x;
     
-    // 2D 索引
+    // 2D index
     int idx2D = (blockIdx.y * gridDim.x + blockIdx.x) * (blockDim.x * blockDim.y) +
                  threadIdx.y * blockDim.x + threadIdx.x;
                  
-    // 3D 索引
+    // 3D index
     int idx3D = ((blockIdx.z * gridDim.y + blockIdx.y) * gridDim.x + blockIdx.x) *
                 (blockDim.x * blockDim.y * blockDim.z) +
                 (threadIdx.z * blockDim.y + threadIdx.y) * blockDim.x + threadIdx.x;
 }
 ```
 
-### 3.2 執行緒同步
+### 3.2 Thread Synchronization
 
-#### 3.2.1 區塊內同步
-使用`__syncthreads()`確保區塊內執行緒同步：
+#### 3.2.1 Synchronization Within a Block
+Use `__syncthreads()` to synchronize the threads in a block:
 
 ```cpp
 __global__ void syncKernel(float* data)
 {
     __shared__ float sharedData[256];
     
-    // 載入資料
+    // load the data
     sharedData[threadIdx.x] = data[threadIdx.x];
-    __syncthreads();  // 確保所有資料都已載入
+    __syncthreads();  // make sure all data is loaded
     
-    // 使用資料
+    // use the data
     float result = sharedData[255 - threadIdx.x];
-    __syncthreads();  // 確保所有執行緒完成存取
+    __syncthreads();  // make sure all threads have finished reading
     
     data[threadIdx.x] = result;
 }
 ```
 
-#### 3.2.2 合作群組
-Cooperative Groups 可把同步範圍明確寫進程式：
+#### 3.2.2 Cooperative Groups
+Cooperative Groups let you write the synchronization scope explicitly in the code:
 
 ```cpp
 #include <cooperative_groups.h>
@@ -345,25 +341,25 @@ using namespace cooperative_groups;
 
 __global__ void coopKernel(float* data)
 {
-    // 取得當前執行緒群組
+    // get the current thread group
     thread_block block = this_thread_block();
     
-    // 群組同步
+    // group synchronization
     block.sync();
     
-    // 群組大小
+    // group size
     int size = block.size();
     
-    // 群組內執行緒索引
+    // thread index within the group
     int idx = block.thread_rank();
 }
 ```
 
-### 3.3 執行組態優化
+### 3.3 Tuning the Launch Configuration
 
-#### 3.3.1 估算 block size 與 occupancy
+#### 3.3.1 Estimating Block Size and Occupancy
 
-CUDA occupancy API 可先給一組候選 block size；最終仍要用實測決定：
+The CUDA occupancy API can give a candidate block size first, but the final choice still comes from measurement:
 
 ```cpp
 __global__ void computeKernel(float* data, int N);
@@ -380,78 +376,78 @@ void calculateCandidateConfig(float* data, int N)
 }
 ```
 
-#### 3.3.2 動態平行處理
-實作動態平行處理：
+#### 3.3.2 Dynamic Parallelism
+A dynamic parallelism example:
 
 ```cpp
 __global__ void dynamicParallelKernel(float* data, int depth)
 {
     if (depth > 0)
     {
-        // 遞迴啟動新的核心
+        // launch a new kernel recursively
         dynamicParallelKernel<<<gridDim, blockDim>>>(data, depth - 1);
         cudaDeviceSynchronize();
     }
     
-    // 處理資料
+    // process the data
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     data[idx] *= 2.0f;
 }
 ```
 
-## 4. 效能分析與優化
+## 4. Profiling and Optimization
 
-### 4.1 使用 nsys 進行效能分析
+### 4.1 Profiling with nsys
 
-#### 4.1.1 基本分析
-用 `nsys` 收集 timeline 與 CUDA API 統計：
+#### 4.1.1 Basic Profiling
+Use `nsys` to collect the timeline and CUDA API statistics:
 
 ```bash
-# 基本效能分析
+# basic profiling
 nsys profile --stats=true ./myapp
 
-# 詳細記憶體分析
+# detailed memory analysis
 nsys profile --trace=cuda,nvtx,osrt,cublas ./myapp
 
-# 產生時序報告
+# generate a timeline report
 nsys profile --trace=cuda --force-overwrite true \
              --delay=0 --duration=0 \
              --output=timeline ./myapp
 ```
 
-#### 4.1.2 分析報告解讀
+#### 4.1.2 Reading the Report
 
-nsys 產生的報告包含以下重要資訊：
+The nsys report contains this key information:
 
-1. **CUDA API 統計**
-   - 核心啟動時間
-   - 記憶體操作時間
-   - API 呼叫頻率
+1. **CUDA API statistics**
+   - Kernel launch time
+   - Memory operation time
+   - API call frequency
 
-2. **CUDA 核心統計**
-   - 核心執行時間
-   - 每個核心的效能指標
-   - 硬體資源使用率
+2. **CUDA kernel statistics**
+   - Kernel execution time
+   - Performance metrics per kernel
+   - Hardware resource utilization
 
-3. **記憶體操作統計**
-   - 記憶體傳輸大小
-   - 頁面錯誤次數
-   - 資料遷移時間
+3. **Memory operation statistics**
+   - Memory transfer size
+   - Number of page faults
+   - Data migration time
 
-範例報告解析：
+Example report:
 ```plaintext
  Time(%)  Total Time (ns)  Num Calls    Avg (ns)   Med (ns)    Min (ns)    Max (ns)   StdDev (ns)
  -------  ---------------  ---------  -----------  ----------  ----------  -----------  -----------
     45.3       2,345,678        100     23,456.8    22,345.6     19,876     28,987.6      1,234.5
 ```
 
-### 4.2 效能瓶頸分析
+### 4.2 Finding Bottlenecks
 
-#### 4.2.1 記憶體瓶頸分析
-先量測 host-to-device 複製時間：
+#### 4.2.1 Memory Bottlenecks
+Measure the host-to-device copy time first:
 
 ```cpp
-// 使用事件來測量記憶體操作時間
+// use events to time the memory operation
 cudaEvent_t start, stop;
 cudaEventCreate(&start);
 cudaEventCreate(&stop);
@@ -466,61 +462,61 @@ cudaEventElapsedTime(&milliseconds, start, stop);
 printf("Memory transfer took %f ms\n", milliseconds);
 ```
 
-#### 4.2.2 計算瓶頸分析
-用 FLOPs／byte 粗估算術強度：
+#### 4.2.2 Compute Bottlenecks
+Estimate arithmetic intensity roughly as FLOPs/byte:
 
 ```cpp
-// 計算算術密度
+// compute arithmetic intensity
 float computeArithmeticIntensity(int operations, int bytes_accessed)
 {
     return (float)operations / bytes_accessed;
 }
 
-// 使用事件測量核心執行時間
+// time the kernel with events
 __global__ void computeKernel(float* data, int N)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < N)
     {
-        // 記錄計算操作數和記憶體存取量
+        // record the compute operations and memory traffic
         int compute_ops = 0;
         int memory_accesses = 0;
         
-        float temp = data[idx];  // 記憶體讀取
+        float temp = data[idx];  // memory read
         memory_accesses += sizeof(float);
         
         for(int i = 0; i < 100; i++)
         {
-            temp = temp * temp + temp;  // 計算操作
+            temp = temp * temp + temp;  // compute operation
             compute_ops += 2;
         }
         
-        data[idx] = temp;  // 記憶體寫入
+        data[idx] = temp;  // memory write
         memory_accesses += sizeof(float);
     }
 }
 ```
 
-### 4.3 效能最佳化策略
+### 4.3 Optimization Strategies
 
-#### 4.3.1 記憶體最佳化
-把會重複使用的值放進 shared memory：
+#### 4.3.1 Memory Optimization
+Put values that get reused into shared memory:
 
 ```cpp
 __global__ void optimizedMemoryKernel(float* data, int N)
 {
-    // 使用共享記憶體減少全域記憶體存取
+    // use shared memory to cut global memory accesses
     __shared__ float sharedData[BLOCK_SIZE];
     
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     
-    // 合併讀取全域記憶體
+    // coalesced reads from global memory
     if (idx < N)
         sharedData[threadIdx.x] = data[idx];
     
     __syncthreads();
     
-    // 使用共享記憶體進行計算
+    // compute from shared memory
     if (threadIdx.x < blockDim.x - 1)
     {
         float result = sharedData[threadIdx.x] + sharedData[threadIdx.x + 1];
@@ -529,8 +525,8 @@ __global__ void optimizedMemoryKernel(float* data, int N)
 }
 ```
 
-#### 4.3.2 計算最佳化
-固定迴圈長度時，可讓編譯器展開迴圈：
+#### 4.3.2 Compute Optimization
+When the loop length is fixed, let the compiler unroll the loop:
 
 ```cpp
 __global__ void optimizedComputeKernel(float* data, int N)
@@ -538,7 +534,7 @@ __global__ void optimizedComputeKernel(float* data, int N)
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < N)
     {
-        // 迴圈展開
+        // loop unrolling
         float sum = 0;
         #pragma unroll 4
         for(int i = 0; i < 16; i += 4)
@@ -554,20 +550,20 @@ __global__ void optimizedComputeKernel(float* data, int N)
 }
 ```
 
-## 5. 串流與非同步執行
+## 5. Streams and Asynchronous Execution
 
-### 5.1 CUDA 串流基礎
+### 5.1 CUDA Stream Basics
 
-#### 5.1.1 串流建立與管理
+#### 5.1.1 Creating and Managing Streams
 ```cpp
-// 建立多個串流
+// create several streams
 cudaStream_t streams[4];
 for(int i = 0; i < 4; i++)
 {
     cudaStreamCreate(&streams[i]);
 }
 
-// 在不同串流中執行核心
+// run kernels in different streams
 for(int i = 0; i < 4; i++)
 {
     int offset = i * N/4;
@@ -576,7 +572,7 @@ for(int i = 0; i < 4; i++)
     );
 }
 
-// 同步與清理
+// synchronize and clean up
 for(int i = 0; i < 4; i++)
 {
     cudaStreamSynchronize(streams[i]);
@@ -584,9 +580,9 @@ for(int i = 0; i < 4; i++)
 }
 ```
 
-#### 5.1.2 串流回呼函式
+#### 5.1.2 Stream Callbacks
 
-串流完成後執行 host 端回呼：
+Run a host callback after the stream completes:
 
 ```cpp
 void CUDART_CB callbackFunc(cudaStream_t stream, cudaError_t status, void* userData)
@@ -594,36 +590,36 @@ void CUDART_CB callbackFunc(cudaStream_t stream, cudaError_t status, void* userD
     printf("Stream %p completed with status %d\n", stream, status);
 }
 
-// 設定回呼
+// register the callback
 cudaStreamAddCallback(stream, callbackFunc, nullptr, 0);
 ```
 
-### 5.2 串流同步機制
+### 5.2 Stream Synchronization
 
-#### 5.2.1 事件同步
-事件可建立跨 stream 的相依關係：
+#### 5.2.1 Event Synchronization
+Events create dependencies across streams:
 
 ```cpp
-// 建立事件
+// create the event
 cudaEvent_t event;
 cudaEventCreate(&event);
 
-// 在串流中記錄事件
+// record the event in a stream
 cudaEventRecord(event, stream1);
 
-// 使其他串流等待事件
+// make other streams wait for the event
 cudaStreamWaitEvent(stream2, event);
 cudaStreamWaitEvent(stream3, event);
 
-// 清理
+// clean up
 cudaEventDestroy(event);
 ```
 
-#### 5.2.2 串流優先權
-設定串流優先權：
+#### 5.2.2 Stream Priorities
+Setting a stream priority:
 
 ```cpp
-// 建立高優先權串流
+// create a high priority stream
 cudaStream_t highPriorityStream;
 int priority;
 cudaDeviceGetStreamPriorityRange(nullptr, &priority);
@@ -632,33 +628,33 @@ cudaStreamCreateWithPriority(&highPriorityStream,
                             priority);
 ```
 
-## 6. 進階最佳化技巧
+## 6. Advanced Optimization
 
-### 6.1 動態平行處理
+### 6.1 Dynamic Parallelism
 
-由 device 端 kernel 啟動子 kernel：
+A device-side kernel launches child kernels:
 
 ```cpp
 __global__ void recursiveKernel(int* data, int depth)
 {
     if (depth > 0)
     {
-        // 動態啟動子核心
+        // launch a child kernel dynamically
         recursiveKernel<<<gridDim.x, blockDim.x>>>(
             data + blockIdx.x * blockDim.x, 
             depth - 1
         );
     }
     
-    // 處理當前層級的資料
+    // process the data at the current level
     int idx = threadIdx.x;
     data[idx] = blockIdx.x * blockDim.x + idx;
 }
 ```
 
-### 6.2 原子操作最佳化
+### 6.2 Atomic Operations
 
-多個執行緒更新同一位置時，可使用原子操作：
+Use atomic operations when several threads update the same location:
 
 ```cpp
 __global__ void atomicKernel(int* counter, int* data, int N)
@@ -666,20 +662,20 @@ __global__ void atomicKernel(int* counter, int* data, int N)
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < N)
     {
-        // 使用原子操作進行計數
+        // count with an atomic operation
         int old = atomicAdd(counter, 1);
         
-        // 使用原子操作進行條件更新
+        // conditional update with an atomic operation
         atomicMax(&data[idx], old);
     }
 }
 ```
 
-## 7. 實戰案例分析
+## 7. Worked Examples
 
-### 7.1 N體模擬最佳化
+### 7.1 N-Body Simulation
 
-以下範例計算 N 體問題的作用力：
+The example below computes the forces in an N-body problem:
 
 ```cpp
 #define SOFTENING 1e-9f
@@ -698,7 +694,7 @@ void bodyForce(Body* bodies, float dt, int n)
         float4 myPos = bodies[idx].pos;
         float4 acc = make_float4(0.0f, 0.0f, 0.0f, 0.0f);
         
-        // 計算引力
+        // compute the gravitational force
         for(int j = 0; j < n; j++)
         {
             float4 otherPos = bodies[j].pos;
@@ -716,29 +712,29 @@ void bodyForce(Body* bodies, float dt, int n)
             acc.z += r.z * invDist3;
         }
         
-        // 更新速度
+        // update the velocity
         bodies[idx].vel.x += acc.x * dt;
         bodies[idx].vel.y += acc.y * dt;
         bodies[idx].vel.z += acc.z * dt;
     }
 }
 
-// 主程式
+// main program
 int main()
 {
     const int nBodies = 30000;
     const int nSteps = 100;
     const float dt = 0.01f;
     
-    // 配置記憶體
+    // allocate memory
     Body* d_bodies;
     cudaMalloc(&d_bodies, nBodies * sizeof(Body));
     
-    // 設定執行組態
+    // set the launch configuration
     int threadsPerBlock = 256;
     int blocks = (nBodies + threadsPerBlock - 1) / threadsPerBlock;
     
-    // 時間步進
+    // time stepping
     for(int step = 0; step < nSteps; step++)
     {
         bodyForce<<<blocks, threadsPerBlock>>>(d_bodies, dt, nBodies);
@@ -750,9 +746,9 @@ int main()
 }
 ```
 
-### 7.2 矩陣乘法最佳化
+### 7.2 Matrix Multiplication
 
-以下矩陣乘法先把 tile 搬進 shared memory：
+The matrix multiplication below first moves tiles into shared memory:
 
 ```cpp
 #define TILE_SIZE 16
@@ -773,12 +769,12 @@ void matrixMul(float* A, float* B, float* C, int N)
     
     for(int phase = 0; phase < N/TILE_SIZE; phase++)
     {
-        // 協作載入資料到共享記憶體
+        // cooperatively load data into shared memory
         ds_A[ty][tx] = A[row * N + phase * TILE_SIZE + tx];
         ds_B[ty][tx] = B[(phase * TILE_SIZE + ty) * N + col];
         __syncthreads();
         
-        // 計算部分乘積
+        // compute the partial product
         for(int k = 0; k < TILE_SIZE; k++)
         {
             sum += ds_A[ty][k] * ds_B[k][tx];
@@ -790,4 +786,4 @@ void matrixMul(float* A, float* B, float* C, int N)
 }
 ```
 
-[^cuda-guide]: [NVIDIA CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/), 本文執行模型、記憶體階層、同步與 kernel launch 語意的主要規格來源。
+[^cuda-guide]: [NVIDIA CUDA C++ Programming Guide](https://docs.nvidia.com/cuda/cuda-c-programming-guide/), the main specification source for the execution model, memory hierarchy, synchronization and kernel launch semantics in this post.

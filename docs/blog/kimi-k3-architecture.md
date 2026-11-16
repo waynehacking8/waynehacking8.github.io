@@ -1,7 +1,7 @@
 ---
-description: "Kimi K3 2.8T 架構解析：KDA 混合線性注意力、Attention Residuals、Stable LatentMoE，以及與 Inkling 975B 的設計分歧。"
+description: "A walkthrough of the Kimi K3 2.8T architecture: KDA hybrid linear attention, Attention Residuals, Stable LatentMoE, and where it diverges from Inkling 975B."
 date: "2026-07-20"
-language: "zh-Hant"
+language: "en"
 image: "https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/2/2026-07-17/d9cs7176rtp4tqfofnsg?x-tos-process=image%2Fauto-orient%2C1%2Fstrip%2Fignore-error%2C1"
 tags:
   - Architecture
@@ -9,107 +9,107 @@ tags:
   - MoE
 ---
 
-# Kimi K3 2.8T：KDA、AttnRes 與 896 選 16 的 MoE
+# Kimi K3 2.8T: KDA, AttnRes and a 16-of-896 MoE
 
 *2026-07-20 · LLM Architecture / Linear Attention / Agentic Coding*
 
 <figure class="pb-article-hero">
-  <img src="/assets/blog/kimi-k3-cover.webp" alt="Moonshot AI 官方 Kimi K3 主視覺" loading="eager" decoding="async">
-  <figcaption>官方平台主視覺 · <a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></figcaption>
+  <img src="/assets/blog/kimi-k3-cover.webp" alt="Official Moonshot AI key visual for Kimi K3" loading="eager" decoding="async">
+  <figcaption>Official platform key visual · <a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></figcaption>
 </figure>
 
-Moonshot AI 發布 **Kimi K3** API：2.8T 總參數、原生視覺、1M-token context，定位在長周期 coding、knowledge work 與 reasoning。它把超長序列與超深網路的問題分別交給 **Kimi Delta Attention（KDA）** 與 **Attention Residuals（AttnRes）**。[^k3-overview]
+Moonshot AI has released the **Kimi K3** API: 2.8T total parameters, native vision and 1M-token context, aimed at long-horizon coding, knowledge work and reasoning. It hands the problem of very long sequences to **Kimi Delta Attention (KDA)** and the problem of very deep networks to **Attention Residuals (AttnRes)**.[^k3-overview]
 
-!!! note "發布狀態（2026-07-20）"
-    Kimi K3 已可在 Kimi.com、Kimi Work、Kimi Code 與 API 使用；官方文件表示完整模型權重將在 **2026-07-27 前**釋出。本文不把尚未發生的權重釋出寫成已完成事件，架構細節也以現有官方資訊為限。[^k3-quickstart]
+!!! note "Release status (2026-07-20)"
+    Kimi K3 is available on Kimi.com, Kimi Work, Kimi Code and the API. The official docs say the full model weights will be released **before 2026-07-27**. I don't write the weight release as if it had already happened, and the architecture details are limited to what the lab has published so far.[^k3-quickstart]
 
 ## TL;DR
 
-- **2.8T parameters**，官方稱為首個 3T 級開放模型。
-- 使用 **KDA hybrid linear attention** 與 **AttnRes**。
-- Stable LatentMoE：896 個 experts 中啟用 16 個。
-- 原生視覺理解與 1M context。
-- 官方稱相較 K2 約有 **2.5× overall scaling efficiency**；這是廠商數據，完整技術報告仍待發布。
-- API 已上線；完整權重截至本文日期仍是預告狀態。
+- **2.8T parameters**, which the lab calls the first 3T-class open model.
+- Uses **KDA hybrid linear attention** and **AttnRes**.
+- Stable LatentMoE: 16 of 896 experts active.
+- Native visual understanding and 1M context.
+- The lab claims about **2.5× overall scaling efficiency** over K2. That is a vendor number, and the full technical report is still to come.
+- The API is live. As of this post's date, the full weights are still only announced.
 
-## 1. KDA：用 channel-wise gating 更新長序列狀態
+## 1. KDA: updating long-sequence state with channel-wise gating
 
-標準 full attention 的序列長度成本快速上升；MLA 主要壓縮 KV 表示，而 KDA 走的是 hybrid linear attention 路線。Moonshot 先前公開的 Kimi Linear 將 Delta Attention 擴展為具有細粒度 gating 的 recurrent-style state update，讓模型能按特徵維度控制資訊寫入、保留與遺忘。[^kda-paper]
+The cost of standard full attention grows quickly with sequence length. MLA mainly compresses the KV representation, while KDA takes the hybrid linear attention route. Moonshot's earlier Kimi Linear extended Delta Attention into a recurrent-style state update with fine-grained gating, so the model can control writing, retention and forgetting per feature dimension.[^kda-paper]
 
-KDA 把大量 token-to-token 的歷史互動壓進可更新狀態，再與其他 attention 路徑混合。對 1M context，它提供比每一步都回看完整歷史更可擴展的計算形態。
+KDA compresses a large amount of token-to-token history into an updatable state, then mixes that with other attention paths. For 1M context, this is a more scalable shape of computation than looking back over the full history at every step.
 
-目前 K3 的完整 layer ratio、kernel 細節與消融實驗要等 technical report；因此，網路流傳的精確 6.3× 解碼速度不能在缺乏同硬體、同 batch 與同輸出設定下直接泛化到所有部署。
+K3's full layer ratio, kernel details and ablations have to wait for the technical report. So the exact 6.3× decoding speedup circulating online can't be generalized to every deployment without the same hardware, batch and output settings.
 
-### Linear attention 維護的狀態
+### The state linear attention maintains
 
-標準 causal attention 在第 $t$ 個 token 需要讀取先前所有 key/value；線性或 recurrent-style attention 則維護一個固定形狀的狀態 $S_t$，概念上可寫成：
+Standard causal attention has to read all previous keys and values at token $t$. Linear or recurrent-style attention instead maintains a state $S_t$ of fixed shape, which can be written conceptually as:
 
 $$
 S_t = G_t \odot S_{t-1} + U_t,
 \qquad y_t = q_t^\top S_t.
 $$
 
-$G_t$ 是遺忘／保留門，$U_t$ 是當前 token 寫入的更新。KDA 的 channel-wise gating 重點，是不同 feature channels 不必共用同一個衰減速率。這將「回看全部歷史」改成「更新摘要狀態」，但也帶來新的 kernel 問題：狀態更新有序列依賴，training 需要可平行化 scan，decode 則要讓 state 常駐在高速記憶體中。架構上的線性複雜度，只有在 kernel fusion 與 memory layout 做好時才會變成實際吞吐。
+$G_t$ is the forget/retain gate and $U_t$ is the update written by the current token. The point of KDA's channel-wise gating is that different feature channels need not share one decay rate. This turns "look back over the whole history" into "update a summary state", but it brings a new kernel problem: the state update has a sequential dependency, so training needs a parallelizable scan, and decode needs the state to stay resident in fast memory. The linear complexity on paper only turns into real throughput when kernel fusion and memory layout are done well.
 
-## 2. AttnRes：殘差不再只連上一層
+## 2. AttnRes: residuals no longer connect only to the previous layer
 
-傳統 residual connection 通常把上一層狀態與當前 transformation 相加。AttnRes 則讓深層網路可依內容從先前層的輸出中選擇與聚合資訊，目標是改善非常深的模型裡，訊號跨層傳遞與梯度路徑逐漸稀釋的問題。[^attnres-paper]
+A traditional residual connection usually adds the previous layer's state to the current transformation. AttnRes lets a deep network choose and aggregate information from the outputs of earlier layers based on content. The goal is to improve how signals pass across layers, and how gradient paths get diluted, in very deep models.[^attnres-paper]
 
-KDA 與 AttnRes 分別處理兩個方向的資訊流：
+KDA and AttnRes handle two different directions of information flow:
 
-- KDA 處理**序列方向**的長距離資訊流。
-- AttnRes 處理**網路深度方向**的跨層資訊流。
+- KDA handles long-range information flow along the **sequence direction**.
+- AttnRes handles cross-layer information flow along the **network depth direction**.
 
-官方公布的 2.5× overall scaling efficiency 是 KDA、AttnRes、訓練與資料 recipe 的合計結果，不能單獨歸因於 AttnRes，也不等同於訓練時間縮短 60%。
+The 2.5× overall scaling efficiency the lab reports is the combined result of KDA, AttnRes, and the training and data recipe. It can't be credited to AttnRes alone, and it does not mean training time is cut by 60%.
 
-## 3. Stable LatentMoE：896 選 16
+## 3. Stable LatentMoE: 16 of 896
 
-K3 將 MoE 稀疏度推到 **896 experts、每次啟用 16 個**，搭配 Stable LatentMoE。超大總參數提供更大的模型容量，稀疏啟用則控制每個 token 實際執行的計算量。
+K3 pushes MoE sparsity to **896 experts with 16 active at a time**, paired with Stable LatentMoE. The huge total parameter count gives more model capacity, and sparse activation keeps the compute each token actually runs under control.
 
-16/896 只描述 active experts。部署仍需儲存完整權重，並負擔跨 GPU／節點 routing、memory bandwidth 與負載平衡成本。完整 serving 成本要等權重、量化方案與 vLLM 等 runtime 的實測。
+16/896 describes only the active experts. Deployment still has to store the full weights and pay for cross-GPU and cross-node routing, memory bandwidth and load balancing. The full serving cost has to wait for real measurements with the weights, quantization schemes and runtimes such as vLLM.
 
-### 三個不能混為一談的 MoE 數字
+### Three MoE numbers that must not be mixed up
 
-評估 896 選 16 時，至少要分開看三個 budget：
+To judge 16 of 896, at least three budgets have to be looked at separately:
 
-1. **Capacity**：2.8T 總參數決定 checkpoint 與可容納的專家知識容量。
-2. **Active compute**：每 token 啟用 16 個 experts，決定主要矩陣乘法量，但還要加 attention、router 與 shared components。
-3. **Communication**：token dispatch/all-to-all 取決於 expert placement、batch 組成與負載平衡；它可能在 FLOPs 尚未飽和前先受網路與 HBM bandwidth 限制。
+1. **Capacity**: the 2.8T total parameters set the checkpoint size and how much expert knowledge it can hold.
+2. **Active compute**: 16 active experts per token set the main matrix multiplication load, but attention, the router and shared components add to it.
+3. **Communication**: token dispatch and all-to-all depend on expert placement, batch composition and load balancing. They can hit network and HBM bandwidth limits before FLOPs are saturated.
 
-提高稀疏度也會增加 routing 與負載平衡壓力。若 token 分布偏向少數 experts，capacity factor 會造成 padding 或 dropped／rerouted tokens；若 experts 橫跨節點，all-to-all latency 也會成為 decode 的尾延遲來源。
+Higher sparsity also raises the pressure on routing and load balancing. If token distribution skews toward a few experts, the capacity factor causes padding or dropped/rerouted tokens. If experts span nodes, all-to-all latency also becomes a source of tail latency in decode.
 
-## 4. 與 Inkling 975B 的路線差異
+## 4. How the route differs from Inkling 975B
 
-| 面向 | Thinky Inkling | Moonshot Kimi K3 |
+| Aspect | Thinky Inkling | Moonshot Kimi K3 |
 |---|---|---|
-| 總參數 | 975B | 2.8T |
-| 長序列主軸 | 5:1 sliding-window / global attention | KDA hybrid linear attention |
-| 深層訊號 | short convolution + residual stream | Attention Residuals |
-| MoE | 256 routed + 2 shared；6 routed active | 896 experts；16 active |
-| 多模態 | 文字、圖片、音訊 | 原生視覺（官方目前重點） |
-| 定位 | 可客製的通用多模態底座 | 長周期 coding 與 knowledge work |
+| Total parameters | 975B | 2.8T |
+| Long-sequence approach | 5:1 sliding-window / global attention | KDA hybrid linear attention |
+| Deep-layer signal | short convolution + residual stream | Attention Residuals |
+| MoE | 256 routed + 2 shared; 6 routed active | 896 experts; 16 active |
+| Multimodal | Text, image, audio | Native vision (the lab's current focus) |
+| Positioning | Customizable general multimodal base | Long-horizon coding and knowledge work |
 
-兩者都在離開「每層 full attention＋RoPE＋同一套 optimizer」的單一路線，但方法不同。Inkling 降低全域 attention 的出現頻率，再用卷積補局部混合；K3 把序列記憶改造成 KDA state update，並用 AttnRes 改造深度方向的訊號傳遞。
+Both are moving away from the single route of full attention in every layer, plus RoPE, plus one optimizer, but by different methods. Inkling lowers how often global attention appears and then uses convolution to cover local mixing. K3 rebuilds sequence memory as a KDA state update and rebuilds depth-direction signal passing with AttnRes.
 
-## 5. API 與部署策略
+## 5. API and deployment strategy
 
-K3 API 提供固定 1M context，官方文件表示不因 context 長度採階梯式單價；cache hit、cache miss 與 output 仍分別計價。它也提供 automatic context caching、tool calls、structured output、dynamic tool loading，以及 low/high/max 的 reasoning effort 設定。[^k3-pricing]
+The K3 API offers a fixed 1M context, and the official docs say there is no tiered unit price by context length. Cache hit, cache miss and output are still priced separately. It also offers automatic context caching, tool calls, structured output, dynamic tool loading, and low/high/max reasoning effort settings.[^k3-pricing]
 
-截至 7 月 20 日，只有 API 已上線；權重與完整 technical report 尚未公開，因此還沒有可驗證的 vLLM 吞吐、量化品質或多節點 routing 結果。
+As of July 20, only the API is live. The weights and the full technical report are not public, so there are no verifiable vLLM throughput, quantization quality or multi-node routing results yet.
 
-## 6. Moonshot 主打 long-horizon coding
+## 6. Moonshot's focus on long-horizon coding
 
-Moonshot 展示的 long-horizon coding 任務包括理解大型 repository、協調 terminal tools，以及用視覺回饋處理 frontend、game development 與 CAD。官方 kernel optimization case study 讓模型在最多 24 小時的 sandbox 內反覆 profile、改寫與 benchmark GPU kernels。
+The long-horizon coding tasks Moonshot demonstrates include understanding large repositories, coordinating terminal tools, and using visual feedback for frontend, game development and CAD. The lab's kernel optimization case study has the model profile, rewrite and benchmark GPU kernels repeatedly, inside a sandbox, for up to 24 hours.
 
-Inkling 主打可控制的推理成本與文字／圖片／音訊通用底座；K3 的產品展示則集中在長工作流與大型工程任務。兩者的輸入模態與服務場景不同，單張 benchmark 表不足以比較部署取捨。
+Inkling emphasizes controllable inference cost and a general text/image/audio base. K3's product demos center on long workflows and large engineering tasks. Their input modalities and serving scenarios differ, and a single benchmark table is not enough to compare deployment trade-offs.
 
-## 榜單的比較限制
+## Limits of the leaderboards
 
-官方自己承認 K3 整體能力仍落後最強 proprietary models。Arena、GDPval 或 kernel benchmark 各自測量不同能力，而且 vendor-reported 結果可能使用不同 harness、thinking budget 與工具權限。Frontend Arena 的單項名次、Artificial Analysis 指標或 hallucination rate，都應附上測試版本與方法，不能拼成一個「全面勝過某模型」的結論。
+The lab itself admits that K3 overall still trails the strongest proprietary models. Arena, GDPval and the kernel benchmark each measure a different ability, and vendor-reported results may use different harnesses, thinking budgets and tool permissions. A single Frontend Arena rank, an Artificial Analysis metric or a hallucination rate should each come with the test version and method, and they can't be stitched into a conclusion like "beats model X across the board."
 
-## 權重發布後還缺哪些資料
+## What is still missing after the weights ship
 
-權重與 technical report 發布後，仍需補上精度格式、單節點／多節點吞吐、expert communication、長 context 品質和量化退化，才能判斷 2.8T 架構的實際部署成本。
+Once the weights and technical report are out, I still need precision formats, single-node and multi-node throughput, expert communication, long-context quality and quantization degradation before I can judge the real deployment cost of the 2.8T architecture.
 
 [^k3-overview]: [Moonshot AI, “Kimi K3”](https://www.kimi.com/blog/kimi-k3). Used for the announced architecture and product positioning.
 [^k3-quickstart]: [Kimi K3 Quickstart & Specifications](https://platform.kimi.ai/docs/guide/kimi-k3-quickstart). Used for availability, context length, and release-state claims.

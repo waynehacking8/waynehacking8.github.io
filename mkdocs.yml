@@ -15,7 +15,7 @@ nav:
   - Blog:
       - blog/index.md
       - Which patch cleared the FlashInfer fault: blog/vllm-flashinfer-async-race.md
-      - Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇: blog/agent-harness-boundaries.md
+      - Prime, Hermes, OpenClaw agent runtimes: blog/agent-harness-boundaries.md
       - Inkling 975B · 5:1 attention: blog/inkling-975b-architecture.md
       - Kimi K3 · KDA, AttnRes, MoE: blog/kimi-k3-architecture.md
       - TensorRT-LLM vs vLLM: blog/notes-trtllm-triton-serving.md
@@ -24,8 +24,8 @@ nav:
       - FedAvg, DP-SGD & secure aggregation: blog/notes-federated-learning-dp.md
       - Naive GEMM to WMMA: blog/notes-cuda-tensor-core-gemm.md
       - Meta-Reinforcement Learning: blog/meta-rl.md
-      - CUDA Programming 入門: blog/pp-intro.md
-      - 滲透測試入門技術: blog/pentest-intro.md
+      - Intro to CUDA Programming: blog/pp-intro.md
+      - A pentest is not a scanner: blog/pentest-intro.md
 
 theme:
   name: material

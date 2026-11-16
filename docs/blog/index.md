@@ -18,110 +18,110 @@ measurement or source that backs it sits right beside it.
 
 <div class="pb-posts">
 <a class="pb-post-card" href="vllm-flashinfer-async-race/" data-tags="Serving,CUDA">
-<span class="pb-post-image pb-image-contain"><img src="/assets/blog/vllm-61239-faults.png" alt="vllm#61239 每個版本的 illegal memory access 次數" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Wayne</span></span>
+<span class="pb-post-image pb-image-contain"><img src="/assets/blog/vllm-61239-faults.png" alt="vllm#61239 illegal memory accesses per build" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Wayne</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Which patch cleared the FlashInfer fault on my card｜是哪個 patch 修掉了 FlashInfer 的錯誤</span>
+<span class="pb-post-title">Which patch cleared the FlashInfer fault on my card</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-blue">Serving</span><span class="pb-tag pb-tag-red">CUDA</span></span>
-<span class="pb-post-excerpt">一張 Blackwell 工作站 GPU 上，五個版本各跑 30 個 server，沒修正的 main 錯 8 次，加上 #64165 之後 0 次。</span>
+<span class="pb-post-excerpt">Five vLLM builds, 30 servers each, on one Blackwell workstation GPU: main faulted 8 times without #64165 and never with it.</span>
 <span class="pb-post-date">2026-11-16</span>
 </span>
 </a>
 <a class="pb-post-card" href="agent-harness-boundaries/" data-tags="Architecture,Agents,Security">
-<span class="pb-post-image pb-image-contain"><img src="/assets/blog/agent-runtime/overview.png" alt="Prime、Hermes 與 OpenClaw 的 agent runtime 架構比較" width="1300" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Wayne</span></span>
+<span class="pb-post-image pb-image-contain"><img src="/assets/blog/agent-runtime/overview.png" alt="Agent runtime architectures of Prime, Hermes and OpenClaw compared" width="1300" height="680" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Wayne</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Prime、Hermes、OpenClaw：三個 Agent Runtime 的架構選擇</span>
+<span class="pb-post-title">Prime, Hermes, OpenClaw: Architecture Choices in Three Agent Runtimes</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">Architecture</span><span class="pb-tag pb-tag-green">Agents</span><span class="pb-tag pb-tag-red">Security</span></span>
-<span class="pb-post-excerpt">從 persistent Python、personal agent service 到 Gateway control plane，拆解三個 runtime 如何接住模型的工作。</span>
+<span class="pb-post-excerpt">From persistent Python to a personal agent service to a Gateway control plane: how three runtimes take over the model's work.</span>
 <span class="pb-post-date">2026-09-15</span>
 </span>
 </a>
 <a class="pb-post-card" href="inkling-975b-architecture/" data-tags="Architecture">
-<span class="pb-post-image"><img src="/assets/blog/inkling-cover.png" alt="Inkling 官方發布視覺" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Thinking Machines</span></span>
+<span class="pb-post-image"><img src="/assets/blog/inkling-cover.png" alt="Inkling launch artwork" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async"><span class="pb-image-credit">Thinking Machines</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Inkling 975B：5:1 混合注意力如何重新分配算力</span>
+<span class="pb-post-title">Inkling 975B: How 5:1 Hybrid Attention Reallocates Compute</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">Architecture</span><span class="pb-tag pb-tag-green">MoE</span><span class="pb-tag pb-tag-blue">Multimodal</span></span>
-<span class="pb-post-excerpt">5:1 滑動視窗、相對位置編碼、短卷積與 Muon/Adam：查核官方資料後拆解 Thinky 的第一個開放權重模型。</span>
+<span class="pb-post-excerpt">5:1 sliding windows, relative position encoding, short convolutions and Muon/Adam in Thinking Machines' first open-weight model, checked against the official material.</span>
 <span class="pb-post-date">2026-07-20</span>
 </span>
 </a>
 <a class="pb-post-card" href="kimi-k3-architecture/" data-tags="Architecture">
-<span class="pb-post-image"><img src="/assets/blog/kimi-k3-cover.webp" alt="Kimi K3 官方發布視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Moonshot AI</span></span>
+<span class="pb-post-image"><img src="/assets/blog/kimi-k3-cover.webp" alt="Kimi K3 launch artwork" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Moonshot AI</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Kimi K3 2.8T：KDA、AttnRes 與 896 選 16 的 MoE</span>
+<span class="pb-post-title">Kimi K3 2.8T: KDA, AttnRes and a 16-of-896 MoE</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">Architecture</span><span class="pb-tag pb-tag-blue">Linear Attention</span><span class="pb-tag pb-tag-green">Agents</span></span>
-<span class="pb-post-excerpt">KDA、Attention Residuals 與 896 選 16 的 Stable LatentMoE；並釐清 API 已上線、權重尚待釋出的差別。</span>
+<span class="pb-post-excerpt">KDA, Attention Residuals and a 16-of-896 Stable LatentMoE, and the difference between the API being live and the weights still unreleased.</span>
 <span class="pb-post-date">2026-07-20</span>
 </span>
 </a>
 <a class="pb-post-card" href="notes-trtllm-triton-serving/" data-tags="Serving">
-<span class="pb-post-image"><img src="/assets/blog/trtllm-triton.webp" alt="NVIDIA TensorRT-LLM 與 Triton 部署架構" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
+<span class="pb-post-image"><img src="/assets/blog/trtllm-triton.webp" alt="NVIDIA TensorRT-LLM and Triton deployment architecture" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">TensorRT-LLM vs vLLM on 4×H100｜Concurrency crossover</span>
+<span class="pb-post-title">TensorRT-LLM vs vLLM on 4×H100: The Concurrency Crossover</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-green">Serving</span><span class="pb-tag pb-tag-purple">NVIDIA stack</span></span>
-<span class="pb-post-excerpt">Matched-work benchmark：TensorRT-LLM 在低／中 concurrency 領先，vLLM 在高 concurrency 領先。</span>
+<span class="pb-post-excerpt">A matched benchmark: TensorRT-LLM leads at low and mid concurrency, vLLM leads at high concurrency.</span>
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
 <a class="pb-post-card" href="nccl-nvlink-bandwidth/" data-tags="Distributed">
-<span class="pb-post-image"><img src="/assets/blog/nccl-cube.webp" alt="NVIDIA NCCL 官方主視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
+<span class="pb-post-image"><img src="/assets/blog/nccl-cube.webp" alt="NVIDIA NCCL artwork" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Where tensor-parallel inference hits the NVLink wall｜TP inference 的 NVLink 牆</span>
+<span class="pb-post-title">Where tensor-parallel inference hits the NVLink wall</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-blue">GPU</span><span class="pb-tag pb-tag-red">Distributed</span></span>
-<span class="pb-post-excerpt">366 GB/s 與 23 μs 固定成本：分開量測 NVLS、CUDA Graphs 和 symmetric memory 改變了什麼。</span>
+<span class="pb-post-excerpt">366 GB/s against a 23 μs fixed cost, and what NVLS, CUDA Graphs and symmetric memory each change when measured separately.</span>
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
 <a class="pb-post-card" href="rag-groundedness-guardrail/" data-tags="RAG,Security">
-<span class="pb-post-image pb-image-contain"><img src="/assets/blog/rag-architecture.svg" alt="Microsoft 單租戶 RAG 架構圖" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Microsoft Learn</span></span>
+<span class="pb-post-image pb-image-contain"><img src="/assets/blog/rag-architecture.svg" alt="Microsoft single-tenant RAG architecture" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Microsoft Learn</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">The 0% RAG result failed the harder test｜0% 結果沒有通過更難的測試</span>
+<span class="pb-post-title">The 0% RAG result failed the harder test</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">LLM</span><span class="pb-tag pb-tag-green">RAG</span></span>
-<span class="pb-post-excerpt">簡單資料集是 0%，adversarial near-miss 是 48%；比較九種 gates 後，grounded verifier 補抓到 generative judges 漏掉的錯誤。</span>
+<span class="pb-post-excerpt">0% on the easy set, 48% on adversarial near-misses. Across nine gates, a grounded verifier caught errors the generative judges missed.</span>
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
 <a class="pb-post-card" href="notes-federated-learning-dp/" data-tags="Privacy,ML,Security">
-<span class="pb-post-image"><img src="/assets/blog/federated-dp.webp" alt="Google Research 聯邦學習與差分隱私示意圖" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Google Research</span></span>
+<span class="pb-post-image"><img src="/assets/blog/federated-dp.webp" alt="Google Research figure on federated learning with differential privacy" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Google Research</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">FedAvg Under Non-IID Data｜DP-SGD 與 Secure Aggregation 保護什麼</span>
+<span class="pb-post-title">FedAvg Under Non-IID Data: What DP-SGD and Secure Aggregation Protect</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-red">Privacy</span><span class="pb-tag pb-tag-blue">FL</span></span>
-<span class="pb-post-excerpt">從 client drift 到 privacy bound：FedAvg、FedProx、SCAFFOLD、DP-SGD 與 secure aggregation 的實測限制。</span>
+<span class="pb-post-excerpt">From client drift to privacy bounds: measured limits of FedAvg, FedProx, SCAFFOLD, DP-SGD and secure aggregation.</span>
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
 <a class="pb-post-card" href="notes-cuda-tensor-core-gemm/" data-tags="CUDA">
-<span class="pb-post-image pb-image-contain"><img src="/assets/blog/wmma-tile.webp" alt="NVIDIA WMMA warp tile 結構圖" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
+<span class="pb-post-image pb-image-contain"><img src="/assets/blog/wmma-tile.webp" alt="NVIDIA WMMA warp tile structure" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">From Naive GEMM to WMMA｜每個 CUDA kernel 卡在哪裡</span>
+<span class="pb-post-title">From Naive GEMM to WMMA: Where Each CUDA Kernel Stalls</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-green">CUDA</span><span class="pb-tag pb-tag-blue">Kernels</span></span>
-<span class="pb-post-excerpt">比較 naive、shared-memory tiling 與 WMMA，再用相同 shape 的 cuBLAS 當 production baseline。</span>
+<span class="pb-post-excerpt">Naive, shared-memory tiling and WMMA kernels compared, with cuBLAS on the same shape as the production baseline.</span>
 <span class="pb-post-date">2026-05-31</span>
 </span>
 </a>
 <a class="pb-post-card" href="meta-rl/" data-tags="ML">
-<span class="pb-post-image"><img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement learning 實驗主視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Google DeepMind</span></span>
+<span class="pb-post-image"><img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement learning artwork" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Google DeepMind</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">Meta-RL：讓 policy 在 episode 內學會更新自己</span>
+<span class="pb-post-title">Meta-RL: Teaching a Policy to Update Itself Within an Episode</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-purple">ML</span><span class="pb-tag pb-tag-red">RL</span></span>
-<span class="pb-post-excerpt">把 task inference 放進 gradient、recurrent state 或 latent context；以及怎麼測出 adaptation 而不是 task memorization。</span>
+<span class="pb-post-excerpt">Task inference placed in gradients, recurrent state or latent context, and how to test for adaptation rather than task memorization.</span>
 <span class="pb-post-date">2025-01-11</span>
 </span>
 </a>
 <a class="pb-post-card" href="pp-intro/" data-tags="CUDA">
-<span class="pb-post-image"><img src="/assets/blog/cuda-platform.webp" alt="NVIDIA CUDA accelerated computing 官方視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
+<span class="pb-post-image"><img src="/assets/blog/cuda-platform.webp" alt="NVIDIA CUDA accelerated computing artwork" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">NVIDIA</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">CUDA Programming 入門</span>
+<span class="pb-post-title">Intro to CUDA Programming</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-green">CUDA</span><span class="pb-tag pb-tag-blue">Parallel</span></span>
-<span class="pb-post-excerpt">從 execution model、memory hierarchy 與 synchronization 判斷 CUDA kernel 的實際瓶頸。</span>
+<span class="pb-post-excerpt">Using the execution model, memory hierarchy and synchronization to find where a CUDA kernel is actually bound.</span>
 <span class="pb-post-date">2025-01-11</span>
 </span>
 </a>
 <a class="pb-post-card" href="pentest-intro/" data-tags="Security">
-<span class="pb-post-image"><img src="/assets/blog/kali-2026-2.webp" alt="Kali Linux 2026.2 官方桌面視覺" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Kali Linux</span></span>
+<span class="pb-post-image"><img src="/assets/blog/kali-2026-2.webp" alt="Kali Linux 2026.2 desktop artwork" loading="lazy" fetchpriority="low" decoding="async"><span class="pb-image-credit">Kali Linux</span></span>
 <span class="pb-post-body">
-<span class="pb-post-title">滲透測試不是掃描器：從授權邊界到可複測證據</span>
+<span class="pb-post-title">A Pentest Is Not a Scanner: From Authorization Boundaries to Retestable Evidence</span>
 <span class="pb-post-tags"><span class="pb-tag pb-tag-red">Security</span></span>
-<span class="pb-post-excerpt">先寫 Rules of Engagement，再談工具；用最小化驗證、證據鏈與 acceptance test 把 finding 交給修復者。</span>
+<span class="pb-post-excerpt">Rules of Engagement before tools, then minimal verification, an evidence chain and acceptance tests to hand each finding to the people fixing it.</span>
 <span class="pb-post-date">2025-01-10</span>
 </span>
 </a>
