@@ -67,6 +67,12 @@ class BuildTest(unittest.TestCase):
         self.assertIn("1 in review across CUTLASS", self.section("NVIDIA"))
         self.assertIn("[Compressor](https://github.com/vllm-project/llm-compressor/pull/3) (llm-compressor)", self.section("vLLM"))
 
+    def test_claimed_project_links_live_github_searches(self):
+        vllm = self.section("vLLM")
+        self.assertIn("https://github.com/vllm-project/vllm/pulls?q=is%3Apr+is%3Amerged+author%3Ame", vllm)
+        self.assertIn("reviewed-by%3Ame+-author%3Ame", vllm)
+        self.assertNotIn("Merged PRs on GitHub", self.section("new-org/new-repo"))
+
     def test_closed_pick_is_dropped_with_a_warning(self):
         self.assertNotIn("Now closed", self.body)
         self.assertEqual(self.warnings, ["pick not open or merged, skipped: https://github.com/vllm-project/vllm/pull/9"])

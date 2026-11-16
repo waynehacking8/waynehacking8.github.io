@@ -138,8 +138,16 @@ def _render(config: dict, feed: dict):
             '<div class="pb-tl-body" markdown>',
             f'<p class="pb-tl-title"><a href="{project["url"]}">{project["name"]}</a></p>',
             f'<p class="pb-tl-date">{date}</p>',
-            "",
         ]
+        if not project.get("unclaimed"):
+            # Live GitHub searches, so a reader can check the counts at the source.
+            repo = next(iter(project["repos"]))
+            base = f"https://github.com/{repo}/pulls?q=is%3Apr+"
+            lines.append(
+                f'<p class="pb-tl-links"><a href="{base}is%3Amerged+author%3A{me}">Merged PRs on GitHub</a>'
+                f' · <a href="{base}reviewed-by%3A{me}+-author%3A{me}">Reviews on GitHub</a></p>'
+            )
+        lines.append("")
         for bucket, heading in (("merged", "Merged"), ("review", "In review")):
             items = [(url, title) for url, title in shown if prs[url]["bucket"] == bucket]
             if not items:
