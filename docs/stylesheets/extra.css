@@ -1118,11 +1118,11 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .md-typeset .admonition, .md-typeset details { font-size: 0.85rem; }
 .md-typeset figcaption, .pb-article-hero figcaption { font-size: 0.7rem; line-height: 1.55; }
 .md-typeset figcaption .pb-cap-src { display: block; margin-top: 0.25em; }
-.pb-tl-title { font-size: 0.95rem; }
-.pb-tl-org { font-size: 0.85rem; }
-.pb-tl-date { font-size: 0.75rem; }
+.md-typeset .pb-tl-body .pb-tl-title { font-size: 0.95rem; }
+.md-typeset .pb-tl-body .pb-tl-org { font-size: 0.8rem; }
+.md-typeset .pb-tl-body .pb-tl-date { font-size: 0.72rem; }
 .pb-tl-body :is(p, li) { font-size: 0.9rem; }
-.pb-patch-group { font-size: 0.75rem; }
+.md-typeset .pb-tl-body .pb-patch-group { font-size: 0.75rem; }
 .pb-post-card .pb-post-excerpt { font-size: 0.75rem; }
 .md-typeset .footnote { font-size: 0.8rem; }
 
@@ -1197,3 +1197,8 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .md-content .md-typeset .admonition-title::before { background-color: var(--pb-link); }
 .md-content .md-typeset .admonition-title { border: 0; }
 .pb-article-toc ol ol ol a { padding-left: 2.5rem; font-size: .66rem; }
+
+.md-typeset .pb-news dt { font-size: 0.72rem; }
+.pb-filters-label { font-size: 0.72rem; }
+.md-typeset .pb-filters button, .pb-filters button { font-size: 0.7rem; }
+.pb-image-credit { font-size: 0.6rem; }
