@@ -1202,3 +1202,12 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .pb-filters-label { font-size: 0.72rem; }
 .md-typeset .pb-filters button, .pb-filters button { font-size: 0.7rem; }
 .pb-image-credit { font-size: 0.6rem; }
+
+/* No lone words on a last line: captions, headings and TOC entries split
+   into even lines; body text avoids one-word last lines. */
+.md-typeset figcaption, .md-typeset figcaption .pb-cap-src,
+.md-typeset :is(h1, h2, h3, h4), .pb-post-title, .pb-page-title,
+.pb-article-toc a, .pb-post-card .pb-post-excerpt, .md-typeset th { text-wrap: balance; }
+.md-typeset :is(p, li, td, blockquote, dd) { text-wrap: pretty; }
+/* Material caps captions at 24rem, which broke one-line sources in two. */
+.md-typeset figcaption { max-width: 40rem; margin-inline: auto; }
