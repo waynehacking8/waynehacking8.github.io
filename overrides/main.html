@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block extrahead %}
+<link rel="apple-touch-icon" href="{{ base_url }}/assets/apple-touch-icon.png">
   {{ super() }}
   {# The site has one theme. Drop a dark choice saved before 2026-11-16 so Material does not re-apply it. #}
   <script>try { localStorage.removeItem(new URL("{{ base_url }}/", location).pathname.replace(/\/+$/, "/") + ".__palette"); } catch (e) {}</script>

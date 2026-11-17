@@ -35,7 +35,7 @@ theme:
   # root-absolute for the same reason the sidebar hrefs are: soft navigation
   # pushes a new path without re-rendering <head>, so a relative favicon gets
   # re-resolved under whichever nested page is currently open and 404s
-  favicon: /assets/favicon.png
+  favicon: /assets/favicon-avatar.png
   icon:
     logo: material/account-circle
   features:
