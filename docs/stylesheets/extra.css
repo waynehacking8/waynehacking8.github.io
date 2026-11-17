@@ -243,7 +243,7 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 /* ---------- typography ---------- */
 .md-typeset { font-size: 0.9rem; line-height: 1.6; letter-spacing: -0.003em; }
 .md-typeset :is(h1, h2, h3, h4), .pb-page-title, .pb-post-title { font-family: var(--pb-head-font); font-weight: 700; letter-spacing: -0.015em; font-variant-numeric: lining-nums; }
-.pb-nav-link { font-family: var(--pb-ui-font); }
+.pb-nav-link { font-family: var(--pb-head-font); font-weight: 700; font-variant-numeric: lining-nums; }
 .md-typeset h1 { font-size: 1.55rem; font-weight: 600; color: var(--pb-ink); margin-bottom: 1em; }
 .md-typeset h2 { font-size: 0.95rem; font-weight: 700; color: var(--pb-ink); margin: 1.6em 0 0.7em; }
 .md-typeset h3 { font-size: 0.8rem; font-weight: 700; margin: 1.2em 0 0.3em; }
