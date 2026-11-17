@@ -348,3 +348,33 @@
     init();
   }
 })();
+
+/* Tap or click a figure in an article to see it full size. One document-level
+   listener, so it also covers pages reached by soft navigation. On a phone the
+   enlarged image can be pinch-zoomed and scrolled; Esc, the close button or a
+   click on the backdrop closes it. */
+(function () {
+  var box = null;
+  function close() { if (box && box.open) box.close(); }
+  function open(img) {
+    if (!box) {
+      box = document.createElement("dialog");
+      box.className = "pb-zoom";
+      box.innerHTML = '<button type="button" class="pb-zoom-close" aria-label="Close">&times;</button><div class="pb-zoom-scroll"><img alt=""></div>';
+      box.addEventListener("click", function (e) {
+        if (e.target === box || e.target.classList.contains("pb-zoom-close") || e.target.classList.contains("pb-zoom-scroll")) close();
+      });
+      document.body.appendChild(box);
+    }
+    var big = box.querySelector("img");
+    big.src = img.currentSrc || img.src;
+    big.alt = img.alt || "";
+    box.showModal();
+  }
+  document.addEventListener("click", function (e) {
+    var img = e.target.closest && e.target.closest(".md-content .md-typeset img");
+    if (!img || img.closest("a") || img.naturalWidth < 200) return;
+    e.preventDefault();
+    open(img);
+  });
+})();
