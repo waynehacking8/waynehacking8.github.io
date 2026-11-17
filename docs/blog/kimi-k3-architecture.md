@@ -15,7 +15,7 @@ tags:
 
 <figure class="pb-article-hero">
   <img src="/assets/blog/kimi-k3-cover.webp" alt="Official Moonshot AI key visual for Kimi K3" loading="eager" decoding="async">
-  <figcaption>Official platform key visual · <a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></figcaption>
+  <figcaption>Official platform key visual<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://www.kimi.com/blog/kimi-k3">Source: Moonshot AI</a></span></figcaption>
 </figure>
 
 Moonshot AI has released the **Kimi K3** API: 2.8T total parameters, native vision and 1M-token context, aimed at long-horizon coding, knowledge work and reasoning. It hands the problem of very long sequences to **Kimi Delta Attention (KDA)** and the problem of very deep networks to **Attention Residuals (AttnRes)**.[^k3-overview]

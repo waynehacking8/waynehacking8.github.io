@@ -16,7 +16,7 @@ tags:
 
 <figure class="pb-article-hero">
   <img src="/assets/blog/cuda-platform.webp" alt="NVIDIA CUDA accelerated computing official visual" loading="eager" decoding="async">
-  <figcaption>CUDA accelerated computing platform · <a href="https://developer.nvidia.com/cuda-zone">Source: NVIDIA Developer</a></figcaption>
+  <figcaption>CUDA accelerated computing platform<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://developer.nvidia.com/cuda-zone">Source: NVIDIA Developer</a></span></figcaption>
 </figure>
 
 This guide starts from the execution model, memory hierarchy and synchronization to explain what CUDA costs in hardware, then uses profiling to decide whether to change data access, synchronization or the kernel configuration. The semantics of the execution model, memory hierarchy and synchronization follow the NVIDIA CUDA C++ Programming Guide. The examples are deliberately shortened, and a production kernel still needs bounds checks and error handling.[^cuda-guide]

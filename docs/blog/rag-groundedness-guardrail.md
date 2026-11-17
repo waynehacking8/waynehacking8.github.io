@@ -17,7 +17,7 @@ tags:
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/rag-architecture.svg" alt="Microsoft single-tenant RAG reference architecture" loading="eager" decoding="async">
-  <figcaption>Grounded RAG reference architecture · <a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag">Source: Microsoft Learn</a></figcaption>
+  <figcaption>Grounded RAG reference architecture<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag">Source: Microsoft Learn</a></span></figcaption>
 </figure>
 
 My first evaluation made a tidy claim: a guarded prompt cut hallucination from **4/10 to 0/10** on unanswerable questions. The run was real, reproducible, and almost useless as a headline. Ten questions were too few, and “out of corpus” was the easy failure mode: the model had no relevant passage tempting it toward a plausible answer.[^repo]

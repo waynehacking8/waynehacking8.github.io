@@ -16,7 +16,7 @@ tags:
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/wmma-tile.webp" alt="NVIDIA WMMA warp tile structure" loading="eager" decoding="async">
-  <figcaption>WMMA warp-level tile structure · <a href="https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/">Source: NVIDIA Developer</a></figcaption>
+  <figcaption>WMMA warp-level tile structure<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/">Source: NVIDIA Developer</a></span></figcaption>
 </figure>
 
 This article follows one GEMM through three implementations: one output element per thread, shared-memory tiling, and warp-level WMMA. Each version is compared with cuBLAS on the same GPU. GEMM sits underneath the linear layers and attention projections in an LLM.

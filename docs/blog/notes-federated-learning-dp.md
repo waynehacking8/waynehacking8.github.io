@@ -16,7 +16,7 @@ tags:
 
 <figure class="pb-article-hero">
   <img src="/assets/blog/federated-dp.webp" alt="Google Research figure on federated learning with differential privacy" loading="eager" decoding="async">
-  <figcaption>Federated learning with formal DP guarantees · <a href="https://research.google/blog/federated-learning-with-formal-differential-privacy-guarantees/">Source: Google Research</a></figcaption>
+  <figcaption>Federated learning with formal DP guarantees<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://research.google/blog/federated-learning-with-formal-differential-privacy-guarantees/">Source: Google Research</a></span></figcaption>
 </figure>
 
 The [**federated-learning-lab**](https://github.com/waynehacking8/federated-learning-lab)[^fl-repo] implements FedAvg, FedProx, SCAFFOLD, DP-SGD, and secure aggregation from scratch. Its tests and experiments show where Non-IID data causes client drift, where extra communication rounds matter more than a different optimizer, and which privacy threat each defense covers.

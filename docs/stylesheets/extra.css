@@ -1211,3 +1211,10 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .md-typeset :is(p, li, td, blockquote, dd) { text-wrap: pretty; }
 /* Material caps captions at 24rem, which broke one-line sources in two. */
 .md-typeset figcaption { max-width: 40rem; margin-inline: auto; }
+/* Short "title · Source" captions: the source moves as one piece, and on a
+   phone it takes its own line without a dangling dot. */
+.pb-cap-inline { display: inline-block; white-space: nowrap; }
+@media (max-width: 40em) {
+  .pb-cap-inline { display: block; }
+  .pb-cap-dot { display: none; }
+}

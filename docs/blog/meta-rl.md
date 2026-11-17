@@ -16,7 +16,7 @@ tags:
 
 <figure class="pb-article-hero">
   <img src="/assets/blog/meta-rl.webp" alt="DeepMind meta-reinforcement-learning experiment visualization" loading="eager" decoding="async">
-  <figcaption>Prefrontal cortex as a meta-RL system · <a href="https://deepmind.google/blog/prefrontal-cortex-as-a-meta-reinforcement-learning-system/">Source: Google DeepMind</a></figcaption>
+  <figcaption>Prefrontal cortex as a meta-RL system<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://deepmind.google/blog/prefrontal-cortex-as-a-meta-reinforcement-learning-system/">Source: Google DeepMind</a></span></figcaption>
 </figure>
 
 Ordinary reinforcement learning looks for one policy in a fixed MDP. Meta-RL adds a layer: the training data is a **task distribution**, and the agent has to infer from a few trajectories on a new task what the dynamics and reward are this time, then change its behavior using the experience within the episode. The weights may stay fixed, but the effective state of the policy has to update. That is what it means to put the learning algorithm inside the agent.

@@ -15,7 +15,7 @@ tags:
 
 <figure class="pb-article-hero">
   <img src="/assets/blog/inkling-cover.png" width="1200" height="630" alt="Official launch key visual for Thinking Machines Lab Inkling" loading="eager" decoding="async">
-  <figcaption>Official launch key visual · <a href="https://thinkingmachines.ai/news/introducing-inkling/">Source: Thinking Machines Lab</a></figcaption>
+  <figcaption>Official launch key visual<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://thinkingmachines.ai/news/introducing-inkling/">Source: Thinking Machines Lab</a></span></figcaption>
 </figure>
 
 On July 15, 2026, Thinking Machines Lab released its first open-weight model, **Inkling**. It has 975B total parameters, activates 41B per token, supports up to 1M tokens of context, and was pretrained on 45T text, image, audio and video tokens. The lab positions it as a natively multimodal base model meant for fine-tuning, and uses sparse activation and hybrid attention to keep inference cost under control.[^inkling-release][^inkling-card]

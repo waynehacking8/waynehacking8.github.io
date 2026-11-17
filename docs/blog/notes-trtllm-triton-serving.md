@@ -16,7 +16,7 @@ tags:
 
 <figure class="pb-article-hero">
   <img src="/assets/blog/trtllm-triton.webp" alt="NVIDIA TensorRT-LLM and Triton serving architecture" loading="eager" decoding="async">
-  <figcaption>TensorRT-LLM production serving · <a href="https://developer.nvidia.com/blog/scaling-llms-with-nvidia-triton-and-nvidia-tensorrt-llm-using-kubernetes/">Source: NVIDIA Developer</a></figcaption>
+  <figcaption>TensorRT-LLM production serving<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://developer.nvidia.com/blog/scaling-llms-with-nvidia-triton-and-nvidia-tensorrt-llm-using-kubernetes/">Source: NVIDIA Developer</a></span></figcaption>
 </figure>
 
 The [**trtllm-triton-serving**](https://github.com/waynehacking8/trtllm-triton-serving) harness takes an open-weights Hugging Face checkpoint through a TensorRT-LLM engine build and exposes it with `trtllm-serve` or Triton. The matched-work benchmark compares that stack with vLLM on 4× H100 connected by NVLink.[^serving-repo]

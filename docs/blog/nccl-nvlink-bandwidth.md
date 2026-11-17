@@ -17,7 +17,7 @@ tags:
 
 <figure class="pb-article-hero">
   <img src="/assets/blog/nccl-cube.webp" alt="NVIDIA NCCL communication stack visualization" loading="eager" decoding="async">
-  <figcaption>NCCL communication stack · <a href="https://developer.nvidia.com/blog/enabling-fast-inference-and-resilient-training-with-nccl-2-27/">Source: NVIDIA Developer</a></figcaption>
+  <figcaption>NCCL communication stack<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span><a href="https://developer.nvidia.com/blog/enabling-fast-inference-and-resilient-training-with-nccl-2-27/">Source: NVIDIA Developer</a></span></figcaption>
 </figure>
 
 The large-message number is **366 GB/s**. It is also the wrong number for tensor-parallel decode.

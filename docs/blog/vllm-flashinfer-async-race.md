@@ -16,7 +16,7 @@ tags:
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/vllm-61239-faults.png" alt="Bar chart: 8 of 30 servers faulted on main before #64165, 0 of 30 on the four other builds" loading="eager" decoding="async">
-  <figcaption>Illegal memory accesses per build, 30 servers each · Wayne</figcaption>
+  <figcaption>Illegal memory accesses per build, 30 servers each<span class="pb-cap-inline"><span class="pb-cap-dot"> · </span>Wayne</span></figcaption>
 </figure>
 
 vllm#61239 reports CUDA illegal memory accesses under async scheduling with FlashInfer, on models without speculative decoding.[^issue] Two patches were candidates. #61612 drops the `seq_lens_cpu_upper_bound` shortcut under async scheduling. #64165 is vadiklyutiy's fix for a pipeline parallel crash (#63505): `build()` now waits until the GPU has copied the previous plan out of the page-locked buffer before it calls `plan()` again. I wanted to know which one clears the fault on my card, so I ran 30 fresh servers on each of five builds. Main with #64165 never faulted; main before it faulted in 8 of 30.
