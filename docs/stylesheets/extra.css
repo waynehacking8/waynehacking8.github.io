@@ -282,13 +282,13 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   border: 1px solid var(--pb-line);
   box-shadow: none;
   border-radius: 10px;
-  font-size: 0.62rem;
+  font-size: 0.78rem;
 }
 .md-typeset .admonition-title { background: transparent !important; }
 .md-typeset table:not([class]) {
   border: 1px solid var(--pb-line);
   border-radius: 10px;
-  font-size: 0.66rem;
+  font-size: 0.78rem;
 }
 .md-typeset table:not([class]) th {
   background: var(--pb-chip-bg);
@@ -667,7 +667,7 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .pb-post-card .pb-post-tags { display: block; line-height: 1; }
 .pb-post-card .pb-post-excerpt {
   display: block;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   line-height: 1.55;
   color: var(--pb-muted);
 }
@@ -716,9 +716,11 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   padding: 0.35rem 0.7rem;
   border-top: 1px solid var(--pb-line);
   color: var(--pb-muted);
-  font-size: 0.6rem;
+  font-family: var(--pb-ui-font);
+  font-size: 0.7rem;
+  font-style: normal;
   line-height: 1.5;
-  text-align: right;
+  text-align: center;
 }
 .pb-article-hero figcaption a { color: var(--pb-link); }
 
@@ -1099,3 +1101,6 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
   .pb-name::after { font-size: 10px; white-space: nowrap; }
 }
 
+
+/* Captions read like Medium's: small sans, centered, upright, on every figure. */
+.md-typeset figcaption { font-family: var(--pb-ui-font); font-style: normal; text-align: center; color: var(--pb-muted); }
