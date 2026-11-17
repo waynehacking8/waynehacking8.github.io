@@ -44,8 +44,12 @@
 
 :root {
   --pb-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
-  --md-text-font: "Times New Roman", Times, "Liberation Serif", "PingFang TC",
-    "Microsoft JhengHei", serif;
+  /* Medium-style type: Source Serif for reading (what medium.com sets its story
+     text in), a plain grotesque for headings and UI (Medium uses Sohne, which
+     is commercial; Helvetica Neue is the closest system face). */
+  --md-text-font: "Source Serif 4", "Source Serif Pro", Georgia, Cambria, "Times New Roman",
+    "PingFang TC", "Microsoft JhengHei", serif;
+  --pb-head-font: "Helvetica Neue", Helvetica, Arial, "PingFang TC", sans-serif;
   --md-code-font: var(--pb-mono);
 }
 
@@ -236,7 +240,8 @@ body.pb-is-navigating .pb-nav-tabs { opacity: 0.72; }
 .md-sidebar--secondary { display: none !important; }
 
 /* ---------- typography ---------- */
-.md-typeset { font-size: 0.74rem; line-height: 1.78; }
+.md-typeset { font-size: 0.9rem; line-height: 1.6; letter-spacing: -0.003em; }
+.md-typeset :is(h1, h2, h3, h4), .pb-page-title, .pb-post-title, .pb-nav-link { font-family: var(--pb-head-font); letter-spacing: -0.011em; }
 .md-typeset h1 { font-size: 1.55rem; font-weight: 600; color: var(--pb-ink); margin-bottom: 1em; }
 .md-typeset h2 { font-size: 0.95rem; font-weight: 700; color: var(--pb-ink); margin: 1.6em 0 0.7em; }
 .md-typeset h3 { font-size: 0.8rem; font-weight: 700; margin: 1.2em 0 0.3em; }
