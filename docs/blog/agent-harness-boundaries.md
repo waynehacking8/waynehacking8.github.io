@@ -16,7 +16,7 @@ tags:
 
 <figure id="agent-runtime-overview" class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/overview.png" width="1300" height="680" alt="Hand-drawn runtime architecture comparison of Prime Agent, Hermes Agent and OpenClaw 2.0" loading="eager" decoding="async">
-  <figcaption><strong>Figure 1.</strong> How the three runtimes take work proposed by the model, execute tools and keep the state needed later. Compiled from <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a> and <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>.</figcaption>
+  <figcaption><strong>Figure 1.</strong> How the three runtimes take work proposed by the model, execute tools and keep the state needed later.<span class="pb-cap-src">Compiled from <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a> and <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>.</span></figcaption>
 </figure>
 
 ## What is an agent harness?
@@ -82,14 +82,14 @@ The control surface is the programming interface the model uses to organize its 
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/control-surface.png" width="1300" height="680" alt="Hand-drawn comparison of the per-session control loops of Prime, Hermes and OpenClaw" loading="lazy" decoding="async">
-  <figcaption><strong>Figure 5.</strong> The three per-session loops keep different units: Prime keeps Python cells and child sessions, Hermes keeps tool calls and delegation, and OpenClaw keeps intake, context, native tools and persistence. Sources: <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>, <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>.</figcaption>
+  <figcaption><strong>Figure 5.</strong> The three per-session loops keep different units: Prime keeps Python cells and child sessions, Hermes keeps tool calls and delegation, and OpenClaw keeps intake, context, native tools and persistence.<span class="pb-cap-src">Sources: <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>, <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway</a>.</span></figcaption>
 </figure>
 
 Prime's RLM doc puts a persistent Python kernel between the model and the tools. The built-in model tool is <code>ipython</code>, and reading files, editing, running commands, transforming results, calling skills and creating subagents all fan out from this kernel. Python variables, imports, functions and task handles survive across later tool calls, so the context does not have to be rebuilt as one giant message each time.[^prime-rlm]
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/prime.png" width="1300" height="680" alt="Hand-drawn architecture of Prime Agent's persistent Python RLM, tools and child agents" loading="lazy" decoding="async">
-  <figcaption><strong>Figure 2.</strong> Prime puts persistent Python / RLM at the model-facing surface. Files, shell, skills, MCP and child agents all branch out from this working surface. Source: <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>.</figcaption>
+  <figcaption><strong>Figure 2.</strong> Prime puts persistent Python / RLM at the model-facing surface. Files, shell, skills, MCP and child agents all branch out from this working surface.<span class="pb-cap-src">Source: <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">Prime RLM</a>.</span></figcaption>
 </figure>
 
 <code>rlm.spawn(...)</code> also creates child sessions along this interface. The call finishes task admission first and returns a child handle. The child's result has to come back to the parent through <code>agent_message</code> or a file. This lets the parent schedule several independent jobs on the same Python working surface, but a child's lifecycle and result merging cannot be treated like an ordinary synchronous function.[^prime-rlm]
@@ -102,7 +102,7 @@ Hermes keeps its control flow in the AIAgent conversation loop. The CLI and the 
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/hermes.png" width="1300" height="680" alt="Hand-drawn architecture of Hermes Agent's AIAgent loop, provider resolver, tool registry and memory" loading="lazy" decoding="async">
-  <figcaption><strong>Figure 3.</strong> Hermes connects the CLI and the messaging gateway to the AIAgent loop. The provider, tool registry, terminal backend, memory, skills and cron are kept up by one personal service. Source: <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>.</figcaption>
+  <figcaption><strong>Figure 3.</strong> Hermes connects the CLI and the messaging gateway to the AIAgent loop. The provider, tool registry, terminal backend, memory, skills and cron are kept up by one personal service.<span class="pb-cap-src">Source: <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>.</span></figcaption>
 </figure>
 
 Hermes extends through tools, skills, delegation or background tasks. The terminal backend can be local, Docker, SSH, Singularity, Modal, Daytona or Vercel Sandbox, and the backend decides where the actual commands run. What the model gets is the tool surface the service provides, while workflow state is held by the session, memory, skills and background machinery.[^hermes-readme]
@@ -113,7 +113,7 @@ OpenClaw puts the Gateway between the entry points and the agent runtime. The Ga
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/openclaw.png" width="1300" height="680" alt="Hand-drawn architecture of OpenClaw 2.0's Gateway, session routing, policy, plugins, automation and workspace" loading="lazy" decoding="async">
-  <figcaption><strong>Figure 4.</strong> OpenClaw connects channels, the CLI, nodes, plugins and automation to the Gateway, and the embedded runtime then handles the agent turn. Sources: <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">Gateway docs</a> and <a href="https://github.com/openclaw/openclaw/blob/v2026.8.1/docs/agent-runtime-architecture.md">agent runtime architecture</a>.</figcaption>
+  <figcaption><strong>Figure 4.</strong> OpenClaw connects channels, the CLI, nodes, plugins and automation to the Gateway, and the embedded runtime then handles the agent turn.<span class="pb-cap-src">Sources: <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">Gateway docs</a> and <a href="https://github.com/openclaw/openclaw/blob/v2026.8.1/docs/agent-runtime-architecture.md">agent runtime architecture</a>.</span></figcaption>
 </figure>
 
 The Gateway's centralized ownership lets OpenClaw handle session routing, channel delivery, node capability and tool policy in one place. This helps in a multi-entry system, because whether one session can be seen by another channel, node or automation does not have to be decided by each plugin separately.
@@ -126,7 +126,7 @@ Agent state comes in at least three kinds. The first is the context the next mod
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/state.png" width="1300" height="680" alt="Hand-drawn architecture of persistent state and memory in Prime, Hermes and OpenClaw" loading="lazy" decoding="async">
-  <figcaption><strong>Figure 6.</strong> The state each runtime keeps: Prime centers on the Python namespace, session artifacts and Continual Harness. Hermes centers on the session database, Markdown memory and skills. OpenClaw centers on the transcript, workspace, memory index and Gateway-owned state. Sources: <a href="https://arxiv.org/abs/2605.09998">Continual Harness</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>, <a href="https://github.com/openclaw/openclaw/blob/v2026.8.1/docs/concepts/memory-architecture.md">OpenClaw memory architecture</a>.</figcaption>
+  <figcaption><strong>Figure 6.</strong> The state each runtime keeps: Prime centers on the Python namespace, session artifacts and Continual Harness. Hermes centers on the session database, Markdown memory and skills. OpenClaw centers on the transcript, workspace, memory index and Gateway-owned state.<span class="pb-cap-src">Sources: <a href="https://arxiv.org/abs/2605.09998">Continual Harness</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>, <a href="https://github.com/openclaw/openclaw/blob/v2026.8.1/docs/concepts/memory-architecture.md">OpenClaw memory architecture</a>.</span></figcaption>
 </figure>
 
 | State type | Prime Agent | Hermes Agent | OpenClaw 2.0 |
@@ -166,7 +166,7 @@ These three steps may be handled by different components. An approval records "t
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/security.png" width="1734" height="907" alt="Hand-drawn comparison of execution, approval and isolation boundaries in Prime, Hermes and OpenClaw" loading="lazy" decoding="async">
-  <figcaption><strong>Figure 7.</strong> Execution, approval / admission and the child / plugin boundary are checked separately. Lifecycle isolation, an OS / container sandbox and identity authorization each answer a different question. Sources: <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/README.md">Prime Agent README</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>, <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway docs</a>.</figcaption>
+  <figcaption><strong>Figure 7.</strong> Execution, approval / admission and the child / plugin boundary are checked separately. Lifecycle isolation, an OS / container sandbox and identity authorization each answer a different question.<span class="pb-cap-src">Sources: <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/README.md">Prime Agent README</a>, the <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">Hermes README</a>, <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">OpenClaw Gateway docs</a>.</span></figcaption>
 </figure>
 
 Prime's Python kernel runs model-generated Python and project commands with the worker's operating-system permissions. Prime's worker, kernel and daemon let a session persist and recover, but the RLM doc explicitly calls them a durable control environment and not a security sandbox. When reviewing a Prime deployment, trace files, network and credentials along the kernel, shell bridge, host process and user environment.
@@ -188,7 +188,7 @@ Parallelism happens at the task level and does not remove the token dependency i
 
 <figure class="pb-article-hero pb-article-contain">
   <img src="/assets/blog/agent-runtime/parallelism.png" width="1300" height="680" alt="Hand-drawn comparison of agent task-level parallelism and the autoregressive decoder dependency" loading="lazy" decoding="async">
-  <figcaption><strong>Figure 8.</strong> A parent can dispatch independent work to child A, B and C, then collect the results. The token path of each response is still generated in order. Sources: Prime's <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">RLM</a>, Hermes's <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">delegation</a>, OpenClaw's <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">automation path</a>.</figcaption>
+  <figcaption><strong>Figure 8.</strong> A parent can dispatch independent work to child A, B and C, then collect the results. The token path of each response is still generated in order.<span class="pb-cap-src">Sources: Prime's <a href="https://github.com/PrimeIntellect-ai/prime-agent/blob/1fc1adb6e8062bf871a9b59705c1d15468e589f0/packages/coding-agent/docs/rlm.md">RLM</a>, Hermes's <a href="https://github.com/NousResearch/hermes-agent/blob/afe06f21f45f476c25034c4529818d9a2f9fdf1c/README.md">delegation</a>, OpenClaw's <a href="https://github.com/openclaw/openclaw/tree/v2026.8.1/docs/gateway">automation path</a>.</span></figcaption>
 </figure>
 
 Prime uses <code>rlm.spawn(...)</code> to create child sessions in the Python workspace. Hermes uses delegation and background tasks. OpenClaw can start other work from automation, plugins or nodes. These interfaces handle dispatching several jobs, while the tokens of a single answer are still generated along the autoregressive path.
