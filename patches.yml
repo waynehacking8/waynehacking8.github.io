@@ -51,8 +51,6 @@ picks:
   https://github.com/flashinfer-ai/flashinfer/pull/3838: SM120 NVFP4 attention qk-correction layout, row-sum and lse
   https://github.com/flashinfer-ai/flashinfer/pull/3836: b12x MoE workspace bucketing to stop kernel-cache thrash
   https://github.com/flashinfer-ai/flashinfer/pull/3614: MXFP8-aware cutlass MoE gemm profiler
-  https://github.com/flashinfer-ai/flashinfer/pull/3636: JIT ninja parallelism capped by available memory
-  https://github.com/flashinfer-ai/flashinfer/pull/3690: Combined paged-KV tensor in the trace path
   https://github.com/vllm-project/vllm/pull/49397: Skip Qwen3 deepstack buffers without vision
   https://github.com/vllm-project/vllm/pull/45460: Tokenizer survives pickling
   https://github.com/vllm-project/compressed-tensors/pull/737: Skip device-map entries with no local module in dispatch
@@ -64,16 +62,8 @@ picks:
   https://github.com/ai-dynamo/dynamo/pull/10616: KV-router cancels in-flight recovery on worker removal
   https://github.com/ai-dynamo/dynamo/pull/11578: Resolve aggregate planner workers by DGD component type
   https://github.com/ai-dynamo/dynamo/pull/10579: Blackwell workstation GPU SKU in the operator
-  https://github.com/ai-dynamo/dynamo/pull/10806: OTLP traces without logs
-  https://github.com/ai-dynamo/dynamo/pull/11219: NIXL push and pull connectors in PD
   https://github.com/pytorch/pytorch/pull/187216: "`nccl.broadcast` was dropping its `root` argument"
   https://github.com/pytorch/ao/pull/4480: PT2E/X86 plain-linear annotation fallback for reused `nn.Linear`
-  https://github.com/pytorch/ao/pull/4482: Extend the reused-module fallback to `nn.Conv2d`
-  https://github.com/NVIDIA/cutlass/pull/3346: SM120 grouped NVFP4 block-scaled GEMM in `cutlass_library`
-  https://github.com/NVIDIA/cutlass/pull/3334: CuTeDSL `make_ptr` on sub-byte dtypes
   https://github.com/NVIDIA/TensorRT-LLM/pull/15934: Gate MoE BF16 to FP8 conversion on compiler support
   https://github.com/NVIDIA/TensorRT-LLM/pull/16276: Detect the MTP routed-expert layout separately
-  https://github.com/triton-inference-server/server/pull/8980: Weight autoscaling queue time by request count
-  https://github.com/sgl-project/sglang/pull/28837: "`trtllm_mla` rejects prefill on SM12x"
   https://github.com/sgl-project/sglang/pull/45520: Supported MoE runner for ModelOpt NVFP4 on SM110/SM120
-  https://github.com/sgl-project/sglang/pull/31652: Fuse ordinary FP8 KV stores
